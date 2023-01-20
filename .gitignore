@@ -39,3 +39,6 @@
 
 ### VS Code ###
 /BackEnd/.vscode/
+
+### Node_modules ###
+/FrontEnd/mrm/node_modules/
