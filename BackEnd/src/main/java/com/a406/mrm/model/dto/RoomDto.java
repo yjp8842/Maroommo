@@ -2,7 +2,6 @@ package com.a406.mrm.model.dto;
 
 import com.a406.mrm.model.entity.Room;
 import lombok.*;
-import org.springframework.boot.context.properties.ConstructorBinding;
 
 @Data
 @Getter

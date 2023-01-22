@@ -1,7 +1,6 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.RoomDto;
-import com.a406.mrm.model.dto.RoomRegisterFormDto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.service.RoomService;
 import io.swagger.annotations.Api;
