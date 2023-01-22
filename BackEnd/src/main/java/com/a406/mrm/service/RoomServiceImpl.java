@@ -1,7 +1,5 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.RoomDto;
-import com.a406.mrm.model.dto.RoomRegisterFormDto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.model.entity.UserHasRoom;
@@ -9,7 +7,6 @@ import com.a406.mrm.repository.RoomRepository;
 import com.a406.mrm.repository.UserHasRoomRepository;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
