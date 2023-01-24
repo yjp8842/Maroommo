@@ -1,38 +1,42 @@
 package com.a406.mrm.model.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Getter
 @Setter
 @Table(name="users")
-public class User {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User extends BaseTimeEntity{
     @Id
     private String id;
-    @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
     private String email;
-    @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
     private String nickname;
-    @Column(nullable = false)
-    private String profile;
-    @Column(nullable = false)
-    private String intro;
-    @Column(nullable = false)
-    private String memo;
-    @ApiModelProperty("User - Room relation table mapping")
-    @OneToMany(mappedBy = "user")
-    private List<UserHasRoom> rooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Todo> todos = new ArrayList<>();
+    private String profile;
+    private String intro;
+    private String memo;
+
+    private String provider;
+    private String providerId;
+
+    private LocalDateTime lastLoginTime;
+
+//    @ApiModelProperty("User - Room relation table mapping")
+//    @OneToMany(mappedBy = "user")
+//    private List<UserHasRoom> rooms = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//    private List<Todo> todos = new ArrayList<>();
 }
