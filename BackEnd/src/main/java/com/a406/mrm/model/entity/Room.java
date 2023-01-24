@@ -39,5 +39,6 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
     private List<UserHasRoom> users = new ArrayList<>();
 
-
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
+    private List<TodoHasRoom> todos = new ArrayList<>();
 }
