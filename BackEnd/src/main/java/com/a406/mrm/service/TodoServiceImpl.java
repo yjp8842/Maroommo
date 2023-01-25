@@ -4,8 +4,10 @@ import com.a406.mrm.model.dto.TodoChangeStateDto;
 import com.a406.mrm.model.dto.TodoRequestDto;
 import com.a406.mrm.model.dto.TodoResponseDto;
 import com.a406.mrm.model.dto.TodoSearchDto;
+import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.Todo;
 import com.a406.mrm.model.entity.TodoTag;
+import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,10 +33,13 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public Todo addTodo(String userId, TodoRequestDto todoRequestDto) {
+        User user = userRepository.findById(userId).get();
+        Room room = roomRepository.findById(todoRequestDto.getRoomId()).get();
         Todo todo = todoRepository.save(new Todo(todoRequestDto,
-                userRepository.findById(userId).get(),
-                roomRepository.findById(todoRequestDto.getRoomId()).get()));
-
+                user,
+                room));
+        user.getTodos().add(todo);
+        room.getTodos().add(todo);
         List<TodoTag> tags = todoRequestDto.getTags().stream().map(x -> todoTagRepository.save(new TodoTag(x, todo))).collect(Collectors.toList());
         todo.setTodoTags(tags);
         return todo;
