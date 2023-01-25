@@ -31,33 +31,33 @@ public class SwaggerConfiguration {
     private String version = "V1";
     private String title = "MRM" + version;
 
-    @Bean
-    public Docket api() {
-        ParameterBuilder ATParameterBuilder = new ParameterBuilder();
-        ATParameterBuilder.name("access-token") //헤더 이름
-                .description("Access Tocken") //설명
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false)
-                .build();
-        ParameterBuilder RTParameterBuilder = new ParameterBuilder();
-        RTParameterBuilder.name("refresh-token") //헤더 이름
-                .description("Refresh Tocken") //설명
-                .modelRef(new ModelRef("string"))
-                .parameterType("header")
-                .required(false)
-                .build();
-        List<Parameter> tokenParameters = new ArrayList<>();
-        tokenParameters.add(ATParameterBuilder.build());
-        tokenParameters.add(RTParameterBuilder.build());
-
-        return new Docket(DocumentationType.SWAGGER_2).consumes(getConsumeContentTypes()).produces(getProduceContentTypes())
-                .apiInfo(apiInfo()).groupName(version).select()
-                .apis(RequestHandlerSelectors.basePackage("com.a406.mrm"))
-                .paths(regex("/.*")).build()
-                .useDefaultResponseMessages(false)
-                .globalOperationParameters(tokenParameters);
-    }
+//    @Bean
+//    public Docket api() {
+//        ParameterBuilder ATParameterBuilder = new ParameterBuilder();
+//        ATParameterBuilder.name("access-token") //헤더 이름
+//                .description("Access Tocken") //설명
+//                .modelRef(new ModelRef("string"))
+//                .parameterType("header")
+//                .required(false)
+//                .build();
+//        ParameterBuilder RTParameterBuilder = new ParameterBuilder();
+//        RTParameterBuilder.name("refresh-token") //헤더 이름
+//                .description("Refresh Tocken") //설명
+//                .modelRef(new ModelRef("string"))
+//                .parameterType("header")
+//                .required(false)
+//                .build();
+//        List<Parameter> tokenParameters = new ArrayList<>();
+//        tokenParameters.add(ATParameterBuilder.build());
+//        tokenParameters.add(RTParameterBuilder.build());
+//
+//        return new Docket(DocumentationType.SWAGGER_2).consumes(getConsumeContentTypes()).produces(getProduceContentTypes())
+//                .apiInfo(apiInfo()).groupName(version).select()
+//                .apis(RequestHandlerSelectors.basePackage("com.a406.mrm"))
+//                .paths(regex("/.*")).build()
+//                .useDefaultResponseMessages(false)
+//                .globalOperationParameters(tokenParameters);
+//    }
 
     private Set<String> getConsumeContentTypes() {
         Set<String> consumes = new HashSet<>();
