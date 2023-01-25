@@ -11,5 +11,6 @@ public interface TodoService {
     List<Todo> getTodoAll(String userId);
     Todo addTodo(String userId, TodoRequestDto todoRequestDto);
     int changeState(TodoChangeStateDto todoChangeStateDto);
-    List<TodoResponseDto> searchTodo(int roomId, String userId);
+    List<TodoResponseDto> searchRoomTodo(int roomId, String userId);
+    List<TodoResponseDto> searchMyTodo(String userId);
 }

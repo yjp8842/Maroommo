@@ -51,7 +51,7 @@ public class RoomController {
 
     @ApiOperation("first login - my room")
     @GetMapping("/my/first/{userId}")
-    public ResponseEntity<?> getMyRoom(@PathVariable("UserId") String userId){
+    public ResponseEntity<?> getMyRoom(@PathVariable("userId") String userId){
         logger.debug("User id : {}", userId);
         List<Todo> todos = todoService.getTodoAll(userId);
         //service로 빼는게 좋을거 같은데..
@@ -64,7 +64,7 @@ public class RoomController {
     }
     @ApiOperation("my room - without room information")
     @GetMapping("/my/{userId}")
-    public ResponseEntity<?> loginMyRoom(@PathVariable("UserId") String userId){
+    public ResponseEntity<?> loginMyRoom(@PathVariable("userId") String userId){
         logger.debug("login User Id : {}", userId);
         List<Todo> todos = todoService.getTodoAll(userId);
         logger.debug("Todos count : {}", todos.size());
@@ -76,7 +76,7 @@ public class RoomController {
     @ApiOperation("modify room Memo")
     @PatchMapping("/memo/{roomId}")
     public ResponseEntity<?> modifyMemo(@PathVariable("roomId") int roomId,
-                                     @RequestBody @ApiParam("memo modify result") String memo){
+                                        @RequestBody @ApiParam("memo modify result") String memo){
         Map<String, String> result = new HashMap<>();
         result.put("result", roomService.modifyMemo(roomId,memo));
         return ResponseEntity.ok().body(result);

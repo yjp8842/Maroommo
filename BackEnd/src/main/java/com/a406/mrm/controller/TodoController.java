@@ -28,6 +28,7 @@ public class TodoController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<?> addTodo(@PathVariable("userId") String userId, @RequestBody TodoRequestDto todoRequestDto){
+        logger.info("add Todo information : {}", todoRequestDto.toString());
         TodoResponseDto result = new TodoResponseDto(todoService.addTodo(userId,todoRequestDto));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -37,9 +38,14 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
     @GetMapping("/{userId}/{roomId}")
-    public ResponseEntity<?> searchTodo(@PathVariable(name="roomId") int roomId,
+    public ResponseEntity<?> searchRoomTodo(@PathVariable(name="roomId") int roomId,
                                         @PathVariable(name="userId") String userId){
-        List<TodoResponseDto> result = todoService.searchTodo(roomId,userId);
+        List<TodoResponseDto> result = todoService.searchRoomTodo(roomId,userId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> searchMyTodo(@PathVariable(name="userId") String userId){
+        List<TodoResponseDto> result = todoService.searchMyTodo(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

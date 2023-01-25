@@ -11,8 +11,8 @@ import java.util.List;
 
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Integer> {
-    @Query(value = "SELECT t.starttime,t.endtime,t.content,t.state FROM todo AS t WHERE user_id = :userId",nativeQuery = true)
-    List<Todo> findByUserIdParam(@Param("userId") String userId);
+    List<Todo> findByUserId(@Param("userId") String userId);
+    List<Todo> findByRoomId(@Param("roomId") int roomId);
 
 //    @Modifying(clearAutomatically = true)
 //    @Query("UPDATE todo_time AS tt " +

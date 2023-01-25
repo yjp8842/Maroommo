@@ -13,8 +13,8 @@ import java.util.List;
 @Setter
 @ToString
 public class TodoRequestDto {
-    private String userId;
     private String content;
     private Date startTime;
     private List<String> tags;
+    private int roomId;
 }
