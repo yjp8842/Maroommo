@@ -5,11 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -35,9 +32,9 @@ public class Room {
     @Column(nullable = true)
     private String memo;
 
-    @ApiModelProperty("User - Room relation table mapping")
-    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
-    private List<UserHasRoom> users = new ArrayList<>();
+//    @ApiModelProperty("User - Room relation table mapping")
+//    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
+//    private List<UserHasRoom> users = new ArrayList<>();
 
 
 }
