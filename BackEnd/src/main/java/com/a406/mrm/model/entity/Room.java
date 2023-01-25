@@ -1,8 +1,10 @@
 package com.a406.mrm.model.entity;
 
+import com.a406.mrm.model.dto.RoomDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
@@ -16,8 +18,17 @@ import java.util.List;
 @Setter
 @ToString
 @ApiModel("RoomEntity : Room(=group) information")
+@NoArgsConstructor
 @Table(name = "room")
 public class Room {
+
+    public Room(RoomDto roomDto){
+        this.name = roomDto.getName();
+        this.intro = roomDto.getIntro();
+        this.memo = roomDto.getMemo();
+        this.profile = roomDto.getProfile();
+    }
+
     @ApiModelProperty("room ID, auto increment")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.a406.mrm.service;
 
+import com.a406.mrm.model.dto.RoomDto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.model.entity.UserHasRoom;
@@ -21,11 +22,11 @@ public class RoomServiceImpl implements RoomService {
     private final UserHasRoomRepository userHasRoomRepository;
     @Override
     @Transactional
-    public Room makeRoom(Room room, String userId) {
+    public Room makeRoom(RoomDto roomDto, String userId) {
         // room의 users에 추가
         // user의 rooms에 추가
         // ManyToMany 공부 필요 ;-;
-        Room roomRegisterResult = roomRepository.save(room);
+        Room roomRegisterResult = roomRepository.save(new Room(roomDto));
         User user = userRepository.findById(userId).get();
         UserHasRoom userHasRoom = new UserHasRoom();
         userHasRoom.setRoom(roomRegisterResult);
