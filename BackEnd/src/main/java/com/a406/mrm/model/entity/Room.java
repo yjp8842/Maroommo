@@ -51,5 +51,5 @@ public class Room {
     private List<UserHasRoom> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
-    private List<TodoHasRoom> todos = new ArrayList<>();
+    private List<Todo> todos = new ArrayList<>();
 }

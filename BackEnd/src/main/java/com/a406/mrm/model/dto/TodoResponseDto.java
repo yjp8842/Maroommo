@@ -1,10 +1,7 @@
 package com.a406.mrm.model.dto;
 
 import com.a406.mrm.model.entity.Todo;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +11,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class TodoResponseDto {
     public TodoResponseDto(Todo todo){
         this.id = todo.getId();

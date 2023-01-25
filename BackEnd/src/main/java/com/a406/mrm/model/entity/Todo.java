@@ -21,11 +21,12 @@ import java.util.List;
 @Table(name = "todo")
 @NoArgsConstructor
 public class Todo {
-    public Todo(TodoRequestDto todoRequestDto, User user){
+    public Todo(TodoRequestDto todoRequestDto, User user, Room room){
         this.content = todoRequestDto.getContent();
         this.startTime = todoRequestDto.getStartTime();
         this.state = 0;
         this.user = user;
+        this.room = room;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,9 +46,7 @@ public class Todo {
     @Column(nullable = false)// sql default 0 필요, 일단 여기서 0으로 초기화
     private int state;
 
-    //room이랑 ManyToMany로 엮일 필요가 없는듯?! -> user랑 이미 ManyToMany
-    @OneToMany(mappedBy = "todo", cascade = CascadeType.REMOVE)
-    private List<TodoHasRoom> rooms = new ArrayList<>();
+
     @OneToMany(mappedBy="todo", cascade = CascadeType.REMOVE)
     private List<TodoTag> todoTags = new ArrayList<>();
 
@@ -58,4 +57,7 @@ public class Todo {
     @JoinColumn(name="user_id")
     private User user;
 
+    @ManyToOne(targetEntity = Room.class, fetch=FetchType.LAZY)
+    @JoinColumn(name="room_id")
+    private Room room;
 }
