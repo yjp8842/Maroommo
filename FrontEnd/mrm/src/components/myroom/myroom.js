@@ -1,5 +1,5 @@
 // import { Fragment } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 import HomePage from './myroomitem/homepage';
@@ -10,10 +10,19 @@ import CalendarBox from './myroomitem/calendar';
 import Memo from './myroomitem/memo';
 import TimeTable from './myroomitem/timetable';
 import Choice from './myroomitem/choice';
+import styled from "styled-components";
+import Modal from "../Modal/Modal"
 // import classes from '../rooms/myroom.css';
 // import mealsImage from '../../assets/meals.jpg';
 
 const MyroomButton = () => {
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
+
   return (
     <Grid container>
       <Box
@@ -49,23 +58,15 @@ const MyroomButton = () => {
             <HomePage />
           </Box>
           <Box>
-            <Box
-              type="button"
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<Modal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -152,5 +153,25 @@ const MyroomButton = () => {
     </Grid>
   );
 };
+
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-style: italic;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;
 
 export default MyroomButton;
