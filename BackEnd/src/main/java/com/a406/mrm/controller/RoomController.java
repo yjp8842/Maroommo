@@ -43,10 +43,10 @@ public class RoomController {
     public ResponseEntity<?> makeGroup(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
                                        @RequestBody
-                                           @ApiParam("room register information") Room room) {
-        logger.debug("new Room information : {}", room.toString());
-        Room addRoomResult = roomService.makeRoom(room,userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new RoomDto(addRoomResult));
+                                           @ApiParam("room register information") RoomDto roomDto) {
+        logger.debug("new Room information : {}", roomDto.toString());
+        RoomDto addRoomResult = new RoomDto(roomService.makeRoom(roomDto,userId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
     }
 
     @ApiOperation("first login - my room")
