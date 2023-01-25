@@ -2,10 +2,12 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.MyRoomDto;
 import com.a406.mrm.model.dto.MyRoomFirstDto;
-import com.a406.mrm.model.dto.RoomDto;
+import com.a406.mrm.model.dto.RoomResponseDto;
+import com.a406.mrm.model.dto.RoomRequestDto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.Todo;
 import com.a406.mrm.repository.RoomRepository;
+import com.a406.mrm.repository.UserHasRoomRepository;
 import com.a406.mrm.repository.UserRepository;
 import com.a406.mrm.service.RoomService;
 import com.a406.mrm.service.TodoService;
@@ -37,15 +39,17 @@ public class RoomController {
     private UserRepository userRepository;
     @Autowired
     private RoomRepository roomRepository;
+    @Autowired
+    private UserHasRoomRepository userHasRoomRepository;
 
     @ApiOperation("make a room(=group)")
     @PostMapping("/{userId}")
     public ResponseEntity<?> makeGroup(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
                                        @RequestBody
-                                           @ApiParam("room register information") RoomDto roomDto) {
-        logger.debug("new Room information : {}", roomDto.toString());
-        RoomDto addRoomResult = new RoomDto(roomService.makeRoom(roomDto,userId));
+                                           @ApiParam("room register information") RoomRequestDto roomRequestDto) {
+        logger.debug("new Room information : {}", roomRequestDto.toString());
+        RoomResponseDto addRoomResult = new RoomResponseDto(roomService.makeRoom(roomRequestDto,userId));
         return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
     }
 
@@ -54,8 +58,9 @@ public class RoomController {
     public ResponseEntity<?> getMyRoom(@PathVariable("userId") String userId){
         logger.debug("User id : {}", userId);
         List<Todo> todos = todoService.getTodoAll(userId);
+        logger.info("todos size : {}", todos.size());
         //service로 빼는게 좋을거 같은데..
-        List<Room> rooms = userRepository.findById(userId).get().getRooms()
+        List<Room> rooms = userHasRoomRepository.findByUserId(userId)
                         .stream().map(r -> r.getRoom()).collect(Collectors.toList());
         logger.debug("Todos count : {}", todos.size());
         logger.debug("Rooms count : {}", rooms.size());

@@ -1,6 +1,7 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.RoomDto;
+import com.a406.mrm.model.dto.RoomRequestDto;
+import com.a406.mrm.model.dto.RoomResponseDto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.model.entity.UserHasRoom;
@@ -11,22 +12,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
     @Override
-    @Transactional
-    public Room makeRoom(RoomDto roomDto, String userId) {
+    public Room makeRoom(RoomRequestDto roomRequestDto, String userId) {
         // room의 users에 추가
         // user의 rooms에 추가
         // ManyToMany 공부 필요 ;-;
-        Room roomRegisterResult = roomRepository.save(new Room(roomDto));
+        Room roomRegisterResult = roomRepository.save(new Room(roomRequestDto));
         User user = userRepository.findById(userId).get();
         UserHasRoom userHasRoom = new UserHasRoom();
         userHasRoom.setRoom(roomRegisterResult);
