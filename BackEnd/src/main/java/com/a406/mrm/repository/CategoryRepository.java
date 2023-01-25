@@ -13,4 +13,8 @@ public interface CategoryRepository {
     Category findById(int id);
 
     List<Category> findAll();
+
+//    List<Category> findByRoom(int group_id);
+
+    List findByroom_Id (int room_id);
 }
