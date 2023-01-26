@@ -30,7 +30,7 @@ public class CategoryController {
         CategoryInsertDto categoryInsertDto = new CategoryInsertDto();
         categoryInsertDto.setName(name);
         categoryInsertDto.setRoomId(room_id);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryInsertDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryServiceImpl.join(categoryInsertDto,room_id));
 //        return ResponseEntity.ok(categoryServiceImpl.join(categoryInsertDto,room_id));
     }
 
