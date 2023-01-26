@@ -1,37 +1,67 @@
 package com.a406.mrm.controller;
 
+import com.a406.mrm.common.util.SecurityUtil;
 import com.a406.mrm.model.entity.User;
-import com.a406.mrm.repository.UserRepository;
+import com.a406.mrm.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("user")
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String SUCCESS = "success";
+    private static final String FAIL = "fail";
+
+    private final UserServiceImpl userService;
+//    private final SecurityUtil securityUtil;
 
     @GetMapping("home")
     public String home(){
-        return "<h1>home</h1>";
+        String userId = this.getCurrentMemberId();
+        return "<h1>"+userId+"</h1>";
+    }
+
+    public static String getCurrentMemberId() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getName() == null) {
+            throw new RuntimeException("No authentication information.");
+        }
+        return authentication.getName();
     }
 
     @PostMapping("join")
-    public String join(@RequestBody User user){
-        System.out.println("회원가입 시도중...");
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles("ROLE_USER");
-        userRepository.save(user);
-        return "회원가입완료";
-    }
+    private ResponseEntity<Map<String, Object>> join(
+            @RequestBody User user) {
 
-    @GetMapping("test")
-    public String user(){
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            if(!userService.checkExistsUser(user.getId()))	{
+                userService.join(user);
 
-        return "user";
+                resultMap.put("message", SUCCESS);
+                status = HttpStatus.ACCEPTED;
+            }
+            else {
+                resultMap.put("message", FAIL);
+                status = HttpStatus.ACCEPTED;
+            }
+        } catch (Exception e) {
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
 }
