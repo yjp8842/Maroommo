@@ -33,9 +33,15 @@ public class CategorySubServiceImpl implements CategorySubService{
         categorySubRepository.deleteById(id);
     }
 
-    public CategorySub update(int id, String name){
+    public CategorySub update_name(int id, String name){
         CategorySub categorySub = categorySubRepository.findById(id);
         categorySub.setName(name);
+        return categorySub;
+    }
+
+    public CategorySub update_subtype(int id, int subtype){
+        CategorySub categorySub = categorySubRepository.findById(id);
+        categorySub.setSubtype(subtype);
         return categorySub;
     }
 
