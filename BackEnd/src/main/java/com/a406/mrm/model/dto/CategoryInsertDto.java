@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CategoryDto {
-    public CategoryDto(Category category){
+public class CategoryInsertDto {
+    public CategoryInsertDto(Category category){
         this.name = category.getName();
         this.roomId = category.getRoom().getId();
     }

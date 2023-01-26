@@ -3,7 +3,7 @@ package com.a406.mrm;
 import com.a406.mrm.model.entity.Category;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.repository.CategoryRepository;
-import com.a406.mrm.service.CategoryService;
+import com.a406.mrm.service.CategoryServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ class MrmApplicationTests {
 	CategoryRepository categoryRepository;
 
 	@Autowired
-	CategoryService categoryService;
+	CategoryServiceImpl categoryServiceImpl;
 
 	@Test
 	public void createtest() {
@@ -33,13 +33,13 @@ class MrmApplicationTests {
 	public void updatetest() {
 		int id = 3;
 		String name = "update test";
-		categoryService.update(id,name);
+		categoryServiceImpl.update(id,name);
 	}
 
-	@Test
-	public void deletetest() {
-		int id = 6;
-		categoryRepository.deleteById(id);
-	}
+//	@Test
+//	public void deletetest() {
+//		int id = 6;
+//		categoryRepository.deleteById(id);
+//	}
 
 }

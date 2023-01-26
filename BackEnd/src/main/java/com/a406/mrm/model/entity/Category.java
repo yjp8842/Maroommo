@@ -1,9 +1,11 @@
 package com.a406.mrm.model.entity;
 
-import com.a406.mrm.model.dto.CategoryDto;
+import com.a406.mrm.model.dto.CategoryInsertDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,8 +16,8 @@ import javax.persistence.*;
 @Entity
 public class Category {
 
-    public Category(CategoryDto categoryDto, Room room){
-        this.name = categoryDto.getName();
+    public Category(CategoryInsertDto categoryInsertDto, Room room){
+        this.name = categoryInsertDto.getName();
         this.room = room;
     }
 
@@ -29,4 +31,8 @@ public class Category {
     @JoinColumn(name = "room_id")
     private Room room;
 
+//    @OneToMany(mappedBy = "category", orphanRemoval = true)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<CategorySub> categorySubs;
 }
