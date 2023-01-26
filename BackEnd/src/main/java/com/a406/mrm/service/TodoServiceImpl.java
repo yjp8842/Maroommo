@@ -1,13 +1,9 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.TodoChangeStateDto;
+import com.a406.mrm.model.dto.TodoChangeStateRequestDto;
 import com.a406.mrm.model.dto.TodoRequestDto;
 import com.a406.mrm.model.dto.TodoResponseDto;
-import com.a406.mrm.model.dto.TodoSearchDto;
-import com.a406.mrm.model.entity.Room;
-import com.a406.mrm.model.entity.Todo;
-import com.a406.mrm.model.entity.TodoTag;
-import com.a406.mrm.model.entity.User;
+import com.a406.mrm.model.entity.*;
 import com.a406.mrm.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,8 +44,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public int changeState(TodoChangeStateDto todoChangeStateDto) {
+    public int changeState(TodoChangeStateRequestDto todoChangeStateRequestDto) {
         /***
+         * todo : 0
+         * doing : 1
+         * done : 2
          * todo -> done
          * todo -> doing
          * todo <-> doing
@@ -57,13 +56,32 @@ public class TodoServiceImpl implements TodoService {
          * done -> todo
          * done -> doing
          */
-        int doneId = todoChangeStateDto.getDoneId();
-        int doingId = todoChangeStateDto.getDoingId();
-        int todoId = todoChangeStateDto.getTodoId();
-        if (doneId != -1) {
-//            return todoRepository.updateTodoStateDone(doneId);
+        int doneId = todoChangeStateRequestDto.getDoneId();
+        int doingId = todoChangeStateRequestDto.getDoingId();
+        int todoId = todoChangeStateRequestDto.getTodoId();
+        int doingTimeId = todoChangeStateRequestDto.getDoingTimeId();
+        int ret = -1;
+        if (doingTimeId != -1){
+//            todoTimeRepository.updateEndTimeAndTotalTime(doingTimeId);
         }
-        return -1;
+        if (doneId != -1) {
+            Todo done = todoRepository.findById(doneId).get();
+            todoRepository.updateEndTimeAndState(doneId);
+        }
+        if (todoId != -1){
+            Todo todo = todoRepository.findById(todoId).get();
+            todo.setState(0);
+            todoRepository.save(todo);
+        }
+        if (doingId != -1){
+            Todo doing = todoRepository.findById(todoId).get();
+            doing.setState(1);
+            TodoTime todoTime = new TodoTime(doing.getUser(),doing);
+            ret = todoTimeRepository.save(todoTime).getId();
+            todoRepository.save(doing);
+        }
+
+        return ret;
     }
 
     @Override

@@ -14,6 +14,11 @@ public interface TodoRepository extends JpaRepository<Todo, Integer> {
     List<Todo> findByUserId(@Param("userId") String userId);
     List<Todo> findByRoomId(@Param("roomId") int roomId);
 
+    @Modifying
+    @Query(value = "UPDATE todo " +
+            "SET end_time = now() , state = 2 " +
+            "WHERE id = :todoId ",nativeQuery = true)
+    void updateEndTimeAndState(@Param("todoId") int todoId);
 //    @Modifying(clearAutomatically = true)
 //    @Query("UPDATE todo_time AS tt " +
 //            "RIGHT JOIN todo as t ON (t.id = tt.todo_id)" +

@@ -9,8 +9,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TodoChangeStateDto {
+public class TodoChangeStateRequestDto {
     private int doingId;
     private int doneId;
     private int todoId;
+    private int doingTimeId;
 }
