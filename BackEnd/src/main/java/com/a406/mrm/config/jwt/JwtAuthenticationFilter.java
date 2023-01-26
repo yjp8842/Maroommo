@@ -59,7 +59,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 3. PrincipalDetails을 세션에 담고 (권한 관리를 안할거면 담지 않아도 된다)=> 로그인이 되었다는 의미
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println(principalDetails.getUsername());
 
         // 4. JWT 토큰을 만들어서 응답을 해준다
         // authentication 객체가 session 영역에 저장됨 => 권한 처리 때문에 세션에 저장하는 것
@@ -80,6 +79,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("id", principalDetailis.getUser().getId())
                 .withClaim("username", principalDetailis.getUser().getName())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+
+        System.out.println("로그인");
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);
     }
