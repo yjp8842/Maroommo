@@ -4,10 +4,11 @@
 /BackEnd/HELP.md
 /BackEnd/.gradle
 /BackEnd/build/
+/BackEnd/gradle/**/
 /BackEnd/!gradle/wrapper/gradle-wrapper.jar
 /BackEnd/!**/src/main/**/build/
 /BackEnd/!**/src/test/**/build/
-
+/BackEnd/src/main/resources/application.properties
 
 ### STS ###
 /BackEnd/.apt_generated
@@ -39,3 +40,6 @@
 
 ### VS Code ###
 /BackEnd/.vscode/
+
+### Node_modules ###
+/FrontEnd/mrm/node_modules/
