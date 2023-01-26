@@ -47,7 +47,7 @@ public class Room {
     private String memo;
 
     @ApiModelProperty("User - Room relation table mapping")
-    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserHasRoom> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
