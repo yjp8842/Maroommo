@@ -1,12 +1,11 @@
 package com.a406.mrm.controller;
 
-import com.a406.mrm.model.dto.TodoChangeStateDto;
+import com.a406.mrm.model.dto.TodoChangeStateRequestDto;
 import com.a406.mrm.model.dto.TodoRequestDto;
 import com.a406.mrm.model.dto.TodoResponseDto;
 import com.a406.mrm.repository.UserRepository;
 import com.a406.mrm.service.TodoService;
 import io.swagger.annotations.Api;
-import io.swagger.models.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,8 @@ public class TodoController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @PatchMapping
-    public ResponseEntity<?> changeStateTodo(@RequestBody TodoChangeStateDto todoChangeStateDto){
-        todoService.changeState(todoChangeStateDto);
+    public ResponseEntity<?> changeStateTodo(@RequestBody TodoChangeStateRequestDto todoChangeStateRequestDto){
+        todoService.changeState(todoChangeStateRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
     @GetMapping("/{userId}/{roomId}")
