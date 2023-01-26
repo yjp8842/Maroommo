@@ -34,12 +34,14 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public Todo addTodo(String userId, TodoRequestDto todoRequestDto) {
         User user = userRepository.findById(userId).get();
-        Room room = roomRepository.findById(todoRequestDto.getRoomId()).get();
+        Room room = todoRequestDto.getRoomId() == -1 ? null : roomRepository.findById(todoRequestDto.getRoomId()).get();
         Todo todo = todoRepository.save(new Todo(todoRequestDto,
                 user,
                 room));
         user.getTodos().add(todo);
-        room.getTodos().add(todo);
+        if(room!=null) {
+            room.getTodos().add(todo);
+        }
         List<TodoTag> tags = todoRequestDto.getTags().stream().map(x -> todoTagRepository.save(new TodoTag(x, todo))).collect(Collectors.toList());
         todo.setTodoTags(tags);
         return todo;
