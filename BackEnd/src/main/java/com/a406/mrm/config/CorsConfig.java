@@ -20,7 +20,7 @@ public class CorsConfig {
         config.addAllowedMethod("*"); // 모든 post,get,put,delete,patch 요청 허용
 
         // 해당 url로 들어오는 모든 주소는 해당 config를 따라야 한다
-        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/user/**", config);
 
         return new CorsFilter(source);
     }

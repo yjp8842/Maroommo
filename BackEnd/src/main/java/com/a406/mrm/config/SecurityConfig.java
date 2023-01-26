@@ -1,18 +1,16 @@
 package com.a406.mrm.config;
 
-import com.test.jwt.config.jwt.JwtAuthenticationFilter;
-import com.test.jwt.config.jwt.JwtAuthorizationFilter;
-import com.test.jwt.repository.UserRepository;
+import com.a406.mrm.config.jwt.JwtAuthenticationFilter;
+import com.a406.mrm.config.jwt.JwtAuthorizationFilter;
+import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -45,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("/room/**").authenticated()
-                .anyRequest().permitAll() // 로그인을 제외한 모든 요청은 권한이 필요
+                .anyRequest().permitAll()
 ;
     }
 }

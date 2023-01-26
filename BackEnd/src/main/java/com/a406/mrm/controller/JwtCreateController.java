@@ -1,12 +1,12 @@
 package com.a406.mrm.controller;
 
+import com.a406.mrm.config.jwt.JwtProperties;
+import com.a406.mrm.config.oauth.provider.GoogleUserInfo;
+import com.a406.mrm.config.oauth.provider.OAuth2UserInfo;
+import com.a406.mrm.model.entity.User;
+import com.a406.mrm.repository.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.test.jwt.config.jwt.JwtProperties;
-import com.test.jwt.config.oauth.provider.GoogleUserInfo;
-import com.test.jwt.config.oauth.provider.OAuth2UserInfo;
-import com.test.jwt.model.User;
-import com.test.jwt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;

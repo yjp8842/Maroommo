@@ -1,16 +1,15 @@
 package com.a406.mrm.config.jwt;
 
 
+import com.a406.mrm.config.auth.PrincipalDetails;
+import com.a406.mrm.model.entity.User;
+import com.a406.mrm.repository.UserRepository;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.test.jwt.config.auth.PrincipalDetails;
-import com.test.jwt.model.User;
-import com.test.jwt.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -18,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Security;
 
 // 시큐리티가 가지고 있는 필터 중 BasicAuthentication 이 있다
 // 권한이나 인증이 필요한 특정 주소를 요청했을 때 위 필터를 무조건 타게 되어있음

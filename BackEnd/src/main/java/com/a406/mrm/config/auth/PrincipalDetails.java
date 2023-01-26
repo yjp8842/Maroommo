@@ -1,13 +1,12 @@
 package com.a406.mrm.config.auth;
 
-import com.test.jwt.model.User;
+import com.a406.mrm.model.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 @Data
 public class PrincipalDetails implements UserDetails {

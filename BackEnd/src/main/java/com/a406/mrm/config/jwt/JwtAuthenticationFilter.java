@@ -1,10 +1,10 @@
 package com.a406.mrm.config.jwt;
 
+import com.a406.mrm.config.auth.PrincipalDetails;
+import com.a406.mrm.model.dto.LoginRequestDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.jwt.config.auth.PrincipalDetails;
-import com.test.jwt.dto.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

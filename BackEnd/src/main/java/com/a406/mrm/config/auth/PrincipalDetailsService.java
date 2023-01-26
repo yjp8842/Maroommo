@@ -1,7 +1,7 @@
 package com.a406.mrm.config.auth;
 
-import com.test.jwt.model.User;
-import com.test.jwt.repository.UserRepository;
+import com.a406.mrm.model.entity.User;
+import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

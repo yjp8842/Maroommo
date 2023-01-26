@@ -1,7 +1,7 @@
 package com.a406.mrm.controller;
 
-import com.test.jwt.model.User;
-import com.test.jwt.repository.UserRepository;
+import com.a406.mrm.model.entity.User;
+import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,7 @@ public class UserController {
 
     @PostMapping("join")
     public String join(@RequestBody User user){
+        System.out.println("회원가입 시도중...");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRoles("ROLE_USER");
         userRepository.save(user);

@@ -1,6 +1,6 @@
 package com.a406.mrm.repository;
 
-import com.test.jwt.model.User;
+import com.a406.mrm.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User,Long> {
