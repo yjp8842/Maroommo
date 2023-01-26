@@ -11,7 +11,9 @@ public interface CategorySubService {
 
     void delete(int id);
 
-    CategorySub update(int id, String name);
+    CategorySub update_name(int id, String name);
+
+    CategorySub update_subtype(int id, int subtype);
 
     List listCategorySub(int category_id);
 

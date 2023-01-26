@@ -34,9 +34,15 @@ public class CategorySubController {
         categorySubServiceImpl.delete(cid);
     }
 
-    @PatchMapping("update")
-    public ResponseEntity<?> update(@RequestParam("id") int cid, @RequestParam("name") String name) {
-        CategorySub categorySub = categorySubServiceImpl.update(cid, name);
+    @PatchMapping("update_name")
+    public ResponseEntity<?> update_name(@RequestParam("id") int cid, @RequestParam("name") String name) {
+        CategorySub categorySub = categorySubServiceImpl.update_name(cid, name);
+        return ResponseEntity.ok(categorySub);
+    }
+
+    @PatchMapping("update_subtype")
+    public ResponseEntity<?> update_subtype(@RequestParam("id") int cid, @RequestParam("subtype") int subtype) {
+        CategorySub categorySub = categorySubServiceImpl.update_subtype(cid, subtype);
         return ResponseEntity.ok(categorySub);
     }
 
