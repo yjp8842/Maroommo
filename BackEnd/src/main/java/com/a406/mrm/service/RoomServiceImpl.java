@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
@@ -36,7 +37,38 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    @Transactional
+    public void removeRoom(int roomId){
+        Room room = roomRepository.findById(roomId).get();
+        if(room.getUsers() != null) {
+//            room.getUsers().stream().map(r-> r.getUser().getRooms().removeIf(u -> u.getRoom().getId() == roomId));
+            room.getUsers().removeIf(r->r.getRoom().getId() == roomId);
+            userHasRoomRepository.saveAll(room.getUsers());
+        }
+        roomRepository.delete(room);
+    }
+
+    @Override
+    public String modifyName(int roomId, String name){
+        Room room = roomRepository.findById(roomId).get();
+        room.setName(name);
+        return roomRepository.save(room).getName();
+    }
+
+    @Override
+    public String modifyIntro(int roomId, String intro){
+        Room room = roomRepository.findById(roomId).get();
+        room.setIntro(intro);
+        return roomRepository.save(room).getIntro();
+    }
+
+    @Override
+    public String modifyProfile(int roomId, String profile){
+        Room room = roomRepository.findById(roomId).get();
+        room.setProfile(profile);
+        return roomRepository.save(room).getProfile();
+    }
+
+    @Override
     public String modifyMemo(int roomId, String memo) {
         Room room = roomRepository.findById(roomId).get();
         room.setMemo(memo);
