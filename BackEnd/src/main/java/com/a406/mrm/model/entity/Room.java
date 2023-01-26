@@ -1,13 +1,13 @@
 package com.a406.mrm.model.entity;
 
-import com.a406.mrm.model.dto.RoomDto;
+import com.a406.mrm.model.dto.RoomRequestDto;
+import com.a406.mrm.model.dto.RoomResponseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,11 +22,11 @@ import java.util.List;
 @Table(name = "room")
 public class Room {
 
-    public Room(RoomDto roomDto){
-        this.name = roomDto.getName();
-        this.intro = roomDto.getIntro();
-        this.memo = roomDto.getMemo();
-        this.profile = roomDto.getProfile();
+    public Room(RoomRequestDto roomRequestDto){
+        this.name = roomRequestDto.getName();
+        this.intro = roomRequestDto.getIntro();
+        this.memo = roomRequestDto.getMemo();
+        this.profile = roomRequestDto.getProfile();
     }
 
     @ApiModelProperty("room ID, auto increment")
