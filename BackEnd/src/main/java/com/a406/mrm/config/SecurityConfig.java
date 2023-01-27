@@ -61,15 +61,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .loginProcessingUrl("/loginProc") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
             .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
             .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
-//            .defaultSuccessUrl("/") // 로그인 후 디폴트 페이지로 가짐
-        .and()
-            .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-            .logoutSuccessUrl("/loginForm") // 로그아웃 성공시 해당 주소로 이동
-            .deleteCookies("JSESSIONID","remember-me") // 세션, 쿠키 삭제
-            .permitAll()
-        .and()
-            .sessionManagement()
+            .defaultSuccessUrl("/main") // 로그인 후 디폴트 페이지로 가짐
+                .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/loginForm") // 로그아웃 성공시 해당 주소로 이동
+                .deleteCookies("JSESSIONID","remember-me") // 세션, 쿠키 삭제
+                .permitAll()
+                .and()
+                .sessionManagement()
             .maximumSessions(1) // 세션 최대 허용 수 1 (-1이면 무제한 세션 허용)
             .maxSessionsPreventsLogin(false) // true:중복로그인막음 / false:이전로그인세션해제
             .expiredUrl("/login?error=true&exception=Have been attempted to login from a new place. or sesseion expired") // 세션 만료시 이동할 페이지
