@@ -1,6 +1,7 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.TodoChangeStateRequestDto;
+import com.a406.mrm.model.dto.TodoModifyDto;
 import com.a406.mrm.model.dto.TodoRequestDto;
 import com.a406.mrm.model.dto.TodoResponseDto;
 import com.a406.mrm.repository.UserRepository;
@@ -30,6 +31,11 @@ public class TodoController {
         logger.info("add Todo information : {}", todoRequestDto.toString());
         TodoResponseDto result = new TodoResponseDto(todoService.addTodo(userId,todoRequestDto));
         return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    @PatchMapping("/modify")
+    public ResponseEntity<?> modifyTodo(@RequestBody TodoModifyDto todoModifyDto){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new TodoResponseDto(todoService.modifyTodo(todoModifyDto)));
     }
     @PatchMapping
     public ResponseEntity<?> changeStateTodo(@RequestBody TodoChangeStateRequestDto todoChangeStateRequestDto){

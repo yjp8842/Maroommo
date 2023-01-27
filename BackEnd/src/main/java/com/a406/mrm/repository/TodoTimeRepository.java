@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TodoTimeRepository extends JpaRepository<TodoTime, Integer> {
     TodoTime findByTodoId(@Param("todoId") int todoId);
-//
-//    @Modifying
-//    @Query(value = "UPDATE todo_time " +
-//            "SET end_time = now() , total_time = now()-start_time" +
-//            "WHERE id = :todoTimeId ",nativeQuery = true)
-//    void updateEndTimeAndTotalTime(@Param("todo_time_id") int todoTimeId);
+
+    @Modifying
+    @Query(value = "UPDATE todo_time " +
+            "SET end_time = now() , total_time = TIMEDIFF(now(),start_time)" +
+            "WHERE id = :todoTimeId ", nativeQuery = true)
+    void updateEndTimeAndTotalTime(@Param("todoTimeId") int todoTimeId);
 }
