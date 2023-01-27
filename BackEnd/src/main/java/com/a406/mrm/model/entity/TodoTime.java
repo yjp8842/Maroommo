@@ -32,7 +32,6 @@ public class TodoTime {
 
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
     private Date endTime;
 
     @Column(nullable = true)

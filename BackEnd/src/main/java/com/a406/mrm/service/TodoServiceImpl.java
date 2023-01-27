@@ -1,6 +1,7 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.TodoChangeStateRequestDto;
+import com.a406.mrm.model.dto.TodoModifyDto;
 import com.a406.mrm.model.dto.TodoRequestDto;
 import com.a406.mrm.model.dto.TodoResponseDto;
 import com.a406.mrm.model.entity.*;
@@ -62,7 +63,7 @@ public class TodoServiceImpl implements TodoService {
         int doingTimeId = todoChangeStateRequestDto.getDoingTimeId();
         int ret = -1;
         if (doingTimeId != -1){
-//            todoTimeRepository.updateEndTimeAndTotalTime(doingTimeId);
+            todoTimeRepository.updateEndTimeAndTotalTime(doingTimeId);
         }
         if (doneId != -1) {
             Todo done = todoRepository.findById(doneId).get();
@@ -74,7 +75,7 @@ public class TodoServiceImpl implements TodoService {
             todoRepository.save(todo);
         }
         if (doingId != -1){
-            Todo doing = todoRepository.findById(todoId).get();
+            Todo doing = todoRepository.findById(doingId).get();
             doing.setState(1);
             TodoTime todoTime = new TodoTime(doing.getUser(),doing);
             ret = todoTimeRepository.save(todoTime).getId();
@@ -82,6 +83,26 @@ public class TodoServiceImpl implements TodoService {
         }
 
         return ret;
+    }
+
+    @Override
+    public Todo modifyTodo(TodoModifyDto todoModifyDto) {
+        Todo todo = todoRepository.findById(todoModifyDto.getId()).get();
+        if(!todoModifyDto.getTags().isEmpty()){
+            todoTagRepository.deleteAllByTodoId(todo.getId());
+            List<TodoTag> todoTags = todoModifyDto.getTags().stream()
+                    .map(x->todoTagRepository.save(new TodoTag(x,todo))).collect(Collectors.toList());
+            todo.setTodoTags(todoTags);
+        }
+        if(todoModifyDto.getContent() != null){
+            todo.setContent(todoModifyDto.getContent());
+        }
+        if (todoModifyDto.getRoomId() != 0 && todoModifyDto.getRoomId() != todo.getRoom().getId() ){
+            Room room = roomRepository.findById(todoModifyDto.getRoomId()).get();
+            room.setTodos(room.getTodos().stream().filter(x -> x.getRoom().getId() != todoModifyDto.getRoomId()).collect(Collectors.toList()));
+            todo.setRoom(room);
+        }
+        return todoRepository.save(todo);
     }
 
     @Override
