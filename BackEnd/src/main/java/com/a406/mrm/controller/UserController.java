@@ -2,72 +2,85 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.config.auth.PrincipalDetails;
 import com.a406.mrm.model.entity.User;
-import com.a406.mrm.repository.UserRepository;
+import com.a406.mrm.service.EmailService;
 import com.a406.mrm.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private static final String SUCCESS = "success";
+    private static final String FAIL = "fail";
+
+    private final UserService userService;
+    private final EmailService emailService;
+
+
+    /**
+     *  회원가입 메서드
+     *  아이디 중복 확인 후 비밀번호 암호화하여 DB에 저장
+     */
+    @PostMapping("join")
+    private ResponseEntity<Map<String, Object>> join(
+            @RequestBody User user) {
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            if(!userService.checkExistsUser(user.getId()))	{
+                userService.join(user);
+
+                resultMap.put("message", SUCCESS);
+                status = HttpStatus.ACCEPTED;
+            }
+            else {
+                resultMap.put("message", FAIL);
+                status = HttpStatus.ACCEPTED;
+            }
+
+
+        } catch (Exception e) {
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @PostMapping("/emailConfirm")
+    public @ResponseBody String emailConfirm(@RequestParam String email) throws Exception {
+
+        String confirm = emailService.sendMessage(email);
+        System.out.println("이메일 전송 완료 : "+confirm);
+
+        return confirm;
+    }
+
+
+    // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     @GetMapping({ "", "/" })
     public @ResponseBody String index() {
         return "인덱스 페이지입니다.";
     }
 
-    @GetMapping("/userinfo")
-    public @ResponseBody String userinfo(){
-        System.out.println();
-        return "유저 정보 페이지입니다";
-    }
-
     @GetMapping("/user")
     public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principal) {
         System.out.println("Principal : " + principal);
         System.out.println("OAuth2 : "+principal.getUser().getProvider());
-//        // iterator 순차 출력 해보기
-//        Iterator<? extends GrantedAuthority> iter = principal.getAuthorities().iterator();
-//        while (iter.hasNext()) {
-//            GrantedAuthority auth = iter.next();
-//            System.out.println(auth.getAuthority());
-//        }
 
         return "유저 페이지입니다.";
-    }
-
-    @GetMapping("/login")
-    public String login(Model model,
-                        @RequestParam(value = "error", required = false) String error,
-                        @RequestParam(value = "exception", required = false) String exception) {
-        model.addAttribute("error", error);
-        model.addAttribute("exception", exception);
-        System.out.println("");
-        return "로그인 실패";
-    }
-
-    @PostMapping("/join")
-    public @ResponseBody String join(User user) {
-
-        String isJoin = userService.join(user);
-        System.out.println("회원가입 :"+isJoin);
-
-        return "/loginForm";
     }
 
     @GetMapping("/loginForm")
@@ -80,11 +93,14 @@ public class UserController {
         return "joinForm";
     }
 
+    @GetMapping("/findPassword")
+    public String findPassword() {
+        return "findPassword";
+    }
+
     // getName을 통해 로그인한 아이디를 불러올 수 있다
     @GetMapping("/board")
     public @ResponseBody String board(Principal principal, Authentication authentication){
-//          User activeUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//          System.out.println("로그인 유저 : "+activeUser);
 
         System.out.println("principal : "+principal.getName());
         System.out.println("authentication : "+authentication.getName());
