@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -28,10 +29,9 @@ public class User extends BaseTimeEntity{
     private String intro;
     private String memo;
 
+    private String roles; // ROLE_USER, ROLE_ADMIN
     private String provider;
     private String providerId;
-
-    private LocalDateTime lastLoginTime;
 
 //    @ApiModelProperty("User - Room relation table mapping")
 //    @OneToMany(mappedBy = "user")
@@ -39,4 +39,11 @@ public class User extends BaseTimeEntity{
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private List<Todo> todos = new ArrayList<>();
+
+    public List<String> getRoleList(){
+        if(this.roles.length() > 0){
+            return Arrays.asList(this.roles.split(","));
+        }
+        return new ArrayList<>();
+    }
 }
