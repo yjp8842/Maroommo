@@ -52,4 +52,7 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
     private List<Todo> todos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade ={CascadeType.REMOVE})
+    private List<Schedule> schedules = new ArrayList<>();
 }
