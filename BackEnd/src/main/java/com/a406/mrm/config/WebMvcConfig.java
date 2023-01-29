@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+    // 머스테치를 사용하기 위한 설정
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
         MustacheViewResolver resolver = new MustacheViewResolver();

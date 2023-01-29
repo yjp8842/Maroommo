@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Data
 @Entity
 @Getter
 @Setter
@@ -20,9 +19,13 @@ import java.util.List;
 public class User extends BaseTimeEntity{
     @Id
     private String id;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String nickname;
 
     private String profile;
@@ -33,12 +36,9 @@ public class User extends BaseTimeEntity{
     private String provider;
     private String providerId;
 
-//    @ApiModelProperty("User - Room relation table mapping")
-//    @OneToMany(mappedBy = "user")
-//    private List<UserHasRoom> rooms = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<Todo> todos = new ArrayList<>();
+    @ApiModelProperty("User - Room relation table mapping")
+    @OneToMany(mappedBy = "user")
+    private List<UserHasRoom> rooms = new ArrayList<>();
 
     public List<String> getRoleList(){
         if(this.roles.length() > 0){
