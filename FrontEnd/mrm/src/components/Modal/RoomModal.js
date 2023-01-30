@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 // import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 
 function JoinRoomModal({ onClose }) {
   const handleClose = () => {
@@ -13,18 +12,10 @@ function JoinRoomModal({ onClose }) {
         <ModalWrap>
           <Contents>
             <h1>마룸모 참가하기</h1>
-
-            <div>
-              <TextField
-              id="outlined-textarea"
-              label="Multiline Placeholder"
-              placeholder="Placeholder"
-              multiline
-              />
-            </div>
+            <InputWithLabel label="| 초대링크" name="URL" placeholder="maroommo.com/ssafyA406" type="URL"/>
+            <InputWithLabel label="| 비밀번호" name="password" placeholder="비밀번호" type="password"/>
 
             <CButton onClick={handleClose}>뒤로</CButton>
-
             <CButton onClick={handleClose}>참가하기</CButton>
           </Contents>
         </ModalWrap>
@@ -43,6 +34,9 @@ function CreateRoomModal({ onClose }) {
           <Contents>
             <h1>마룸모 생성하기</h1>
 
+            <InputWithLabel label="| 그룹명" name="roomname" placeholder="React 기초반" type="roomname"/>
+            <InputWithLabel label="| 비밀번호" name="password" placeholder="***********" type="password"/>
+            <InputWithLabel label="| 한줄소개" name="introduction" placeholder="React를 시작하는 사람들의 모임입니다. " type="introduction"/>
 
 
               <CButton onClick={handleClose}>뒤로</CButton>
@@ -62,10 +56,16 @@ export default function RoomModal({ onClose }) {
     onClose?.();
   };
   
-  const [isOpen, setIsOpen] = useState(false);
+  const [CreateroomisOpen, setIsOpen1] = useState(false);
 
-  const onClickButton = () => {
-    setIsOpen(true);
+  const [JoinroomisOpen, setIsOpen2] = useState(false);
+
+  const onClickButton1 = () => {
+    setIsOpen1(true);
+  };
+
+  const onClickButton2 = () => {
+    setIsOpen2(true);
   };
 
   return (
@@ -74,19 +74,19 @@ export default function RoomModal({ onClose }) {
           <Contents>
             <h1>마룸모 시작하기</h1>
 
-              <Button onClick={onClickButton}>그룹 참가하기 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ▶</Button>
-              {isOpen && (<JoinRoomModal
-                open={isOpen}
+              <Button onClick={onClickButton1}>그룹 참가하기 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ▶</Button>
+              {CreateroomisOpen && (<JoinRoomModal
+                open={CreateroomisOpen}
                 onClose={() => {
-                  setIsOpen(false);
+                  setIsOpen1(false);
                 }}
               />)}
 
-              <Button onClick={onClickButton}>그룹 생성하기 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ▶</Button>
-              {isOpen && (<CreateRoomModal
-                open={isOpen}
+              <Button onClick={onClickButton2}>그룹 생성하기 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ▶</Button>
+              {JoinroomisOpen && (<CreateRoomModal
+                open={JoinroomisOpen}
                 onClose={() => {
-                  setIsOpen(false);
+                  setIsOpen2(false);
                 }}
               />)}
 
@@ -96,6 +96,40 @@ export default function RoomModal({ onClose }) {
       </Overlay>
   );
 }
+
+const Label = styled.div` 
+  float: left;
+  font-size: 2rem;
+  color: white;
+  font-family: 'GangwonEdu_OTFBoldA';
+  margin-bottom: 0.5rem;
+`;
+
+const Input = styled.input`
+    width: 450px;
+    height: 50px;
+    width: 100%;
+    outline: none;
+    border-radius: 20px;
+    line-height: 2.5rem;
+    font-size: 1.5rem;
+    font-family: 'GangwonEdu_OTFBoldA';
+    padding-left: 1rem;
+    padding-right: 0.5rem;
+`;
+
+const Wrapper = styled.div`
+    & + & {
+        margin-top: 1rem;
+    }
+`;
+
+const InputWithLabel = ({label, ...rest}) => (
+    <Wrapper>
+        <Label>{label}</Label>
+        <Input {...rest}/>
+    </Wrapper>
+);
 
 
 const Button = styled.button`
@@ -159,9 +193,8 @@ const CButton = styled.button`
   float : right;
   width: 130px;
   height: 70px;
-  margin-top: 30px;
-  margin-right: 70px;
-  margin-bottom: 30px;
+  margin: 30px;
+  margin-top : 70px;
   font-size: 24px;
   border: none;
   background-color: #ffffff;

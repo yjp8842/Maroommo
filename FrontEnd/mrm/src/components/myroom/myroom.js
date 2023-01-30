@@ -11,7 +11,7 @@ import Memo from './myroomitem/memo';
 import TimeTable from './myroomitem/timetable';
 import Choice from './myroomitem/choice';
 import styled from "styled-components";
-import Modal from "../Modal/Modal"
+import RoomModal from "../Modal/RoomModal"
 // import classes from '../rooms/myroom.css';
 // import mealsImage from '../../assets/meals.jpg';
 
@@ -60,7 +60,7 @@ const MyroomButton = () => {
           <Box>
             <AppWrap>
               <Button onClick={onClickButton}>+</Button>
-              {isOpen && (<Modal
+              {isOpen && (<RoomModal
                 open={isOpen}
                 onClose={() => {
                   setIsOpen(false);
