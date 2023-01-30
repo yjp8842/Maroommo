@@ -28,13 +28,10 @@ public class Category {
 
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
-//    @JsonIgnore
     private Room room;
 
-//    @OneToMany(mappedBy = "category", orphanRemoval = true)
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-//    @JsonIgnore
     private List<CategorySub> categorySubs = new ArrayList<>();
 }

@@ -39,8 +39,6 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryRepository.save(category).getName();
     }
 
-//    public List listCategory(int room_id) { return categoryRepository.findByroom_Id(room_id);}
-//        return categoryRepository.findByroom_Id(room_id);}
     public List<CategoryResponseDto> listCategory(int room_id) {
         List<CategoryResponseDto> result = categoryRepository.findByroom_Id(room_id)
                 .stream()

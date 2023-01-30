@@ -14,8 +14,6 @@ public interface CategoryService {
 
     String update(int id, String name);
 
-//    List listCategory(int room_id);
-
     List<CategoryResponseDto> listCategory(int room_id);
 
 }
