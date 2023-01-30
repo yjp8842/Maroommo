@@ -36,5 +36,8 @@ public class User {
     private List<Todo> todos = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Board> boards = new ArrayList<>();
 }
 
