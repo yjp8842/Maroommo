@@ -1,7 +1,6 @@
 package com.a406.mrm.model.entity;
 
-import com.a406.mrm.model.dto.RoomDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.a406.mrm.model.dto.RoomRequestDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -22,11 +21,11 @@ import java.util.List;
 @Table(name = "room")
 public class Room {
 
-    public Room(RoomDto roomDto){
-        this.name = roomDto.getName();
-        this.intro = roomDto.getIntro();
-        this.memo = roomDto.getMemo();
-        this.profile = roomDto.getProfile();
+    public Room(RoomRequestDto roomRequestDto){
+        this.name = roomRequestDto.getName();
+        this.intro = roomRequestDto.getIntro();
+        this.memo = roomRequestDto.getMemo();
+        this.profile = roomRequestDto.getProfile();
     }
 
     @ApiModelProperty("room ID, auto increment")
@@ -53,5 +52,9 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<Category> categories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
+    private List<Todo> todos = new ArrayList<>();
 
+    @OneToMany(mappedBy = "room", cascade ={CascadeType.REMOVE})
+    private List<Schedule> schedules = new ArrayList<>();
 }

@@ -3,6 +3,7 @@ package com.a406.mrm.model.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,8 +12,13 @@ import javax.persistence.*;
 @ApiModel("user has group - many to many relation table")
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "user_has_room")
 public class UserHasRoom {
+    public UserHasRoom(User user, Room room){
+        this.user = user;
+        this.room = room;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty("many to many relation table id - it's recommended, but we need to talk")

@@ -7,9 +7,9 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoomDto {
+public class RoomResponseDto {
 
-    public RoomDto(Room room){
+    public RoomResponseDto(Room room){
         this.id = room.getId();
         this.name = room.getName();
         this.profile = room.getProfile();
