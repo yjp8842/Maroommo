@@ -3,6 +3,7 @@ package com.a406.mrm.service;
 import com.a406.mrm.model.dto.BoardInsertDto;
 import com.a406.mrm.model.dto.BoardModifyDto;
 import com.a406.mrm.model.dto.BoardResponseDto;
+import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.repository.CategorySubRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -47,21 +49,24 @@ public class BoardServiceImpl implements BoardService{
         return new BoardModifyDto(boardRepository.save(board));
     }
 
+//    @Override
+//    public List<Board> list() {
+//        List<Board> boards = boardRepository.findAll();
+//        return boards;
+//    }
+
     @Override
-    public List<Board> list() {
-        List<Board> boards = boardRepository.findAll();
-        return boards;
+    public List<BoardResponseDto> listBoard(int categorySub_id) {
+        List<BoardResponseDto> result = boardRepository.findBycategorySub_Id(categorySub_id)
+                .stream()
+                .map(x -> new BoardResponseDto(x)).collect(Collectors.toList());
+        return result;
     }
 
-//    @Override
-//    public Page<Board> boardList(Pageable pageable) {
-//        return boardRepository.findAll(pageable);
-//    }
-
-//    @Override
-//    public Page<BoardResponseDto> boardLista(Pageable pageable) {
-//        return boardRepository.findAll(pageable);
-//    }
+    @Override
+    public Page<Board> listBoard_Pageable(Pageable pageable) {
+        return boardRepository.findAll(pageable);
+    }
 
 
 }
