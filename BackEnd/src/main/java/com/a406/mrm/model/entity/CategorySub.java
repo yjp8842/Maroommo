@@ -4,6 +4,8 @@ import com.a406.mrm.model.dto.CategorySubInsertDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,5 +33,6 @@ public class CategorySub {
     @JoinColumn(name = "category_id")
     private Category category;
 
-
+    @OneToMany(mappedBy = "categorySub", cascade = CascadeType.REMOVE)
+    private List<Board> boards = new ArrayList<>();
 }
