@@ -14,7 +14,5 @@ public interface CategorySubRepository extends JpaRepository<CategorySub, Intege
 
     CategorySub findById(int id);
 
-    List<CategorySub> findAll();
-
     List findBycategory_Id (int category_id);
 }
