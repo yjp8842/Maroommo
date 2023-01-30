@@ -1,6 +1,6 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.UserDto;
+import com.a406.mrm.model.dto.UserJoinDto;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService{
 
     // 유저 정보를 암호화하여 db에 저장한다
     @Override
-    public void join(UserDto userInfo) throws Exception {
+    public void join(UserJoinDto userInfo) throws Exception {
         User user = User.builder()
                         .id(userInfo.getId())
                         .password(bCryptPasswordEncoder.encode(userInfo.getPassword()))
@@ -25,8 +25,6 @@ public class UserServiceImpl implements UserService{
                         .name(userInfo.getName())
                         .nickname(userInfo.getNickname())
                         .roles("ROLE_USER")
-                        .provider(userInfo.getProvider())
-                        .providerId(userInfo.getProviderId())
                 .build();
 
         userRepository.save(user);

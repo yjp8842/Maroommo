@@ -40,13 +40,16 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         if (userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("구글 로그인 요청");
             oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
-            System.out.println("페이스북 로그인 요청");
-            oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")){
+        }
+//        else if (userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
+//            System.out.println("페이스북 로그인 요청");
+//            oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
+//        }
+        else if (userRequest.getClientRegistration().getRegistrationId().equals("naver")){
             System.out.println("네이버 로그인 요청");
             oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
-        } else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
+        }
+        else if (userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
             System.out.println("카카오 로그인 요청");
             oAuth2UserInfo = new KakaoUserInfo((Map)oAuth2User.getAttributes());
             System.out.println("providerId:"+oAuth2UserInfo.getProviderId());
@@ -76,6 +79,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .email(oAuth2UserInfo.getEmail())
                     .name(oAuth2UserInfo.getName())
                     .nickname(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId().substring(0,5))
+                    .roles("ROLE_USER")
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();

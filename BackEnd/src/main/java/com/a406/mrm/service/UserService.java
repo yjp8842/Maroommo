@@ -1,10 +1,10 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.UserDto;
+import com.a406.mrm.model.dto.UserJoinDto;
 
 public interface UserService {
 
-    void join(UserDto user) throws Exception;
+    void join(UserJoinDto user) throws Exception;
     boolean existsByUserForId(String userid) throws Exception;
     String findByUserForNameAndEmail(String name, String email) throws Exception;
     boolean existsByUserForIdAndNameAndEmail(String id, String name, String email) throws Exception;

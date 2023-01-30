@@ -89,7 +89,7 @@ public class EmailServiceImpl implements EmailService{
         MimeMessage message = createMessage(to);
         try{//예외처리
             emailSender.send(message);
-        }catch(MailException es){
+        } catch(MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
