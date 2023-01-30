@@ -1,6 +1,7 @@
 package com.a406.mrm.model.entity;
 
 import com.a406.mrm.model.dto.BoardInsertDto;
+import com.a406.mrm.model.dto.BoardModifyDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,14 @@ public class Board {
         this.user = user;
     }
 
+    public Board(BoardModifyDto boardModifyDto, int board_id) {
+        this.id = board_id;
+        this.title = boardModifyDto.getTitle();
+        this.content = boardModifyDto.getContent();
+        this.picture = boardModifyDto.getPicture();
+    }
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -42,5 +51,6 @@ public class Board {
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
 
 }

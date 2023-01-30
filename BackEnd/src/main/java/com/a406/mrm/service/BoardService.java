@@ -1,9 +1,11 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.BoardInsertDto;
-import com.a406.mrm.model.dto.CategoryInsertDto;
-import com.a406.mrm.model.dto.CategoryResponseDto;
+import com.a406.mrm.model.dto.BoardModifyDto;
+import com.a406.mrm.model.dto.BoardResponseDto;
 import com.a406.mrm.model.entity.Board;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,7 +15,13 @@ public interface BoardService {
 
     void delete(int id);
 
-    String update(int id, String title, String content);
+    BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id);
+
+    List<Board> list ();
+
+//    Page<Board> boardList(Pageable pageable);
+
+//    Page<BoardResponseDto> boardLista(Pageable pageable);
 
 
 }
