@@ -1,10 +1,22 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.BoardInsertDto;
+import com.a406.mrm.model.dto.BoardModifyDto;
+import com.a406.mrm.model.dto.BoardResponseDto;
+import com.a406.mrm.model.dto.CategoryResponseDto;
+import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.service.BoardServiceImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("board/")
@@ -35,6 +47,27 @@ public class BoardController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    @PatchMapping("update")
+    public ResponseEntity<?> update(@RequestBody BoardModifyDto modifyDto, @RequestParam("board_id") int board_id) {
+        BoardModifyDto boardModifyDto = new BoardModifyDto();
+        boardModifyDto.setTitle(modifyDto.getTitle());
+        boardModifyDto.setContent(modifyDto.getContent());
+        boardModifyDto.setPicture(modifyDto.getPicture());
+        return ResponseEntity.ok(boardServiceImpl.update(boardModifyDto, board_id));
+    }
 
+    @GetMapping("list")
+    public List<Board> list () {
+        return boardServiceImpl.list();
+    }
 
+//    @GetMapping("lista")
+//    public Page<Board> index (Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        return boardServiceImpl.boardList(pageable);
+//    }
+
+//    @GetMapping("lista")
+//    public Page<BoardResponseDto> index_test (Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+//        return boardServiceImpl.boardLista(pageable);
+//    }
 }
