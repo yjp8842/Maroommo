@@ -6,14 +6,17 @@ import lombok.*;
 @Data
 @Getter
 @Setter
-public class RoomDto {
+@NoArgsConstructor
+public class RoomResponseDto {
 
-    public RoomDto(Room room){
+    public RoomResponseDto(Room room){
+        this.id = room.getId();
         this.name = room.getName();
         this.profile = room.getProfile();
         this.intro = room.getIntro();
         this.memo = room.getMemo();
     }
+    private int id;
     private String name;
     private String profile;
     private String intro;

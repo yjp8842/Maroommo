@@ -2,19 +2,17 @@ package com.a406.mrm.config;
 
 import com.a406.mrm.common.handler.AuthFailureHandler;
 import com.a406.mrm.common.handler.AuthSuccessHandler;
-import com.a406.mrm.config.auth.PrincipalDetails;
 import com.a406.mrm.config.auth.PrincipalDetailsService;
 import com.a406.mrm.config.oauth.PrincipalOauth2UserService;
-import com.a406.mrm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -53,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests()
             .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
             .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
+            .antMatchers("/swagger-ui.html/**").permitAll() // 스웨거 동작 권한
             .anyRequest().permitAll()
         .and()
             .formLogin()
@@ -62,14 +61,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
             .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
 //            .defaultSuccessUrl("/room") // 로그인 후 디폴트 페이지로 가짐
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-                .logoutSuccessUrl("/") // 로그아웃 성공시 해당 주소로 이동
-                .deleteCookies("JSESSIONID","remember-me") // 세션, 쿠키 삭제
-                .permitAll()
-                .and()
-                .sessionManagement()
+        .and()
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+            .logoutSuccessUrl("/") // 로그아웃 성공시 해당 주소로 이동
+            .deleteCookies("JSESSIONID","remember-me") // 세션, 쿠키 삭제
+            .permitAll()
+            .and()
+            .sessionManagement()
             .maximumSessions(1) // 세션 최대 허용 수 1 (-1이면 무제한 세션 허용)
             .maxSessionsPreventsLogin(false) // true:중복로그인막음 / false:이전로그인세션해제
             .expiredUrl("/login?error=true&exception=Have been attempted to login from a new place. or sesseion expired") // 세션 만료시 이동할 페이지

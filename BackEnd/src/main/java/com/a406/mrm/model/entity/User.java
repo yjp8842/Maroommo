@@ -38,12 +38,13 @@ public class User extends BaseTimeEntity{
     @Column(nullable = true)
     private String providerId;
 
+
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<UserHasRoom> rooms = new ArrayList<>();
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<Todo> todos = new ArrayList<>();
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<Schedule> schedules = new ArrayList<>();
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Todo> todos = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Schedule> schedules = new ArrayList<>();
 }
+
