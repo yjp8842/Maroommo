@@ -21,4 +21,5 @@ public class RoomRequestDto {
     private String profile;
     private String intro;
     private String memo;
+    private String pw;
 }

@@ -27,6 +27,7 @@ public class Room {
         this.intro = roomRequestDto.getIntro();
         this.memo = roomRequestDto.getMemo();
         this.profile = roomRequestDto.getProfile();
+        this.pw = roomRequestDto.getPw();
     }
 
     @ApiModelProperty("room ID, auto increment")
@@ -45,7 +46,8 @@ public class Room {
     @ApiModelProperty("room public memo")
     @Column(nullable = true)
     private String memo;
-
+    @Column(nullable = false)
+    private String pw;
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserHasRoom> users = new ArrayList<>();
