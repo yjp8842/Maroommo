@@ -1,7 +1,7 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.config.auth.PrincipalDetails;
-import com.a406.mrm.model.entity.User;
+import com.a406.mrm.model.dto.UserDto;
 import com.a406.mrm.service.EmailService;
 import com.a406.mrm.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,6 @@ public class UserController {
     private final UserService userService;
     private final EmailService emailService;
 
-
     /**
      *  아이디 중복 확인 메서드
      *  동일한 아이디를 사용하는 유저가 존재하는지 확인한다
@@ -35,13 +34,13 @@ public class UserController {
      */
     @PostMapping("duplicate/id")
     private ResponseEntity<Map<String, Object>> existsId(
-            @RequestBody User user) {
+            @RequestBody String id) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
             // 동일한 유저가 존재하지 않는다면
-            if(!userService.existsByUserForId(user.getId()))	{
+            if(!userService.existsByUserForId(id))	{
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
@@ -57,19 +56,18 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-
     /**
      *  회원가입 메서드
      *  입력한 유저 정보를 바탕으로 회원가입을 진행한다
      */
     @PostMapping("join")
     private ResponseEntity<Map<String, Object>> join(
-            @RequestBody User user) {
+            @RequestBody UserDto userDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            userService.join(user);
+            userService.join(userDto);
 
             resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
@@ -106,11 +104,10 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            User user = userService.findByUserForNameAndEmail(name,email).get();
+            String userId = userService.findByUserForNameAndEmail(name,email);
 
             // 해당 유저가 존재한다면
-            if(user != null){
-                String userId = user.getId();
+            if(userId != null){
 
                 int pos = 2;
                 String str = "***";
@@ -184,7 +181,6 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
-
 
 
     // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
