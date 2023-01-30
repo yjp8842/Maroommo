@@ -56,18 +56,26 @@ public class BoardController {
         return ResponseEntity.ok(boardServiceImpl.update(boardModifyDto, board_id));
     }
 
+//    @GetMapping("list")
+//    public List<Board> list () {
+//        return boardServiceImpl.list();
+//    }
+
     @GetMapping("list")
-    public List<Board> list () {
-        return boardServiceImpl.list();
+    public ResponseEntity<?> BoardList (@RequestParam("categorySub_id") int categorySub_id) {
+        List<BoardResponseDto> result = boardServiceImpl.listBoard(categorySub_id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    //size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호
+    @GetMapping("list_pageable")
+    public Page<Board> BoardPageable (Model model, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return boardServiceImpl.listBoard_Pageable(pageable);
     }
 
-//    @GetMapping("lista")
-//    public Page<Board> index (Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-//        return boardServiceImpl.boardList(pageable);
-//    }
+    @GetMapping("list_pageable2")
+    public List<BoardResponseDto> BoardPageable2(@RequestParam("categorySub_id") int categorySub_id , Pageable pageable) {
+        return null;
+    }
 
-//    @GetMapping("lista")
-//    public Page<BoardResponseDto> index_test (Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-//        return boardServiceImpl.boardLista(pageable);
-//    }
+
 }

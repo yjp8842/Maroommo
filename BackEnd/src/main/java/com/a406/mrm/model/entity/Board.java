@@ -2,6 +2,7 @@ package com.a406.mrm.model.entity;
 
 import com.a406.mrm.model.dto.BoardInsertDto;
 import com.a406.mrm.model.dto.BoardModifyDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -45,11 +46,13 @@ public class Board {
     private String picture;
 
     @ManyToOne(targetEntity = CategorySub.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "categorysub_id")
+    @JoinColumn(name = "categorySub_id")
+    @JsonBackReference
     private CategorySub categorySub;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
 
