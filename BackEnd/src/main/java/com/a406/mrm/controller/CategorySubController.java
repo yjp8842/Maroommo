@@ -39,13 +39,5 @@ public class CategorySubController {
         return ResponseEntity.ok(categorySubServiceImpl.update_name(cid, name));
     }
 
-    @PatchMapping("update_subtype")
-    public ResponseEntity<?> update_subtype(@RequestParam("id") int cid, @RequestParam("subtype") int subtype) {
-        return ResponseEntity.ok(categorySubServiceImpl.update_subtype(cid, subtype));
-    }
 
-    @GetMapping(value = "list")
-    public ResponseEntity<?> CategorySublist(@RequestParam("category_id") int category_id) {
-        return ResponseEntity.ok(categorySubServiceImpl.listCategorySub(category_id));
-    }
 }

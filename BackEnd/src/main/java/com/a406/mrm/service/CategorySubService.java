@@ -13,8 +13,6 @@ public interface CategorySubService {
 
     String update_name(int id, String name);
 
-    int update_subtype(int id, int subtype);
 
-    List listCategorySub(int category_id);
 
 }

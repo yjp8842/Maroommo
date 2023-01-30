@@ -39,16 +39,4 @@ public class CategorySubServiceImpl implements CategorySubService{
         return categorySubRepository.save(categorySub).getName();
     }
 
-    public int update_subtype(int id, int subtype){
-        CategorySub categorySub = categorySubRepository.findById(id);
-        categorySub.setSubtype(subtype);
-        return categorySubRepository.save(categorySub).getSubtype();
-    }
-
-
-    public List listCategorySub(int category_id) { return categorySubRepository.findBycategory_Id(category_id);}
-
-    public CategorySub findOne(int id) {
-        return categorySubRepository.findById(id);
-    }
 }
