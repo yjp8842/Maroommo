@@ -48,7 +48,6 @@ public class Room {
 
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    @JsonIgnore
     private List<UserHasRoom> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
