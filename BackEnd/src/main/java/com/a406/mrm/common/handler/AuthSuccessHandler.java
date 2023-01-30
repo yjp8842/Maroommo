@@ -23,7 +23,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        setDefaultTargetUrl("/board"); // 로그인 성공했으므로 이후 리턴할 URL
+        setDefaultTargetUrl("/room"); // 로그인 성공했으므로 이후 리턴할 URL
 
         logger.info("--로그인 성공 핸들러 "+LocalDateTime.now());
         super.onAuthenticationSuccess(request,response,authentication);
