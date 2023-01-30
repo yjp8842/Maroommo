@@ -5,6 +5,7 @@ import com.a406.mrm.model.entity.CategorySub;
 import com.a406.mrm.service.CategorySubService;
 import com.a406.mrm.service.CategorySubServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +26,18 @@ public class CategorySubController {
         categorySubInsertDto.setName(name);
         categorySubInsertDto.setSubtype(subtype);
         categorySubInsertDto.setCategory_id(category_id);
-
         return ResponseEntity.ok(categorySubServiceImpl.join(categorySubInsertDto, category_id));
     }
 
     @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable("id") int cid) {
+    public ResponseEntity<?> delete(@PathVariable("id") int cid) {
         categorySubServiceImpl.delete(cid);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     @PatchMapping("update_name")
     public ResponseEntity<?> update_name(@RequestParam("id") int cid, @RequestParam("name") String name) {
-        return ResponseEntity.ok(categorySubServiceImpl.update_name(cid, name));
+        return ResponseEntity.status(HttpStatus.OK).body(categorySubServiceImpl.update_name(cid, name));
     }
 
 
