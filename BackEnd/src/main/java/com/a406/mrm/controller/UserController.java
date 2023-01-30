@@ -1,7 +1,7 @@
 package com.a406.mrm.controller;
 ;
-import com.a406.mrm.model.dto.UserJoinDto;
-import com.a406.mrm.model.dto.UserLoginDto;
+import com.a406.mrm.model.dto.UserJoinRequestDto;
+import com.a406.mrm.model.dto.UserLoginRequestDto;
 import com.a406.mrm.service.EmailService;
 import com.a406.mrm.service.UserService;
 import io.swagger.annotations.Api;
@@ -20,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping({"/user"})
-@Api("room Controller API")
+@Api("User Controller API")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -72,7 +72,7 @@ public class UserController {
     @ApiOperation("User registration")
     @PostMapping("/join")
     private ResponseEntity<Map<String, Object>> join(
-            @RequestBody @ApiParam("Join User Information") UserJoinDto userJoinDto) {
+            @RequestBody @ApiParam("Join User Information") UserJoinRequestDto userJoinDto) {
         logger.info("[join] Join User Information - user:{}", userJoinDto);
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -202,7 +202,7 @@ public class UserController {
     @ApiOperation("Modify Password")
     @PatchMapping("help/pw")
     private ResponseEntity<Map<String, Object>> modifyPassword(
-            @RequestBody @ApiParam("id, password Information to modify password") UserLoginDto user) {
+            @RequestBody @ApiParam("id, password Information to modify password") UserLoginRequestDto user) {
 
         logger.info("[modifyPassword] id, password Information to modify password - id:{}, password:{}", user.getId(), user.getPassword());
 
