@@ -21,7 +21,6 @@ public class Schedule {
         this.room = room;
         this.content = scheduleRequestDto.getContent();
         this.startTime = scheduleRequestDto.getStartTime();
-        this.endTime = scheduleRequestDto.getEndTime();
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +30,6 @@ public class Schedule {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date startTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = true)
-    private Date endTime;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
