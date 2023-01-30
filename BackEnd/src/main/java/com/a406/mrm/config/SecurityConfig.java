@@ -52,19 +52,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
         http.authorizeRequests()
             .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
+            .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
             .anyRequest().permitAll()
         .and()
             .formLogin()
             .usernameParameter("id") // 유저 id 파라미터를 username->id로 변경
-            .loginPage("/loginForm") // 로그인 페이지는 해당 주소이며
-            .loginProcessingUrl("/loginProc") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
+            .loginPage("/") // 로그인 페이지는 해당 주소이며
+            .loginProcessingUrl("/user/login") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
             .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
             .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
-            .defaultSuccessUrl("/main") // 로그인 후 디폴트 페이지로 가짐
+//            .defaultSuccessUrl("/room") // 로그인 후 디폴트 페이지로 가짐
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/loginForm") // 로그아웃 성공시 해당 주소로 이동
+                .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+                .logoutSuccessUrl("/") // 로그아웃 성공시 해당 주소로 이동
                 .deleteCookies("JSESSIONID","remember-me") // 세션, 쿠키 삭제
                 .permitAll()
                 .and()
@@ -79,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .rememberMeParameter("remember-me")
         .and() // 소셜 로그인을 위한 설정
             .oauth2Login()
-            .loginPage("/loginForm")
+            .loginPage("/")
             .userInfoEndpoint()
             .userService(principalOauth2UserService);
     }
