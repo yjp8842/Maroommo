@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
 
         http.authorizeRequests()
-            .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
+//            .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
             .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
             .antMatchers("/swagger-ui.html/**").permitAll() // 스웨거 동작 권한
             .anyRequest().permitAll()

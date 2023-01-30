@@ -10,5 +10,8 @@ public interface RoomService {
     String modifyIntro(int roomId, String intro);
     String modifyProfile(int roomId, String profile);
     Room makeRoom(RoomRequestDto roomRequestDto, String userId);
+    Room enterRoom(int roomId, String userId);
+    boolean existsRoomById(int roomId);
+    String updateEntryCode(String roomEntryCode);
     String modifyMemo(int roomId, String memo);
 }
