@@ -20,14 +20,14 @@ public class CategoryResponseDto {
         this.id = category.getId();
         this.name = category.getName();
         this.roomId = category.getRoom().getId();
-        this.categorySubs = category.getCategorySubs();
+        this.categorySubs = category.getCategorySubs().stream().map(x -> x.getName()).collect(Collectors.toList());
     }
 
     private int id;
     private String name;
     private int roomId;
 
-    private List<CategorySub> categorySubs = new ArrayList<>();
+    private List<String> categorySubs = new ArrayList<>();
 
 
 }
