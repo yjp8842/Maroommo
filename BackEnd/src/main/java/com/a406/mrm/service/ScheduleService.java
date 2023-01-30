@@ -9,5 +9,5 @@ public interface ScheduleService {
     List<ScheduleResponseDto> getSchedule(String userId);
     ScheduleResponseDto addSchedule(ScheduleRequestDto scheduleRequestDto);
     void removeSchedule(int scheduleId);
-    ScheduleResponseDto updateSchedule(int scheduleId, ScheduleRequestDto scheduleRequestDto);
+    ScheduleResponseDto modifySchedule(int scheduleId, ScheduleRequestDto scheduleRequestDto);
 }
