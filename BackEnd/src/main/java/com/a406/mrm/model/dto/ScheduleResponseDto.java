@@ -17,7 +17,6 @@ public class ScheduleResponseDto {
         this.id = schedule.getId();
         this.content = schedule.getContent();
         this.startTime = schedule.getStartTime();
-        this.endTime = schedule.getEndTime();
         this.userId = schedule.getUser().getId();
         this.roomId = schedule.getRoom().getId();
     }
@@ -26,6 +25,4 @@ public class ScheduleResponseDto {
     private int roomId;
     private String content;
     private Date startTime;
-    private Date endTime;
-
 }
