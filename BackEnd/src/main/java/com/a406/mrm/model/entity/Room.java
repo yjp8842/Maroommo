@@ -1,7 +1,6 @@
 package com.a406.mrm.model.entity;
 
 import com.a406.mrm.model.dto.RoomRequestDto;
-import com.a406.mrm.model.dto.RoomResponseDto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -49,6 +48,9 @@ public class Room {
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserHasRoom> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+    private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
     private List<Todo> todos = new ArrayList<>();
