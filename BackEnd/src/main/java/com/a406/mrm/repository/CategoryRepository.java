@@ -1,5 +1,6 @@
 package com.a406.mrm.repository;
 
+import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,9 +14,6 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     Category findById(int id);
 
-    List<Category> findAll();
-
-//    List<Category> findByRoom(int group_id);
-
-    List findByroom_Id (int room_id);
+//    List findByroom_Id (int room_id);
+    List<Category> findByroom_Id (int room_id);
 }

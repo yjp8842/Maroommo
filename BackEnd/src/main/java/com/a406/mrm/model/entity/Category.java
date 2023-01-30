@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,10 +30,11 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
+//    @JsonIgnore
     private Room room;
 
 //    @OneToMany(mappedBy = "category", orphanRemoval = true)
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-    @JsonIgnore
-    private List<CategorySub> categorySubs;
+//    @JsonIgnore
+    private List<CategorySub> categorySubs = new ArrayList<>();
 }

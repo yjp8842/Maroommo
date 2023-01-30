@@ -1,12 +1,15 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.CategoryInsertDto;
+import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Category;
 import com.a406.mrm.service.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("category/")
@@ -48,12 +51,13 @@ public class CategoryController {
 
     @PatchMapping("update")
     public ResponseEntity<?> update(@RequestParam("id") int cid, @RequestParam("name") String name) {
-        Category category = categoryServiceImpl.update(cid, name);
-        return ResponseEntity.status(HttpStatus.OK).body(category);
+        return ResponseEntity.status(HttpStatus.OK).body(categoryServiceImpl.update(cid, name));
     }
 
     @GetMapping(value = "list")
     public ResponseEntity<?> CategoryList(@RequestParam("room_id") int room_id) {
-        return ResponseEntity.ok(categoryServiceImpl.listCategory(room_id));
+        List<CategoryResponseDto> result = categoryServiceImpl.listCategory(room_id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+//        return ResponseEntity.ok(categoryServiceImpl.listCategory(room_id));
     }
 }

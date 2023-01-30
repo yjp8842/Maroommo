@@ -1,6 +1,7 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.CategoryInsertDto;
+import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Category;
 
 import java.util.List;
@@ -11,9 +12,10 @@ public interface CategoryService {
 
     void delete(int id);
 
-    Category update(int id, String name);
+    String update(int id, String name);
 
-    List listCategory(int room_id);
+//    List listCategory(int room_id);
 
-    Category findOne(int id);
+    List<CategoryResponseDto> listCategory(int room_id);
+
 }
