@@ -50,10 +50,9 @@ public class ScheduleServiceImpl implements ScheduleService{
     }
 
     @Override
-    public ScheduleResponseDto updateSchedule(int scheduleId, ScheduleRequestDto scheduleRequestDto) {
+    public ScheduleResponseDto modifySchedule(int scheduleId, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).get();
         schedule.setStartTime(scheduleRequestDto.getStartTime());
-        schedule.setEndTime(scheduleRequestDto.getEndTime());
         schedule.setContent(scheduleRequestDto.getContent());
         return new ScheduleResponseDto(scheduleRepository.save(schedule));
     }
