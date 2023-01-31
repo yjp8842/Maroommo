@@ -17,9 +17,11 @@ public interface BoardService {
 
     BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id);
 
-    List<BoardResponseDto> listBoard(int categorySub_id);
+//    List<BoardResponseDto> listBoard(int categorySub_id);
 
-    Page<Board> listBoard_Pageable(Pageable pageable);
+    Page<Board> listBoard_Pageable(int categorysub_id, Pageable pageable);
+
+//    Page<Board> listBoard_Pageable2(Pageable pageable, int categorysub_id);
 
 
 

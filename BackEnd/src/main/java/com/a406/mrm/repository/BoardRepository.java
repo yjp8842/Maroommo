@@ -20,6 +20,8 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
 //    Page<Board> findAll(Pageable pageable);
 
-    List<Board> findBycategorySub_Id (@Param("categorysub_Id")int categorysub_Id);
+//    List<Board> findBycategorySub_Id (@Param("categorysub_Id")int categorysub_Id);
+
+    Page<Board> findBycategorySub_Id (int categorysub_Id, Pageable pageable);
 
 }

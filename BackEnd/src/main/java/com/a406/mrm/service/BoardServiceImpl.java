@@ -3,7 +3,6 @@ package com.a406.mrm.service;
 import com.a406.mrm.model.dto.BoardInsertDto;
 import com.a406.mrm.model.dto.BoardModifyDto;
 import com.a406.mrm.model.dto.BoardResponseDto;
-import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.repository.CategorySubRepository;
@@ -55,18 +54,26 @@ public class BoardServiceImpl implements BoardService{
 //        return boards;
 //    }
 
-    @Override
-    public List<BoardResponseDto> listBoard(int categorySub_id) {
-        List<BoardResponseDto> result = boardRepository.findBycategorySub_Id(categorySub_id)
-                .stream()
-                .map(x -> new BoardResponseDto(x)).collect(Collectors.toList());
-        return result;
-    }
+//    @Override
+//    public List<BoardResponseDto> listBoard(int categorySub_id) {
+//        List<BoardResponseDto> result = boardRepository.findBycategorySub_Id(categorySub_id)
+//                .stream()
+//                .map(x -> new BoardResponseDto(x)).collect(Collectors.toList());
+//        return result;
+//    }
 
     @Override
-    public Page<Board> listBoard_Pageable(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Page<Board> listBoard_Pageable(int categorysub_id, Pageable pageable) {
+        return boardRepository.findBycategorySub_Id(categorysub_id, pageable);
     }
+
+//    @Override
+//    public Page<Board> listBoard_Pageable2(Pageable pageable, int categorysub_id) {
+//        List<BoardResponseDto> result = boardRepository.findBycategorySub_Id(categorysub_id)
+//                .stream()
+//                .map(x -> new BoardResponseDto(x)).collect(Collectors.toList());
+//        return (Page<BoardResponseDto>) result;
+//    }
 
 
 }
