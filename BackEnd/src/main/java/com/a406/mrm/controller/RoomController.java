@@ -46,11 +46,38 @@ public class RoomController {
     @PostMapping("/{userId}")
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
-                                       @RequestBody
-                                           @ApiParam("room register information") RoomRequestDto roomRequestDto) {
+                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto) {
         logger.debug("new Room information : {}", roomRequestDto.toString());
         RoomResponseDto addRoomResult = new RoomResponseDto(roomService.makeRoom(roomRequestDto,userId));
         return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
+    }
+    @ApiOperation("enter the room(=group)")
+    @PostMapping("/enter/{userId}")
+    public ResponseEntity<?> enterRoom(@PathVariable("userId") String userId,
+                                        @RequestParam @ApiParam("room entry code") String roomCode,
+                                        @RequestParam @ApiParam("room id") int roomId) {
+        // front에서 전해준 entry code는 (code+id) 처리가 되어 있다
+        logger.debug("Room Entry Code information : {}", roomCode);
+
+        // 반환 내용을 어떻게 할지 고민....
+        // 해당 코드를 가진 room이 없다면 retrun
+        if(!roomService.existsRoomByIdAndCode(roomId, roomCode))
+            return ResponseEntity.status(HttpStatus.OK).body(false);
+
+        // 이미 방에 입장되어 있다면 return
+        if(roomService.existsUserHasRoomByRoomIdAndUserId(roomId, userId))
+            return ResponseEntity.status(HttpStatus.OK).body(false);
+
+        // 있다면 room에 입장 처리 후 room 정보 반환
+        RoomResponseDto enterRoomResult = new RoomResponseDto(roomService.enterRoom(roomId, userId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(enterRoomResult);
+    }
+    @ApiOperation("refresh entry code of room(=group)")
+    @PatchMapping("/{roomId}")
+    public ResponseEntity<?> refreshCode(@PathVariable("roomId") int roomId) {
+        logger.debug("Room Id information : {}", roomId);
+        String afterEntryCode = roomService.updateCode(roomId);
+        return ResponseEntity.status(HttpStatus.OK).body(afterEntryCode);
     }
     @ApiOperation("Delete room")
     @DeleteMapping("/{roomId}")
@@ -100,7 +127,6 @@ public class RoomController {
         logger.debug("Todos count : {}", todos.size());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new MyRoomDto(todos,userRepository.findById(userId).get()));
-
     }
 
     @ApiOperation("modify room Memo")

@@ -15,10 +15,12 @@ public class RoomResponseDto {
         this.profile = room.getProfile();
         this.intro = room.getIntro();
         this.memo = room.getMemo();
+        this.code = room.getCode();
     }
     private int id;
     private String name;
     private String profile;
     private String intro;
     private String memo;
+    private String code;
 }
