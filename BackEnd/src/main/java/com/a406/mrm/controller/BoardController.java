@@ -47,8 +47,8 @@ public class BoardController {
     }
 
     @PatchMapping("update")
-    public ResponseEntity<?> update(@RequestBody BoardModifyDto modifyDto, @RequestParam("board_id") int board_id) {
-        return ResponseEntity.ok(boardServiceImpl.update(modifyDto, board_id));
+    public ResponseEntity<?> update(@RequestBody BoardModifyDto modifyDto, @RequestParam("board_id") int board_id, @RequestParam("user_id") String user_id) {
+        return ResponseEntity.ok(boardServiceImpl.update(modifyDto, board_id, user_id));
     }
 
 //    @GetMapping("list")
