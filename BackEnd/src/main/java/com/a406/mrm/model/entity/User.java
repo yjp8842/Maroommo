@@ -1,8 +1,7 @@
 package com.a406.mrm.model.entity;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,7 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name="users")
-public class User {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User extends BaseTimeEntity{
     @Id
     private String id;
     @Column(nullable = false)
@@ -23,12 +25,20 @@ public class User {
     private String name;
     @Column(nullable = false)
     private String nickname;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String profile;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String intro;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String memo;
+    @Column(nullable = true)
+    private String roles; // ROLE_USER, ROLE_ADMIN
+    @Column(nullable = true)
+    private String provider;
+    @Column(nullable = true)
+    private String providerId;
+
+
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<UserHasRoom> rooms = new ArrayList<>();
