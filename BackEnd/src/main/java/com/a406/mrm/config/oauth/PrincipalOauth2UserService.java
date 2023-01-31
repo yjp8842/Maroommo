@@ -76,6 +76,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
             user = User.builder()
                     .id(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
+                    .password(oAuth2UserInfo.getProvider()+"-mnm")
                     .email(oAuth2UserInfo.getEmail())
                     .name(oAuth2UserInfo.getName())
                     .nickname(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId().substring(0,5))
