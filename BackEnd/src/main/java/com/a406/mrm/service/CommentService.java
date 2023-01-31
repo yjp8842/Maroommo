@@ -10,7 +10,7 @@ public interface CommentService {
 
     String delete(int id, String user_id);
 
-    CommentModifyDto update(CommentModifyDto commentModifyDto, int comment_id);
+    CommentModifyDto update(CommentModifyDto commentModifyDto, int comment_id, String user_id);
 
 
 }
