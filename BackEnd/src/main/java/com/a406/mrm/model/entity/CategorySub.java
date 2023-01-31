@@ -29,7 +29,7 @@ public class CategorySub {
 
     private int subtype;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Category.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 

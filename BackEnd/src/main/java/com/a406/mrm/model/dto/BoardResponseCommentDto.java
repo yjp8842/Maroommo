@@ -15,14 +15,14 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BoardResponseDto {
-    public BoardResponseDto(Board board){
+public class BoardResponseCommentDto {
+    public BoardResponseCommentDto(Board board){
         this.id = board.getId();
         this.title = board.getTitle();
         this.createTime = board.getCreateTime();
         this.hit = board.getHit();
         this.user = board.getUser().getId();
-//        this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
+        this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
     }
 
     private int id;
@@ -30,6 +30,6 @@ public class BoardResponseDto {
     private Date createTime;
     private int hit;
     private String user;
-//    private List<String> comments = new ArrayList<>();
+    private List<String> comments = new ArrayList<>();
 
 }
