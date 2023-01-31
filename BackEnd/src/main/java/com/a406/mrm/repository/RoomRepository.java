@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer> {
-    Optional<Room> findByEntryCode(String entryCode);
-    boolean existsByEntryCode(String entryCode);
+    boolean existsByIdAndCode(int id, String code);
 }
