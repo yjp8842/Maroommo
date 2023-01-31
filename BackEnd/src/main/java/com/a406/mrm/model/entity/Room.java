@@ -44,6 +44,9 @@ public class Room {
     @ApiModelProperty("room public memo")
     @Column(nullable = true)
     private String memo;
+    @ApiModelProperty("room Entrance code")
+    @Column(nullable = false)
+    private String code;
 
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
