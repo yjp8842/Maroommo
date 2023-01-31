@@ -2,9 +2,8 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.BoardInsertDto;
 import com.a406.mrm.model.dto.BoardModifyDto;
-import com.a406.mrm.model.dto.BoardResponseDto;
-import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Board;
+import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.service.BoardServiceImpl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,18 +13,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("board/")
 public class BoardController {
 
     private final BoardServiceImpl boardServiceImpl;
+    private final BoardRepository boardRepository;
 
-    public BoardController(BoardServiceImpl boardServiceImpl) {
+    public BoardController(BoardServiceImpl boardServiceImpl, BoardRepository boardRepository) {
         this.boardServiceImpl = boardServiceImpl;
+        this.boardRepository = boardRepository;
     }
 
     @PostMapping(value = "new")
@@ -61,21 +59,24 @@ public class BoardController {
 //        return boardServiceImpl.list();
 //    }
 
-    @GetMapping("list")
-    public ResponseEntity<?> BoardList (@RequestParam("categorySub_id") int categorySub_id) {
-        List<BoardResponseDto> result = boardServiceImpl.listBoard(categorySub_id);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
+//    @GetMapping("list")
+//    public ResponseEntity<?> BoardList (@RequestParam("categorySub_id") int categorySub_id) {
+//        List<BoardResponseDto> result = boardServiceImpl.listBoard(categorySub_id);
+//        return ResponseEntity.status(HttpStatus.OK).body(result);
+//    }
+
     //size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호
+    static final int page_num = 3;
     @GetMapping("list_pageable")
-    public Page<Board> BoardPageable (Model model, @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return boardServiceImpl.listBoard_Pageable(pageable);
+    public Page<Board> BoardPageable (Model model, @RequestParam("categorySub_id") int categorySub_id,
+          @PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        return boardServiceImpl.listBoard_Pageable(categorySub_id, pageable);
     }
 
-    @GetMapping("list_pageable2")
-    public List<BoardResponseDto> BoardPageable2(@RequestParam("categorySub_id") int categorySub_id , Pageable pageable) {
-        return null;
-    }
+//    @GetMapping("list_pageable2")
+//    public Page<Board> BoardPageable2(@RequestParam("categorySub_id") int categorySub_id , Pageable pageable) {
+//        return boardRepository.findBycategorySub_Id(categorySub_id, pageable);
+//    }
 
 
 }
