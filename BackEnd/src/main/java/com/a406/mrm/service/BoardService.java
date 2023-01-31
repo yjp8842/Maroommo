@@ -12,7 +12,7 @@ public interface BoardService {
 
     String delete(int id, String user_id);
 
-    BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id);
+    BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id, String user_id);
 
 //    List<BoardResponseDto> listBoard(int categorySub_id);
 

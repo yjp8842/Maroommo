@@ -46,12 +46,16 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id) {
-        Board board = boardRepository.findById(board_id);
-        board.setTitle(boardModifyDto.getTitle());
-        board.setContent(boardModifyDto.getContent());
-        board.setPicture(boardModifyDto.getPicture());
-        return new BoardModifyDto(boardRepository.save(board));
+    public BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id, String user_id) {
+        if (boardRepository.findById(board_id).getUser().getId().equals(user_id)){
+            Board board = boardRepository.findById(board_id);
+            board.setTitle(boardModifyDto.getTitle());
+            board.setContent(boardModifyDto.getContent());
+            board.setPicture(boardModifyDto.getPicture());
+            return new BoardModifyDto(boardRepository.save(board));
+        }else{
+            return null;
+        }
     }
 
 //    @Override
