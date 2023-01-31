@@ -43,10 +43,14 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public CommentModifyDto update(CommentModifyDto commentModifyDto, int comment_id) {
-        Comment comment = commentRepository.findById(comment_id);
-        comment.setContent(commentModifyDto.getContent());
-        return new CommentModifyDto(commentRepository.save(comment));
+    public CommentModifyDto update(CommentModifyDto commentModifyDto, int comment_id, String user_id) {
+        if (commentRepository.findById(comment_id).getUser().getId().equals(user_id)){
+            Comment comment = commentRepository.findById(comment_id);
+            comment.setContent(commentModifyDto.getContent());
+            return new CommentModifyDto(commentRepository.save(comment));
+        }else{
+            return null;
+        }
     }
 
 

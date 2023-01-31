@@ -46,8 +46,8 @@ public class CommentController {
     }
 
     @PatchMapping("update")
-    public ResponseEntity<?> update(@RequestBody CommentModifyDto modifyDto, @RequestParam("comment_id") int comment_id) {
-        return ResponseEntity.ok(commentServiceImpl.update(modifyDto, comment_id));
+    public ResponseEntity<?> update(@RequestBody CommentModifyDto modifyDto, @RequestParam("comment_id") int comment_id, @RequestParam("user_id") String user_id) {
+        return ResponseEntity.ok(commentServiceImpl.update(modifyDto, comment_id, user_id));
     }
 
 
