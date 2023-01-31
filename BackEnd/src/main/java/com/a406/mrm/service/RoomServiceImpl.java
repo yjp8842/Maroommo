@@ -1,7 +1,6 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.RoomRequestDto;
-import com.a406.mrm.model.dto.RoomResponseDto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.model.entity.UserHasRoom;
@@ -12,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -29,8 +28,9 @@ public class RoomServiceImpl implements RoomService {
         // user의 rooms에 추가
         // ManyToMany 공부 필요 ;-;
         Room roomInfo = new Room(roomRequestDto); // 입력받은 room 정보를 세팅한 후
-        String entryCode = createEntryCode(); // entry code를 생성하여
-        roomInfo.setEntryCode(entryCode); // 추가
+        String code = createEntryCode(); // entry code를 생성하여
+//        String code = UUID.randomUUID().toString();
+        roomInfo.setCode(code); // 추가
         Room roomRegisterResult = roomRepository.save(roomInfo);
 
         User user = userRepository.findById(userId).get();
@@ -59,19 +59,25 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean existsRoomById(int roomId) {
-        return roomRepository.existsById(roomId);
+    public boolean existsRoomByIdAndCode(int roomId, String code) {
+        return roomRepository.existsByIdAndCode(roomId, code);
     }
 
-    // entry code 갱신
     @Override
-    public String updateEntryCode(String roomEntryCode) {
-        Room nowRoomInfo = roomRepository.findByEntryCode(roomEntryCode).get(); // entry code가 일치하는 room 정보를 가져온다
-        String newEntryCode = createEntryCode();
-        nowRoomInfo.setEntryCode(newEntryCode);
+    public boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId) {
+        return userHasRoomRepository.existsByRoomIdAndUserId(roomId, userId);
+    }
+
+    // code 갱신
+    @Override
+    public String updateCode(int roomId) {
+        Room nowRoomInfo = roomRepository.findById(roomId).get(); // room 정보를 가져온다
+        String newCode = createEntryCode();
+//        String newCode = UUID.randomUUID().toString();
+        nowRoomInfo.setCode(newCode);
         roomRepository.save(nowRoomInfo);
 
-        return newEntryCode;
+        return newCode;
     }
 
     @Override
@@ -114,27 +120,28 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public static String createEntryCode() {
-        StringBuffer entryCode = new StringBuffer();
+        StringBuffer code = new StringBuffer();
         Random rnd = new Random();
+        int codeLength = 32;
 
-        for (int i = 0; i < 16; i++) { // 입장 코드 16자리
+        for (int i = 0; i < codeLength; i++) { // 입장 코드 16자리
             int index = rnd.nextInt(3); // 0~2 까지 랜덤
 
             switch (index) {
                 case 0:
-                    entryCode.append((char) ((int) (rnd.nextInt(26)) + 97));
+                    code.append((char) ((int) (rnd.nextInt(26)) + 97));
                     //  a~z
                     break;
                 case 1:
-                    entryCode.append((char) ((int) (rnd.nextInt(26)) + 65));
+                    code.append((char) ((int) (rnd.nextInt(26)) + 65));
                     //  A~Z
                     break;
                 case 2:
-                    entryCode.append((rnd.nextInt(10)));
+                    code.append((rnd.nextInt(10)));
                     // 0~9
                     break;
             }
         }
-        return entryCode.toString();
+        return code.toString();
     }
 }
