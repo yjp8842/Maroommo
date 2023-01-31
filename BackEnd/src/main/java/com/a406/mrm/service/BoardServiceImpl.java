@@ -1,8 +1,6 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.BoardInsertDto;
-import com.a406.mrm.model.dto.BoardModifyDto;
-import com.a406.mrm.model.dto.BoardResponseDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.repository.CategorySubRepository;
@@ -38,21 +36,23 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void delete(int id) {
-        boardRepository.deleteById(id);
+    public String delete(int id, String user_id) {
+        if (boardRepository.findById(id).getUser().getId().equals(user_id)){
+            boardRepository.deleteById(id);
+            return "OK";
+        }else{
+            return "Fail";
+        }
     }
 
     @Override
     public BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id) {
-        Board board = new Board(boardModifyDto, board_id);
+        Board board = boardRepository.findById(board_id);
+        board.setTitle(boardModifyDto.getTitle());
+        board.setContent(boardModifyDto.getContent());
+        board.setPicture(boardModifyDto.getPicture());
         return new BoardModifyDto(boardRepository.save(board));
     }
-
-//    @Override
-//    public List<Board> list() {
-//        List<Board> boards = boardRepository.findAll();
-//        return boards;
-//    }
 
 //    @Override
 //    public List<BoardResponseDto> listBoard(int categorySub_id) {
@@ -63,17 +63,23 @@ public class BoardServiceImpl implements BoardService{
 //    }
 
     @Override
-    public Page<Board> listBoard_Pageable(int categorysub_id, Pageable pageable) {
+    public Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable) {
         return boardRepository.findBycategorySub_Id(categorysub_id, pageable);
     }
 
 //    @Override
-//    public Page<Board> listBoard_Pageable2(Pageable pageable, int categorysub_id) {
-//        List<BoardResponseDto> result = boardRepository.findBycategorySub_Id(categorysub_id)
-//                .stream()
-//                .map(x -> new BoardResponseDto(x)).collect(Collectors.toList());
-//        return (Page<BoardResponseDto>) result;
+//    public BoardResponseDto detail(int board_id) {
+//        BoardResponseDto boardResponseDto = new BoardResponseDto(boardRepository.findById(board_id));
+//        return boardResponseDto;
 //    }
+
+    @Override
+    public List<BoardResponseCommentDto> listBoard(int board_id) {
+        List<BoardResponseCommentDto> result = boardRepository.findByid(board_id)
+                .stream()
+                .map(x -> new BoardResponseCommentDto(x)).collect(Collectors.toList());
+        return result;
+    }
 
 
 }

@@ -1,9 +1,6 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.BoardInsertDto;
-import com.a406.mrm.model.dto.BoardModifyDto;
-import com.a406.mrm.model.dto.BoardResponseDto;
-import com.a406.mrm.model.entity.Board;
+import com.a406.mrm.model.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -13,16 +10,16 @@ public interface BoardService {
 
     BoardInsertDto join(BoardInsertDto boardInsertDto, int categorysub_id, String user_id);
 
-    void delete(int id);
+    String delete(int id, String user_id);
 
     BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id);
 
 //    List<BoardResponseDto> listBoard(int categorySub_id);
 
-    Page<Board> listBoard_Pageable(int categorysub_id, Pageable pageable);
+    Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable);
 
-//    Page<Board> listBoard_Pageable2(Pageable pageable, int categorysub_id);
+//    BoardResponseDto detail(int board_id);
 
-
+    List<BoardResponseCommentDto> listBoard(int board_id);
 
 }
