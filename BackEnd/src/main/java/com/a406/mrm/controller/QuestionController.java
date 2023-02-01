@@ -24,16 +24,8 @@ public class QuestionController {
     }
 
     @PostMapping(value = "new")
-    public ResponseEntity<?> create(@RequestBody QuestionInsertDto insertDto, @RequestParam("user_id") String user_id, @RequestParam("categorysub_id") int categorysub_id) {
-        QuestionInsertDto questionInsertDto = new QuestionInsertDto();
-        questionInsertDto.setTitle(insertDto.getTitle());
-        questionInsertDto.setContent(insertDto.getContent());
-        questionInsertDto.setCreatetime(insertDto.getCreatetime());
-        questionInsertDto.setStatus(insertDto.getStatus());
-        questionInsertDto.setPicture(insertDto.getPicture());
-        questionInsertDto.setUser_id(user_id);
-        questionInsertDto.setCategorysub_id(categorysub_id);
-        return ResponseEntity.ok(questionServiceImpl.join(questionInsertDto, categorysub_id, user_id));
+    public ResponseEntity<?> create(@RequestBody QuestionInsertDto insertDto) {
+        return ResponseEntity.ok(questionServiceImpl.join(insertDto, insertDto.getCategorysub_id(), insertDto.getUser_id()));
     }
 
     @DeleteMapping("delete/{id}/{user_id}")
@@ -51,8 +43,14 @@ public class QuestionController {
         return ResponseEntity.ok(questionServiceImpl.update(modifyDto, question_id, user_id));
     }
 
+    // 0이면 미해결 1이면 해결
+    @PatchMapping("status")
+    public ResponseEntity<?> status (@RequestBody QuestionResponseStatusDto modifyDto, @RequestParam("question_id") int question_id, @RequestParam("user_id") String user_id) {
+        return ResponseEntity.ok(questionServiceImpl.status(modifyDto, question_id, user_id));
+    }
+
     //size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호
-    static final int page_num = 3;
+    static final int page_num = 5;
     @GetMapping("list")
     public Page<QuestionResponseDto> QuestionPageable (Model model, @RequestParam("categorySub_id") int categorySub_id,
          @PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
@@ -61,8 +59,7 @@ public class QuestionController {
 
     @GetMapping("detail/{id}")
     public ResponseEntity<?> detail (@PathVariable("id") int qid) {
-        List<QuestionResponseAnswerDto> result = questionServiceImpl.listQuestion(qid);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(questionServiceImpl.listQuestion(qid));
     }
 
 

@@ -14,6 +14,8 @@ public interface QuestionService {
 
     QuestionModifyDto update(QuestionModifyDto questionModifyDto, int question_id, String user_id);
 
+    QuestionResponseStatusDto status(QuestionResponseStatusDto questionResponseStatusDto, int question_id, String user_id);
+
     Page<QuestionResponseDto> listQuestion_Pageable(int categorysub_id, Pageable pageable);
 
 
