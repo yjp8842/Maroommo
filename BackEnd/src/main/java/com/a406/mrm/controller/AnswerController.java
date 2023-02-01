@@ -22,13 +22,8 @@ public class AnswerController {
 
 
     @PostMapping(value = "new")
-    public ResponseEntity<?> create(@RequestBody AnswerInsertDto insertDto, @RequestParam("user_id") String user_id, @RequestParam("board_id") int question_id) {
-        AnswerInsertDto answerInsertDto = new AnswerInsertDto();
-        answerInsertDto.setContent(insertDto.getContent());
-        answerInsertDto.setCreatetime(insertDto.getCreatetime());
-        answerInsertDto.setUser_id(user_id);
-        answerInsertDto.setQuestion_id(question_id);
-        return ResponseEntity.ok(answerServiceImpl.join(answerInsertDto, question_id, user_id));
+    public ResponseEntity<?> create(@RequestBody AnswerInsertDto insertDto) {
+        return ResponseEntity.ok(answerServiceImpl.join(insertDto, insertDto.getQuestion_id(), insertDto.getUser_id()));
     }
 
     @DeleteMapping("delete/{id}/{user_id}")
