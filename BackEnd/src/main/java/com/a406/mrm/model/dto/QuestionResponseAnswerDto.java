@@ -20,6 +20,7 @@ public class QuestionResponseAnswerDto {
     public QuestionResponseAnswerDto(Question question){
         this.id = question.getId();
         this.title = question.getTitle();
+        this.content = question.getContent();
         this.createTime = question.getCreateTime();
         this.status = question.getStatus();
         this.user = question.getUser().getId();
@@ -28,6 +29,7 @@ public class QuestionResponseAnswerDto {
 
     private int id;
     private String title;
+    private String content;
     private Date createTime;
     private int status;
     private String user;

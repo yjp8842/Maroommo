@@ -62,6 +62,17 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
+    public QuestionResponseStatusDto status(QuestionResponseStatusDto questionResponseStatusDto, int question_id, String user_id) {
+        if (questionRepository.findById(question_id).getUser().getId().equals(user_id)){
+            Question question = questionRepository.findById(question_id);
+            question.setStatus(questionResponseStatusDto.getStatus());
+            return new QuestionResponseStatusDto(questionRepository.save(question));
+        }else{
+            return null;
+        }
+    }
+
+    @Override
     public Page<QuestionResponseDto> listQuestion_Pageable(int categorysub_id, Pageable pageable) {
         return questionRepository.findBycategorySub_Id(categorysub_id, pageable);
     }
