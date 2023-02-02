@@ -17,13 +17,15 @@ public class ChatMessage {
     @Id
     private String id;
     private int roomId;
-    private String sender;
+    private String userId;
+    private String userNickName;
     private String message;
     private LocalDateTime time; // 보낸 시간
 
     public ChatMessage(ChatMessageRequestDto chatMessageDto){
         this.roomId=chatMessageDto.getRoomId();
-        this.sender=chatMessageDto.getSender();
+        this.userId=chatMessageDto.getUserId();
+        this.userNickName=chatMessageDto.getUserNickname();
         this.message=chatMessageDto.getMessage();
         this.time=LocalDateTime.now();
     }
