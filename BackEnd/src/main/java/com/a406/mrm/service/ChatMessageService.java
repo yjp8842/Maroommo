@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ChatMessageService {
 
-    List<ChatMessageResponseDto> findAllChat(String roomId) throws Exception;
+    List<ChatMessageResponseDto> findAllChat(int roomId) throws Exception;
     void insertChat(ChatMessageRequestDto chatMessageDto) throws Exception;
 }

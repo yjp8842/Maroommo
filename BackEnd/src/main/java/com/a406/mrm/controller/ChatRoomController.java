@@ -36,7 +36,7 @@ public class ChatRoomController {
     @ApiOperation("Enter Chat Room")
     @GetMapping("/room/{roomId}")
     public ResponseEntity<Map<String, Object>> roomDetail(
-            @PathVariable @ApiParam("Room ID") String roomId) {
+            @PathVariable @ApiParam("Room ID") int roomId) {
         logger.info("[roomDetail] Enter Chatting Room - roomId : "+roomId);
 
         Map<String, Object> resultMap = new HashMap<>();

@@ -17,7 +17,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     private final ChatMessageRepository chatMessageRepository;
 
     // 해당 room의 채팅 내역을 불러온다
-    public List<ChatMessageResponseDto> findAllChat(String roomId){
+    public List<ChatMessageResponseDto> findAllChat(int roomId){
         List<ChatMessageResponseDto> res = new ArrayList<>();
         chatMessageRepository.findAllByRoomId(roomId).forEach(chat -> {
             res.add(new ChatMessageResponseDto(chat));
