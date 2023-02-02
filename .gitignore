@@ -8,7 +8,6 @@
 /BackEnd/!gradle/wrapper/gradle-wrapper.jar
 /BackEnd/!**/src/main/**/build/
 /BackEnd/!**/src/test/**/build/
-/BackEnd/src/main/resources/application.properties
 
 ### STS ###
 /BackEnd/.apt_generated
