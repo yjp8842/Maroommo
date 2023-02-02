@@ -1,6 +1,7 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.UserJoinRequestDto;
+import com.a406.mrm.model.dto.UserLoginResponseDto;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,11 @@ public class UserServiceImpl implements UserService{
                 .build();
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserLoginResponseDto getLoginUser(String userId) throws Exception {
+        return new UserLoginResponseDto(userRepository.findById(userId).get());
     }
 
     // 유저 id를 조회하여 동일한 유저가 있는지 확인한다

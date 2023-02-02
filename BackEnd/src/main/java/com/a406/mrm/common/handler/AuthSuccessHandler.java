@@ -1,6 +1,8 @@
 package com.a406.mrm.common.handler;
 
+import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
+import com.a406.mrm.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,9 +29,6 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final RequestCache requestCache = new HttpSessionRequestCache();
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    @Autowired
-    private final UserRepository userRepository;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
@@ -51,23 +50,23 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
 
         // 기본 URI
-        String uri = "/successLogin";
+        String uri = "/user/login/success?prevPage=";
 
         /**
          * savedRequest 존재하는 경우 = 인증 권한이 없는 페이지 접근
          * Security Filter가 인터셉트하여 savedRequest에 세션 저장
          */
         if (savedRequest != null) {
-            uri = savedRequest.getRedirectUrl();
-        } else if (prevPage != null && !prevPage.equals("")) {
+            uri += savedRequest.getRedirectUrl();
+        } else if (prevPage != null && !prevPage.equals("/")) {
             // 회원가입 - 로그인으로 넘어온 경우 기본 uri로 redirect
             // 아니라면 이전 페이지로
             if (!prevPage.contains("/user")) {
-                uri = prevPage;
+                uri += prevPage;
             }
         }
-
         System.out.println("[onAuthenticationSuccess] 이전 uri : "+uri);
+
         redirectStrategy.sendRedirect(request, response, uri);
     }
 
