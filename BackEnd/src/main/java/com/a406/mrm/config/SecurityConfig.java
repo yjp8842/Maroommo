@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         .and()
             .formLogin()
             .usernameParameter("id") // 유저 id 파라미터를 username->id로 변경
-            .loginPage("/login") // 로그인 페이지는 해당 주소이며
+            .loginPage("/") // 로그인 페이지는 해당 주소이며
             .loginProcessingUrl("/user/login") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
             .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
             .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
