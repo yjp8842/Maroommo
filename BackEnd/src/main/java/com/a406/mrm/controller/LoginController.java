@@ -16,34 +16,26 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
+//@RestController
+@Controller
 public class LoginController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> loginPage(HttpServletRequest request) {
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-
-        String uri = request.getHeader("Referer");
-        if (uri != null && !uri.contains("/user")) { // 이전 페이지가 없거나 회원가입, 아이디 찾기 등 회원 관련 uri이면 무시
-            request.getSession().setAttribute("prevPage", uri);
-            resultMap.put("message", "success");
-            resultMap.put("uri",uri);
-        }
-        else{
-            resultMap.put("message", "fail");
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    @GetMapping("login")
+    public String loginForm(){
+        return "/loginForm";
     }
-//
-//    @GetMapping("/join")
-//    public String joinForm(){
-//        return "/joinForm";
-//    }
+
+    @GetMapping("/findPassword")
+    public String findPassword(){
+        return "/findPassword";
+    }
+
+    @GetMapping("/join")
+    public String joinForm(){
+        return "/joinForm";
+    }
 
 }

@@ -52,10 +52,10 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
     }
     @ApiOperation("enter the room(=group)")
-    @PostMapping("/enter/{userId}")
+    @PostMapping("/enter/{roomId}/{userId}")
     public ResponseEntity<?> enterRoom(@PathVariable("userId") String userId,
                                         @RequestParam @ApiParam("room entry code") String roomCode,
-                                        @RequestParam @ApiParam("room id") int roomId) {
+                                        @PathVariable @ApiParam("room id") int roomId) {
         // front에서 전해준 entry code는 (code+id) 처리가 되어 있다
         logger.debug("Room Entry Code information : {}", roomCode);
 
