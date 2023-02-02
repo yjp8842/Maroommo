@@ -16,7 +16,8 @@ public class ChatMessageRequestDto {
 
     private MessageType type;
     private int roomId;
-    private String sender;
+    private String userId;
+    private String userNickname;
     private String message;
     private LocalDateTime time;
 }
