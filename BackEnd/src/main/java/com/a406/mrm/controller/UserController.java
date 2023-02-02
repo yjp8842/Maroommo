@@ -275,4 +275,34 @@ public class UserController {
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
+    /**
+     *  로그인 성공 처리 메서드
+     *  로그인 성공 시 유저 정보와 이전 페이지 url을 반환한다
+     *  프론트에서는 이전 페이지 url이 비어있는지 여부를 확인하여 api를 요청한다
+     */
+    @ApiOperation("login success")
+    @GetMapping("login/success")
+    private ResponseEntity<Map<String, Object>> loginSuccess(
+            @RequestParam @ApiParam("login prevPage") String prevPage,
+            @AuthenticationPrincipal PrincipalDetails principalDetails){
+        logger.info("[loginSuccess] prevPage:{}", prevPage);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+
+        resultMap.put("prevPage", prevPage);
+
+        String userId = principalDetails.getUsername();
+        UserLoginResponseDto user = null;
+
+        try {
+            user = userService.getLoginUser(userId);
+            resultMap.put("user",user);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }
