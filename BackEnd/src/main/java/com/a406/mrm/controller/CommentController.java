@@ -26,13 +26,8 @@ public class CommentController {
 
 
     @PostMapping(value = "new")
-    public ResponseEntity<?> create(@RequestBody CommentInsertDto insertDto, @RequestParam("user_id") String user_id, @RequestParam("board_id") int board_id) {
-        CommentInsertDto commentInsertDto = new CommentInsertDto();
-        commentInsertDto.setContent(insertDto.getContent());
-        commentInsertDto.setCreatetime(insertDto.getCreatetime());
-        commentInsertDto.setUser_id(user_id);
-        commentInsertDto.setBoard_id(board_id);
-        return ResponseEntity.ok(commentServiceImpl.join(commentInsertDto, board_id, user_id));
+    public ResponseEntity<?> create(@RequestBody CommentInsertDto insertDto) {
+        return ResponseEntity.ok(commentServiceImpl.join(insertDto, insertDto.getBoard_id(), insertDto.getUser_id()));
     }
 
     @DeleteMapping("delete/{id}/{user_id}")
