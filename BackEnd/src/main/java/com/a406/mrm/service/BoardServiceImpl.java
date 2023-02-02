@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,27 +59,19 @@ public class BoardServiceImpl implements BoardService{
         }
     }
 
-//    @Override
-//    public List<BoardResponseDto> listBoard(int categorySub_id) {
-//        List<BoardResponseDto> result = boardRepository.findBycategorySub_Id(categorySub_id)
-//                .stream()
-//                .map(x -> new BoardResponseDto(x)).collect(Collectors.toList());
-//        return result;
-//    }
-
     @Override
     public Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable) {
         return boardRepository.findBycategorySub_Id(categorysub_id, pageable);
     }
 
-//    @Override
-//    public BoardResponseDto detail(int board_id) {
-//        BoardResponseDto boardResponseDto = new BoardResponseDto(boardRepository.findById(board_id));
-//        return boardResponseDto;
-//    }
-
     @Override
     public List<BoardResponseCommentDto> listBoard(int board_id) {
+        Board board = boardRepository.findById(board_id);
+        int hit = board.getHit();
+        hit++;
+        board.setHit(hit);
+        boardRepository.save(board);
+
         List<BoardResponseCommentDto> result = boardRepository.findByid(board_id)
                 .stream()
                 .map(x -> new BoardResponseCommentDto(x)).collect(Collectors.toList());
