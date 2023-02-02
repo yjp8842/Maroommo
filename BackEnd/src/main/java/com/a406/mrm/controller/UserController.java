@@ -1,7 +1,9 @@
 package com.a406.mrm.controller;
 ;
+import com.a406.mrm.config.auth.PrincipalDetails;
 import com.a406.mrm.model.dto.UserJoinRequestDto;
-import com.a406.mrm.model.dto.UserLoginRequestDto;
+import com.a406.mrm.model.dto.UserLoginResponseDto;
+import com.a406.mrm.model.dto.UserModifyRequestDto;
 import com.a406.mrm.service.EmailService;
 import com.a406.mrm.service.UserService;
 import io.swagger.annotations.Api;
@@ -12,8 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +35,40 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+
+
+    /**
+     *  로그인 정보 요청 메서드
+     *  로그인 후 프론트에서 요청을 하면 유저 정보를 제공해줌
+     *  프론트단에서 create 시 세션에 유저 정보가 없다면 로그인 유저 정보 요청을 한다
+     */
+    @ApiOperation("Request Login User Information")
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> userInfo(
+            @AuthenticationPrincipal PrincipalDetails principalDetails){
+
+        logger.info("[userInfo] Request Login User Infomation");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        String userId = principalDetails.getUsername();
+        UserLoginResponseDto user = null;
+
+        try {
+            user = userService.getLoginUser(userId);
+            resultMap.put("user",user);
+            resultMap.put("message", SUCCESS);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            throw new RuntimeException(e);
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
 
     /**
      *  아이디 중복 확인 메서드
@@ -202,7 +240,7 @@ public class UserController {
     @ApiOperation("Modify Password")
     @PatchMapping("help/pw")
     private ResponseEntity<Map<String, Object>> modifyPassword(
-            @RequestBody @ApiParam("id, password Information to modify password") UserLoginRequestDto user) {
+            @RequestBody @ApiParam("id, password Information to modify password") UserModifyRequestDto user) {
 
         logger.info("[modifyPassword] id, password Information to modify password - id:{}, password:{}", user.getId(), user.getPassword());
 
@@ -217,6 +255,24 @@ public class UserController {
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    /**
+     *  로그인 실패 처리 메서드
+     *  로그인 실패 시 에러 메시지를 반환한다
+     *  프론트에서 해당 메시지를 출력해준다.
+     */
+    @ApiOperation("login Fail")
+    @GetMapping("login/error")
+    private ResponseEntity<Map<String, Object>> loginFail(
+            @RequestParam @ApiParam("login fail message") String loginFailMessage) {
+        logger.info("[loginFail] login Fail Message:{}", loginFailMessage);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.NOT_ACCEPTABLE;
+        resultMap.put("loginFailMessage", loginFailMessage);
+
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 }
