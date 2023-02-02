@@ -6,17 +6,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,14 +27,16 @@ public class OcrController {
 
         var address = this.getClass().getClassLoader().getResource("tessdata");
         try {
-//            BufferedImage in = ImageIO.read(convert(image));
+
             File find_key = null;
             String find_value = null;
 
-            for (File key : convert(image).keySet()) {
+            Map<File, String> data = convert(image);
+
+            for (File key : data.keySet()) {
                 find_key = key;
             }
-            for (String value : convert(image).values()) {
+            for (String value : data.values()) {
                 find_value = value;
             }
 
@@ -54,7 +52,7 @@ public class OcrController {
 
             String result = tesseract.doOCR(newImage);
 
-            find_key.delete();
+//            find_key.delete();
             File delete_file = new File(find_value);
             delete_file.delete();
 
