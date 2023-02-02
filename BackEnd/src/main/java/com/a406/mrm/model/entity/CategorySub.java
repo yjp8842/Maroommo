@@ -35,4 +35,7 @@ public class CategorySub {
 
     @OneToMany(mappedBy = "categorySub", cascade = CascadeType.REMOVE)
     private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "categorySub", cascade = CascadeType.REMOVE)
+    private List<Question> questions = new ArrayList<>();
 }
