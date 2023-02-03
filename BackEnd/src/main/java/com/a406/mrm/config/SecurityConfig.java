@@ -49,14 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
 
         http.authorizeRequests()
-//            .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
+            .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
             .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
             .antMatchers("/swagger-ui.html/**").permitAll() // 스웨거 동작 권한
             .anyRequest().permitAll()
         .and()
             .formLogin()
             .usernameParameter("id") // 유저 id 파라미터를 username->id로 변경
-            .loginPage("/login") // 로그인 페이지는 해당 주소 -> 나중에는 /가 될 것이다
+            .loginPage("/") // 로그인 페이지는 해당 주소 -> 나중에는 /가 될 것이다
             .loginProcessingUrl("/user/login") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
             .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
             .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
