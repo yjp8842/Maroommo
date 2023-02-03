@@ -15,13 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping({"/user"})
 @Api("User Controller API")
@@ -283,9 +284,11 @@ public class UserController {
      */
     @ApiOperation("login success")
     @GetMapping("login/success")
-    private ResponseEntity<Map<String, Object>> loginSuccess(
-            @RequestParam @ApiParam("login prevPage") String prevPage,
-            @AuthenticationPrincipal PrincipalDetails principalDetails){
+    private ResponseEntity<?> loginSuccess(
+            @RequestParam @ApiParam("login prevPage") String prevPage
+            ,@RequestParam @ApiParam("login userId") String userId
+//            ,@AuthenticationPrincipal PrincipalDetails principalDetails
+            ){
         logger.info("[loginSuccess] prevPage:{}", prevPage);
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -307,7 +310,8 @@ public class UserController {
         resultMap.put("isPrev", isPrev);
         resultMap.put("prevPage", prevPage);
 
-        String userId = principalDetails.getUsername();
+        System.out.println(userId);
+
         UserLoginResponseDto user = null;
 
         try {
@@ -317,6 +321,8 @@ public class UserController {
             throw new RuntimeException(e);
         }
 
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return ResponseEntity.status(HttpStatus.OK).body(resultMap);
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
 }
