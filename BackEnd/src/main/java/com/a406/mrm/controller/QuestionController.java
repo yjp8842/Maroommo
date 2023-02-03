@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("question/")
+@RequestMapping("question")
 public class QuestionController {
 
     private final QuestionServiceImpl questionServiceImpl;
@@ -23,12 +23,12 @@ public class QuestionController {
         this.questionServiceImpl = questionServiceImpl;
     }
 
-    @PostMapping(value = "new")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody QuestionInsertDto insertDto) {
         return ResponseEntity.ok(questionServiceImpl.join(insertDto, insertDto.getCategorysub_id(), insertDto.getUser_id()));
     }
 
-    @DeleteMapping("delete/{id}/{user_id}")
+    @DeleteMapping("{id}/{user_id}")
     public ResponseEntity<?> delete(@PathVariable("id") int qid,@PathVariable("user_id") String user_id) {
         String ans = questionServiceImpl.delete(qid,user_id);
         if (ans.equals("OK")){
@@ -38,26 +38,28 @@ public class QuestionController {
         }
     }
 
-    @PatchMapping("update")
+    @PatchMapping
     public ResponseEntity<?> update(@RequestBody QuestionModifyDto modifyDto, @RequestParam("question_id") int question_id, @RequestParam("user_id") String user_id) {
         return ResponseEntity.ok(questionServiceImpl.update(modifyDto, question_id, user_id));
     }
 
     // 0이면 미해결 1이면 해결
     @PatchMapping("status")
-    public ResponseEntity<?> status (@RequestBody QuestionResponseStatusDto modifyDto, @RequestParam("question_id") int question_id, @RequestParam("user_id") String user_id) {
+    public ResponseEntity<?> status (@RequestBody QuestionResponseStatusDto modifyDto,
+                                     @RequestParam("question_id") int question_id,
+                                     @RequestParam("user_id") String user_id) {
         return ResponseEntity.ok(questionServiceImpl.status(modifyDto, question_id, user_id));
     }
 
     //size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호
     static final int page_num = 5;
-    @GetMapping("list")
+    @GetMapping
     public Page<QuestionResponseDto> QuestionPageable (Model model, @RequestParam("categorySub_id") int categorySub_id,
          @PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         return questionServiceImpl.listQuestion_Pageable(categorySub_id, pageable);
     }
 
-    @GetMapping("detail/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<?> detail (@PathVariable("id") int qid) {
         return ResponseEntity.status(HttpStatus.OK).body(questionServiceImpl.listQuestion(qid));
     }
