@@ -291,6 +291,20 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
+        // /room/enter?code=1293676745
+        boolean isPrev = false;
+
+        if(prevPage.contains("/room/enter")){
+            isPrev = true;
+        }
+        else{
+            prevPage = "";
+        }
+
+        // 이전 페이지 요청이 있다면 isPrev=true, prevPage 존재
+        // 없다면 isPrev=false, prevPage=""
+
+        resultMap.put("isPrev", isPrev);
         resultMap.put("prevPage", prevPage);
 
         String userId = principalDetails.getUsername();
