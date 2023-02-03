@@ -15,7 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("comment/")
+@RequestMapping("comment")
 public class CommentController {
 
     private final CommentServiceImpl commentServiceImpl;
@@ -25,12 +25,12 @@ public class CommentController {
     }
 
 
-    @PostMapping(value = "new")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody CommentInsertDto insertDto) {
         return ResponseEntity.ok(commentServiceImpl.join(insertDto, insertDto.getBoard_id(), insertDto.getUser_id()));
     }
 
-    @DeleteMapping("delete/{id}/{user_id}")
+    @DeleteMapping("{id}/{user_id}")
     public ResponseEntity<?> delete(@PathVariable("id") int cid, @PathVariable("user_id") String user_id) {
         String ans = commentServiceImpl.delete(cid, user_id);
         if (ans.equals("OK")){
@@ -40,7 +40,7 @@ public class CommentController {
         }
     }
 
-    @PatchMapping("update")
+    @PatchMapping
     public ResponseEntity<?> update(@RequestBody CommentModifyDto modifyDto, @RequestParam("comment_id") int comment_id, @RequestParam("user_id") String user_id) {
         return ResponseEntity.ok(commentServiceImpl.update(modifyDto, comment_id, user_id));
     }

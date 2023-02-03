@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("categorysub/")
+@RequestMapping("categorysub")
 public class CategorySubController {
 
     private final CategorySubServiceImpl categorySubServiceImpl;
@@ -20,7 +20,7 @@ public class CategorySubController {
         this.categorySubServiceImpl = categorySubServiceImpl;
     }
 
-    @PostMapping(value = "new")
+    @PostMapping
     public ResponseEntity<?> create(@RequestParam("name") String name, @RequestParam("subtype") int subtype, @RequestParam("category_id") int category_id) {
         CategorySubInsertDto categorySubInsertDto = new CategorySubInsertDto();
         categorySubInsertDto.setName(name);
@@ -29,13 +29,13 @@ public class CategorySubController {
         return ResponseEntity.ok(categorySubServiceImpl.join(categorySubInsertDto, category_id));
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int cid) {
         categorySubServiceImpl.delete(cid);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @PatchMapping("update_name")
+    @PatchMapping
     public ResponseEntity<?> update_name(@RequestParam("id") int cid, @RequestParam("name") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(categorySubServiceImpl.update_name(cid, name));
     }

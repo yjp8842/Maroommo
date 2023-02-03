@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("answer/")
+@RequestMapping("answer")
 public class AnswerController {
 
     private final AnswerServiceImpl answerServiceImpl;
@@ -21,12 +21,12 @@ public class AnswerController {
     }
 
 
-    @PostMapping(value = "new")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody AnswerInsertDto insertDto) {
         return ResponseEntity.ok(answerServiceImpl.join(insertDto, insertDto.getQuestion_id(), insertDto.getUser_id()));
     }
 
-    @DeleteMapping("delete/{id}/{user_id}")
+    @DeleteMapping("{id}/{user_id}")
     public ResponseEntity<?> delete(@PathVariable("id") int aid, @PathVariable("user_id") String user_id) {
         String ans = answerServiceImpl.delete(aid, user_id);
         if (ans.equals("OK")){
@@ -36,8 +36,10 @@ public class AnswerController {
         }
     }
 
-    @PatchMapping("update")
-    public ResponseEntity<?> update(@RequestBody AnswerModifyDto modifyDto, @RequestParam("answer_id") int answer_id, @RequestParam("user_id") String user_id) {
+    @PatchMapping
+    public ResponseEntity<?> update(@RequestBody AnswerModifyDto modifyDto,
+                                    @RequestParam("answer_id") int answer_id,
+                                    @RequestParam("user_id") String user_id) {
         return ResponseEntity.ok(answerServiceImpl.update(modifyDto, answer_id, user_id));
     }
 

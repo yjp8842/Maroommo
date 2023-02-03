@@ -77,7 +77,7 @@ public class UserController {
      *  존재한다면 (message:FAIL) 반환
      */
     @ApiOperation("Confirm ID duplication")
-    @GetMapping("/duplicate")
+    @GetMapping("duplicate")
     private ResponseEntity<Map<String, Object>> existsId(
             @RequestParam @ApiParam("Confirm User ID") String id) {
         logger.info("[existsId] User Id:{}", id);
@@ -108,7 +108,7 @@ public class UserController {
      *  (기본적으로 유저 정보는 아이디 중복 확인이 되어있다)
      */
     @ApiOperation("User registration")
-    @PostMapping("/join")
+    @PostMapping
     private ResponseEntity<Map<String, Object>> join(
             @RequestBody @ApiParam("Join User Information") UserJoinRequestDto userJoinDto) {
         logger.info("[join] Join User Information - user:{}", userJoinDto);
@@ -132,7 +132,7 @@ public class UserController {
      *  비밀번호 찾기 시 입력한 이메일 주소에 인증 코드를 전송
      */
     @ApiOperation("Send Email With authentication Code")
-    @GetMapping("/help/{email}")
+    @GetMapping("help/{email}")
     private ResponseEntity<Map<String, Object>> sendEmail(
             @PathVariable @ApiParam("send email Information") String email) throws Exception {
         logger.info("[sendEmail] send email Information - email:{}", email);

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("todo")
 @Api("todo mapping")
 public class TodoController {
     private final Logger logger = LoggerFactory.getLogger(TodoController.class);
@@ -26,29 +26,29 @@ public class TodoController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping("/{userId}")
+    @PostMapping("{userId}")
     public ResponseEntity<?> addTodo(@PathVariable("userId") String userId, @RequestBody TodoRequestDto todoRequestDto){
         logger.info("add Todo information : {}", todoRequestDto.toString());
         TodoResponseDto result = new TodoResponseDto(todoService.addTodo(userId,todoRequestDto));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-    @PatchMapping("/modify")
+    @PatchMapping
     public ResponseEntity<?> modifyTodo(@RequestBody TodoModifyDto todoModifyDto){
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new TodoResponseDto(todoService.modifyTodo(todoModifyDto)));
     }
-    @PatchMapping
+    @PatchMapping("state")
     public ResponseEntity<?> changeStateTodo(@RequestBody TodoChangeStateRequestDto todoChangeStateRequestDto){
         todoService.changeState(todoChangeStateRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
-    @GetMapping("/{userId}/{roomId}")
+    @GetMapping("{roomId}/{userId}")
     public ResponseEntity<?> searchRoomTodo(@PathVariable(name="roomId") int roomId,
                                         @PathVariable(name="userId") String userId){
         List<TodoResponseDto> result = todoService.searchRoomTodo(roomId,userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-    @GetMapping("/{userId}")
+    @GetMapping("{userId}")
     public ResponseEntity<?> searchMyTodo(@PathVariable(name="userId") String userId){
         List<TodoResponseDto> result = todoService.searchMyTodo(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
