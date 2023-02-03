@@ -24,19 +24,15 @@ public class EmailServiceImpl implements EmailService{
     @Autowired
     JavaMailSender emailSender;
 
-    public static final String ePw = createKey();
-
-    private MimeMessage createMessage(String to)throws Exception{
-        System.out.println("보내는 대상 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
+    private MimeMessage createMessage(String ePw, String to)throws Exception{
         MimeMessage message = emailSender.createMimeMessage();
 
         message.addRecipients(RecipientType.TO, to);//보내는 대상
-        message.setSubject("이메일 인증 테스트");//제목
+        message.setSubject("[마룸모] 비밀번호 찾기 안내 메일");//제목
 
         String msgg="";
         msgg+= "<div style='margin:20px;'>";
-        msgg+= "<p><strong>MRM 비밀번호 찾기 안내 메일 </strong></p>";
+        msgg+= "<p><strong>마룸모 비밀번호 찾기 안내 메일 </strong></p>";
         msgg+= "<br>";
         msgg+= "<p>안녕하세요. <p>";
         msgg+= "<p>마룸모 (MRM) 서비스 입니다.<p>";
@@ -52,8 +48,6 @@ public class EmailServiceImpl implements EmailService{
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
         message.setFrom(new InternetAddress(id,"mrm_service"));//보내는 사람
-
-        System.out.println("message : "+message);
 
         return message;
     }
@@ -85,8 +79,8 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public String sendMessage(String to)throws Exception {
-        // TODO Auto-generated method stub
-        MimeMessage message = createMessage(to);
+        String ePw = createKey();
+        MimeMessage message = createMessage(ePw, to);
         try{//예외처리
             emailSender.send(message);
         } catch(MailException es){
