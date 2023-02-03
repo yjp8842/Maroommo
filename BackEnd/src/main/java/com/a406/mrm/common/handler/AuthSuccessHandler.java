@@ -1,5 +1,6 @@
 package com.a406.mrm.common.handler;
 
+import com.a406.mrm.config.auth.PrincipalDetails;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
 import com.a406.mrm.service.UserService;
@@ -50,7 +51,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
 
         // 기본 URI
-        String uri = "/user/login/success?prevPage=";
+        String uri = "/user/login/success?userId="+((PrincipalDetails)authentication.getPrincipal()).getUsername()+"&prevPage=";
 
         /**
          * savedRequest 존재하는 경우 = 인증 권한이 없는 페이지 접근

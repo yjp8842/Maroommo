@@ -3,6 +3,7 @@ package com.a406.mrm.config.auth;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,16 +27,17 @@ public class PrincipalDetailsService implements UserDetailsService {
 //        return userRepository.findByUserEmail(username)
 //                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        Optional<User> loginUser = userRepository.findById(id);
-        User user = null;
+        System.out.println("[loadUserByUsername] id : "+id);
+        User user = userRepository.findById(id).get();
 
-        if(loginUser == null) {
+        if(user == null) {
             System.out.println("로그인하지 못했습니다");
             throw new UsernameNotFoundException("Not Found account");
         }
         else{
-            user = loginUser.get();
-            System.out.println("User:"+user);
+            System.out.println("User:"+user.getId()+","+user.getPassword());
+            PrincipalDetails loginUser = new PrincipalDetails(user);
+            System.out.println(loginUser.getUsername()+", "+loginUser.getPassword());
             return new PrincipalDetails(user);
         }
     }
