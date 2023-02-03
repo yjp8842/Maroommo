@@ -43,7 +43,7 @@ public class RoomController {
     private UserHasRoomRepository userHasRoomRepository;
 
     @ApiOperation("make a room(=group)")
-    @PostMapping("/{userId}")
+    @PostMapping("{userId}")
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
                                        @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto) {
@@ -52,7 +52,7 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
     }
     @ApiOperation("enter the room(=group)")
-    @PostMapping("/enter/{roomId}/{userId}")
+    @PostMapping("enter/{roomId}/{userId}")
     public ResponseEntity<?> enterRoom(@PathVariable("userId") String userId,
                                         @RequestParam @ApiParam("room entry code") String roomCode,
                                         @PathVariable @ApiParam("room id") int roomId) {
@@ -73,36 +73,48 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(enterRoomResult);
     }
     @ApiOperation("refresh entry code of room(=group)")
-    @PatchMapping("/{roomId}")
+    @PatchMapping("{roomId}")
     public ResponseEntity<?> refreshCode(@PathVariable("roomId") int roomId) {
         logger.debug("Room Id information : {}", roomId);
         String afterEntryCode = roomService.updateCode(roomId);
         return ResponseEntity.status(HttpStatus.OK).body(afterEntryCode);
     }
     @ApiOperation("Delete room")
-    @DeleteMapping("/{roomId}")
+    @DeleteMapping("{roomId}")
     public ResponseEntity<?> removeGroup(@PathVariable("roomId") int roomId){
         roomService.removeRoom(roomId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    // /room/{roomId}/name
     @ApiOperation("modify room name")
-    @PatchMapping("/name/{roomId}/{name}")
+    @PatchMapping("{roomId}/name")
     public ResponseEntity<?> modifyName(@PathVariable("roomId") int roomId,
-                                        @PathVariable("name") String name){
+                                        @RequestBody String name){
         return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyName(roomId,name));
     }
 
     @ApiOperation("modify room intro")
-    @PatchMapping("/intro/{roomId}")
-    public ResponseEntity<?> modifyIntro(@PathVariable("roomId") int roomId, @RequestBody String intro){
+    @PatchMapping("{roomId}/intro")
+    public ResponseEntity<?> modifyIntro(@PathVariable("roomId") int roomId,
+                                         @RequestBody String intro){
         return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyIntro(roomId,intro));
     }
 
     @ApiOperation("modfy room profile")
-    @PatchMapping("/profile/{roomId}")
-    public ResponseEntity<?> modifyProfile(@PathVariable("roomId") int roomId, @RequestBody String profile){
+    @PatchMapping("{roomId}/profile")
+    public ResponseEntity<?> modifyProfile(@PathVariable("roomId") int roomId,
+                                           @RequestBody String profile){
         return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyProfile(roomId,profile));
+    }
+
+    @ApiOperation("modify room Memo")
+    @PatchMapping("{roomId}/memo")
+    public ResponseEntity<?> modifyMemo(@PathVariable("roomId") int roomId,
+                                        @RequestBody @ApiParam("memo modify result") String memo){
+        Map<String, String> result = new HashMap<>();
+        result.put("result", roomService.modifyMemo(roomId,memo));
+        return ResponseEntity.ok().body(result);
     }
 
     @ApiOperation("first login - my room")
@@ -129,13 +141,7 @@ public class RoomController {
                 .body(new MyRoomDto(todos,userRepository.findById(userId).get()));
     }
 
-    @ApiOperation("modify room Memo")
-    @PatchMapping("/memo/{roomId}")
-    public ResponseEntity<?> modifyMemo(@PathVariable("roomId") int roomId,
-                                        @RequestBody @ApiParam("memo modify result") String memo){
-        Map<String, String> result = new HashMap<>();
-        result.put("result", roomService.modifyMemo(roomId,memo));
-        return ResponseEntity.ok().body(result);
-    }
+    // room 이동
+    // Get => room/{roomId}
 
 }

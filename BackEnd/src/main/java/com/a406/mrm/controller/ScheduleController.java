@@ -11,12 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/schedule")
+@RequestMapping("schedule")
 public class ScheduleController {
     private final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
     @Autowired
     private ScheduleService scheduleService;
-    @GetMapping("/{userId}")
+    @GetMapping("{userId}")
     public ResponseEntity<?> getSchedule(@PathVariable("userId") String userId){
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getSchedule(userId));
     }
@@ -29,13 +29,13 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleResponseDto);
     }
 
-    @DeleteMapping("/{scheduleId}")
+    @DeleteMapping("{scheduleId}")
     public ResponseEntity<?> removeSchedule(@PathVariable("scheduleId") int scheduleId){
         scheduleService.removeSchedule(scheduleId);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @PatchMapping("/{scheduleId}")
+    @PatchMapping("{scheduleId}")
     public ResponseEntity<?> modifySchedule(@PathVariable("scheduleId") int scheduleId,
                                             @RequestBody ScheduleRequestDto scheduleRequestDto){
         ScheduleResponseDto scheduleResponseDto = scheduleService.modifySchedule(scheduleId,scheduleRequestDto);
