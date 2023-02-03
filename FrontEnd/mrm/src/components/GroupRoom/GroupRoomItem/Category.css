@@ -1,0 +1,17 @@
+.category-box {
+  width: 250px;
+  height: fit-content;
+  text-align: center;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 10px;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.35);
+}
+
+.category-box li {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
