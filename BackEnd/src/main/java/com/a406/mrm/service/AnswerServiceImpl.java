@@ -26,8 +26,8 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public AnswerInsertDto join(AnswerInsertDto answerInsertDto, int question_id, String user_id) {
-        Answer answer = new Answer(answerInsertDto,questionRepository.findById(question_id), userRepository.findById(user_id).get());
+    public AnswerInsertDto join(AnswerInsertDto insertDto) {
+        Answer answer = new Answer(insertDto,questionRepository.findById(insertDto.getQuestion_id()), userRepository.findById(insertDto.getUser_id()).get());
         return new AnswerInsertDto(answerRepository.save(answer));
     }
 
@@ -41,10 +41,10 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public AnswerModifyDto update(AnswerModifyDto answerModifyDto, int answer_id, String user_id) {
-        if (answerRepository.findById(answer_id).getUser().getId().equals(user_id)){
-            Answer answer = answerRepository.findById(answer_id);
-            answer.setContent(answerModifyDto.getContent());
+    public AnswerModifyDto update(AnswerModifyDto modifyDto) {
+        if (answerRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
+            Answer answer = answerRepository.findById(modifyDto.getId());
+            answer.setContent(modifyDto.getContent());
             return new AnswerModifyDto(answerRepository.save(answer));
         }else{
             return null;
