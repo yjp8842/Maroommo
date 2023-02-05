@@ -1,18 +1,14 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.RoomRequestDto;
-import com.a406.mrm.model.entity.Room;
-import com.a406.mrm.model.entity.User;
-import com.a406.mrm.model.entity.UserHasRoom;
-import com.a406.mrm.repository.RoomRepository;
-import com.a406.mrm.repository.UserHasRoomRepository;
-import com.a406.mrm.repository.UserRepository;
+import com.a406.mrm.model.dto.*;
+import com.a406.mrm.model.entity.*;
+import com.a406.mrm.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -21,6 +17,8 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
+    private final TodoRepository todoRepository;
+    private final TodoTimeRepository todoTimeRepository;
 
     @Override
     public Room makeRoom(RoomRequestDto roomRequestDto, String userId) {
@@ -144,4 +142,25 @@ public class RoomServiceImpl implements RoomService {
         }
         return code.toString();
     }
+
+    public List<RoomAllResponseDto> SearchRoom (int room_id) {
+        List<RoomAllResponseDto> result = roomRepository.findRoomById(room_id)
+                .stream()
+                .map(x -> new RoomAllResponseDto(x)).collect(Collectors.toList());
+        return result;
+    }
+
+    public List<RoomAllResponseDto> RoomListAll () {
+        List<RoomAllResponseDto> result = roomRepository.RoomListAll()
+                .stream()
+                .map(x -> new RoomAllResponseDto(x)).collect(Collectors.toList());
+
+//        List<TodoRequestTestDto> result2 = todoRepository.TodoListAll()
+//                .stream()
+//                .map(y-> new TodoRequestTestDto(y)).collect(Collectors.toList());
+
+
+        return result;
+    }
+
 }
