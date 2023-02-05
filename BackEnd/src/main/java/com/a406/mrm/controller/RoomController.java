@@ -1,9 +1,6 @@
 package com.a406.mrm.controller;
 
-import com.a406.mrm.model.dto.MyRoomDto;
-import com.a406.mrm.model.dto.MyRoomFirstDto;
-import com.a406.mrm.model.dto.RoomResponseDto;
-import com.a406.mrm.model.dto.RoomRequestDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.Todo;
 import com.a406.mrm.repository.RoomRepository;
@@ -141,7 +138,16 @@ public class RoomController {
                 .body(new MyRoomDto(todos,userRepository.findById(userId).get()));
     }
 
-    // room 이동
-    // Get => room/{roomId}
+    @GetMapping("/{room_id}")
+    public ResponseEntity<?> SearchRoom(@PathVariable("room_id") int room_id){
+        List<RoomAllResponseDto> result = roomService.SearchRoom(room_id);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> RoomListAll(){
+        List<RoomAllResponseDto> result = roomService.RoomListAll();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
 }
