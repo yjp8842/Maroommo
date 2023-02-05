@@ -25,8 +25,8 @@ public class CategoryServiceImpl implements CategoryService{
         this.roomRepository = roomRepository;
     }
 
-    public CategoryInsertDto join(CategoryInsertDto categoryInsertDto, int roomId){
-        Category category = new Category(categoryInsertDto, roomRepository.findById(roomId).get());
+    public CategoryInsertDto join(CategoryInsertDto insertDto){
+        Category category = new Category(insertDto, roomRepository.findById(insertDto.getRoomId()).get());
         return new CategoryInsertDto(categoryRepository.save(category));
     }
     public void delete(int id){

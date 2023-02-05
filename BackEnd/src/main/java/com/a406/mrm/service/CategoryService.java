@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CategoryInsertDto join(CategoryInsertDto categoryInsertDto, int roomId);
+    CategoryInsertDto join(CategoryInsertDto categoryInsertDto);
 
     void delete(int id);
 
