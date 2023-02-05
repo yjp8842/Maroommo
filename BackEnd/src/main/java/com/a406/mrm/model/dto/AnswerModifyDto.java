@@ -12,9 +12,13 @@ import lombok.*;
 public class AnswerModifyDto {
 
     public AnswerModifyDto(Answer answer) {
+        this.id = answer.getId();
         this.content = answer.getContent();
+        this.user_id = answer.getUser().getId();
     }
 
+    private int id;
     private String content;
+    private String user_id;
 
 }
