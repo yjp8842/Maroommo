@@ -48,8 +48,8 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<?> CategoryList(@RequestParam("room_id") int room_id) {
-        List<CategoryResponseDto> result = categoryServiceImpl.listCategory(room_id);
+    public ResponseEntity<?> CategoryList(@RequestParam("category_id") int category_id) {
+        List<CategoryResponseDto> result = categoryServiceImpl.listCategory(category_id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
