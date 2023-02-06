@@ -14,8 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,12 +46,17 @@ public class RoomController {
     private TodoTimeService todoTimeService;
 
     @ApiOperation("make a room(=group)")
-    @PostMapping("{userId}")
+    @PostMapping(value = "{userId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
-                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto) {
-        logger.debug("new Room information : {}", roomRequestDto.toString());
-        RoomResponseDto addRoomResult = new RoomResponseDto(roomService.makeRoom(roomRequestDto,userId));
+//                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto,
+                                     @RequestParam String name,
+                                     @RequestParam String intro,
+                                     @RequestParam MultipartFile profile
+                                     ) {
+//        logger.debug("new Room information : {}", roomRequestDto.toString());
+        RoomRequestDto roomRequestDto = new RoomRequestDto(intro,name);
+        RoomResponseDto addRoomResult = new RoomResponseDto(roomService.makeRoom(roomRequestDto,userId,profile));
         return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
     }
     @ApiOperation("enter the room(=group)")
@@ -74,7 +81,7 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.CREATED).body(enterRoomResult);
     }
     @ApiOperation("refresh entry code of room(=group)")
-    @PatchMapping("{roomId}")
+    @PatchMapping("/{roomId}/code")
     public ResponseEntity<?> refreshCode(@PathVariable("roomId") int roomId) {
         logger.debug("Room Id information : {}", roomId);
         String afterEntryCode = roomService.updateCode(roomId);
@@ -103,19 +110,10 @@ public class RoomController {
     }
 
     @ApiOperation("modfy room profile")
-    @PatchMapping("{roomId}/profile")
-    public ResponseEntity<?> modifyProfile(@PathVariable("roomId") int roomId,
-                                           @RequestBody String profile){
-        return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyProfile(roomId,profile));
-    }
 
-    @ApiOperation("modify room Memo")
-    @PatchMapping("{roomId}/memo")
-    public ResponseEntity<?> modifyMemo(@PathVariable("roomId") int roomId,
-                                        @RequestBody @ApiParam("memo modify result") String memo){
-        Map<String, String> result = new HashMap<>();
-        result.put("result", roomService.modifyMemo(roomId,memo));
-        return ResponseEntity.ok().body(result);
+    @PatchMapping("/profile/{roomId}")
+    public ResponseEntity<?> modifyProfile(@PathVariable("roomId") int roomId, @RequestParam MultipartFile profile){
+        return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyProfile(roomId,profile));
     }
 
     @ApiOperation("first login - my room")

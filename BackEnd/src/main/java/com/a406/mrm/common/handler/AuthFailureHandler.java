@@ -38,7 +38,7 @@ public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         // 로그인 error 여부와 exception 종류 전송
         setDefaultFailureUrl("/user/login/error?loginFailMessage="+msg);
 
-        logger.info("--로그인 실패 핸들러 "+msg);
+        logger.info("로그인 실패 핸들러 | 에러 메시지 : "+msg);
         super.onAuthenticationFailure(request,response,exception);
     }
 }
