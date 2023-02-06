@@ -15,14 +15,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping({"/user"})
 @Api("User Controller API")
@@ -30,9 +28,6 @@ import java.util.Map;
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
-
-    private static final String SUCCESS = "success";
-    private static final String FAIL = "fail";
 
     private final UserService userService;
     private final EmailService emailService;
@@ -59,12 +54,10 @@ public class UserController {
         try {
             user = userService.getLoginUser(userId);
             resultMap.put("user",user);
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            throw new RuntimeException(e);
         }
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -88,16 +81,14 @@ public class UserController {
         try {
             // 동일한 유저가 존재하지 않는다면
             if(!userService.existsByUserForId(id))	{
-                resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
             // 동일한 유저가 존재한다면
             else {
-                resultMap.put("message", FAIL);
                 status = HttpStatus.ACCEPTED;
             }
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -119,10 +110,9 @@ public class UserController {
         try {
             userService.join(userJoinDto);
 
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -146,10 +136,9 @@ public class UserController {
             authCode = emailService.sendMessage(email);
 
             resultMap.put("authCode", authCode);
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
@@ -184,15 +173,14 @@ public class UserController {
                 userId = userId.substring(0,pos) + str + userId.substring(pos+str.length());
 
                 resultMap.put("id", userId);
-                resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
-            else {
-                resultMap.put("message", FAIL);
+            else{
+                resultMap.put("id", null);
                 status = HttpStatus.ACCEPTED;
             }
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -219,15 +207,14 @@ public class UserController {
             // 해당 유저가 존재한다면
             if(userService.existsByUserForIdAndNameAndEmail(id,name,email)){
                 resultMap.put("id",id);
-                resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
             else {
-                resultMap.put("message", FAIL);
+                resultMap.put("id", null);
                 status = HttpStatus.ACCEPTED;
             }
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -249,11 +236,9 @@ public class UserController {
         HttpStatus status = null;
         try {
             userService.modifyPassword(user.getId(),user.getPassword());
-
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -317,12 +302,13 @@ public class UserController {
         try {
             user = userService.getLoginUser(userId);
             resultMap.put("user",user);
+            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(resultMap);
-//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
 }
