@@ -20,22 +20,22 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private UserService userService;
-
-    @GetMapping("login")
-    public String loginForm(){
-        return "/loginForm";
-    }
-
-    @GetMapping("/findPassword")
-    public String findPassword(){
-        return "/findPassword";
-    }
-
-    @GetMapping("/join")
-    public String joinForm(){
-        return "/joinForm";
-    }
+//    @Autowired
+//    private UserService userService;
+//
+//    @GetMapping("login")
+//    public String loginForm(){
+//        return "/loginForm";
+//    }
+//
+//    @GetMapping("/findPassword")
+//    public String findPassword(){
+//        return "/findPassword";
+//    }
+//
+//    @GetMapping("/join")
+//    public String joinForm(){
+//        return "/joinForm";
+//    }
 
 }
