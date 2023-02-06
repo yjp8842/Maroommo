@@ -6,11 +6,11 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommentService {
 
-    CommentInsertDto join(CommentInsertDto commentInsertDto, int board_id, String user_id);
+    CommentInsertDto join(CommentInsertDto commentInsertDto);
 
     String delete(int id, String user_id);
 
-    CommentModifyDto update(CommentModifyDto commentModifyDto, int comment_id, String user_id);
+    CommentModifyDto update(CommentModifyDto commentModifyDto);
 
 
 }
