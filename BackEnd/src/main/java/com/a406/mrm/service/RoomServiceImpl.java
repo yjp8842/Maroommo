@@ -136,12 +136,6 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.save(room).getProfile();
     }
 
-    @Override
-    public String modifyMemo(int roomId, String memo) {
-        Room room = roomRepository.findById(roomId).get();
-        room.setMemo(memo);
-        return roomRepository.save(room).getMemo();
-    }
 
     public static String createEntryCode() {
         StringBuffer code = new StringBuffer();
