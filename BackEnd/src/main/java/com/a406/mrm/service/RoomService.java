@@ -14,5 +14,4 @@ public interface RoomService {
     boolean existsRoomByIdAndCode(int roomId, String code);
     boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId);
     String updateCode(int roomId);
-    String modifyMemo(int roomId, String memo);
 }
