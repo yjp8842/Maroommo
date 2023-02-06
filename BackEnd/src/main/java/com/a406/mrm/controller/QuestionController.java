@@ -2,6 +2,8 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.*;
 import com.a406.mrm.service.QuestionServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("question")
+@Api("질문 관리")
 public class QuestionController {
 
     private final QuestionServiceImpl questionServiceImpl;
@@ -24,6 +27,7 @@ public class QuestionController {
     }
 
     @PostMapping
+    @ApiOperation("질문 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(hit), 사진(picture), 제목(title), 작성자아이디(user_id))")
     public ResponseEntity<?> create(@RequestBody QuestionInsertDto insertDto) {
         return ResponseEntity.ok(questionServiceImpl.join(insertDto, insertDto.getCategorysub_id(), insertDto.getUser_id()));
     }
