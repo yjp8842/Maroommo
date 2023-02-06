@@ -17,11 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-
+//@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping({"/user"})
 @Api("User Controller API")
@@ -29,9 +28,6 @@ import java.util.Map;
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
-
-    private static final String SUCCESS = "success";
-    private static final String FAIL = "fail";
 
     private final UserService userService;
     private final EmailService emailService;
@@ -47,7 +43,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> userInfo(
             @AuthenticationPrincipal PrincipalDetails principalDetails){
 
-        logger.info("[userInfo] Request Login User Infomation");
+        logger.info("[userInfo]");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -58,12 +54,10 @@ public class UserController {
         try {
             user = userService.getLoginUser(userId);
             resultMap.put("user",user);
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-            throw new RuntimeException(e);
         }
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -77,26 +71,25 @@ public class UserController {
      *  존재한다면 (message:FAIL) 반환
      */
     @ApiOperation("Confirm ID duplication")
-    @GetMapping("/duplicate")
+    @GetMapping("duplicate")
     private ResponseEntity<Map<String, Object>> existsId(
             @RequestParam @ApiParam("Confirm User ID") String id) {
-        logger.info("[existsId] User Id:{}", id);
+
+        logger.info("[existsId] userId:{}", id);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
             // 동일한 유저가 존재하지 않는다면
             if(!userService.existsByUserForId(id))	{
-                resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
             // 동일한 유저가 존재한다면
             else {
-                resultMap.put("message", FAIL);
                 status = HttpStatus.ACCEPTED;
             }
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -108,20 +101,19 @@ public class UserController {
      *  (기본적으로 유저 정보는 아이디 중복 확인이 되어있다)
      */
     @ApiOperation("User registration")
-    @PostMapping("/join")
+    @PostMapping
     private ResponseEntity<Map<String, Object>> join(
             @RequestBody @ApiParam("Join User Information") UserJoinRequestDto userJoinDto) {
-        logger.info("[join] Join User Information - user:{}", userJoinDto);
+        logger.info("[join] user:{}", userJoinDto);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
             userService.join(userJoinDto);
 
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -132,10 +124,10 @@ public class UserController {
      *  비밀번호 찾기 시 입력한 이메일 주소에 인증 코드를 전송
      */
     @ApiOperation("Send Email With authentication Code")
-    @GetMapping("/help/{email}")
+    @GetMapping("help/{email}")
     private ResponseEntity<Map<String, Object>> sendEmail(
             @PathVariable @ApiParam("send email Information") String email) throws Exception {
-        logger.info("[sendEmail] send email Information - email:{}", email);
+        logger.info("[sendEmail] email:{}", email);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -145,10 +137,9 @@ public class UserController {
             authCode = emailService.sendMessage(email);
 
             resultMap.put("authCode", authCode);
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
@@ -167,7 +158,7 @@ public class UserController {
             @RequestParam @ApiParam("name Information to find id") String name,
             @RequestParam @ApiParam("email Information to find id") String email) {
 
-        logger.info("[findId] name, email Information to find id - name:{}, email:{}", name, email);
+        logger.info("[findId] name:{}, email:{}", name, email);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -183,15 +174,14 @@ public class UserController {
                 userId = userId.substring(0,pos) + str + userId.substring(pos+str.length());
 
                 resultMap.put("id", userId);
-                resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
-            else {
-                resultMap.put("message", FAIL);
+            else{
+                resultMap.put("id", null);
                 status = HttpStatus.ACCEPTED;
             }
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -210,7 +200,7 @@ public class UserController {
             @RequestParam @ApiParam("name Information to find password") String name,
             @RequestParam @ApiParam("email Information to find password") String email) {
 
-        logger.info("[findPassword] id, name, email Information to find password - id:{}, name:{}, email:{}", id, name, email);
+        logger.info("[findPassword] id:{}, name:{}, email:{}", id, name, email);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -218,15 +208,14 @@ public class UserController {
             // 해당 유저가 존재한다면
             if(userService.existsByUserForIdAndNameAndEmail(id,name,email)){
                 resultMap.put("id",id);
-                resultMap.put("message", SUCCESS);
                 status = HttpStatus.ACCEPTED;
             }
             else {
-                resultMap.put("message", FAIL);
+                resultMap.put("id", null);
                 status = HttpStatus.ACCEPTED;
             }
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -242,17 +231,15 @@ public class UserController {
     private ResponseEntity<Map<String, Object>> modifyPassword(
             @RequestBody @ApiParam("id, password Information to modify password") UserModifyRequestDto user) {
 
-        logger.info("[modifyPassword] id, password Information to modify password - id:{}, password:{}", user.getId(), user.getPassword());
+        logger.info("[modifyPassword] id:{}, password:{}", user.getId(), user.getPassword());
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
             userService.modifyPassword(user.getId(),user.getPassword());
-
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -283,26 +270,44 @@ public class UserController {
      */
     @ApiOperation("login success")
     @GetMapping("login/success")
-    private ResponseEntity<Map<String, Object>> loginSuccess(
-            @RequestParam @ApiParam("login prevPage") String prevPage,
-            @AuthenticationPrincipal PrincipalDetails principalDetails){
-        logger.info("[loginSuccess] prevPage:{}", prevPage);
+    private ResponseEntity<?> loginSuccess(
+            @RequestParam @ApiParam("login prevPage") String prevPage
+            ,@RequestParam @ApiParam("login userId") String userId
+//            ,@AuthenticationPrincipal PrincipalDetails principalDetails
+            ){
+        logger.info("[loginSuccess] prevPage:{}, userId:{}", prevPage, userId);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
+        // /room/enter?code=1293676745
+        boolean isPrev = false;
+
+        if(prevPage.contains("/room/enter")){
+            isPrev = true;
+        }
+        else{
+            prevPage = "";
+        }
+
+        // 이전 페이지 요청이 있다면 isPrev=true, prevPage 존재
+        // 없다면 isPrev=false, prevPage=""
+
+        resultMap.put("isPrev", isPrev);
         resultMap.put("prevPage", prevPage);
 
-        String userId = principalDetails.getUsername();
         UserLoginResponseDto user = null;
 
         try {
             user = userService.getLoginUser(userId);
             resultMap.put("user",user);
+            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
 }

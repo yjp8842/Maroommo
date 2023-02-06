@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("category/")
+@RequestMapping("category")
 public class CategoryController {
 
     private final CategoryServiceImpl categoryServiceImpl;
@@ -27,7 +27,7 @@ public class CategoryController {
 //        return mav;
 //    }
 
-    @PostMapping(value = "new")
+    @PostMapping
     public ResponseEntity<?> create(@RequestParam("name") String name, @RequestParam("room_id") int room_id) {
         CategoryInsertDto categoryInsertDto = new CategoryInsertDto();
         categoryInsertDto.setName(name);
@@ -36,18 +36,18 @@ public class CategoryController {
     }
 
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable("id") int cid) {
         categoryServiceImpl.delete(cid);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    @PatchMapping("update")
+    @PatchMapping
     public ResponseEntity<?> update(@RequestParam("id") int cid, @RequestParam("name") String name) {
         return ResponseEntity.status(HttpStatus.OK).body(categoryServiceImpl.update(cid, name));
     }
 
-    @GetMapping(value = "list")
+    @GetMapping
     public ResponseEntity<?> CategoryList(@RequestParam("room_id") int room_id) {
         List<CategoryResponseDto> result = categoryServiceImpl.listCategory(room_id);
         return ResponseEntity.status(HttpStatus.OK).body(result);
