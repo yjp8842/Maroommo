@@ -45,10 +45,9 @@ public class ChatMessageController {
         try {
             // DB에 메시지 저장
             chatMessageService.insertChat(message);
-            resultMap.put("message", "success");
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         // 메시지를 보낸다
@@ -71,10 +70,9 @@ public class ChatMessageController {
         try {
             // DB에 메시지 저장
             chatMessageService.insertChat(message);
-            resultMap.put("message", "success");
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 

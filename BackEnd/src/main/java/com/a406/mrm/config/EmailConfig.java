@@ -1,5 +1,8 @@
 package com.a406.mrm.config;
 
+import com.a406.mrm.controller.RoomController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +15,8 @@ import java.util.Properties;
 @Configuration
 @PropertySource("classpath:email.properties")
 public class EmailConfig {
+
+    private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
 
     @Value("${email.id}")
     private String id;
@@ -27,7 +32,6 @@ public class EmailConfig {
         javaMailSender.setPort(465);
         javaMailSender.setDefaultEncoding("UTF-8");
 
-        System.out.println("JavaMailSender : "+id+" "+password);
         javaMailSender.setJavaMailProperties(getMailProperties());
         return javaMailSender;
     }
@@ -37,9 +41,6 @@ public class EmailConfig {
         Properties pt = new Properties();
         pt.put("mail.smtp.auth", true);
         pt.put("mail.smtp.starttls.enable", true);
-//        pt.put("mail.smtp.host", "smtp.gmail.com");
-//        pt.put("mail.smtp.port", 465);
-//        pt.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         pt.put("mail.smtp.socketFactory.port", 465);
         pt.put("mail.smtp.starttls.required", true);
