@@ -1,6 +1,6 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.RoomAllResponseDto;
+import com.a406.mrm.model.dto.RoomMoveResponseDto;
 import com.a406.mrm.model.dto.RoomRequestDto;
 import com.a406.mrm.model.entity.Room;
 
@@ -17,8 +17,8 @@ public interface RoomService {
     boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId);
     String updateCode(int roomId);
     String modifyMemo(int roomId, String memo);
-    List<RoomAllResponseDto> SearchRoom(int room_id);
+//    List<RoomAllResponseDto> SearchRoom(int room_id);
 
-    List<RoomAllResponseDto> RoomListAll();
+    List<RoomMoveResponseDto> RoomListAll();
 
 }
