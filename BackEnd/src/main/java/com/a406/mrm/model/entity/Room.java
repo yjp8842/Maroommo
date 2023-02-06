@@ -21,11 +21,10 @@ import java.util.List;
 @Table(name = "room")
 public class Room {
 
-    public Room(RoomRequestDto roomRequestDto){
+    public Room(RoomRequestDto roomRequestDto, String profile){
         this.name = roomRequestDto.getName();
         this.intro = roomRequestDto.getIntro();
-        this.memo = roomRequestDto.getMemo();
-        this.profile = roomRequestDto.getProfile();
+        this.profile = profile;
     }
 
     @ApiModelProperty("room ID, auto increment")
@@ -41,9 +40,6 @@ public class Room {
     @ApiModelProperty("one-line introduction")
     @Column(nullable = true)
     private String intro;
-    @ApiModelProperty("room public memo")
-    @Column(nullable = true)
-    private String memo;
     @ApiModelProperty("room Entrance code")
     @Column(nullable = false)
     private String code;

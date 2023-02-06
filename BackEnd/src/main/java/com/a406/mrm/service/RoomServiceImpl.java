@@ -10,7 +10,10 @@ import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -21,13 +24,23 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
-
     @Override
-    public Room makeRoom(RoomRequestDto roomRequestDto, String userId) {
+    public Room makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
         // room의 users에 추가
         // user의 rooms에 추가
         // ManyToMany 공부 필요 ;-;
-        Room roomInfo = new Room(roomRequestDto); // 입력받은 room 정보를 세팅한 후
+        String uuid =  null;
+        if(profile != null){
+            uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
+//            String absPath = "C:/SSAFY/S08P12A406/img_dir/"+uuid;
+            String absPath = "/img_dir/"+uuid;
+            try {
+                profile.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        Room roomInfo = new Room(roomRequestDto,uuid); // 입력받은 room 정보를 세팅한 후
         String code = createEntryCode(); // entry code를 생성하여
 //        String code = UUID.randomUUID().toString();
         roomInfo.setCode(code); // 추가
@@ -106,9 +119,20 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public String modifyProfile(int roomId, String profile){
+    public String modifyProfile(int roomId, MultipartFile profile) {
         Room room = roomRepository.findById(roomId).get();
-        room.setProfile(profile);
+        String uuid =  null;
+        if(profile != null){
+            uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
+//            String absPath = "C:/SSAFY/S08P12A406/img_dir/"+uuid;
+            String absPath = "/img_dir/"+uuid;
+            try {
+                profile.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        room.setProfile(uuid);
         return roomRepository.save(room).getProfile();
     }
 
