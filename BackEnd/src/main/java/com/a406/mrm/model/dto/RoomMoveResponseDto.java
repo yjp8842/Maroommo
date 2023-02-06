@@ -20,7 +20,6 @@ public class RoomMoveResponseDto {
         this.name = room.getName();
         this.profile = room.getProfile();
         this.intro = room.getIntro();
-        this.memo = room.getMemo();
         this.categories = room.getCategories().stream().map(x-> new RoomMoveCategoryResponseDto(x)).collect(Collectors.toList());
 //                Map.of(room.getCategories().stream().map(x -> x.getId()).collect(Collectors.toList()),room.getCategories().stream().map(x -> x.getName()).collect(Collectors.toList()));
         this.users = room.getUsers().stream().map(x->new RoomMoveUserResponseDto(x.getUser())).collect(Collectors.toList());
@@ -32,7 +31,6 @@ public class RoomMoveResponseDto {
     private String name;
     private String profile;
     private String intro;
-    private String memo;
     private List<RoomMoveCategoryResponseDto> categories = new ArrayList<>();
 //    private Map<List<String>, List<String>> users = new HashMap<>();
     private List<RoomMoveUserResponseDto> users = new ArrayList<>();
