@@ -9,7 +9,7 @@ public interface RoomService {
     String modifyName(int roomId, String name);
     String modifyIntro(int roomId, String intro);
     String modifyProfile(int roomId, MultipartFile profile);
-    Room makeRoom(RoomRequestDto roomRequestDto, String userId);
+    Room makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile);
     Room enterRoom(int roomId, String userId);
     boolean existsRoomByIdAndCode(int roomId, String code);
     boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId);
