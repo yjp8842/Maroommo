@@ -43,7 +43,7 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> userInfo(
             @AuthenticationPrincipal PrincipalDetails principalDetails){
 
-        logger.info("[userInfo] Request Login User Infomation");
+        logger.info("[userInfo]");
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -74,7 +74,8 @@ public class UserController {
     @GetMapping("duplicate")
     private ResponseEntity<Map<String, Object>> existsId(
             @RequestParam @ApiParam("Confirm User ID") String id) {
-        logger.info("[existsId] User Id:{}", id);
+
+        logger.info("[existsId] userId:{}", id);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -103,7 +104,7 @@ public class UserController {
     @PostMapping
     private ResponseEntity<Map<String, Object>> join(
             @RequestBody @ApiParam("Join User Information") UserJoinRequestDto userJoinDto) {
-        logger.info("[join] Join User Information - user:{}", userJoinDto);
+        logger.info("[join] user:{}", userJoinDto);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -126,7 +127,7 @@ public class UserController {
     @GetMapping("help/{email}")
     private ResponseEntity<Map<String, Object>> sendEmail(
             @PathVariable @ApiParam("send email Information") String email) throws Exception {
-        logger.info("[sendEmail] send email Information - email:{}", email);
+        logger.info("[sendEmail] email:{}", email);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -157,7 +158,7 @@ public class UserController {
             @RequestParam @ApiParam("name Information to find id") String name,
             @RequestParam @ApiParam("email Information to find id") String email) {
 
-        logger.info("[findId] name, email Information to find id - name:{}, email:{}", name, email);
+        logger.info("[findId] name:{}, email:{}", name, email);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -199,7 +200,7 @@ public class UserController {
             @RequestParam @ApiParam("name Information to find password") String name,
             @RequestParam @ApiParam("email Information to find password") String email) {
 
-        logger.info("[findPassword] id, name, email Information to find password - id:{}, name:{}, email:{}", id, name, email);
+        logger.info("[findPassword] id:{}, name:{}, email:{}", id, name, email);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -230,7 +231,7 @@ public class UserController {
     private ResponseEntity<Map<String, Object>> modifyPassword(
             @RequestBody @ApiParam("id, password Information to modify password") UserModifyRequestDto user) {
 
-        logger.info("[modifyPassword] id, password Information to modify password - id:{}, password:{}", user.getId(), user.getPassword());
+        logger.info("[modifyPassword] id:{}, password:{}", user.getId(), user.getPassword());
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -274,7 +275,7 @@ public class UserController {
             ,@RequestParam @ApiParam("login userId") String userId
 //            ,@AuthenticationPrincipal PrincipalDetails principalDetails
             ){
-        logger.info("[loginSuccess] prevPage:{}", prevPage);
+        logger.info("[loginSuccess] prevPage:{}, userId:{}", prevPage, userId);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
@@ -294,8 +295,6 @@ public class UserController {
 
         resultMap.put("isPrev", isPrev);
         resultMap.put("prevPage", prevPage);
-
-        System.out.println(userId);
 
         UserLoginResponseDto user = null;
 
