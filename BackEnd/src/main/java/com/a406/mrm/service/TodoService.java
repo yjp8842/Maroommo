@@ -15,4 +15,5 @@ public interface TodoService {
     Todo modifyTodo(TodoModifyDto todoModifyDto);
     List<TodoResponseDto> searchRoomTodo(int roomId, String userId);
     List<TodoResponseDto> searchMyTodo(String userId);
+    List<Todo> getTodoRoomAll(int room_id);
 }
