@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Integer> {
     List<Todo> findByUserId(@Param("userId") String userId);
-    List<Todo> findByRoomId(@Param("roomId") int roomId);
 
     @Modifying
     @Query(value = "UPDATE todo " +
