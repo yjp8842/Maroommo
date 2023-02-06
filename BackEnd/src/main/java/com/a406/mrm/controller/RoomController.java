@@ -115,15 +115,6 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyProfile(roomId,profile));
     }
 
-    @ApiOperation("modify room Memo")
-    @PatchMapping("{roomId}/memo")
-    public ResponseEntity<?> modifyMemo(@PathVariable("roomId") int roomId,
-                                        @RequestBody @ApiParam("memo modify result") String memo){
-        Map<String, String> result = new HashMap<>();
-        result.put("result", roomService.modifyMemo(roomId,memo));
-        return ResponseEntity.ok().body(result);
-    }
-
     @ApiOperation("first login - my room")
     @GetMapping("/my/first/{userId}")
     public ResponseEntity<?> getMyRoom(@PathVariable("userId") String userId){
