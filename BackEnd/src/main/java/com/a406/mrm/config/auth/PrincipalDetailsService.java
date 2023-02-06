@@ -1,7 +1,10 @@
 package com.a406.mrm.config.auth;
 
+import com.a406.mrm.controller.RoomController;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +19,8 @@ import java.util.Optional;
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
+
     @Autowired
     private UserRepository userRepository;
 
@@ -27,17 +32,16 @@ public class PrincipalDetailsService implements UserDetailsService {
 //        return userRepository.findByUserEmail(username)
 //                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
 
-        System.out.println("[loadUserByUsername] id : "+id);
+        logger.info("[loadUserByUsername] request id : "+id);
         User user = userRepository.findById(id).get();
 
         if(user == null) {
-            System.out.println("로그인하지 못했습니다");
+            logger.info("해당 유저를 찾지 못했습니다.");
             throw new UsernameNotFoundException("Not Found account");
         }
         else{
-            System.out.println("User:"+user.getId()+","+user.getPassword());
+            logger.info("해당 유저 정보 | id : "+user.getId()+", password : "+user.getPassword());
             PrincipalDetails loginUser = new PrincipalDetails(user);
-            System.out.println(loginUser.getUsername()+", "+loginUser.getPassword());
             return new PrincipalDetails(user);
         }
     }
