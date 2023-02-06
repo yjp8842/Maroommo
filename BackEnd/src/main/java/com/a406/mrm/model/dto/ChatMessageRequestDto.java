@@ -15,7 +15,7 @@ public class ChatMessageRequestDto {
     }
 
     private MessageType type;
-    private int roomId;
+    private String roomId;
     private String userId;
     private String userNickname;
     private String message;
