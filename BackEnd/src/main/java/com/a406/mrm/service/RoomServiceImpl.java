@@ -10,7 +10,10 @@ import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -106,9 +109,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public String modifyProfile(int roomId, String profile){
+    public String modifyProfile(int roomId, MultipartFile profile) {
         Room room = roomRepository.findById(roomId).get();
-        room.setProfile(profile);
+        String uuid =  null;
+        if(profile != null){
+            uuid = UUID.randomUUID().toString()+profile.getName().substring(profile.getName().lastIndexOf("."));
+            String absPath = "C:/SSAFY/S08P12A406/img_dir/"+uuid;
+            try {
+                profile.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+        room.setProfile(uuid);
         return roomRepository.save(room).getProfile();
     }
 
