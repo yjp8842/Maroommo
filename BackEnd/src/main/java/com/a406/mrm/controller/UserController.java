@@ -3,8 +3,12 @@ package com.a406.mrm.controller;
 import com.a406.mrm.config.auth.PrincipalDetails;
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
+import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
+import com.a406.mrm.model.entity.User;
+import com.a406.mrm.model.entity.UserMemo;
 import com.a406.mrm.service.EmailService;
+import com.a406.mrm.service.MemoService;
 import com.a406.mrm.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,71 +35,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
-
-
-//    /** 첫 로그인 이후 회원 정보가 필요한 경우 호출되지만 지금으로써는 딱히...?
-//     *  로그인 정보 요청 메서드
-//     *  로그인 후 프론트에서 요청을 하면 유저 정보를 제공해줌
-//     *  프론트단에서 create 시 세션에 유저 정보가 없다면 로그인 유저 정보 요청을 한다
-//     */
-//    @ApiOperation("Request Login User Information")
-//    @GetMapping
-//    public ResponseEntity<Map<String, Object>> userInfo(
-//            @AuthenticationPrincipal PrincipalDetails principalDetails){
-//
-//        logger.info("[userInfo]");
-//
-//        Map<String, Object> resultMap = new HashMap<>();
-//        HttpStatus status = null;
-//
-//        String userId = principalDetails.getUsername();
-//        UserLoginResponseDto user = null;
-//
-//        try {
-//            user = userService.getLoginUser(userId);
-//            resultMap.put("user",user);
-//            status = HttpStatus.ACCEPTED;
-//        } catch (Exception e) {
-//            resultMap.put("error", e.getMessage());
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//
-//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-//    }
-
-
-//    /**
-//     *  아이디 중복 확인 메서드
-//     *  동일한 아이디를 사용하는 유저가 존재하는지 확인한다
-//     *  해당 유저가 존재하지 않는다면 false 반환
-//     *  존재한다면 true 반환
-//     */
-//    @ApiOperation("Confirm ID duplication")
-//    @GetMapping("duplicate")
-//    private ResponseEntity<Map<String, Object>> existsId(
-//            @RequestParam @ApiParam("Confirm User ID") String id) {
-//
-//        logger.info("[existsId] userId:{}", id);
-//
-//        Map<String, Object> resultMap = new HashMap<>();
-//        HttpStatus status = null;
-//        try {
-//            // 동일한 유저가 존재하지 않는다면
-//            if(!userService.existsByUserForId(id))	{
-//                resultMap.put("isExist", false);
-//                status = HttpStatus.ACCEPTED;
-//            }
-//            // 동일한 유저가 존재한다면
-//            else {
-//                resultMap.put("isExist", true);
-//                status = HttpStatus.ACCEPTED;
-//            }
-//        } catch (Exception e) {
-//            resultMap.put("error", e.getMessage());
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-//    }
+    private final MemoService memoService;
 
     /**
      *  회원가입 메서드
@@ -273,7 +214,7 @@ public class UserController {
      *  로그인 성공 처리 메서드
      *  로그인 성공 시 유저 정보와 이전 페이지 url을 반환한다
      *  프론트에서는 이전 페이지 url이 비어있는지 여부를 확인하여 api를 요청한다
-     *  
+     *
      *  유저 정보를 모두 받아오는 작업을 해야한다
      */
     @ApiOperation("login success")
@@ -305,10 +246,13 @@ public class UserController {
         resultMap.put("prevPage", prevPage);
 
         UserLoginResponseDto user = null;
+        UserMemoDto userMemo = null;
 
         try {
             user = userService.getLoginUser(userId);
+            userMemo = memoService.findUserMemoByUserId(userId);
             resultMap.put("user",user);
+            resultMap.put("userMemo",userMemo);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -347,4 +291,103 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
+
+
+
+
+    //////////////////////////////
+    //////// 테스트 용 코드 ////////
+    //////////////////////////////
+
+    /**
+     *  유저들 정보 가져오기 메서드
+     */
+    @ApiOperation("get users info")
+    @GetMapping("/all")
+    private ResponseEntity<?> getUsers(){
+        logger.info("[getUsers]");
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        List<UserLoginResponseDto> users = null;
+        List<UserMemoDto> userMemos = null;
+
+        try {
+            users = userService.getUserList();
+            userMemos = memoService.findAllUserMemo();
+            resultMap.put("usesr",users);
+            resultMap.put("userMemos",userMemos);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+//    /** 첫 로그인 이후 회원 정보가 필요한 경우 호출되지만 지금으로써는 딱히...?
+//     *  로그인 정보 요청 메서드
+//     *  로그인 후 프론트에서 요청을 하면 유저 정보를 제공해줌
+//     *  프론트단에서 create 시 세션에 유저 정보가 없다면 로그인 유저 정보 요청을 한다
+//     */
+//    @ApiOperation("Request Login User Information")
+//    @GetMapping
+//    public ResponseEntity<Map<String, Object>> userInfo(
+//            @AuthenticationPrincipal PrincipalDetails principalDetails){
+//
+//        logger.info("[userInfo]");
+//
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status = null;
+//
+//        String userId = principalDetails.getUsername();
+//        UserLoginResponseDto user = null;
+//
+//        try {
+//            user = userService.getLoginUser(userId);
+//            resultMap.put("user",user);
+//            status = HttpStatus.ACCEPTED;
+//        } catch (Exception e) {
+//            resultMap.put("error", e.getMessage());
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//    }
+
+
+//    /**
+//     *  아이디 중복 확인 메서드
+//     *  동일한 아이디를 사용하는 유저가 존재하는지 확인한다
+//     *  해당 유저가 존재하지 않는다면 false 반환
+//     *  존재한다면 true 반환
+//     */
+//    @ApiOperation("Confirm ID duplication")
+//    @GetMapping("duplicate")
+//    private ResponseEntity<Map<String, Object>> existsId(
+//            @RequestParam @ApiParam("Confirm User ID") String id) {
+//
+//        logger.info("[existsId] userId:{}", id);
+//
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status = null;
+//        try {
+//            // 동일한 유저가 존재하지 않는다면
+//            if(!userService.existsByUserForId(id))	{
+//                resultMap.put("isExist", false);
+//                status = HttpStatus.ACCEPTED;
+//            }
+//            // 동일한 유저가 존재한다면
+//            else {
+//                resultMap.put("isExist", true);
+//                status = HttpStatus.ACCEPTED;
+//            }
+//        } catch (Exception e) {
+//            resultMap.put("error", e.getMessage());
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//    }
 }
