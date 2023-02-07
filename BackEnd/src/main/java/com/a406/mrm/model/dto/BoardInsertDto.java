@@ -18,7 +18,9 @@ public class BoardInsertDto {
         this.createtime = board.getCreateTime();
         this.views = board.getViews();
         this.picture = board.getPicture();
-        this.categorysub_id = board.getCategorySub().getId();
+        if(board.getCategorySub() != null) {
+            this.categorysub_id = board.getCategorySub().getId();
+        }
         this.user_id = board.getUser().getId();
     }
 
