@@ -4,6 +4,8 @@ import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
 
+import java.util.List;
+
 public interface UserService {
 
     void join(UserJoinRequestDto user) throws Exception;
@@ -13,4 +15,5 @@ public interface UserService {
     boolean existsByUserForIdAndNameAndEmail(String id, String name, String email) throws Exception;
     void modifyPassword(UserModifyRequestDto user) throws Exception;
     void modify(UserModifyRequestDto user) throws Exception;
+    List<UserLoginResponseDto> getUserList() throws Exception;
 }

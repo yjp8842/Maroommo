@@ -1,5 +1,6 @@
 package com.a406.mrm.service;
 
+import com.a406.mrm.model.dto.ScheduleResponseDto;
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
@@ -8,6 +9,9 @@ import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -74,6 +78,15 @@ public class UserServiceImpl implements UserService{
         user.setNickname(userDto.getNickname());
         user.setProfile(userDto.getProfile());
         userRepository.save(user);
+    }
+
+    @Override
+    public List<UserLoginResponseDto> getUserList() throws Exception {
+        List<UserLoginResponseDto> userList = userRepository.findAll()
+                                                            .stream()
+                                                            .map(x -> new UserLoginResponseDto(x))
+                                                            .collect(Collectors.toList());
+        return userList;
     }
 
 
