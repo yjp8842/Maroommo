@@ -1,6 +1,7 @@
 package com.a406.mrm.model.entity;
 
 import com.a406.mrm.model.dto.MemoDto;
+import com.a406.mrm.model.dto.MemoUserDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -10,17 +11,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection = "memos")
-public class Memo {
+@Document(collection = "userMemos")
+public class UserMemo {
     @Id
     private String id;
-    private int roomId;
     private String userId;
     private String content;
 
-    public Memo(MemoDto memoRequestDto){
-        this.roomId = memoRequestDto.getRoomId();
-        this.userId = memoRequestDto.getUserId();
-        this.content = memoRequestDto.getContent();
+    public UserMemo(MemoUserDto memoUserDto){
+        this.userId = memoUserDto.getUserId();
+        this.userId = memoUserDto.getUserId();
+        this.content = memoUserDto.getContent();
     }
 }
