@@ -25,8 +25,8 @@ public class CategoryServiceImpl implements CategoryService{
         this.roomRepository = roomRepository;
     }
 
-    public CategoryInsertDto join(CategoryInsertDto categoryInsertDto, int roomId){
-        Category category = new Category(categoryInsertDto, roomRepository.findById(roomId).get());
+    public CategoryInsertDto join(CategoryInsertDto insertDto){
+        Category category = new Category(insertDto, roomRepository.findById(insertDto.getRoomId()).get());
         return new CategoryInsertDto(categoryRepository.save(category));
     }
     public void delete(int id){
@@ -39,8 +39,8 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryRepository.save(category).getName();
     }
 
-    public List<CategoryResponseDto> listCategory(int room_id) {
-        List<CategoryResponseDto> result = categoryRepository.findByroom_Id(room_id)
+    public List<CategoryResponseDto> listCategory(int category_id) {
+        List<CategoryResponseDto> result = categoryRepository.findCategoryById(category_id)
                 .stream()
                 .map(x -> new CategoryResponseDto(x)).collect(Collectors.toList());
         return result;

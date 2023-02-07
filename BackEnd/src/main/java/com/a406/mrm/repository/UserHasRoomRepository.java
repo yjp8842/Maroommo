@@ -1,5 +1,6 @@
 package com.a406.mrm.repository;
 
+import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.UserHasRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;

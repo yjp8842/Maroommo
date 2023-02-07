@@ -14,7 +14,6 @@ import java.util.Date;
 public class QuestionInsertDto {
 
     public QuestionInsertDto(Question question) {
-        this.id = question.getId();
         this.title = question.getTitle();
         this.content = question.getContent();
         this.createtime = question.getCreateTime();
@@ -24,7 +23,6 @@ public class QuestionInsertDto {
         this.user_id = question.getUser().getId();
     }
 
-    private int id;
     private String title;
     private String content;
     private Date createtime;

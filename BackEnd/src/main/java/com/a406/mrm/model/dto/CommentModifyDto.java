@@ -12,9 +12,13 @@ import lombok.*;
 public class CommentModifyDto {
 
     public CommentModifyDto(Comment comment) {
+        this.id = comment.getId();
         this.content = comment.getContent();
+        this.user_id = comment.getUser().getId();
     }
 
+    private int id;
     private String content;
+    private String user_id;
 
 }

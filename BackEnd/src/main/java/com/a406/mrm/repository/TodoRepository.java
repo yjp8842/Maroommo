@@ -1,5 +1,6 @@
 package com.a406.mrm.repository;
 
+import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.Todo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,7 +13,6 @@ import java.util.List;
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Integer> {
     List<Todo> findByUserId(@Param("userId") String userId);
-    List<Todo> findByRoomId(@Param("roomId") int roomId);
 
     @Modifying
     @Query(value = "UPDATE todo " +
@@ -25,4 +25,7 @@ public interface TodoRepository extends JpaRepository<Todo, Integer> {
 //            "SET t.state =2, t.endtime=now(), tt.endtime=now(), tt.totaltime=now()-tt.starttime()" +
 //            "WHERE tt.todo_id = :todo_id")
 //    int updateTodoStateDone(@Param("todo_id") int id);
+
+    @Query(value = "select * from todo", nativeQuery = true)
+    List<Todo> TodoListAll();
 }

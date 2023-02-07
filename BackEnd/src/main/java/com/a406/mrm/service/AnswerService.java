@@ -7,11 +7,11 @@ import com.a406.mrm.model.dto.CommentModifyDto;
 
 public interface AnswerService {
 
-    AnswerInsertDto join(AnswerInsertDto answerInsertDto, int question_id, String user_id);
+    AnswerInsertDto join(AnswerInsertDto answerInsertDto);
 
     String delete(int id, String user_id);
 
-    AnswerModifyDto update(AnswerModifyDto answerModifyDto, int Answer_id, String user_id);
+    AnswerModifyDto update(AnswerModifyDto answerModifyDto);
 
 
 }
