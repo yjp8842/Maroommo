@@ -1,8 +1,11 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.MemoDto;
-import com.a406.mrm.model.entity.Memo;
-import com.a406.mrm.repository.MemoRepository;
+import com.a406.mrm.model.dto.RoomMemoDto;
+import com.a406.mrm.model.dto.UserMemoDto;
+import com.a406.mrm.model.entity.RoomMemo;
+import com.a406.mrm.model.entity.UserMemo;
+import com.a406.mrm.repository.RoomMemoRepository;
+import com.a406.mrm.repository.UserMemoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,46 +16,50 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MemoServiceImpl implements MemoService{
 
-    private final MemoRepository memoRepository;
+    private final UserMemoRepository userMemoRepository;
+    private final RoomMemoRepository roomMemoRepository;
 
     @Override
-    public void insertMemo(MemoDto memoDto) throws Exception {
-
-        Memo memo = null;
-
-        // room의 메모일 경우
-        if(memoDto.getUserId().equals("")){
-            memo = memoRepository.findByRoomId(memoDto.getRoomId());
+    public void insertMemo(UserMemoDto userMemoDto) throws Exception {
+        UserMemo userMemo = userMemoRepository.findByUserId(userMemoDto.getUserId());
+        if(userMemo != null){
+            userMemo.setContent(userMemoDto.getContent());
+            userMemoRepository.save(userMemo);
         }
-        // 회원의 메모일 경우
         else{
-            memo = memoRepository.findByUserId(memoDto.getUserId());
-        }
-
-        if(memoDto == null){
-            memoRepository.save(new Memo(memoDto));
-        }
-        else {
-            memo.setContent(memoDto.getContent());
-            memoRepository.save(memo);
+            userMemoRepository.save(new UserMemo(userMemoDto));
         }
     }
 
     @Override
-    public MemoDto findMemoByUserId(String userId) throws Exception {
-        return new MemoDto(memoRepository.findByUserId(userId));
+    public void insertMemo(RoomMemoDto roomMemoDto) throws Exception {
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomMemoDto.getRoomId());
+        if(roomMemo != null){
+            roomMemo.setContent(roomMemoDto.getContent());
+            roomMemoRepository.save(roomMemo);
+        }
+        else{
+            roomMemoRepository.save(new RoomMemo(roomMemoDto));
+        }
     }
 
     @Override
-    public MemoDto findMemoByRoomId(int roomId) throws Exception {
-        return new MemoDto(memoRepository.findByRoomId(roomId));
+    public UserMemoDto findUserMemoByUserId(String userId) throws Exception {
+        return new UserMemoDto(userMemoRepository.findByUserId(userId));
     }
 
     @Override
-    public List<MemoDto> findAll() throws Exception {
-        return memoRepository.findAll()
-                            .stream()
-                            .map(x->new MemoDto(x))
-                            .collect(Collectors.toList());
+    public RoomMemoDto findRoomMemoByRoomId(int roomId) throws Exception {
+        return new RoomMemoDto(roomMemoRepository.findByRoomId(roomId));
+    }
+
+    @Override
+    public List<UserMemoDto> findAllUserMemo() throws Exception {
+        return userMemoRepository.findAll().stream().map(x->new UserMemoDto(x)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoomMemoDto> findAllRoomMemo() throws Exception {
+        return roomMemoRepository.findAll().stream().map(x->new RoomMemoDto(x)).collect(Collectors.toList());
     }
 }

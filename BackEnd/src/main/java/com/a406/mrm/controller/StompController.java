@@ -1,7 +1,8 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.ChatMessageRequestDto;
-import com.a406.mrm.model.dto.MemoDto;
+import com.a406.mrm.model.dto.RoomMemoDto;
+import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.service.ChatMessageService;
 
 import com.a406.mrm.service.MemoService;
@@ -11,13 +12,11 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,10 +66,10 @@ public class StompController {
      *  회원 메모라면 userId가 존재하고
      *  그룹 메모라면 userId = ""이라고 가정한다
      */
-    @ApiOperation("Send Memo")
-    @MessageMapping("/chat/memo")
+    @ApiOperation("Send Room Memo")
+    @MessageMapping("/room/memo")
     public ResponseEntity<Map<String, Object>> sendMemo(
-            @ApiParam("Send Memo") MemoDto memo) {
+            @ApiParam("Send Room Memo") RoomMemoDto memo) {
         logger.info("[sendMemo] 메모 발송 : "+memo);
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -91,6 +90,9 @@ public class StompController {
     }
 
 
+    /////////////////////////////////////////////////////////////
+    ////////////////////// 테스트 용 코드
+    /////////////////////////////////////////////////////////////
 
     // swagger test용 send
     @ApiOperation("Tes Send Chatting Message")
@@ -114,11 +116,32 @@ public class StompController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @ApiOperation("Tes Send Memo")
-    @PostMapping("/chat/memo")
-    public ResponseEntity<Map<String, Object>> sendTestMemo(
-            @RequestBody @ApiParam("Send Message") MemoDto memo) {
-        logger.info("[sendTestMemo] 메시지 발송 : "+memo);
+    @ApiOperation("Test Send Room Memo")
+    @PostMapping("/room/memo")
+    public ResponseEntity<Map<String, Object>> sendTestRoomMemo(
+            @RequestBody @ApiParam("Send Room Message") RoomMemoDto memo) {
+        logger.info("[sendTestRoomMemo] 메시지 발송 : "+memo);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        try {
+            // DB에 메시지 저장
+            memoService.insertMemo(memo);
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @ApiOperation("Test Send My Memo")
+    @PostMapping("/my/memo")
+    public ResponseEntity<Map<String, Object>> sendTestMyMemo(
+            @RequestBody @ApiParam("Send User Message") UserMemoDto memo) {
+        logger.info("[sendTestMyMemo] 메시지 발송 : "+memo);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;

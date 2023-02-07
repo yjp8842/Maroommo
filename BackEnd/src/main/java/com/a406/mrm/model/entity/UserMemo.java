@@ -1,7 +1,6 @@
 package com.a406.mrm.model.entity;
 
-import com.a406.mrm.model.dto.MemoDto;
-import com.a406.mrm.model.dto.MemoUserDto;
+import com.a406.mrm.model.dto.UserMemoDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,8 +17,7 @@ public class UserMemo {
     private String userId;
     private String content;
 
-    public UserMemo(MemoUserDto memoUserDto){
-        this.userId = memoUserDto.getUserId();
+    public UserMemo(UserMemoDto memoUserDto){
         this.userId = memoUserDto.getUserId();
         this.content = memoUserDto.getContent();
     }
