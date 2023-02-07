@@ -2,6 +2,7 @@ package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
+import com.a406.mrm.model.dto.UserModifyRequestDto;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,9 +60,19 @@ public class UserServiceImpl implements UserService{
 
     // 비밀번호 변경
     @Override
-    public void modifyPassword(String id, String password) throws Exception {
-        User user = userRepository.findById(id).get();
-        user.setPassword(bCryptPasswordEncoder.encode(password));// 비밀번호 암호화
+    public void modifyPassword(UserModifyRequestDto userDto) throws Exception {
+        User user = userRepository.findById(userDto.getId()).get();
+        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));// 비밀번호 암호화
+        userRepository.save(user);
+    }
+
+    @Override
+    public void modify(UserModifyRequestDto userDto) throws Exception {
+        User user = userRepository.findById(userDto.getId()).get();
+        user.setIntro(userDto.getIntro());
+        user.setName(userDto.getName());
+        user.setNickname(userDto.getNickname());
+        user.setProfile(userDto.getProfile());
         userRepository.save(user);
     }
 
