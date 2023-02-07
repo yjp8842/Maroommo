@@ -20,18 +20,11 @@ public class UserLoginResponseDto {
     private String profile;
     private String intro;
 
-//    private String memo;
+    private List<RoomResponseDto> myRooms = new ArrayList<>();
+    private List<TodoResponseDto> doing = new ArrayList<>();
+    private List<TodoResponseDto> done = new ArrayList<>();
 
-//    private List<RoomResponseDto> myRooms = new ArrayList<>();
-//    private List<TodoResponseDto> doing = new ArrayList<>();
-//    private List<TodoResponseDto> done = new ArrayList<>();
-//    private List<Schedule> schedules = new ArrayList<>();
-
-    public UserLoginResponseDto(User user
-//                                Memo memo,
-//                                List<Todo> todos,
-//                                List<Room> rooms
-    ){
+    public UserLoginResponseDto(User user){
         this.id=user.getId();
         this.email=user.getEmail();
         this.name=user.getName();
@@ -39,16 +32,17 @@ public class UserLoginResponseDto {
         this.profile=user.getProfile();
         this.intro=user.getIntro();
 
-//        this.memo=memo;
+        for(Todo todo : user.getTodos()){
+            if(todo.getState()==2){
+                this.done.add(new TodoResponseDto(todo));
+            }else{
+                this.doing.add(new TodoResponseDto(todo));
+            }
+        }
 
-//        for(Todo todo : todos){
-//            if(todo.getState()==2){
-//                this.done.add(new TodoResponseDto(todo));
-//            }else{
-//                this.doing.add(new TodoResponseDto(todo));
-//            }
-//        }
-//
-//        this.myRooms = rooms.stream().map(x->new RoomResponseDto(x)).collect(Collectors.toList());
+        this.myRooms = user.getRooms()
+                            .stream()
+                            .map(x->new RoomResponseDto(x)).collect(Collectors.toList());
+
     }
 }

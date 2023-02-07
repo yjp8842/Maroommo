@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +77,15 @@ public class UserServiceImpl implements UserService{
         user.setNickname(userDto.getNickname());
         user.setProfile(userDto.getProfile());
         userRepository.save(user);
+    }
+
+    @Override
+    public List<UserLoginResponseDto> getUserList() throws Exception {
+        List<UserLoginResponseDto> userList = userRepository.findAll()
+                                                            .stream()
+                                                            .map(x -> new UserLoginResponseDto(x))
+                                                            .collect(Collectors.toList());
+        return userList;
     }
 
 

@@ -28,7 +28,6 @@ public class MyRoomFirstDto {
         this.nickname = user.getNickname();
         this.intro = user.getIntro();
         this.profile = user.getProfile();
-        this.memo = user.getMemo();
         this.myRooms = rooms.stream().map(x->new RoomResponseDto(x)).collect(Collectors.toList());
     }
 
