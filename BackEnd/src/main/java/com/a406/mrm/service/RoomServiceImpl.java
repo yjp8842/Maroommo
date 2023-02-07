@@ -166,12 +166,6 @@ public class RoomServiceImpl implements RoomService {
         return code.toString();
     }
 
-//    public List<RoomAllResponseDto> SearchRoom (int room_id) {
-//        List<RoomAllResponseDto> result = roomRepository.findRoomById(room_id)
-//                .stream()
-//                .map(x -> new RoomAllResponseDto(x)).collect(Collectors.toList());
-//        return result;
-//    }
 
     public List<RoomMoveResponseDto> RoomListAll () {
         List<RoomMoveResponseDto> result = roomRepository.RoomListAll()
