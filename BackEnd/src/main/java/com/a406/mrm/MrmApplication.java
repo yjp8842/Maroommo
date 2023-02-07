@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableMongoRepositories
-//@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3000")
 public class MrmApplication {
 
 	public static void main(String[] args) {
