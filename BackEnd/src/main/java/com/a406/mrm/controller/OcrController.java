@@ -6,16 +6,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class OcrController {
@@ -28,7 +27,20 @@ public class OcrController {
 
         var address = this.getClass().getClassLoader().getResource("tessdata");
         try {
-            BufferedImage in = ImageIO.read(convert(image));
+
+            File find_key = null;
+            String find_value = null;
+
+            Map<File, String> data = convert(image);
+
+            for (File key : data.keySet()) {
+                find_key = key;
+            }
+            for (String value : data.values()) {
+                find_value = value;
+            }
+
+            BufferedImage in = ImageIO.read(find_key);
 
             BufferedImage newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
 
@@ -39,7 +51,10 @@ public class OcrController {
             tesseract.setDatapath(Paths.get(address.toURI()).toString());
 
             String result = tesseract.doOCR(newImage);
-            convert(image).delete();
+
+//            find_key.delete();
+            File delete_file = new File(find_value);
+            delete_file.delete();
 
             return result;
 
@@ -49,13 +64,19 @@ public class OcrController {
         }
 
     }
-    public static File convert(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+    public static Map<File, String> convert(MultipartFile file) throws IOException {
+        String uploadFileName = file.getOriginalFilename();
+        UUID uuid = UUID.randomUUID();
+        uploadFileName = uuid.toString() + "_" + uploadFileName;
+        String path = "BackEnd/src/main/resources/img/";
+        File convFile = new File(path + uploadFileName);
         convFile.createNewFile();
+
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
-        return convFile;
+        Map<File, String> data = Map.of(convFile, path + uploadFileName);
+        return data;
     }
 
 

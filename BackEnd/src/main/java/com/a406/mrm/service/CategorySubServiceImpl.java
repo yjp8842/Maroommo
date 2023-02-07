@@ -24,8 +24,8 @@ public class CategorySubServiceImpl implements CategorySubService{
         this.categoryRepository = categoryRepository;
     }
 
-    public CategorySubInsertDto join(CategorySubInsertDto categorySubInsertDto, int category_id){
-        CategorySub categorySub = new CategorySub(categorySubInsertDto, categoryRepository.findById(category_id));
+    public CategorySubInsertDto join(CategorySubInsertDto insertDto){
+        CategorySub categorySub = new CategorySub(insertDto, categoryRepository.findById(insertDto.getCategory_id()));
         return new CategorySubInsertDto(categorySubRepository.save(categorySub));
     }
 
