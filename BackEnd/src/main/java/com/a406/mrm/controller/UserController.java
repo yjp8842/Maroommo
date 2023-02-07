@@ -3,9 +3,12 @@ package com.a406.mrm.controller;
 import com.a406.mrm.config.auth.PrincipalDetails;
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
+import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
 import com.a406.mrm.model.entity.User;
+import com.a406.mrm.model.entity.UserMemo;
 import com.a406.mrm.service.EmailService;
+import com.a406.mrm.service.MemoService;
 import com.a406.mrm.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +35,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final MemoService memoService;
 
     /**
      *  회원가입 메서드
@@ -242,10 +246,13 @@ public class UserController {
         resultMap.put("prevPage", prevPage);
 
         UserLoginResponseDto user = null;
+        UserMemoDto userMemo = null;
 
         try {
             user = userService.getLoginUser(userId);
+            userMemo = memoService.findUserMemoByUserId(userId);
             resultMap.put("user",user);
+            resultMap.put("userMemo",userMemo);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -285,31 +292,13 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    /**
-     *  유저 정보 가져오기 메서드
-     */
-    @ApiOperation("get user info")
-    @GetMapping
-    private ResponseEntity<?> getUser(@RequestParam @ApiParam("userId") String userId
-                                //            ,@AuthenticationPrincipal PrincipalDetails principalDetails
-                                            ){
-        logger.info("[getUser] userId:{}", userId);
 
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        UserLoginResponseDto user = null;
 
-        try {
-            user = userService.getLoginUser(userId);
-            resultMap.put("user",user);
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
 
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
+
+    //////////////////////////////
+    //////// 테스트 용 코드 ////////
+    //////////////////////////////
 
     /**
      *  유저들 정보 가져오기 메서드
@@ -322,10 +311,13 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         List<UserLoginResponseDto> users = null;
+        List<UserMemoDto> userMemos = null;
 
         try {
             users = userService.getUserList();
+            userMemos = memoService.findAllUserMemo();
             resultMap.put("usesr",users);
+            resultMap.put("userMemos",userMemos);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
