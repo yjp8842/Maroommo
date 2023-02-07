@@ -10,4 +10,8 @@ import lombok.*;
 public class UserModifyRequestDto {
     private String id;
     private String password;
+    private String intro;
+    private String nickname;
+    private String name;
+    private String profile;
 }
