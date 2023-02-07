@@ -5,20 +5,18 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 public class RoomRequestDto {
-    public RoomRequestDto(Room room){
-        this.name = room.getName();
-        this.intro = room.getIntro();
-        this.profile = room.getProfile();
-        this.memo = room.getMemo();
+    public RoomRequestDto(String intro, String name){
+        this.intro = intro;
+        this.name = name;
     }
     private String name;
-    private String profile;
     private String intro;
-    private String memo;
+
 }

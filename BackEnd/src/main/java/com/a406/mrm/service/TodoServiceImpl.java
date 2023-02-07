@@ -122,5 +122,10 @@ public class TodoServiceImpl implements TodoService {
         return result;
     }
 
+    @Override
+    public List<Todo> getTodoRoomAll(int room_id) {
+        return roomRepository.findById(room_id).get().getTodos();
+    }
+
 
 }

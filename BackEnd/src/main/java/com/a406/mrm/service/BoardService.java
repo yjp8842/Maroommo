@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface BoardService {
 
-    BoardInsertDto join(BoardInsertDto boardInsertDto, int categorysub_id, String user_id);
+    BoardInsertDto join(BoardInsertDto boardInsertDto);
 
     String delete(int id, String user_id);
 
-    BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id, String user_id);
+    BoardModifyDto update(BoardModifyDto boardModifyDto);
 
 //    List<BoardResponseDto> listBoard(int categorySub_id);
 
@@ -20,6 +20,6 @@ public interface BoardService {
 
 //    BoardResponseDto detail(int board_id);
 
-    List<BoardResponseCommentDto> listBoard(int board_id);
+    List<BoardResponseCommentDto> BoardDetail(int board_id);
 
 }

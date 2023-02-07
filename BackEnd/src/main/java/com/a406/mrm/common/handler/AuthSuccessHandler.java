@@ -1,10 +1,7 @@
 package com.a406.mrm.common.handler;
 
-import com.a406.mrm.model.entity.User;
-import com.a406.mrm.repository.UserRepository;
-import com.a406.mrm.service.UserService;
+import com.a406.mrm.config.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -20,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Component
@@ -33,8 +29,6 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 //        setDefaultTargetUrl("/room"); // 로그인 성공했으므로 이후 리턴할 URL
-
-        logger.info("--로그인 성공 핸들러 "+LocalDateTime.now());
 
         clearSession(request);
 
@@ -50,7 +44,7 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         }
 
         // 기본 URI
-        String uri = "/user/login/success?prevPage=";
+        String uri = "/user/login/success?userId="+((PrincipalDetails)authentication.getPrincipal()).getUsername()+"&prevPage=";
 
         /**
          * savedRequest 존재하는 경우 = 인증 권한이 없는 페이지 접근
@@ -65,7 +59,8 @@ public class AuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 uri += prevPage;
             }
         }
-        System.out.println("[onAuthenticationSuccess] 이전 uri : "+uri);
+
+        logger.info("로그인 성공 핸들러 | 요청 uri : "+uri);
 
         redirectStrategy.sendRedirect(request, response, uri);
     }

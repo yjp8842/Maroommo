@@ -27,7 +27,6 @@ public class MyRoomDto {
         this.nickname = user.getNickname();
         this.intro = user.getIntro();
         this.profile = user.getProfile();
-        this.memo = user.getMemo();
     }
 
 
