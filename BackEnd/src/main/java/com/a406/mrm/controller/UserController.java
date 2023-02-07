@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-//@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping({"/user"})
 @Api("User Controller API")
@@ -33,72 +32,73 @@ public class UserController {
     private final EmailService emailService;
 
 
-    /**
-     *  로그인 정보 요청 메서드
-     *  로그인 후 프론트에서 요청을 하면 유저 정보를 제공해줌
-     *  프론트단에서 create 시 세션에 유저 정보가 없다면 로그인 유저 정보 요청을 한다
-     */
-    @ApiOperation("Request Login User Information")
-    @GetMapping
-    public ResponseEntity<Map<String, Object>> userInfo(
-            @AuthenticationPrincipal PrincipalDetails principalDetails){
+//    /** 첫 로그인 이후 회원 정보가 필요한 경우 호출되지만 지금으로써는 딱히...?
+//     *  로그인 정보 요청 메서드
+//     *  로그인 후 프론트에서 요청을 하면 유저 정보를 제공해줌
+//     *  프론트단에서 create 시 세션에 유저 정보가 없다면 로그인 유저 정보 요청을 한다
+//     */
+//    @ApiOperation("Request Login User Information")
+//    @GetMapping
+//    public ResponseEntity<Map<String, Object>> userInfo(
+//            @AuthenticationPrincipal PrincipalDetails principalDetails){
+//
+//        logger.info("[userInfo]");
+//
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status = null;
+//
+//        String userId = principalDetails.getUsername();
+//        UserLoginResponseDto user = null;
+//
+//        try {
+//            user = userService.getLoginUser(userId);
+//            resultMap.put("user",user);
+//            status = HttpStatus.ACCEPTED;
+//        } catch (Exception e) {
+//            resultMap.put("error", e.getMessage());
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//    }
 
-        logger.info("[userInfo]");
 
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-
-        String userId = principalDetails.getUsername();
-        UserLoginResponseDto user = null;
-
-        try {
-            user = userService.getLoginUser(userId);
-            resultMap.put("user",user);
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-
-    /**
-     *  아이디 중복 확인 메서드
-     *  동일한 아이디를 사용하는 유저가 존재하는지 확인한다
-     *  해당 유저가 존재하지 않는다면 (message:SUCCESS) 반환
-     *  존재한다면 (message:FAIL) 반환
-     */
-    @ApiOperation("Confirm ID duplication")
-    @GetMapping("duplicate")
-    private ResponseEntity<Map<String, Object>> existsId(
-            @RequestParam @ApiParam("Confirm User ID") String id) {
-
-        logger.info("[existsId] userId:{}", id);
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        try {
-            // 동일한 유저가 존재하지 않는다면
-            if(!userService.existsByUserForId(id))	{
-                status = HttpStatus.ACCEPTED;
-            }
-            // 동일한 유저가 존재한다면
-            else {
-                status = HttpStatus.ACCEPTED;
-            }
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
+//    /**
+//     *  아이디 중복 확인 메서드
+//     *  동일한 아이디를 사용하는 유저가 존재하는지 확인한다
+//     *  해당 유저가 존재하지 않는다면 false 반환
+//     *  존재한다면 true 반환
+//     */
+//    @ApiOperation("Confirm ID duplication")
+//    @GetMapping("duplicate")
+//    private ResponseEntity<Map<String, Object>> existsId(
+//            @RequestParam @ApiParam("Confirm User ID") String id) {
+//
+//        logger.info("[existsId] userId:{}", id);
+//
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status = null;
+//        try {
+//            // 동일한 유저가 존재하지 않는다면
+//            if(!userService.existsByUserForId(id))	{
+//                resultMap.put("isExist", false);
+//                status = HttpStatus.ACCEPTED;
+//            }
+//            // 동일한 유저가 존재한다면
+//            else {
+//                resultMap.put("isExist", true);
+//                status = HttpStatus.ACCEPTED;
+//            }
+//        } catch (Exception e) {
+//            resultMap.put("error", e.getMessage());
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//    }
 
     /**
      *  회원가입 메서드
-     *  입력한 유저 정보를 바탕으로 회원가입을 진행한다
-     *  (기본적으로 유저 정보는 아이디 중복 확인이 되어있다)
+     *  입력한 유저 정보를 바탕으로 아이디 중복을 확인한 후 문제가 없다면 회원가입을 진행한다
      */
     @ApiOperation("User registration")
     @PostMapping
@@ -109,8 +109,15 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            userService.join(userJoinDto);
-
+            // 이미 가입한 아이디인지 확인한다
+            // 존재하지 않는다면 회원가입을 진행시킨다
+            if(!userService.existsByUserForId(userJoinDto.getId())){
+                userService.join(userJoinDto);
+                resultMap.put("isExist", false);
+            }
+            else{
+                resultMap.put("isExist", true);
+            }
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -224,7 +231,6 @@ public class UserController {
     /**
      *  비밀번호 변경 메서드
      *  유저의 비밀번호를 변경한다
-     *  변경 성공 시 (message:SUCCESS) 반환
      */
     @ApiOperation("Modify Password")
     @PatchMapping("help/pw")
@@ -236,7 +242,7 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         try {
-            userService.modifyPassword(user.getId(),user.getPassword());
+            userService.modifyPassword(user);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -263,10 +269,12 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    /**
+    /** 
      *  로그인 성공 처리 메서드
      *  로그인 성공 시 유저 정보와 이전 페이지 url을 반환한다
      *  프론트에서는 이전 페이지 url이 비어있는지 여부를 확인하여 api를 요청한다
+     *  
+     *  유저 정보를 모두 받아오는 작업을 해야한다
      */
     @ApiOperation("login success")
     @GetMapping("login/success")
@@ -310,4 +318,33 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+    /**
+     *  유저 정보 변경 메서드
+     *  유저의 정보(intro, name, nickname, profile)를 변경한다
+     */
+    @ApiOperation("Modify user infomation")
+    @PatchMapping
+    private ResponseEntity<Map<String, Object>> modifyUserInfo(
+            @RequestBody @ApiParam("user Information to modify") UserModifyRequestDto user) {
+
+        logger.info("[modifyUserInfo] user:{}", user);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+        try {
+            // 유저가 존재한다면
+            if(userService.existsByUserForId(user.getId())){
+                userService.modify(user);
+                resultMap.put("isModify", "success");
+            }
+            else{
+                resultMap.put("isModify", "fail");
+            }
+            status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
 }

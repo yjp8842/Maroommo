@@ -1,7 +1,11 @@
 package com.a406.mrm.model.dto;
 
-import com.a406.mrm.model.entity.User;
+import com.a406.mrm.model.entity.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -10,28 +14,41 @@ import lombok.*;
 @ToString
 public class UserLoginResponseDto {
     private String id;
-    private String password;
     private String email;
     private String name;
     private String nickname;
     private String profile;
     private String intro;
-    private String memo;
-    private String roles;
-    private String provider;
-    private String providerId;
 
-    public UserLoginResponseDto(User user){
+//    private String memo;
+
+//    private List<RoomResponseDto> myRooms = new ArrayList<>();
+//    private List<TodoResponseDto> doing = new ArrayList<>();
+//    private List<TodoResponseDto> done = new ArrayList<>();
+//    private List<Schedule> schedules = new ArrayList<>();
+
+    public UserLoginResponseDto(User user
+//                                Memo memo,
+//                                List<Todo> todos,
+//                                List<Room> rooms
+    ){
         this.id=user.getId();
-        this.password=user.getPassword();
         this.email=user.getEmail();
         this.name=user.getName();
         this.nickname=user.getNickname();
         this.profile=user.getProfile();
         this.intro=user.getIntro();
-        this.memo=user.getMemo();
-        this.roles=user.getRoles();
-        this.provider=user.getProvider();
-        this.providerId=user.getProviderId();
+
+//        this.memo=memo;
+
+//        for(Todo todo : todos){
+//            if(todo.getState()==2){
+//                this.done.add(new TodoResponseDto(todo));
+//            }else{
+//                this.doing.add(new TodoResponseDto(todo));
+//            }
+//        }
+//
+//        this.myRooms = rooms.stream().map(x->new RoomResponseDto(x)).collect(Collectors.toList());
     }
 }
