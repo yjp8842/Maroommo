@@ -16,7 +16,7 @@ public class BoardInsertDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createtime = board.getCreateTime();
-        this.hit = board.getHit();
+        this.views = board.getViews();
         this.picture = board.getPicture();
         this.categorysub_id = board.getCategorySub().getId();
         this.user_id = board.getUser().getId();
@@ -25,7 +25,7 @@ public class BoardInsertDto {
     private String title;
     private String content;
     private Date createtime;
-    private int hit;
+    private int views;
     private String picture;
     private int categorysub_id;
     private String user_id;

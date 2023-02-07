@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -65,11 +64,11 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public List<BoardResponseCommentDto> listBoard(int board_id) {
+    public List<BoardResponseCommentDto> BoardDetail(int board_id) {
         Board board = boardRepository.findById(board_id);
-        int hit = board.getHit();
-        hit++;
-        board.setHit(hit);
+        int views = board.getViews();
+        views++;
+        board.setViews(views);
         boardRepository.save(board);
 
         List<BoardResponseCommentDto> result = boardRepository.findByid(board_id)

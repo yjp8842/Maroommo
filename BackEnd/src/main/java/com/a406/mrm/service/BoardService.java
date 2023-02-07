@@ -20,6 +20,6 @@ public interface BoardService {
 
 //    BoardResponseDto detail(int board_id);
 
-    List<BoardResponseCommentDto> listBoard(int board_id);
+    List<BoardResponseCommentDto> BoardDetail(int board_id);
 
 }

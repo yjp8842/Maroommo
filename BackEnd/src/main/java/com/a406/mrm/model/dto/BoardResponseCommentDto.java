@@ -21,8 +21,8 @@ public class BoardResponseCommentDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createTime = board.getCreateTime();
-        this.hit = board.getHit();
-        this.user = board.getUser().getId();
+        this.views = board.getViews();
+        this.user_id = board.getUser().getId();
         this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
     }
 
@@ -30,8 +30,8 @@ public class BoardResponseCommentDto {
     private String title;
     private String content;
     private Date createTime;
-    private int hit;
-    private String user;
+    private int views;
+    private String user_id;
     private List<String> comments = new ArrayList<>();
 
 }
