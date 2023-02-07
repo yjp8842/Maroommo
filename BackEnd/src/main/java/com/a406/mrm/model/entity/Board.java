@@ -2,7 +2,6 @@ package com.a406.mrm.model.entity;
 
 import com.a406.mrm.model.dto.BoardInsertDto;
 import com.a406.mrm.model.dto.BoardModifyDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +21,7 @@ public class Board {
         this.title = boardInsertDto.getTitle();
         this.content = boardInsertDto.getContent();
         this.createTime = boardInsertDto.getCreatetime();
-        this.hit = boardInsertDto.getHit();
+        this.views = boardInsertDto.getViews();
         this.picture = boardInsertDto.getPicture();
         this.categorySub = categorySub;
         this.user = user;
@@ -44,7 +43,7 @@ public class Board {
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-    private int hit;
+    private int views;
     private String picture;
 
     @ManyToOne(targetEntity = CategorySub.class, fetch = FetchType.LAZY)

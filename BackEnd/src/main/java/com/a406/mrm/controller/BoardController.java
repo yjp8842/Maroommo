@@ -27,7 +27,7 @@ public class BoardController {
     }
 
     @PostMapping
-    @ApiOperation("게시판 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(hit), 사진(picture), 제목(title), 작성자아이디(user_id))")
+    @ApiOperation("게시판 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 사진(picture), 제목(title), 작성자아이디(user_id))")
     public ResponseEntity<?> create(@RequestBody BoardInsertDto insertDto) {
         return ResponseEntity.ok(boardServiceImpl.join(insertDto));
     }
@@ -60,7 +60,7 @@ public class BoardController {
     @GetMapping("{id}")
     @ApiOperation("게시판 상세조회  : 게시판 아이디(id)")
     public ResponseEntity<?> detail (@PathVariable("id") int bid) {
-        return ResponseEntity.status(HttpStatus.OK).body(boardServiceImpl.listBoard(bid));
+        return ResponseEntity.status(HttpStatus.OK).body(boardServiceImpl.BoardDetail(bid));
     }
 
 
