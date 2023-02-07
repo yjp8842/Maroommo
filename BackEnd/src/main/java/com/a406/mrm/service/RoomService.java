@@ -1,8 +1,11 @@
 package com.a406.mrm.service;
 
+import com.a406.mrm.model.dto.RoomMoveResponseDto;
 import com.a406.mrm.model.dto.RoomRequestDto;
 import com.a406.mrm.model.entity.Room;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 public interface RoomService {
     void removeRoom(int roomId);
@@ -14,4 +17,9 @@ public interface RoomService {
     boolean existsRoomByIdAndCode(int roomId, String code);
     boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId);
     String updateCode(int roomId);
+
+//    List<RoomAllResponseDto> SearchRoom(int room_id);
+
+    List<RoomMoveResponseDto> RoomListAll();
+
 }

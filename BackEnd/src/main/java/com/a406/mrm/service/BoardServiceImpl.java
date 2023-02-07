@@ -31,8 +31,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardInsertDto join(BoardInsertDto boardInsertDto, int categorysub_id, String user_id) {
-        Board board = new Board(boardInsertDto,categorySubRepository.findById(categorysub_id), userRepository.findById(user_id).get());
+    public BoardInsertDto join(BoardInsertDto insertDto) {
+        Board board = new Board(insertDto,categorySubRepository.findById(insertDto.getCategorysub_id()), userRepository.findById(insertDto.getUser_id()).get());
         return new BoardInsertDto(boardRepository.save(board));
     }
 
@@ -47,12 +47,12 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardModifyDto update(BoardModifyDto boardModifyDto, int board_id, String user_id) {
-        if (boardRepository.findById(board_id).getUser().getId().equals(user_id)){
-            Board board = boardRepository.findById(board_id);
-            board.setTitle(boardModifyDto.getTitle());
-            board.setContent(boardModifyDto.getContent());
-            board.setPicture(boardModifyDto.getPicture());
+    public BoardModifyDto update(BoardModifyDto modifyDto) {
+        if (boardRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
+            Board board = boardRepository.findById(modifyDto.getId());
+            board.setTitle(modifyDto.getTitle());
+            board.setContent(modifyDto.getContent());
+            board.setPicture(modifyDto.getPicture());
             return new BoardModifyDto(boardRepository.save(board));
         }else{
             return null;

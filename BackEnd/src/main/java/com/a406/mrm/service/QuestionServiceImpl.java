@@ -32,8 +32,8 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public QuestionInsertDto join(QuestionInsertDto questionInsertDto, int categorysub_id, String user_id) {
-        Question question = new Question(questionInsertDto,categorySubRepository.findById(categorysub_id), userRepository.findById(user_id).get());
+    public QuestionInsertDto join(QuestionInsertDto insertDto) {
+        Question question = new Question(insertDto,categorySubRepository.findById(insertDto.getCategorysub_id()), userRepository.findById(insertDto.getUser_id()).get());
         return new QuestionInsertDto(questionRepository.save(question));
     }
 
@@ -48,13 +48,13 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public QuestionModifyDto update(QuestionModifyDto questionModifyDto, int question_id, String user_id) {
-        if (questionRepository.findById(question_id).getUser().getId().equals(user_id)){
-            Question question = questionRepository.findById(question_id);
-            question.setTitle(questionModifyDto.getTitle());
-            question.setContent(questionModifyDto.getContent());
-            question.setPicture(questionModifyDto.getPicture());
-            question.setStatus(questionModifyDto.getStatus());
+    public QuestionModifyDto update(QuestionModifyDto modifyDto) {
+        if (questionRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
+            Question question = questionRepository.findById(modifyDto.getId());
+            question.setTitle(modifyDto.getTitle());
+            question.setContent(modifyDto.getContent());
+            question.setPicture(modifyDto.getPicture());
+            question.setStatus(modifyDto.getStatus());
             return new QuestionModifyDto(questionRepository.save(question));
         }else{
             return null;
@@ -62,10 +62,10 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public QuestionResponseStatusDto status(QuestionResponseStatusDto questionResponseStatusDto, int question_id, String user_id) {
-        if (questionRepository.findById(question_id).getUser().getId().equals(user_id)){
-            Question question = questionRepository.findById(question_id);
-            question.setStatus(questionResponseStatusDto.getStatus());
+    public QuestionResponseStatusDto status(QuestionResponseStatusDto responseStatusDto) {
+        if (questionRepository.findById(responseStatusDto.getId()).getUser().getId().equals(responseStatusDto.getUser_id())){
+            Question question = questionRepository.findById(responseStatusDto.getId());
+            question.setStatus(responseStatusDto.getStatus());
             return new QuestionResponseStatusDto(questionRepository.save(question));
         }else{
             return null;

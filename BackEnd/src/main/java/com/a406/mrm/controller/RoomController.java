@@ -1,16 +1,12 @@
 package com.a406.mrm.controller;
 
-import com.a406.mrm.model.dto.MyRoomDto;
-import com.a406.mrm.model.dto.MyRoomFirstDto;
-import com.a406.mrm.model.dto.RoomResponseDto;
-import com.a406.mrm.model.dto.RoomRequestDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.Todo;
-import com.a406.mrm.repository.RoomRepository;
-import com.a406.mrm.repository.UserHasRoomRepository;
-import com.a406.mrm.repository.UserRepository;
+import com.a406.mrm.repository.*;
 import com.a406.mrm.service.RoomService;
 import com.a406.mrm.service.TodoService;
+import com.a406.mrm.service.TodoTimeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -43,6 +39,11 @@ public class RoomController {
     private RoomRepository roomRepository;
     @Autowired
     private UserHasRoomRepository userHasRoomRepository;
+    @Autowired
+    private TodoTimeRepository todoTimeRepository;
+
+    @Autowired
+    private TodoTimeService todoTimeService;
 
     @ApiOperation("make a room(=group)")
     @PostMapping(value = "{userId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -139,7 +140,18 @@ public class RoomController {
                 .body(new MyRoomDto(todos,userRepository.findById(userId).get()));
     }
 
-    // room 이동
-    // Get => room/{roomId}
+    @GetMapping
+    public ResponseEntity<?> RoomListAll(){
+        List<RoomMoveResponseDto> result = roomService.RoomListAll();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+
+    @GetMapping("/{room_id}")
+    public ResponseEntity<?> SearchMyRoom(@PathVariable("room_id") int room_id){
+        Room room = roomRepository.findById(room_id).get();
+        RoomMoveResponseDto move = new RoomMoveResponseDto(room);
+        return ResponseEntity.status(HttpStatus.OK).body(move);
+    }
 
 }
