@@ -15,9 +15,13 @@ import java.util.Date;
 public class QuestionResponseStatusDto {
     public QuestionResponseStatusDto(Question question){
         this.status = question.getStatus();
+        this.id = question.getId();
+        this.user_id = question.getUser().getId();
     }
 
     private int status;
+    private int id;
+    private String user_id;
 
 
 }

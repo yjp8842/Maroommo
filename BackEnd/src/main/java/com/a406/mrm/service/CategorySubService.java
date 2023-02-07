@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategorySubService {
 
-    CategorySubInsertDto join(CategorySubInsertDto categorySubInsertDto, int category_id);
+    CategorySubInsertDto join(CategorySubInsertDto categorySubInsertDto);
 
     void delete(int id);
 

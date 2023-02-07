@@ -16,11 +16,15 @@ public class QuestionModifyDto {
         this.content = question.getContent();
         this.picture = question.getPicture();
         this.status = question.getStatus();
+        this.id = question.getId();
+        this.user_id = question.getUser().getId();
     }
 
     private String title;
     private String content;
     private String picture;
     private int status;
+    private int id;
+    private String user_id;
 
 }

@@ -1,16 +1,16 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.RoomRequestDto;
-import com.a406.mrm.model.entity.Room;
-import com.a406.mrm.model.entity.User;
-import com.a406.mrm.model.entity.UserHasRoom;
-import com.a406.mrm.repository.RoomRepository;
-import com.a406.mrm.repository.UserHasRoomRepository;
-import com.a406.mrm.repository.UserRepository;
+import com.a406.mrm.model.dto.*;
+import com.a406.mrm.model.entity.*;
+import com.a406.mrm.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +24,9 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
+    private final TodoRepository todoRepository;
+    private final TodoTimeRepository todoTimeRepository;
+
     @Override
     public Room makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
         // room의 users에 추가
@@ -162,4 +165,13 @@ public class RoomServiceImpl implements RoomService {
         }
         return code.toString();
     }
+
+
+    public List<RoomMoveResponseDto> RoomListAll () {
+        List<RoomMoveResponseDto> result = roomRepository.RoomListAll()
+                .stream()
+                .map(x -> new RoomMoveResponseDto(x)).collect(Collectors.toList());
+        return result;
+    }
+
 }
