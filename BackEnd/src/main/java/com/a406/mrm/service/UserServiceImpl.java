@@ -1,6 +1,5 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.ScheduleResponseDto;
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;

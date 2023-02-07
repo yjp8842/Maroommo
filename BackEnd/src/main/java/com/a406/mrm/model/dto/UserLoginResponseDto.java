@@ -20,23 +20,17 @@ public class UserLoginResponseDto {
     private String profile;
     private String intro;
 
-//    private String memo;
-
     private List<RoomResponseDto> myRooms = new ArrayList<>();
     private List<TodoResponseDto> doing = new ArrayList<>();
     private List<TodoResponseDto> done = new ArrayList<>();
 
-    public UserLoginResponseDto(User user
-//            , String memo
-    ){
+    public UserLoginResponseDto(User user){
         this.id=user.getId();
         this.email=user.getEmail();
         this.name=user.getName();
         this.nickname=user.getNickname();
         this.profile=user.getProfile();
         this.intro=user.getIntro();
-
-//        this.memo=memo;
 
         for(Todo todo : user.getTodos()){
             if(todo.getState()==2){
