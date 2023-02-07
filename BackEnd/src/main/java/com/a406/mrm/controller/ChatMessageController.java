@@ -9,11 +9,13 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,6 @@ public class ChatMessageController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
         try {
             // DB에 메시지 저장
             chatMessageService.insertChat(message);
@@ -51,11 +52,10 @@ public class ChatMessageController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         // 메시지를 보낸다
-        sendingOperations.convertAndSend("/topic/chat/room/"+message.getRoomId(),message);
+        sendingOperations.convertAndSend("/sub/chat/room/"+message.getRoomId(),message);
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
-
 
     // swagger test용 send
     @ApiOperation("Tes Send Chatting Message")

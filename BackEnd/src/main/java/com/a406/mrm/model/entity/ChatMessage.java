@@ -23,7 +23,7 @@ public class ChatMessage {
     private LocalDateTime time; // 보낸 시간
 
     public ChatMessage(ChatMessageRequestDto chatMessageDto){
-        this.roomId=chatMessageDto.getRoomId();
+        this.roomId=Integer.parseInt(chatMessageDto.getRoomId());
         this.userId=chatMessageDto.getUserId();
         this.userNickName=chatMessageDto.getUserNickname();
         this.message=chatMessageDto.getMessage();
