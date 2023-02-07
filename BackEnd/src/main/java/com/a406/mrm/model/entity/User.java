@@ -30,8 +30,6 @@ public class User extends BaseTimeEntity{
     @Column(nullable = true)
     private String intro;
     @Column(nullable = true)
-    private String memo;
-    @Column(nullable = true)
     private String roles; // ROLE_USER, ROLE_ADMIN
     @Column(nullable = true)
     private String provider;
