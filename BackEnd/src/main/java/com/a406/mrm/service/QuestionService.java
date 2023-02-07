@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface QuestionService {
 
-    QuestionInsertDto join(QuestionInsertDto questionInsertDto, int categorysub_id, String user_id);
+    QuestionInsertDto join(QuestionInsertDto questionInsertDto);
 
     String delete(int id, String user_id);
 
-    QuestionModifyDto update(QuestionModifyDto questionModifyDto, int question_id, String user_id);
+    QuestionModifyDto update(QuestionModifyDto questionModifyDto);
 
-    QuestionResponseStatusDto status(QuestionResponseStatusDto questionResponseStatusDto, int question_id, String user_id);
+    QuestionResponseStatusDto status(QuestionResponseStatusDto questionResponseStatusDto);
 
     Page<QuestionResponseDto> listQuestion_Pageable(int categorysub_id, Pageable pageable);
 
