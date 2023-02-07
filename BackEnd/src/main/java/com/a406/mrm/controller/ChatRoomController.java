@@ -23,8 +23,6 @@ import java.util.Map;
 public class ChatRoomController {
 
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
-    private static final String SUCCESS = "success";
-    private static final String FAIL = "fail";
 
     private final ChatMessageService chatMessageService;
 
@@ -46,10 +44,9 @@ public class ChatRoomController {
             List<ChatMessageResponseDto> chats = chatMessageService.findAllChat(roomId);
 
             resultMap.put("chats", chats);
-            resultMap.put("message", SUCCESS);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
-            resultMap.put("message", e.getMessage());
+            resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);

@@ -28,8 +28,8 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public CommentInsertDto join(CommentInsertDto commentInsertDto, int board_id, String user_id) {
-        Comment comment = new Comment(commentInsertDto,boardRepository.findById(board_id), userRepository.findById(user_id).get());
+    public CommentInsertDto join(CommentInsertDto insertDto) {
+        Comment comment = new Comment(insertDto,boardRepository.findById(insertDto.getBoard_id()), userRepository.findById(insertDto.getUser_id()).get());
         return new CommentInsertDto(commentRepository.save(comment));
     }
 
@@ -43,10 +43,10 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public CommentModifyDto update(CommentModifyDto commentModifyDto, int comment_id, String user_id) {
-        if (commentRepository.findById(comment_id).getUser().getId().equals(user_id)){
-            Comment comment = commentRepository.findById(comment_id);
-            comment.setContent(commentModifyDto.getContent());
+    public CommentModifyDto update(CommentModifyDto modifyDto) {
+        if (commentRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
+            Comment comment = commentRepository.findById(modifyDto.getId());
+            comment.setContent(modifyDto.getContent());
             return new CommentModifyDto(commentRepository.save(comment));
         }else{
             return null;
