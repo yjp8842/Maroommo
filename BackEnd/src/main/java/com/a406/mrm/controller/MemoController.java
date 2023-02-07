@@ -1,7 +1,7 @@
 package com.a406.mrm.controller;
 
-import com.a406.mrm.model.dto.MemoDto;
-import com.a406.mrm.model.dto.UserLoginResponseDto;
+import com.a406.mrm.model.dto.RoomMemoDto;
+import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.service.MemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,8 +41,8 @@ public class MemoController {
         HttpStatus status = HttpStatus.OK;
 
         try {
-            MemoDto memoDto = memoService.findMemoByUserId(userId);
-            resultMap.put("userMemo",memoDto);
+            UserMemoDto userMemoDto = memoService.findUserMemoByUserId(userId);
+            resultMap.put("userMemo",userMemoDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -64,8 +64,8 @@ public class MemoController {
         HttpStatus status = HttpStatus.OK;
 
         try {
-            MemoDto memoDto = memoService.findMemoByRoomId(roomId);
-            resultMap.put("roomMemo",memoDto);
+            RoomMemoDto roomMemoDto = memoService.findRoomMemoByRoomId(roomId);
+            resultMap.put("roomMemo",roomMemoDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -88,8 +88,10 @@ public class MemoController {
         HttpStatus status = HttpStatus.OK;
 
         try {
-            List<MemoDto> memoList = memoService.findAll();
-            resultMap.put("memoList",memoList);
+            List<UserMemoDto> userMemoList = memoService.findAllUserMemo();
+            List<RoomMemoDto> roomMemoDtos = memoService.findAllRoomMemo();
+            resultMap.put("userMemoList",userMemoList);
+            resultMap.put("roomMemoDtos",roomMemoDtos);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
