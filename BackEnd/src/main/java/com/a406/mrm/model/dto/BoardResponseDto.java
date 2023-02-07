@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Getter
@@ -20,7 +17,7 @@ public class BoardResponseDto {
         this.id = board.getId();
         this.title = board.getTitle();
         this.createTime = board.getCreateTime();
-        this.hit = board.getHit();
+        this.views = board.getViews();
         this.user = board.getUser().getId();
 //        this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
     }
@@ -28,7 +25,7 @@ public class BoardResponseDto {
     private int id;
     private String title;
     private Date createTime;
-    private int hit;
+    private int views;
     private String user;
 //    private List<String> comments = new ArrayList<>();
 
