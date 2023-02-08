@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 @Setter
@@ -27,6 +28,6 @@ public class ChatMessage {
         this.userId=chatMessageDto.getUserId();
         this.userNickName=chatMessageDto.getUserNickname();
         this.message=chatMessageDto.getMessage();
-        this.time=LocalDateTime.now();
+        this.time=LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 }

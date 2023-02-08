@@ -10,14 +10,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatMessageRequestDto {
-    public enum MessageType{
-        ENTER, TALK
-    }
 
-    private MessageType type;
     private String roomId;
     private String userId;
     private String userNickname;
     private String message;
-    private LocalDateTime time;
 }
