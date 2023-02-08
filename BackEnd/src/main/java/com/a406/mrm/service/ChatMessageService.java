@@ -8,5 +8,5 @@ import java.util.List;
 public interface ChatMessageService {
 
     List<ChatMessageResponseDto> findAllChat(int roomId) throws Exception;
-    void insertChat(ChatMessageRequestDto chatMessageDto) throws Exception;
+    ChatMessageResponseDto insertChat(ChatMessageRequestDto chatMessageDto) throws Exception;
 }

@@ -1,6 +1,7 @@
 package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.ChatMessageRequestDto;
+import com.a406.mrm.model.dto.ChatMessageResponseDto;
 import com.a406.mrm.model.dto.RoomMemoDto;
 import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.service.ChatMessageService;
@@ -45,16 +46,17 @@ public class StompController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
+        ChatMessageResponseDto resMessage = null;
         try {
             // DB에 메시지 저장
-            chatMessageService.insertChat(message);
+            resMessage = chatMessageService.insertChat(message);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         // 메시지를 보낸다
-        sendingOperations.convertAndSend("/sub/chat/room/"+message.getRoomId(),message);
+        sendingOperations.convertAndSend("/sub/chat/room/"+message.getRoomId(),resMessage);
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
