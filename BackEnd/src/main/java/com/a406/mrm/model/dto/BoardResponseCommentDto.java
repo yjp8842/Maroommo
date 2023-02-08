@@ -1,6 +1,7 @@
 package com.a406.mrm.model.dto;
 
 import com.a406.mrm.model.entity.Board;
+import com.a406.mrm.model.entity.Comment;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,8 @@ public class BoardResponseCommentDto {
         this.createTime = board.getCreateTime();
         this.views = board.getViews();
         this.user_id = board.getUser().getId();
-        this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
+//        this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
+        this.comments = board.getComments().stream().map(x->new CommentResponseDto(x)).collect(Collectors.toList());
     }
 
     private int id;
@@ -32,6 +34,6 @@ public class BoardResponseCommentDto {
     private Date createTime;
     private int views;
     private String user_id;
-    private List<String> comments = new ArrayList<>();
-
+//    private List<String> comments = new ArrayList<>();
+    private List<CommentResponseDto> comments = new ArrayList<>();
 }
