@@ -20,13 +20,14 @@ public class UserLoginResponseDto {
     private String nickname;
     private String profile;
     private String intro;
+    private String  userMemo;
 
-    private List<RoomResponseDto> myRooms = new ArrayList<>();
+
+    private List<RoomListResponseDto> myRooms = new ArrayList<>();
     private List<TodoResponseDto> doing = new ArrayList<>();
     private List<TodoResponseDto> done = new ArrayList<>();
-    private UserMemoDto userMemo = null;
 
-    public UserLoginResponseDto(User user, UserMemoDto userMemoDto){
+    public UserLoginResponseDto(User user, UserMemo userMemo){
         this.id=user.getId();
         this.email=user.getEmail();
         this.name=user.getName();
@@ -34,7 +35,8 @@ public class UserLoginResponseDto {
         this.profile=user.getProfile();
         this.intro=user.getIntro();
 
-        this.userMemo = userMemoDto;
+        if(userMemo != null)
+            this.userMemo = userMemo.getContent();
 
         for(Todo todo : user.getTodos()){
             if(todo.getState()==2){
@@ -45,7 +47,7 @@ public class UserLoginResponseDto {
         }
 
         this.myRooms = user.getRooms()
-                .stream()
-                .map(x->new RoomResponseDto(x)).collect(Collectors.toList());
+                            .stream()
+                            .map(x->new RoomListResponseDto(x)).collect(Collectors.toList());
     }
 }

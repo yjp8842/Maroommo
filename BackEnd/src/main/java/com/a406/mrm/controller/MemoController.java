@@ -42,7 +42,7 @@ public class MemoController {
 
         try {
             UserMemoDto userMemoDto = memoService.findUserMemoByUserId(userId);
-            resultMap.put("userMemo",userMemoDto);
+            resultMap.put("userMemo",userMemoDto.getContent());
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -65,7 +65,7 @@ public class MemoController {
 
         try {
             RoomMemoDto roomMemoDto = memoService.findRoomMemoByRoomId(roomId);
-            resultMap.put("roomMemo",roomMemoDto);
+            resultMap.put("roomMemo",roomMemoDto.getContent());
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

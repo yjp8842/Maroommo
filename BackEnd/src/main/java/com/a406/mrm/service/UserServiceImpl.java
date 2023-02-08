@@ -5,6 +5,8 @@ import com.a406.mrm.model.dto.UserLoginResponseDto;
 import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
 import com.a406.mrm.model.entity.User;
+import com.a406.mrm.model.entity.UserMemo;
+import com.a406.mrm.repository.UserMemoRepository;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final MemoService memoService;
+    private final UserMemoRepository userMemoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 유저 정보를 암호화하여 db에 저장한다
@@ -39,9 +41,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserLoginResponseDto getLoginUser(String userId) throws Exception {
-        UserMemoDto userMemoDto = memoService.findUserMemoByUserId(userId);
-        UserLoginResponseDto user = new UserLoginResponseDto(userRepository.findById(userId).get(), userMemoDto);
-        return user;
+        UserLoginResponseDto userLoginResponseDtor = null;
+        User user = userRepository.findById(userId).get();
+        UserMemo userMemo = userMemoRepository.findByUserId(userId);
+        if(user != null){
+            userLoginResponseDtor = new UserLoginResponseDto(user, userMemo);
+        }
+        return userLoginResponseDtor;
     }
 
     // 유저 id를 조회하여 동일한 유저가 있는지 확인한다
@@ -69,18 +75,22 @@ public class UserServiceImpl implements UserService{
     @Override
     public void modifyPassword(UserModifyRequestDto userDto) throws Exception {
         User user = userRepository.findById(userDto.getId()).get();
-        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));// 비밀번호 암호화
-        userRepository.save(user);
+        if(user != null){
+            user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));// 비밀번호 암호화
+            userRepository.save(user);
+        }
     }
 
     @Override
     public void modify(UserModifyRequestDto userDto) throws Exception {
         User user = userRepository.findById(userDto.getId()).get();
-        user.setIntro(userDto.getIntro());
-        user.setName(userDto.getName());
-        user.setNickname(userDto.getNickname());
-        user.setProfile(userDto.getProfile());
-        userRepository.save(user);
+        if(user != null){
+            user.setIntro(userDto.getIntro());
+            user.setName(userDto.getName());
+            user.setNickname(userDto.getNickname());
+            user.setProfile(userDto.getProfile());
+            userRepository.save(user);
+        }
     }
 
     @Override
@@ -90,7 +100,7 @@ public class UserServiceImpl implements UserService{
                 .stream()
                 .map(x -> {
                     try {
-                        return new UserLoginResponseDto(x, memoService.findUserMemoByUserId(x.getId()));
+                        return new UserLoginResponseDto(x, userMemoRepository.findByUserId(x.getId()));
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
