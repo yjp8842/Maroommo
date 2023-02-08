@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @ToString
 public class UserLoginResponseDto {
+
     private String id;
     private String email;
     private String name;
@@ -23,14 +24,17 @@ public class UserLoginResponseDto {
     private List<RoomResponseDto> myRooms = new ArrayList<>();
     private List<TodoResponseDto> doing = new ArrayList<>();
     private List<TodoResponseDto> done = new ArrayList<>();
+    private UserMemoDto userMemo = null;
 
-    public UserLoginResponseDto(User user){
+    public UserLoginResponseDto(User user, UserMemoDto userMemoDto){
         this.id=user.getId();
         this.email=user.getEmail();
         this.name=user.getName();
         this.nickname=user.getNickname();
         this.profile=user.getProfile();
         this.intro=user.getIntro();
+
+        this.userMemo = userMemoDto;
 
         for(Todo todo : user.getTodos()){
             if(todo.getState()==2){
@@ -41,8 +45,7 @@ public class UserLoginResponseDto {
         }
 
         this.myRooms = user.getRooms()
-                            .stream()
-                            .map(x->new RoomResponseDto(x)).collect(Collectors.toList());
-
+                .stream()
+                .map(x->new RoomResponseDto(x)).collect(Collectors.toList());
     }
 }

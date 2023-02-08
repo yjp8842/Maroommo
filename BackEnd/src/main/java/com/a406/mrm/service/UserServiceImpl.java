@@ -2,6 +2,7 @@ package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
+import com.a406.mrm.model.dto.UserMemoDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.UserRepository;
@@ -18,18 +19,19 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final MemoService memoService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 유저 정보를 암호화하여 db에 저장한다
     @Override
     public void join(UserJoinRequestDto userInfo) throws Exception {
         User user = User.builder()
-                        .id(userInfo.getId())
-                        .password(bCryptPasswordEncoder.encode(userInfo.getPassword()))
-                        .email(userInfo.getEmail())
-                        .name(userInfo.getName())
-                        .nickname(userInfo.getNickname())
-                        .roles("ROLE_USER")
+                .id(userInfo.getId())
+                .password(bCryptPasswordEncoder.encode(userInfo.getPassword()))
+                .email(userInfo.getEmail())
+                .name(userInfo.getName())
+                .nickname(userInfo.getNickname())
+                .roles("ROLE_USER")
                 .build();
 
         userRepository.save(user);
@@ -37,7 +39,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserLoginResponseDto getLoginUser(String userId) throws Exception {
-        return new UserLoginResponseDto(userRepository.findById(userId).get());
+        UserMemoDto userMemoDto = memoService.findUserMemoByUserId(userId);
+        UserLoginResponseDto user = new UserLoginResponseDto(userRepository.findById(userId).get(), userMemoDto);
+        return user;
     }
 
     // 유저 id를 조회하여 동일한 유저가 있는지 확인한다
@@ -81,10 +85,17 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<UserLoginResponseDto> getUserList() throws Exception {
-        List<UserLoginResponseDto> userList = userRepository.findAll()
-                                                            .stream()
-                                                            .map(x -> new UserLoginResponseDto(x))
-                                                            .collect(Collectors.toList());
+        List<UserLoginResponseDto> userList
+                = userRepository.findAll()
+                .stream()
+                .map(x -> {
+                    try {
+                        return new UserLoginResponseDto(x, memoService.findUserMemoByUserId(x.getId()));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
         return userList;
     }
 
