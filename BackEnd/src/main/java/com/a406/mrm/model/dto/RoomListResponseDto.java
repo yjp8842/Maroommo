@@ -3,27 +3,25 @@ package com.a406.mrm.model.dto;
 import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.RoomMemo;
 import com.a406.mrm.model.entity.UserHasRoom;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class RoomListResponseDto {
 
     private int id;
     private String name;
     private String profile;
     private String intro;
-    private List<ScheduleResponseDto> schedules = new ArrayList<>();
+//    private List<ScheduleResponseDto> schedules = new ArrayList<>();
 
     public RoomListResponseDto(UserHasRoom userHasRoom){
         this.id = userHasRoom.getRoom().getId();
@@ -31,9 +29,9 @@ public class RoomListResponseDto {
         this.profile = userHasRoom.getRoom().getProfile();
         this.intro = userHasRoom.getRoom().getIntro();
 
-        this.schedules = userHasRoom.getRoom()
-                                    .getSchedules()
-                                    .stream()
-                                    .map(x->new ScheduleResponseDto(x)).collect(Collectors.toList());
+//        this.schedules = userHasRoom.getRoom()
+//                                    .getSchedules()
+//                                    .stream()
+//                                    .map(x->new ScheduleResponseDto(x)).collect(Collectors.toList());
     }
 }
