@@ -24,10 +24,6 @@ public class Answer {
         this.user = user;
     }
 
-    public Answer(AnswerModifyDto answerModifyDto, int answer_id) {
-        this.id = answer_id;
-        this.content = answerModifyDto.getContent();
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +34,6 @@ public class Answer {
     private Date createTime;
 
     private int good;
-    private int bad;
 
     @ManyToOne(targetEntity = Question.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
