@@ -1,9 +1,7 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.*;
-import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.model.entity.Question;
-import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.repository.CategorySubRepository;
 import com.a406.mrm.repository.QuestionRepository;
 import com.a406.mrm.repository.UserRepository;
@@ -78,7 +76,13 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public List<QuestionResponseAnswerDto> listQuestion(int question_id) {
+    public List<QuestionResponseAnswerDto> QuestionDetail(int question_id) {
+        Question question = questionRepository.findById(question_id);
+        int views = question.getViews();
+        views++;
+        question.setViews(views);
+        questionRepository.save(question);
+
         List<QuestionResponseAnswerDto> result = questionRepository.findByid(question_id)
                 .stream()
                 .map(x -> new QuestionResponseAnswerDto(x)).collect(Collectors.toList());
