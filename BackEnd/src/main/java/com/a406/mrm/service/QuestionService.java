@@ -19,6 +19,6 @@ public interface QuestionService {
     Page<QuestionResponseDto> listQuestion_Pageable(int categorysub_id, Pageable pageable);
 
 
-    List<QuestionResponseAnswerDto> listQuestion(int question_id);
+    List<QuestionResponseAnswerDto> QuestionDetail(int question_id);
 
 }
