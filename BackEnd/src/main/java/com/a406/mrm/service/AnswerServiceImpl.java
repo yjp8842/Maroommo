@@ -1,9 +1,6 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.AnswerInsertDto;
-import com.a406.mrm.model.dto.AnswerModifyDto;
-import com.a406.mrm.model.dto.CommentInsertDto;
-import com.a406.mrm.model.dto.CommentModifyDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Answer;
 import com.a406.mrm.model.entity.Comment;
 import com.a406.mrm.repository.*;
@@ -51,6 +48,12 @@ public class AnswerServiceImpl implements AnswerService{
         }
     }
 
+    @Override
+    public AnswerGoodDto goodPlus(AnswerGoodDto goodDto) {
+        Answer answer = answerRepository.findById(goodDto.getId());
+        answer.setGood(goodDto.getGood());
+        return new AnswerGoodDto(answerRepository.save(answer));
+    }
 
 
 }

@@ -1,9 +1,6 @@
 package com.a406.mrm.controller;
 
-import com.a406.mrm.model.dto.AnswerInsertDto;
-import com.a406.mrm.model.dto.AnswerModifyDto;
-import com.a406.mrm.model.dto.CommentInsertDto;
-import com.a406.mrm.model.dto.CommentModifyDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.service.AnswerServiceImpl;
 import com.a406.mrm.service.CommentServiceImpl;
 import io.swagger.annotations.Api;
@@ -47,5 +44,10 @@ public class AnswerController {
         return ResponseEntity.ok(answerServiceImpl.update(modifyDto));
     }
 
+    @PatchMapping("good")
+    @ApiOperation("답변 좋아요 : 좋아요(good)")
+    public ResponseEntity<?> goodPlus(@RequestBody AnswerGoodDto goodDto) {
+        return ResponseEntity.ok(answerServiceImpl.goodPlus(goodDto));
+    }
 
 }
