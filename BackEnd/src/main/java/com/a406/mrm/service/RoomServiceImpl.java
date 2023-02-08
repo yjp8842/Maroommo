@@ -24,14 +24,17 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
+    private final RoomMemoRepository roomMemoRepository;
     private final TodoRepository todoRepository;
     private final TodoTimeRepository todoTimeRepository;
 
     @Override
-    public Room makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
+    public RoomResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
         // room의 users에 추가
         // user의 rooms에 추가
         // ManyToMany 공부 필요 ;-;
+
+        // 파일 저장
         String uuid =  null;
         if(profile != null){
             uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
@@ -49,18 +52,23 @@ public class RoomServiceImpl implements RoomService {
         roomInfo.setCode(code); // 추가
         Room roomRegisterResult = roomRepository.save(roomInfo);
 
+        // 유저에 룸 연동
         User user = userRepository.findById(userId).get();
         UserHasRoom userHasRoom = new UserHasRoom();
         userHasRoom.setRoom(roomRegisterResult);
         userHasRoom.setUser(user);
         userHasRoomRepository.save(userHasRoom);
 
-        return roomRegisterResult;
+        // 그룹 메모를 저장
+        RoomMemo roomMemo = roomMemoRepository.save(new RoomMemo(roomRegisterResult.getId(), ""));
+        RoomResponseDto roomResponseDto = new RoomResponseDto(roomRegisterResult, roomMemo);
+
+        return roomResponseDto;
     }
 
     // room 입장
     @Override
-    public Room enterRoom(int roomId, String userId) {
+    public RoomResponseDto enterRoom(int roomId, String userId) {
         Room enterRoomInfo = roomRepository.findById(roomId).get(); // id가 일치하는 room 정보를 가져온다
 
         // room의 users에 추가
@@ -71,7 +79,11 @@ public class RoomServiceImpl implements RoomService {
         userHasRoom.setUser(user);
         userHasRoomRepository.save(userHasRoom);
 
-        return enterRoomInfo;
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
+
+        RoomResponseDto roomResponseDto = new RoomResponseDto(enterRoomInfo, roomMemo);
+
+        return roomResponseDto;
     }
 
     @Override

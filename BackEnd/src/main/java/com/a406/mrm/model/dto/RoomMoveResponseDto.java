@@ -35,6 +35,5 @@ public class RoomMoveResponseDto {
 //    private Map<List<String>, List<String>> users = new HashMap<>();
     private List<RoomMoveUserResponseDto> users = new ArrayList<>();
 //    private List<RoomMoveTodoResponseDto> todos = new ArrayList<>();
-
-
+    private RoomMemoDto roomMemo = null;
 }

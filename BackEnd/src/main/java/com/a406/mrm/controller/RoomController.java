@@ -61,9 +61,11 @@ public class RoomController {
                                      @RequestParam MultipartFile profile
                                      ) {
 //        logger.debug("new Room information : {}", roomRequestDto.toString());
+
         RoomRequestDto roomRequestDto = new RoomRequestDto(intro,name);
-        RoomResponseDto addRoomResult = new RoomResponseDto(roomService.makeRoom(roomRequestDto,userId,profile));
-        return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
+        RoomResponseDto roomResponseDto = roomService.makeRoom(roomRequestDto,userId,profile);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomResponseDto);
     }
     @ApiOperation("enter the room(=group)")
     @PostMapping("enter/{roomId}/{userId}")
@@ -83,7 +85,7 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.OK).body(false);
 
         // 있다면 room에 입장 처리 후 room 정보 반환
-        RoomResponseDto enterRoomResult = new RoomResponseDto(roomService.enterRoom(roomId, userId));
+        RoomResponseDto enterRoomResult = roomService.enterRoom(roomId, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(enterRoomResult);
     }
     @ApiOperation("refresh entry code of room(=group)")
