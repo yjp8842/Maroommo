@@ -24,12 +24,6 @@ public class CategoryController {
         this.categoryServiceImpl = categoryServiceImpl;
     }
 
-//    @GetMapping(value = "new")
-//    public ModelAndView createForm() {
-//        ModelAndView mav = new ModelAndView("category/createCategoryForm");
-//        return mav;
-//    }
-
     @PostMapping
     @ApiOperation("카테고리 생성 : json(이름(name), 룸 아이디(roomId))")
 //    @RequestBody QuestionInsertDto insertDto
@@ -52,9 +46,9 @@ public class CategoryController {
     }
 
     @GetMapping
-    @ApiOperation("카테고리 리스트 출력 : 카테고리 아이디(id) -> 카테고리 정보와 해당 카테고리의 서브 정보(서브 아이디, 서브 이름)")
+    @ApiOperation("카테고리 리스트 출력 : 카테고리 아이디(id) -> 카테고리 정보와 해당 카테고리의 서브 정보")
     public ResponseEntity<?> CategoryList(@RequestParam("id") int cid) {
-        List<CategoryResponseDto> result = categoryServiceImpl.listCategory(cid);
+        List<CategoryResponseDto> result = categoryServiceImpl.CategoryDetail(cid);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

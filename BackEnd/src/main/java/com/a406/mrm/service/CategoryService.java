@@ -14,6 +14,6 @@ public interface CategoryService {
 
     String update(int id, String name);
 
-    List<CategoryResponseDto> listCategory(int category_id);
+    List<CategoryResponseDto> CategoryDetail(int category_id);
 
 }
