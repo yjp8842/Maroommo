@@ -27,7 +27,7 @@ public class QuestionController {
     }
 
     @PostMapping
-    @ApiOperation("질문 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 상태(status), 사진(picture), 제목(title), 작성자아이디(user_id))")
+    @ApiOperation("질문 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 상태(status), 사진(picture), 제목(title), 작성자아이디(user_id))")
     public ResponseEntity<?> create(@RequestBody QuestionInsertDto insertDto) {
         return ResponseEntity.ok(questionServiceImpl.join(insertDto));
     }
@@ -67,7 +67,7 @@ public class QuestionController {
     @GetMapping("{id}")
     @ApiOperation("질문 상세조회  : 질문 아이디(id)")
     public ResponseEntity<?> detail (@PathVariable("id") int qid) {
-        return ResponseEntity.status(HttpStatus.OK).body(questionServiceImpl.listQuestion(qid));
+        return ResponseEntity.status(HttpStatus.OK).body(questionServiceImpl.QuestionDetail(qid));
     }
 
 
