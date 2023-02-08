@@ -23,6 +23,7 @@ public class Question {
         this.title = questionInsertDto.getTitle();
         this.content = questionInsertDto.getContent();
         this.createTime = questionInsertDto.getCreatetime();
+        this.views = questionInsertDto.getViews();
         this.status = questionInsertDto.getStatus();
         this.picture = questionInsertDto.getPicture();
         this.categorySub = categorySub;
@@ -45,6 +46,7 @@ public class Question {
     private String content;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
+    private int views;
     private int status;
     private String picture;
 
