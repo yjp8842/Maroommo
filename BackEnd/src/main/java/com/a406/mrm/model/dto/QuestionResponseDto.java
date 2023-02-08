@@ -18,6 +18,7 @@ public class QuestionResponseDto {
         this.id = question.getId();
         this.title = question.getTitle();
         this.createTime = question.getCreateTime();
+        this.views = question.getViews();
         this.status = question.getStatus();
         this.user = question.getUser().getId();
     }
@@ -25,6 +26,7 @@ public class QuestionResponseDto {
     private int id;
     private String title;
     private Date createTime;
+    private int views;
     private int status;
     private String user;
 

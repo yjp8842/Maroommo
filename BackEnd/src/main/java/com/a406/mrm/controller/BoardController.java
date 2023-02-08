@@ -4,6 +4,8 @@ import com.a406.mrm.model.dto.*;
 import com.a406.mrm.service.BoardServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,7 +21,7 @@ import java.util.List;
 @RequestMapping("board")
 @Api("게시판 관리")
 public class BoardController {
-
+    private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
     private final BoardServiceImpl boardServiceImpl;
 
     public BoardController(BoardServiceImpl boardServiceImpl) {
@@ -29,6 +31,7 @@ public class BoardController {
     @PostMapping
     @ApiOperation("게시판 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 사진(picture), 제목(title), 작성자아이디(user_id))")
     public ResponseEntity<?> create(@RequestBody BoardInsertDto insertDto) {
+        logger.info("input board insert DTO : {} ",insertDto.toString());
         return ResponseEntity.ok(boardServiceImpl.join(insertDto));
     }
 
