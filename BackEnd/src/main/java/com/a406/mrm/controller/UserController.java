@@ -1,11 +1,10 @@
 package com.a406.mrm.controller;
 ;
+import com.a406.mrm.model.dto.ScheduleResponseDto;
 import com.a406.mrm.model.dto.UserJoinRequestDto;
 import com.a406.mrm.model.dto.UserLoginResponseDto;
 import com.a406.mrm.model.dto.UserModifyRequestDto;
-import com.a406.mrm.service.EmailService;
-import com.a406.mrm.service.MemoService;
-import com.a406.mrm.service.UserService;
+import com.a406.mrm.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,6 +30,7 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final ScheduleService scheduleService;
 
     /**
      *  회원가입 메서드

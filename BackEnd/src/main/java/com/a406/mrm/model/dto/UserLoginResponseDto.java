@@ -22,12 +22,12 @@ public class UserLoginResponseDto {
     private String intro;
     private String  userMemo;
 
-
     private List<RoomListResponseDto> myRooms = new ArrayList<>();
     private List<TodoResponseDto> doing = new ArrayList<>();
     private List<TodoResponseDto> done = new ArrayList<>();
+    private List<ScheduleResponseDto> schedules = new ArrayList<>();
 
-    public UserLoginResponseDto(User user, UserMemo userMemo){
+    public UserLoginResponseDto(User user, UserMemo userMemo, List<ScheduleResponseDto> schedules){
         this.id=user.getId();
         this.email=user.getEmail();
         this.name=user.getName();
@@ -49,5 +49,7 @@ public class UserLoginResponseDto {
         this.myRooms = user.getRooms()
                             .stream()
                             .map(x->new RoomListResponseDto(x)).collect(Collectors.toList());
+
+        this.schedules = schedules;
     }
 }

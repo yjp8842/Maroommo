@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,18 +34,25 @@ public class ScheduleServiceImpl implements ScheduleService{
     // 그룹들마다 스케쥴을 불러와 저장한다
     @Override
     public List<ScheduleResponseDto> getSchedule(String userId) {
-//        List<UserHasRoom> rooms
-//                = userRepository.findById(userId)
-//                .get()
-//                .getRooms()
-//                .stream()
-//                .map(x->new )
+        List<ScheduleResponseDto> result = new ArrayList<>();
 
+        List<Integer> rooms = userRepository.findById(userId)
+                                            .get()
+                                            .getRooms()
+                                            .stream()
+                                            .map(x->x.getRoom().getId())
+                                            .collect(Collectors.toList());
 
-        List<ScheduleResponseDto> result = scheduleRepository.findByUserId(userId)
-                .stream()
-                .map(x -> new ScheduleResponseDto(x))
-                .collect(Collectors.toList());
+        for (int roomId : rooms){
+            List<ScheduleResponseDto> list = scheduleRepository.findByRoomId(roomId)
+                    .stream()
+                    .map(x->new ScheduleResponseDto(x))
+                    .collect(Collectors.toList());
+            for(ScheduleResponseDto s : list){
+                result.add(s);
+            }
+        }
+
         return result;
     }
 

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 @Table(name = "schedule")
 public class Schedule {
     public Schedule(ScheduleRequestDto scheduleRequestDto, User user, Room room){

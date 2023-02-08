@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RoomService {
     MyRoomResponseDto getMyRoomDto(String userId);
-    RoomMoveResponseDto getMoveRoomDto(int roomId);
+    RoomMoveResponseDto getMoveRoomDto(int roomId, String userId);
     void removeRoom(int roomId);
     String modifyName(int roomId, String name);
     String modifyIntro(int roomId, String intro);

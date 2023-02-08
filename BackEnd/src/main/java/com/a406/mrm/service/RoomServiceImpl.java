@@ -23,6 +23,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
+    private final ScheduleService scheduleService;
     private final RoomMemoRepository roomMemoRepository;
 
     // 마이 페이지를 눌렀을 시 유저가 참가한 room list를 가져온다
@@ -30,23 +31,25 @@ public class RoomServiceImpl implements RoomService {
     public MyRoomResponseDto getMyRoomDto(String userId) {
         MyRoomResponseDto myRoomResponseDto = null;
         User user = userRepository.findById(userId).get();
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
 
         // 애초에 user가 없는데 요청을 할 일이 없긴 하지,,,
         if(user != null){
-            myRoomResponseDto = new MyRoomResponseDto(user);
+            myRoomResponseDto = new MyRoomResponseDto(user,schedules);
         }
         return myRoomResponseDto;
     }
 
     // 그룹 페이지를 눌렀을 시 그룹의 자세한 정보를 받아온다
     @Override
-    public RoomMoveResponseDto getMoveRoomDto(int roomId) {
+    public RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) {
         RoomMoveResponseDto moveRoomResponseDto = null;
         Room room = roomRepository.findById(roomId).get();
         RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
 
         if(room != null){
-            moveRoomResponseDto = new RoomMoveResponseDto(room, roomMemo);
+            moveRoomResponseDto = new RoomMoveResponseDto(room, roomMemo,schedules);
         }
 
         return moveRoomResponseDto;
@@ -83,7 +86,8 @@ public class RoomServiceImpl implements RoomService {
         // 그룹 메모를 저장
         RoomMemo roomMemo = roomMemoRepository.save(new RoomMemo(registRoom.getId(), ""));
 
-        moveRoomResponseDto = new RoomMoveResponseDto(registRoom, roomMemo);
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
+        moveRoomResponseDto = new RoomMoveResponseDto(registRoom, roomMemo, schedules);
 
         return moveRoomResponseDto;
     }
@@ -95,12 +99,13 @@ public class RoomServiceImpl implements RoomService {
         Room enterRoomInfo = roomRepository.findById(roomId).get(); // id가 일치하는 room 정보를 가져온다
         RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
         User user = userRepository.findById(userId).get();
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
         UserHasRoom userHasRoom = null;
 
         if(enterRoomInfo != null){
             userHasRoom = new UserHasRoom(user, enterRoomInfo);
             userHasRoomRepository.save(userHasRoom);
-            moveRoomResponseDto = new RoomMoveResponseDto(enterRoomInfo, roomMemo);
+            moveRoomResponseDto = new RoomMoveResponseDto(enterRoomInfo, roomMemo, schedules);
         }
 
         return moveRoomResponseDto;
@@ -175,7 +180,7 @@ public class RoomServiceImpl implements RoomService {
         List<RoomMoveResponseDto> result =
                 roomRepository.RoomListAll()
                                 .stream()
-                                .map(x -> new RoomMoveResponseDto(x, roomMemoRepository.findByRoomId(x.getId()))).collect(Collectors.toList());
+                                .map(x -> new RoomMoveResponseDto(x, roomMemoRepository.findByRoomId(x.getId()), null)).collect(Collectors.toList());
         return result;
     }
 

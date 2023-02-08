@@ -2,6 +2,7 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.ScheduleRequestDto;
 import com.a406.mrm.model.dto.ScheduleResponseDto;
+import com.a406.mrm.repository.ScheduleRepository;
 import com.a406.mrm.service.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,11 @@ public class ScheduleController {
     private final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
     @Autowired
     private ScheduleService scheduleService;
+    
+    // 유저의 스케쥴을 가져온다...?
+    // 지금 논의되는 스케쥴은 그룹의 스케쥴이기도 하고
+    // room 이동 시 스케쥴을 가져오기 때문에
+    // 여기서 get을 할 순간이 있는가... 를 생각해보자
     @GetMapping("{userId}")
     public ResponseEntity<?> getSchedule(@PathVariable("userId") String userId){
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getSchedule(userId));

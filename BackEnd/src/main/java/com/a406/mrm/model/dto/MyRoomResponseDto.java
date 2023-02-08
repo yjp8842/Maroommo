@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 
 // 마이 페이지를 클릭했을 시 반환해주는 Dto
-
+// 스케쥴도 같이 반환해줘야 한다
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
 public class MyRoomResponseDto {
 
     private List<RoomListResponseDto> myRooms = new ArrayList<>();
+    private List<ScheduleResponseDto> schedules = new ArrayList<>();
 
-    public MyRoomResponseDto(User user){
+    public MyRoomResponseDto(User user, List<ScheduleResponseDto> schedules){
         this.myRooms = user.getRooms()
                             .stream()
                             .map(x->new RoomListResponseDto(x)).collect(Collectors.toList());
+        this.schedules = schedules;
     }
 }

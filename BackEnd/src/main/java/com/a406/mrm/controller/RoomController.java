@@ -189,15 +189,15 @@ public class RoomController {
     }
 
     @ApiOperation("select room and get room info")
-    @GetMapping("/{roomId}")
-    public ResponseEntity<?> SearchMyRoom(@PathVariable("roomId") int roomId){
+    @GetMapping("/{roomId}/{userId}")
+    public ResponseEntity<?> getRoomDetail(@PathVariable("roomId") int roomId, @PathVariable("userId") String userId){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         RoomMoveResponseDto moveRoomInfo = null;
 
         try {
-            moveRoomInfo = roomService.getMoveRoomDto(roomId);
+            moveRoomInfo = roomService.getMoveRoomDto(roomId, userId);
             resultMap.put("moveRoomInfo",moveRoomInfo);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

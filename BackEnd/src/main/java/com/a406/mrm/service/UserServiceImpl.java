@@ -1,9 +1,6 @@
 package com.a406.mrm.service;
 
-import com.a406.mrm.model.dto.UserJoinRequestDto;
-import com.a406.mrm.model.dto.UserLoginResponseDto;
-import com.a406.mrm.model.dto.UserMemoDto;
-import com.a406.mrm.model.dto.UserModifyRequestDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.model.entity.UserMemo;
 import com.a406.mrm.repository.UserMemoRepository;
@@ -22,6 +19,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
     private final UserMemoRepository userMemoRepository;
+    private final ScheduleService scheduleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     // 유저 정보를 암호화하여 db에 저장한다
@@ -44,8 +42,10 @@ public class UserServiceImpl implements UserService{
         UserLoginResponseDto userLoginResponseDtor = null;
         User user = userRepository.findById(userId).get();
         UserMemo userMemo = userMemoRepository.findByUserId(userId);
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
+
         if(user != null){
-            userLoginResponseDtor = new UserLoginResponseDto(user, userMemo);
+            userLoginResponseDtor = new UserLoginResponseDto(user, userMemo,schedules);
         }
         return userLoginResponseDtor;
     }
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService{
                 .stream()
                 .map(x -> {
                     try {
-                        return new UserLoginResponseDto(x, userMemoRepository.findByUserId(x.getId()));
+                        return new UserLoginResponseDto(x, userMemoRepository.findByUserId(x.getId()), scheduleService.getSchedule(x.getId()));
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
