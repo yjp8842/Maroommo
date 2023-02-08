@@ -21,13 +21,13 @@ public class ChatMessage {
     private String userId;
     private String userNickName;
     private String message;
-    private LocalDateTime localDateTime; // 보낸 시간
+    private LocalDateTime time; // 보낸 시간
 
     public ChatMessage(ChatMessageRequestDto chatMessageDto){
         this.roomId=Integer.parseInt(chatMessageDto.getRoomId());
         this.userId=chatMessageDto.getUserId();
         this.userNickName=chatMessageDto.getUserNickname();
         this.message=chatMessageDto.getMessage();
-        this.localDateTime=LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.time=LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 }

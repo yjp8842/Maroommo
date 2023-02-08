@@ -26,7 +26,7 @@ public class ChatMessageResponseDto {
         this.userId = chatMessage.getUserId();
         this.userNickname = chatMessage.getUserNickName();
         this.message = chatMessage.getMessage();
-        this.localDateTime = chatMessage.getLocalDateTime();
+        this.localDateTime = chatMessage.getTime();
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 E요일");
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("a HH시 mm분");
