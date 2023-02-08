@@ -1,6 +1,5 @@
 package com.a406.mrm.model.dto;
 
-import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.model.entity.Question;
 import lombok.Data;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class QuestionResponseDto {
         this.createTime = question.getCreateTime();
         this.views = question.getViews();
         this.status = question.getStatus();
-        this.user = question.getUser().getId();
+        this.user_id = question.getUser().getId();
     }
 
     private int id;
@@ -28,6 +27,6 @@ public class QuestionResponseDto {
     private Date createTime;
     private int views;
     private int status;
-    private String user;
+    private String user_id;
 
 }
