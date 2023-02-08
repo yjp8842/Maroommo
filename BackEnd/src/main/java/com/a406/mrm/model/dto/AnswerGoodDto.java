@@ -12,9 +12,7 @@ public class AnswerGoodDto {
 
     public AnswerGoodDto(Answer answer) {
         this.id = answer.getId();
-        this.good = answer.getGood();
 
     }
     private int id;
-    private int good;
 }

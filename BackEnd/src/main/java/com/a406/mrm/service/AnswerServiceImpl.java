@@ -49,10 +49,12 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public AnswerGoodDto goodPlus(AnswerGoodDto goodDto) {
+    public int goodPlus(AnswerGoodDto goodDto) {
         Answer answer = answerRepository.findById(goodDto.getId());
-        answer.setGood(goodDto.getGood());
-        return new AnswerGoodDto(answerRepository.save(answer));
+        int goods = answer.getGood();
+        goods++;
+        answer.setGood(goods);
+        return goods;
     }
 
 

@@ -9,7 +9,7 @@ public interface AnswerService {
     String delete(int id, String user_id);
 
     AnswerModifyDto update(AnswerModifyDto answerModifyDto);
-    AnswerGoodDto goodPlus(AnswerGoodDto goodDto);
+    int goodPlus(AnswerGoodDto goodDto);
 
 
 }
