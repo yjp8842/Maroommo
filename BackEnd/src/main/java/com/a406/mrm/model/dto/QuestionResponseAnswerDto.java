@@ -22,6 +22,7 @@ public class QuestionResponseAnswerDto {
         this.title = question.getTitle();
         this.content = question.getContent();
         this.createTime = question.getCreateTime();
+        this.views = question.getViews();
         this.status = question.getStatus();
         this.user = question.getUser().getId();
         this.answers = question.getAnswers().stream().map(x -> x.getContent()).collect(Collectors.toList());
@@ -31,6 +32,7 @@ public class QuestionResponseAnswerDto {
     private String title;
     private String content;
     private Date createTime;
+    private int views;
     private int status;
     private String user;
     private List<String> answers = new ArrayList<>();
