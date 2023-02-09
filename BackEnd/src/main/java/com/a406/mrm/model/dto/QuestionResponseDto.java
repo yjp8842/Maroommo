@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -24,7 +25,7 @@ public class QuestionResponseDto {
 
     private int id;
     private String title;
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
     private int status;
     private String user_id;

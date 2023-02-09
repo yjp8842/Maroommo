@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,19 +24,19 @@ public class QuestionResponseAnswerDto {
         this.createTime = question.getCreateTime();
         this.views = question.getViews();
         this.status = question.getStatus();
+        this.picture = question.getPicture();
         this.user_id = question.getUser().getId();
-//        this.answers = question.getAnswers().stream().map(x -> x.getContent()).collect(Collectors.toList());
         this.answers = question.getAnswers().stream().map(x->new AnswerResponseDto(x)).collect(Collectors.toList());
     }
 
     private int id;
     private String title;
     private String content;
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
     private int status;
+    private String picture;
     private String user_id;
-//    private List<String> answers = new ArrayList<>();
     private List<AnswerResponseDto> answers = new ArrayList<>();
 
 }

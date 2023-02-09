@@ -18,12 +18,12 @@ public class CategoryResponseDto {
     public CategoryResponseDto(Category category){
         this.id = category.getId();
         this.name = category.getName();
+        this.roomId = category.getRoom().getId();
         this.categorySubs = category.getCategorySubs().stream().map(x->new CategorySubResponseDto(x)).collect(Collectors.toList());
     }
 
     private int id;
     private String name;
+    private int roomId;
     private List<CategorySubResponseDto> categorySubs = new ArrayList<>();
-
-
 }

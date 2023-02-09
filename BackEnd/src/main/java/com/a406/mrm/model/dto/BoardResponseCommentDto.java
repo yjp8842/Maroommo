@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,17 +24,17 @@ public class BoardResponseCommentDto {
         this.content = board.getContent();
         this.createTime = board.getCreateTime();
         this.views = board.getViews();
+        this.picture = board.getPicture();
         this.user_id = board.getUser().getId();
-//        this.comments = board.getComments().stream().map(x -> x.getContent()).collect(Collectors.toList());
         this.comments = board.getComments().stream().map(x->new CommentResponseDto(x)).collect(Collectors.toList());
     }
 
     private int id;
     private String title;
     private String content;
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
+    private String picture;
     private String user_id;
-//    private List<String> comments = new ArrayList<>();
     private List<CommentResponseDto> comments = new ArrayList<>();
 }

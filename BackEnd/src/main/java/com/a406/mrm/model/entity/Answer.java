@@ -7,6 +7,8 @@ import com.a406.mrm.model.dto.CommentModifyDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Getter
@@ -19,9 +21,10 @@ import java.util.Date;
 public class Answer {
     public Answer(AnswerInsertDto answerInsertDto, Question question, User user) {
         this.content = answerInsertDto.getContent();
-        this.createTime = answerInsertDto.getCreatetime();
+        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.question = question;
         this.user = user;
+        this.good = 0;
     }
 
 
@@ -30,8 +33,7 @@ public class Answer {
     private int id;
 
     private String content;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private int good;
 

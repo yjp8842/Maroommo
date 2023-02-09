@@ -24,7 +24,9 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class ScheduleServiceImpl implements ScheduleService{
+
     private Logger logger = LoggerFactory.getLogger(ScheduleServiceImpl.class);
+
     private final ScheduleRepository scheduleRepository;
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
@@ -58,10 +60,17 @@ public class ScheduleServiceImpl implements ScheduleService{
 
     @Override
     public ScheduleResponseDto addSchedule(ScheduleRequestDto scheduleRequestDto) {
-        Optional<Room> room = roomRepository.findById(scheduleRequestDto.getRoomId());
+        Room room = roomRepository.findById(scheduleRequestDto.getRoomId()).get();
         User user = userRepository.findById(scheduleRequestDto.getUserId()).get();
-        Schedule schedule = scheduleRepository.save(new Schedule(scheduleRequestDto,user,room.get()));
-        return new ScheduleResponseDto(schedule);
+        ScheduleResponseDto scheduleResponseDto = null;
+
+        if(room != null && user != null){
+            Schedule schedule = new Schedule(scheduleRequestDto,user,room);
+            schedule = scheduleRepository.save(schedule);
+            scheduleResponseDto = new ScheduleResponseDto(schedule);
+        }
+
+        return scheduleResponseDto;
     }
 
     @Override
@@ -72,8 +81,15 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public ScheduleResponseDto modifySchedule(int scheduleId, ScheduleRequestDto scheduleRequestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).get();
-        schedule.setStartTime(scheduleRequestDto.getStartTime());
-        schedule.setContent(scheduleRequestDto.getContent());
-        return new ScheduleResponseDto(scheduleRepository.save(schedule));
+        ScheduleResponseDto scheduleResponseDto = null;
+
+        if (schedule != null){
+            schedule.setStartTime(scheduleRequestDto.getStartTime());
+            schedule.setContent(scheduleRequestDto.getContent());
+            schedule = scheduleRepository.save(schedule);
+            scheduleResponseDto = new ScheduleResponseDto(schedule);
+        }
+
+        return scheduleResponseDto;
     }
 }
