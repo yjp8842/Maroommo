@@ -35,8 +35,8 @@ public class QuestionServiceImpl implements QuestionService{
         String uuid =  null;
         if(picture != null){
             uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
-            String absPath = "/img_dir/"+uuid;
-//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+//            String absPath = "/img_dir/"+uuid;
+            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
             try {
                 picture.transferTo(new File(absPath));
             }catch(IOException e){
@@ -70,18 +70,30 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public QuestionModifyDto update(QuestionModifyDto modifyDto) throws Exception{
-        Question question = questionRepository.findById(modifyDto.getId());
-        QuestionModifyDto questionModifyDto = null;
+    public QuestionResponseAnswerDto update(int id, String content, MultipartFile picture, int status, String title, String user_id) throws Exception{
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+//            String absPath = "/img_dir/"+uuid;
+            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
 
-        if (question != null && question.getUser().getId().equals(modifyDto.getUser_id())){
-            question.setTitle(modifyDto.getTitle());
-            question.setContent(modifyDto.getContent());
-            question.setPicture(modifyDto.getPicture());
-            question.setStatus(modifyDto.getStatus());
+        Question question = questionRepository.findById(id);
+        QuestionResponseAnswerDto questionModifyDto = null;
+
+        if (question != null && question.getUser().getId().equals(user_id)){
+            question.setTitle(title);
+            question.setContent(content);
+            question.setPicture(uuid);
+            question.setStatus(status);
             question = questionRepository.save(question);
 
-            questionModifyDto = new QuestionModifyDto(question);
+            questionModifyDto = new QuestionResponseAnswerDto(question);
         }
 
         return questionModifyDto;

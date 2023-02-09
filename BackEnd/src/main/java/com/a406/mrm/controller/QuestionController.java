@@ -81,21 +81,22 @@ public class QuestionController {
      * @return question : 수정한 질문을 반환한다
      */
     @PatchMapping
-    @ApiOperation("게시판 수정 : json(수정내용(content), 질문 아이디(id), 사진(picture), status(상태), 제목(title), 작성자 아이디(user_id))")
-    public ResponseEntity<?> update(@RequestBody QuestionModifyDto modifyDto) {
+    @ApiOperation("게시판 수정 : 질문 아이디(id), 수정내용(content), 사진(picture), status(상태), 제목(title), 작성자 아이디(user_id))")
+    public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestParam MultipartFile picture,
+                                    @RequestParam int status, @RequestParam String title, @RequestParam String user_id) {
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        QuestionModifyDto questionModifyDto = null;
+        HttpStatus Hstatus = HttpStatus.OK;
+        QuestionResponseAnswerDto questionModifyDto = null;
 
         try {
-            questionModifyDto = questionService.update(modifyDto);
+            questionModifyDto = questionService.update(id, content, picture, status, title, user_id);
             resultMap.put("question", questionModifyDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            Hstatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        return new ResponseEntity<Map<String, Object>>(resultMap, Hstatus);
     }
 
     /**
