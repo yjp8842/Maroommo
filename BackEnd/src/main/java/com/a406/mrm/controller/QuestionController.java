@@ -56,7 +56,7 @@ public class QuestionController {
     }
 
     //size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호
-    static final int page_num = 5;
+    static final int page_num = 10;
     @GetMapping
     @ApiOperation("질문 조회 (pageable) : 카테고리 서브 아이디(id) + size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호 ")
     public Page<QuestionResponseDto> QuestionPageable (Model model, @RequestParam("categorySub_id") int categorySub_id,

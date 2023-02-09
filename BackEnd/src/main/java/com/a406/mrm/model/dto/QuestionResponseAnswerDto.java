@@ -1,6 +1,5 @@
 package com.a406.mrm.model.dto;
 
-import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.model.entity.Question;
 import lombok.Data;
 import lombok.Getter;
@@ -24,8 +23,9 @@ public class QuestionResponseAnswerDto {
         this.createTime = question.getCreateTime();
         this.views = question.getViews();
         this.status = question.getStatus();
-        this.user = question.getUser().getId();
-        this.answers = question.getAnswers().stream().map(x -> x.getContent()).collect(Collectors.toList());
+        this.user_id = question.getUser().getId();
+//        this.answers = question.getAnswers().stream().map(x -> x.getContent()).collect(Collectors.toList());
+        this.answers = question.getAnswers().stream().map(x->new AnswerResponseDto(x)).collect(Collectors.toList());
     }
 
     private int id;
@@ -34,7 +34,8 @@ public class QuestionResponseAnswerDto {
     private Date createTime;
     private int views;
     private int status;
-    private String user;
-    private List<String> answers = new ArrayList<>();
+    private String user_id;
+//    private List<String> answers = new ArrayList<>();
+    private List<AnswerResponseDto> answers = new ArrayList<>();
 
 }
