@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class ChatMessageResponseDto {
 
+    private String id;
     private int roomId;
     private String userId;
     private String userNickname;
@@ -22,6 +23,7 @@ public class ChatMessageResponseDto {
     private String time;
 
     public ChatMessageResponseDto(ChatMessage chatMessage){
+        this.id = chatMessage.getId();
         this.roomId = chatMessage.getRoomId();
         this.userId = chatMessage.getUserId();
         this.userNickname = chatMessage.getUserNickName();

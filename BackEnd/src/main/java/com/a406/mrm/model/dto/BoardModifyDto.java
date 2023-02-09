@@ -13,17 +13,17 @@ import java.util.Date;
 public class BoardModifyDto {
 
     public BoardModifyDto(Board board) {
+        this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.picture = board.getPicture();
-        this.id = board.getId();
         this.user_id = board.getUser().getId();
     }
 
+    private int id;
     private String title;
     private String content;
     private String picture;
-    private int id;
     private String user_id;
 
 }

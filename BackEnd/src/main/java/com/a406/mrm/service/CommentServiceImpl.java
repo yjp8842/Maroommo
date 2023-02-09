@@ -3,10 +3,12 @@ package com.a406.mrm.service;
 import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Board;
 import com.a406.mrm.model.entity.Comment;
+import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.repository.CategorySubRepository;
 import com.a406.mrm.repository.CommentRepository;
 import com.a406.mrm.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,42 +17,52 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService{
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    @Autowired
-    public CommentServiceImpl(BoardRepository boardRepository, UserRepository userRepository, CommentRepository commentRepository) {
-        this.boardRepository = boardRepository;
-        this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
-    }
 
     @Override
-    public CommentInsertDto join(CommentInsertDto insertDto) {
-        Comment comment = new Comment(insertDto,boardRepository.findById(insertDto.getBoard_id()), userRepository.findById(insertDto.getUser_id()).get());
-        return new CommentInsertDto(commentRepository.save(comment));
-    }
+    public CommentResponseDto join(CommentInsertDto insertDto) {
+        Board board = boardRepository.findById(insertDto.getBoard_id());
+        User user = userRepository.findById(insertDto.getUser_id()).get();
+        CommentResponseDto commentResponseDto = null;
 
-    @Override
-    public String delete(int id, String user_id) {
-        if (commentRepository.findById(id).getUser().getId().equals(user_id)){
-            commentRepository.deleteById(id);
-            return "OK";
+        if(user != null && board != null){
+            Comment comment = new Comment(insertDto,board,user);
+            comment = commentRepository.save(comment);
+            commentResponseDto = new CommentResponseDto(comment);
         }
-        return "Fail";
+
+        return commentResponseDto;
+    }
+
+    @Override
+    public boolean delete(int id, String user_id) {
+        Comment comment = commentRepository.findById(id);
+
+        if (comment != null && comment.getUser().getId().equals(user_id)){
+            commentRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public CommentModifyDto update(CommentModifyDto modifyDto) {
-        if (commentRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
-            Comment comment = commentRepository.findById(modifyDto.getId());
+        Comment comment = commentRepository.findById(modifyDto.getId());
+        CommentModifyDto commentModifyDto = null;
+
+        if (comment != null && comment.getUser().getId().equals(modifyDto.getUser_id())){
             comment.setContent(modifyDto.getContent());
-            return new CommentModifyDto(commentRepository.save(comment));
-        }else{
-            return null;
+            comment = commentRepository.save(comment);
+            commentModifyDto = new CommentModifyDto(comment);
         }
+
+        return commentModifyDto;
     }
 
 

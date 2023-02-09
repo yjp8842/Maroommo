@@ -3,6 +3,7 @@ package com.a406.mrm.model.dto;
 import com.a406.mrm.model.entity.Comment;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -22,7 +23,7 @@ public class CommentResponseDto {
     }
     private int id;
     private String content;
-    private Date createtime;
+    private LocalDateTime createtime;
     private int board_id;
     private String user_id;
 

@@ -7,6 +7,8 @@ import com.a406.mrm.model.dto.QuestionModifyDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,9 +24,9 @@ public class Question {
     public Question(QuestionInsertDto questionInsertDto, CategorySub categorySub, User user) {
         this.title = questionInsertDto.getTitle();
         this.content = questionInsertDto.getContent();
-        this.createTime = questionInsertDto.getCreatetime();
-        this.views = questionInsertDto.getViews();
-        this.status = questionInsertDto.getStatus();
+        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.views = 0;
+        this.status = 0;
         this.picture = questionInsertDto.getPicture();
         this.categorySub = categorySub;
         this.user = user;
@@ -44,8 +46,7 @@ public class Question {
     private int id;
     private String title;
     private String content;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
     private int status;
     private String picture;

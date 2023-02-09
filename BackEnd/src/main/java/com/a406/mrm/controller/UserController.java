@@ -43,7 +43,7 @@ public class UserController {
         logger.info("[join] user:{}", userJoinDto);
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         try {
             // 이미 가입한 아이디인지 확인한다
             // 존재하지 않는다면 회원가입을 진행시킨다
@@ -54,38 +54,10 @@ public class UserController {
             else{
                 resultMap.put("isExist", true);
             }
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-    /**
-     *  이메일 전송 메서드
-     *  비밀번호 찾기 시 입력한 이메일 주소에 인증 코드를 전송
-     */
-    @ApiOperation("Send Email With authentication Code")
-    @GetMapping("help/{email}")
-    private ResponseEntity<Map<String, Object>> sendEmail(
-            @PathVariable @ApiParam("send email Information") String email) throws Exception {
-        logger.info("[sendEmail] email:{}", email);
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        String authCode = null; // 이메일로 보낸 인증코드
-
-        try {
-            authCode = emailService.sendMessage(email);
-
-            resultMap.put("authCode", authCode);
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
@@ -104,7 +76,7 @@ public class UserController {
         logger.info("[findId] name:{}, email:{}", name, email);
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         try {
             String userId = userService.findByUserForNameAndEmail(name,email);
 
@@ -116,12 +88,12 @@ public class UserController {
 
                 userId = userId.substring(0,pos) + str + userId.substring(pos+str.length());
 
-                resultMap.put("id", userId);
-                status = HttpStatus.ACCEPTED;
+                resultMap.put("userId", userId);
+                resultMap.put("isExist", true);
             }
             else{
-                resultMap.put("id", null);
-                status = HttpStatus.ACCEPTED;
+                resultMap.put("userId", null);
+                resultMap.put("isExist", false);
             }
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -146,21 +118,45 @@ public class UserController {
         logger.info("[findPassword] id:{}, name:{}, email:{}", id, name, email);
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         try {
             // 해당 유저가 존재한다면
             if(userService.existsByUserForIdAndNameAndEmail(id,name,email)){
-                resultMap.put("id",id);
-                status = HttpStatus.ACCEPTED;
+                resultMap.put("userId",id);
             }
             else {
-                resultMap.put("id", null);
-                status = HttpStatus.ACCEPTED;
+                resultMap.put("userId", null);
             }
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    /**
+     *  이메일 전송 메서드
+     *  비밀번호 찾기 시 입력한 이메일 주소에 인증 코드를 전송
+     */
+    @ApiOperation("Send Email With authentication Code")
+    @GetMapping("help/{email}")
+    private ResponseEntity<Map<String, Object>> sendEmail(
+            @PathVariable @ApiParam("send email Information") String email) throws Exception {
+        logger.info("[sendEmail] email:{}", email);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        String emailCode = null; // 이메일로 보낸 인증코드
+
+        try {
+            emailCode = emailService.sendMessage(email);
+
+            resultMap.put("emailCode", emailCode);
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
@@ -176,10 +172,9 @@ public class UserController {
         logger.info("[modifyPassword] id:{}, password:{}", user.getId(), user.getPassword());
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         try {
             userService.modifyPassword(user);
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -245,7 +240,6 @@ public class UserController {
         try {
             user = userService.getLoginUser(userId);
             resultMap.put("user",user);
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -266,7 +260,7 @@ public class UserController {
         logger.info("[modifyUserInfo] user:{}", user);
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         try {
             // 유저가 존재한다면
             if(userService.existsByUserForId(user.getId())){
@@ -276,7 +270,6 @@ public class UserController {
             else{
                 resultMap.put("isModify", "fail");
             }
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -307,7 +300,6 @@ public class UserController {
         try {
             users = userService.getUserList();
             resultMap.put("usesr",users);
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

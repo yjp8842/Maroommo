@@ -20,6 +20,7 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
+
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
@@ -28,7 +29,7 @@ public class RoomServiceImpl implements RoomService {
 
     // 마이 페이지를 눌렀을 시 유저가 참가한 room list를 가져온다
     @Override
-    public MyRoomResponseDto getMyRoomDto(String userId) {
+    public MyRoomResponseDto getMyRoomDto(String userId) throws Exception{
         MyRoomResponseDto myRoomResponseDto = null;
         User user = userRepository.findById(userId).get();
         List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
@@ -42,7 +43,7 @@ public class RoomServiceImpl implements RoomService {
 
     // 그룹 페이지를 눌렀을 시 그룹의 자세한 정보를 받아온다
     @Override
-    public RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) {
+    public RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) throws Exception{
         RoomMoveResponseDto moveRoomResponseDto = null;
         Room room = roomRepository.findById(roomId).get();
         RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
@@ -57,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
 
     // room을 생성하고 해당 room으로 이돟한다 -> detail한 정보를 반환해야 하고 room list도 줘야한다
     @Override
-    public RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
+    public RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) throws Exception{
         RoomMoveResponseDto moveRoomResponseDto = null;
 
         // 파일 저장
@@ -80,6 +81,7 @@ public class RoomServiceImpl implements RoomService {
 
         // 유저에 룸 연동
         User user = userRepository.findById(userId).get();
+        if(user == null) return null;
         UserHasRoom userHasRoom = new UserHasRoom(user, registRoom);
         userHasRoomRepository.save(userHasRoom);
 
@@ -94,7 +96,7 @@ public class RoomServiceImpl implements RoomService {
 
     // room 입장
     @Override
-    public RoomMoveResponseDto enterRoom(int roomId, String userId) {
+    public RoomMoveResponseDto enterRoom(int roomId, String userId) throws Exception{
         RoomMoveResponseDto moveRoomResponseDto = null;
         Room enterRoomInfo = roomRepository.findById(roomId).get(); // id가 일치하는 room 정보를 가져온다
         RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
@@ -102,7 +104,7 @@ public class RoomServiceImpl implements RoomService {
         List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
         UserHasRoom userHasRoom = null;
 
-        if(enterRoomInfo != null){
+        if(user != null && enterRoomInfo != null){
             userHasRoom = new UserHasRoom(user, enterRoomInfo);
             userHasRoomRepository.save(userHasRoom);
             moveRoomResponseDto = new RoomMoveResponseDto(enterRoomInfo, roomMemo, schedules);
@@ -112,71 +114,94 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public boolean existsRoomByIdAndCode(int roomId, String code) {
+    public boolean existsRoomByIdAndCode(int roomId, String code) throws Exception{
         return roomRepository.existsByIdAndCode(roomId, code);
     }
 
     @Override
-    public boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId) {
+    public boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId) throws Exception{
         return userHasRoomRepository.existsByRoomIdAndUserId(roomId, userId);
     }
 
     // code 갱신
     @Override
-    public String updateCode(int roomId) {
+    public String updateCode(int roomId) throws Exception{
         Room nowRoomInfo = roomRepository.findById(roomId).get(); // room 정보를 가져온다
-        String newCode = UUID.randomUUID().toString();
-        nowRoomInfo.setCode(newCode);
-        roomRepository.save(nowRoomInfo);
+        String newCode = null;
+
+        if (nowRoomInfo != null){
+            newCode = UUID.randomUUID().toString();
+            nowRoomInfo.setCode(newCode);
+            roomRepository.save(nowRoomInfo);
+        }
 
         return newCode;
     }
 
     @Override
-    public void removeRoom(int roomId){
+    public void removeRoom(int roomId)throws Exception{
         Room room = roomRepository.findById(roomId).get();
+
         if(room.getUsers() != null) {
-//            room.getUsers().stream().map(r-> r.getUser().getRooms().removeIf(u -> u.getRoom().getId() == roomId));
             room.getUsers().removeIf(r->r.getRoom().getId() == roomId);
             userHasRoomRepository.saveAll(room.getUsers());
         }
+
         roomRepository.delete(room);
     }
 
     @Override
-    public String modifyName(int roomId, String name){
+    public String modifyName(int roomId, String name)throws Exception{
         Room room = roomRepository.findById(roomId).get();
-        room.setName(name);
-        return roomRepository.save(room).getName();
+        String roomName = null;
+
+        if (room != null){
+            room.setName(name);
+            room = roomRepository.save(room);
+            roomName = room.getName();
+        }
+
+        return roomName;
     }
 
     @Override
-    public String modifyIntro(int roomId, String intro){
+    public String modifyIntro(int roomId, String intro)throws Exception{
         Room room = roomRepository.findById(roomId).get();
-        room.setIntro(intro);
-        return roomRepository.save(room).getIntro();
+        String res = null;
+
+        if(room != null){
+            room.setIntro(intro);
+            room = roomRepository.save(room);
+            res = room.getIntro();
+        }
+
+        return res;
     }
 
     @Override
-    public String modifyProfile(int roomId, MultipartFile profile) {
+    public String modifyProfile(int roomId, MultipartFile profile) throws Exception{
         Room room = roomRepository.findById(roomId).get();
-        String uuid =  null;
-        if(profile != null){
-            uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
+        String res =  null;
+
+        if(room != null && profile != null){
+            String uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
 //            String absPath = "C:/SSAFY/S08P12A406/img_dir/"+uuid;
             String absPath = "/img_dir/"+uuid;
             try {
                 profile.transferTo(new File(absPath));
+                room.setProfile(uuid);
+                room = roomRepository.save(room);
+                res = room.getProfile();
             }catch(IOException e){
                 e.printStackTrace();
             }
         }
-        room.setProfile(uuid);
-        return roomRepository.save(room).getProfile();
+
+        return res;
     }
 
 
-    public List<RoomMoveResponseDto> RoomListAll () {
+    public List<RoomMoveResponseDto> RoomListAll () throws Exception{
         List<RoomMoveResponseDto> result =
                 roomRepository.RoomListAll()
                                 .stream()

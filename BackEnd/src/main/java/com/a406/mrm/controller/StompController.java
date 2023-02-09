@@ -34,9 +34,9 @@ public class StompController {
     private final MemoService memoService;
 
     /**
-     *  채팅 보내기 메서드
-     *  /app/chat/message로 요청이 오면
-     *  해당 메시지를 db에 저장하고, 메시지를 전송한다
+     * @param message
+     *            를 통해 (/app/chat/message)로 요청이 오면 메시지를 저장하고 발송한다
+     * @return 저장한 메시지를 반환한다
      */
     @ApiOperation("Send Chatting Message")
     @MessageMapping("/chat/message")
@@ -45,12 +45,11 @@ public class StompController {
         logger.info("[sendMessage] 메시지 발송 : "+message);
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         ChatMessageResponseDto resMessage = null;
         try {
             // DB에 메시지 저장
             resMessage = chatMessageService.insertChat(message);
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -60,13 +59,11 @@ public class StompController {
 
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
     /**
-     *  메모 보내기 메서드
-     *  /app/chat/memo로 요청이 오면
-     *  해당 memo를 db에 저장하고, memo를 전송한다
-     *
-     *  회원 메모라면 userId가 존재하고
-     *  그룹 메모라면 userId = ""이라고 가정한다
+     * @param memo
+     *          를 통해 (/app/chat/memo)로 요청이 오면 메모를 저장하고 전송한다
+     * @return
      */
     @ApiOperation("Send Room Memo")
     @MessageMapping("/room/memo")
@@ -76,11 +73,10 @@ public class StompController {
         logger.info("[sendMemo] 메모 발송 : "+memo);
 
         Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
+        HttpStatus status = HttpStatus.OK;
         try {
             // DB에 메모 저장
             memoService.insertMemo(memo);
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

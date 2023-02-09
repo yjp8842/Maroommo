@@ -17,10 +17,6 @@ public class CategorySubInsertDto {
     }
 
     private String name;
-
     private int subtype;
-
     private int category_id;
-
-
 }

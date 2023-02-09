@@ -6,13 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 public class BoardResponseDto {
+
     public BoardResponseDto(Board board){
         this.id = board.getId();
         this.title = board.getTitle();
@@ -24,9 +29,8 @@ public class BoardResponseDto {
 
     private int id;
     private String title;
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
     private String user;
 //    private List<String> comments = new ArrayList<>();
-
 }

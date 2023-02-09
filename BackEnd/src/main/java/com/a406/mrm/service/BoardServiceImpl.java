@@ -2,9 +2,12 @@ package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Board;
+import com.a406.mrm.model.entity.CategorySub;
+import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.BoardRepository;
 import com.a406.mrm.repository.CategorySubRepository;
 import com.a406.mrm.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,64 +19,74 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
     private final CategorySubRepository categorySubRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository, CategorySubRepository categorySubRepository, UserRepository userRepository) {
-        this.boardRepository = boardRepository;
-        this.categorySubRepository = categorySubRepository;
-        this.userRepository = userRepository;
-    }
-
     @Override
-    public BoardInsertDto join(BoardInsertDto insertDto) {
-        Board board = new Board(insertDto,categorySubRepository.findById(insertDto.getCategorysub_id()), userRepository.findById(insertDto.getUser_id()).get());
-        return new BoardInsertDto(boardRepository.save(board));
-    }
+    public BoardResponseCommentDto join(BoardInsertDto insertDto) throws Exception {
+        CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
+        User user = userRepository.findById(insertDto.getUser_id()).get();
+        BoardResponseCommentDto boardResponseCommentDto = null;
 
-    @Override
-    public String delete(int id, String user_id) {
-        if (boardRepository.findById(id).getUser().getId().equals(user_id)){
-            boardRepository.deleteById(id);
-            return "OK";
-        }else{
-            return "Fail";
+        if(categorySub != null && user != null){
+            Board board = new Board(insertDto,categorySub,user);
+            board = boardRepository.save(board);
+            boardResponseCommentDto = new BoardResponseCommentDto(board);
         }
+
+        return boardResponseCommentDto;
     }
 
     @Override
-    public BoardModifyDto update(BoardModifyDto modifyDto) {
-        if (boardRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
-            Board board = boardRepository.findById(modifyDto.getId());
+    public boolean delete(int id, String user_id) throws Exception {
+        Board board = boardRepository.findById(id);
+
+        if (board != null && board.getUser().getId().equals(user_id)){
+            boardRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public BoardResponseCommentDto update(BoardModifyDto modifyDto) throws Exception {
+        Board board = boardRepository.findById(modifyDto.getId());
+        BoardResponseCommentDto boardModifyDto = null;
+
+        if (board != null && board.getUser().getId().equals(modifyDto.getUser_id())){
             board.setTitle(modifyDto.getTitle());
             board.setContent(modifyDto.getContent());
             board.setPicture(modifyDto.getPicture());
-            return new BoardModifyDto(boardRepository.save(board));
-        }else{
-            return null;
+            board = boardRepository.save(board);
+            boardModifyDto = new BoardResponseCommentDto(board);
         }
+
+        return boardModifyDto;
     }
 
     @Override
-    public Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable) {
+    public Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable){
         return boardRepository.findBycategorySub_Id(categorysub_id, pageable);
     }
 
     @Override
-    public List<BoardResponseCommentDto> BoardDetail(int board_id) {
+    public BoardResponseCommentDto BoardDetail(int board_id) throws Exception {
         Board board = boardRepository.findById(board_id);
-        int views = board.getViews();
-        views++;
-        board.setViews(views);
-        boardRepository.save(board);
+        BoardResponseCommentDto result = null;
 
-        List<BoardResponseCommentDto> result = boardRepository.findByid(board_id)
-                .stream()
-                .map(x -> new BoardResponseCommentDto(x)).collect(Collectors.toList());
+        if(board != null){
+            int views = board.getViews();
+            views++;
+            board.setViews(views);
+            board = boardRepository.save(board);
+            result = new BoardResponseCommentDto(board);
+        }
+
         return result;
     }
 
