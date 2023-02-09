@@ -35,11 +35,11 @@ public class CategoryController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        CategoryInsertDto categoryInsertDto = null;
+        CategoryResponseDto categoryResponseDto = null;
 
         try {
-            categoryInsertDto = categoryService.join(insertDto);
-            resultMap.put("newCategory", categoryInsertDto);
+            categoryResponseDto = categoryService.join(insertDto);
+            resultMap.put("newCategory", categoryResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

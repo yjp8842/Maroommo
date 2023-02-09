@@ -13,25 +13,17 @@ import java.util.Date;
 public class BoardInsertDto {
 
     public BoardInsertDto(Board board) {
-        this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.createtime = board.getCreateTime();
-        this.views = board.getViews();
         this.picture = board.getPicture();
         if(board.getCategorySub() != null) {
             this.categorysub_id = board.getCategorySub().getId();
         }
         this.user_id = board.getUser().getId();
     }
-    private int id;
     private String title;
     private String content;
-    private Date createtime;
-    private int views;
     private String picture;
     private int categorysub_id;
     private String user_id;
-
-
 }

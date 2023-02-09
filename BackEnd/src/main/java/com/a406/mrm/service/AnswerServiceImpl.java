@@ -26,18 +26,18 @@ public class AnswerServiceImpl implements AnswerService{
     }
 
     @Override
-    public AnswerInsertDto join(AnswerInsertDto insertDto)
+    public AnswerResponseDto join(AnswerInsertDto insertDto)
             throws Exception{
         Question question = questionRepository.findById(insertDto.getQuestion_id());
         User user = userRepository.findById(insertDto.getUser_id()).get();
-        AnswerInsertDto answerInsertDto = null;
+        AnswerResponseDto answerResponseDto = null;
 
         if(user != null && question != null){
             Answer answer = new Answer(insertDto,question,user);
-            answerInsertDto = new AnswerInsertDto(answerRepository.save(answer));
+            answerResponseDto = new AnswerResponseDto(answerRepository.save(answer));
         }
 
-        return answerInsertDto;
+        return answerResponseDto;
     }
 
     @Override

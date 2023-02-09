@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Getter
@@ -20,7 +22,7 @@ import java.util.Date;
 public class Comment {
     public Comment(CommentInsertDto commentInsertDto, Board board, User user) {
         this.content = commentInsertDto.getContent();
-        this.createTime = commentInsertDto.getCreatetime();
+        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         this.board = board;
         this.user = user;
     }
@@ -36,8 +38,7 @@ public class Comment {
     private int id;
 
     private String content;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     @ManyToOne(targetEntity = Board.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")

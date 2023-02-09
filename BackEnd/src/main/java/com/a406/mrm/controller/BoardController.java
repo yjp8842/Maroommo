@@ -43,11 +43,11 @@ public class BoardController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        BoardInsertDto boardInsertDto = null;
+        BoardResponseCommentDto boardResponseCommentDto = null;
 
         try {
-            boardInsertDto = boardService.join(insertDto);
-            resultMap.put("newBoard", boardInsertDto);
+            boardResponseCommentDto = boardService.join(insertDto);
+            resultMap.put("newBoard", boardResponseCommentDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

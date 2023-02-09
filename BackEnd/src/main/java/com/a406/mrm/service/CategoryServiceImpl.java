@@ -22,17 +22,17 @@ public class CategoryServiceImpl implements CategoryService{
     private final CategoryRepository categoryRepository;
     private final RoomRepository roomRepository;
 
-    public CategoryInsertDto join(CategoryInsertDto insertDto) throws Exception{
+    public CategoryResponseDto join(CategoryInsertDto insertDto) throws Exception{
         Room room = roomRepository.findById(insertDto.getRoomId()).get();
-        CategoryInsertDto categoryInsertDto = null;
+        CategoryResponseDto categoryResponseDto = null;
 
         if(room != null){
             Category category = new Category(insertDto, room);
             category = categoryRepository.save(category);
-            categoryInsertDto = new CategoryInsertDto(category);
+            categoryResponseDto = new CategoryResponseDto(category);
         }
 
-        return categoryInsertDto;
+        return categoryResponseDto;
     }
     public void delete(int id) throws Exception{
         categoryRepository.deleteById(id);

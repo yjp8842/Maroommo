@@ -2,6 +2,7 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.CategoryInsertDto;
 import com.a406.mrm.model.dto.CategorySubInsertDto;
+import com.a406.mrm.model.dto.CategorySubResponseDto;
 import com.a406.mrm.model.entity.CategorySub;
 import com.a406.mrm.service.CategorySubService;
 import com.a406.mrm.service.CategorySubServiceImpl;
@@ -35,11 +36,11 @@ public class CategorySubController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        CategorySubInsertDto categorySubInsertDto = null;
+        CategorySubResponseDto categorySubResponseDto = null;
 
         try {
-            categorySubInsertDto = categorySubService.join(insertDto);
-            resultMap.put("newCategorySub", categorySubInsertDto);
+            categorySubResponseDto = categorySubService.join(insertDto);
+            resultMap.put("newCategorySub", categorySubResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

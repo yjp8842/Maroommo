@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,7 @@ public class BoardResponseCommentDto {
     private int id;
     private String title;
     private String content;
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
     private String picture;
     private String user_id;

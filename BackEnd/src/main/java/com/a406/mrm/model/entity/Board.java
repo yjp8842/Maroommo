@@ -5,6 +5,8 @@ import com.a406.mrm.model.dto.BoardModifyDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +22,8 @@ public class Board {
     public Board(BoardInsertDto boardInsertDto, CategorySub categorySub, User user) {
         this.title = boardInsertDto.getTitle();
         this.content = boardInsertDto.getContent();
-        this.createTime = boardInsertDto.getCreatetime();
-        this.views = boardInsertDto.getViews();
+        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.views = 0;
         this.picture = boardInsertDto.getPicture();
         this.categorySub = categorySub;
         this.user = user;
@@ -41,8 +43,7 @@ public class Board {
 
     private String title;
     private String content;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createTime;
+    private LocalDateTime createTime;
     private int views;
     private String picture;
 

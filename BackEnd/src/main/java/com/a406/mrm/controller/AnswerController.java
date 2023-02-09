@@ -34,11 +34,11 @@ public class AnswerController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        AnswerInsertDto answerInsertDto = null;
+        AnswerResponseDto answerResponseDto = null;
 
         try {
-            answerInsertDto = answerService.join(insertDto);
-            resultMap.put("newAnswer", answerInsertDto);
+            answerResponseDto = answerService.join(insertDto);
+            resultMap.put("newAnswer", answerResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

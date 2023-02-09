@@ -27,18 +27,18 @@ public class BoardServiceImpl implements BoardService{
     private final UserRepository userRepository;
 
     @Override
-    public BoardInsertDto join(BoardInsertDto insertDto) throws Exception {
+    public BoardResponseCommentDto join(BoardInsertDto insertDto) throws Exception {
         CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
         User user = userRepository.findById(insertDto.getUser_id()).get();
-        BoardInsertDto boardInsertDto = null;
+        BoardResponseCommentDto boardResponseCommentDto = null;
 
         if(categorySub != null && user != null){
             Board board = new Board(insertDto,categorySub,user);
             board = boardRepository.save(board);
-            boardInsertDto = new BoardInsertDto(board);
+            boardResponseCommentDto = new BoardResponseCommentDto(board);
         }
 
-        return boardInsertDto;
+        return boardResponseCommentDto;
     }
 
     @Override

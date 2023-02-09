@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CommentService {
 
-    CommentInsertDto join(CommentInsertDto commentInsertDto) throws Exception;
+    CommentResponseDto join(CommentInsertDto commentInsertDto) throws Exception;
     boolean delete(int id, String user_id) throws Exception;
     CommentModifyDto update(CommentModifyDto commentModifyDto) throws Exception;
 }

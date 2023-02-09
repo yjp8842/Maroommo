@@ -27,18 +27,18 @@ public class QuestionServiceImpl implements QuestionService{
     private final UserRepository userRepository;
 
     @Override
-    public QuestionInsertDto join(QuestionInsertDto insertDto) throws Exception{
+    public QuestionResponseAnswerDto join(QuestionInsertDto insertDto) throws Exception{
         CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
         User user = userRepository.findById(insertDto.getUser_id()).get();
-        QuestionInsertDto questionInsertDto = null;
+        QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         if(categorySub != null && user != null){
             Question question = new Question(insertDto,categorySub,user);
             question = questionRepository.save(question);
-            questionInsertDto = new QuestionInsertDto(question);
+            questionResponseAnswerDto = new QuestionResponseAnswerDto(question);
         }
 
-        return questionInsertDto;
+        return questionResponseAnswerDto;
     }
 
     @Override

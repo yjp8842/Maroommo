@@ -25,18 +25,18 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
 
     @Override
-    public CommentInsertDto join(CommentInsertDto insertDto) {
+    public CommentResponseDto join(CommentInsertDto insertDto) {
         Board board = boardRepository.findById(insertDto.getBoard_id());
         User user = userRepository.findById(insertDto.getUser_id()).get();
-        CommentInsertDto commentInsertDto = null;
+        CommentResponseDto commentResponseDto = null;
 
         if(user != null && board != null){
             Comment comment = new Comment(insertDto,board,user);
             comment = commentRepository.save(comment);
-            commentInsertDto = new CommentInsertDto(comment);
+            commentResponseDto = new CommentResponseDto(comment);
         }
 
-        return commentInsertDto;
+        return commentResponseDto;
     }
 
     @Override

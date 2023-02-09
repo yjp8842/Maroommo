@@ -38,11 +38,11 @@ public class QuestionController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        QuestionInsertDto questionInsertDto = null;
+        QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         try {
-            questionInsertDto = questionService.join(insertDto);
-            resultMap.put("newQuestion", questionInsertDto);
+            questionResponseAnswerDto = questionService.join(insertDto);
+            resultMap.put("newQuestion", questionResponseAnswerDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

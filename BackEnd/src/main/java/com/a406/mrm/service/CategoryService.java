@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    CategoryInsertDto join(CategoryInsertDto categoryInsertDto) throws Exception;
+    CategoryResponseDto join(CategoryInsertDto categoryInsertDto) throws Exception;
     void delete(int id) throws Exception;
     String update(int id, String name) throws Exception;
     List<CategoryResponseDto> CategoryDetail(int category_id) throws Exception;

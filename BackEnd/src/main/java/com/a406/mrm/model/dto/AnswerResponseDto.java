@@ -3,6 +3,7 @@ package com.a406.mrm.model.dto;
 import com.a406.mrm.model.entity.Answer;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -23,7 +24,7 @@ public class AnswerResponseDto {
     }
     private int id;
     private String content;
-    private Date createtime;
+    private LocalDateTime createtime;
     private int good;
     private int question_id;
     private String user_id;

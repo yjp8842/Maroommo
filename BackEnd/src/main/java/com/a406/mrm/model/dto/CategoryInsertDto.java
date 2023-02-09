@@ -16,13 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 public class CategoryInsertDto {
     public CategoryInsertDto(Category category){
-        this.id = category.getId();
         this.name = category.getName();
         this.roomId = category.getRoom().getId();
     }
 
-    private int id;
     private String name;
     private int roomId;
-    private List<CategorySub> categorySubs = new ArrayList<>();
 }

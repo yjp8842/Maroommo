@@ -1,9 +1,6 @@
 package com.a406.mrm.controller;
 
-import com.a406.mrm.model.dto.BoardModifyDto;
-import com.a406.mrm.model.dto.BoardResponseDto;
-import com.a406.mrm.model.dto.CommentInsertDto;
-import com.a406.mrm.model.dto.CommentModifyDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.service.CommentService;
 import com.a406.mrm.service.CommentServiceImpl;
 import io.swagger.annotations.Api;
@@ -40,11 +37,11 @@ public class CommentController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        CommentInsertDto commentInsertDto = null;
+        CommentResponseDto commentResponseDto = null;
 
         try {
-            commentInsertDto = commentService.join(insertDto);
-            resultMap.put("newComment", commentInsertDto);
+            commentResponseDto = commentService.join(insertDto);
+            resultMap.put("newComment", commentResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

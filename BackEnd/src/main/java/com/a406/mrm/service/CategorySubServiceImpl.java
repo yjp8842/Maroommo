@@ -1,6 +1,7 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.CategorySubInsertDto;
+import com.a406.mrm.model.dto.CategorySubResponseDto;
 import com.a406.mrm.model.entity.Category;
 import com.a406.mrm.model.entity.CategorySub;
 import com.a406.mrm.repository.CategoryRepository;
@@ -20,17 +21,17 @@ public class CategorySubServiceImpl implements CategorySubService{
     private final CategorySubRepository categorySubRepository;
     private final CategoryRepository categoryRepository;
 
-    public CategorySubInsertDto join(CategorySubInsertDto insertDto) throws Exception{
+    public CategorySubResponseDto join(CategorySubInsertDto insertDto) throws Exception{
         Category category = categoryRepository.findById(insertDto.getCategory_id());
-        CategorySubInsertDto categorySubInsertDto = null;
+        CategorySubResponseDto categorySubResponseDto = null;
 
         if(category != null){
             CategorySub categorySub = new CategorySub(insertDto, category);
             categorySub = categorySubRepository.save(categorySub);
-            categorySubInsertDto = new CategorySubInsertDto(categorySub);
+            categorySubResponseDto = new CategorySubResponseDto(categorySub);
         }
 
-        return categorySubInsertDto;
+        return categorySubResponseDto;
     }
 
     public void delete(int id) throws Exception{

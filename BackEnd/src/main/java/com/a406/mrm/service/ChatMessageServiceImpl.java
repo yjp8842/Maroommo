@@ -28,7 +28,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     // 채팅을 db에 저장한다
     public ChatMessageResponseDto insertChat(ChatMessageRequestDto chatMessageDto){
         ChatMessage chatMessage = new ChatMessage(chatMessageDto);
-        chatMessageRepository.save(chatMessage);
+        chatMessage = chatMessageRepository.save(chatMessage);
         return new ChatMessageResponseDto(chatMessage);
     }
 }
