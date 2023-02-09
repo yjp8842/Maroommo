@@ -87,15 +87,16 @@ public class BoardController {
      * @return board : 수정한 게시글의 자세한 정보를 반환한다
      */
     @PatchMapping
-    @ApiOperation("게시판 수정 : json(수정내용(content), 게시판 아이디(id), 사진(picture), title(제목), 작성자 아이디(user_id))")
-    public ResponseEntity<?> update(@RequestBody BoardModifyDto modifyDto) {
+    @ApiOperation("게시판 수정 : 게시판 아이디(id),, 수정내용(content), title(제목), 사진(picture), title(제목), 작성자 아이디(user_id))")
+    public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestParam MultipartFile picture,
+                                    @RequestParam String title, @RequestParam String user_id) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardModifyDto = null;
 
         try {
-            boardModifyDto = boardService.update(modifyDto);
+            boardModifyDto = boardService.update(id, content, picture, title, user_id);
             resultMap.put("board", boardModifyDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

@@ -70,14 +70,26 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardResponseCommentDto update(BoardModifyDto modifyDto) throws Exception {
-        Board board = boardRepository.findById(modifyDto.getId());
+    public BoardResponseCommentDto update(int id, String content, MultipartFile picture, String title, String user_id) throws Exception {
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+//            String absPath = "/img_dir/"+uuid;
+            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        Board board = boardRepository.findById(id);
         BoardResponseCommentDto boardModifyDto = null;
 
-        if (board != null && board.getUser().getId().equals(modifyDto.getUser_id())){
-            board.setTitle(modifyDto.getTitle());
-            board.setContent(modifyDto.getContent());
-            board.setPicture(modifyDto.getPicture());
+        if (board != null && board.getUser().getId().equals(user_id)){
+            board.setTitle(title);
+            board.setContent(content);
+            board.setPicture(uuid);
             board = boardRepository.save(board);
             boardModifyDto = new BoardResponseCommentDto(board);
         }
