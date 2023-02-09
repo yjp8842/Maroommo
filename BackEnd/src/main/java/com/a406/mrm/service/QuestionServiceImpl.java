@@ -35,8 +35,8 @@ public class QuestionServiceImpl implements QuestionService{
         String uuid =  null;
         if(picture != null){
             uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
-//            String absPath = "/img_dir/"+uuid;
-            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            String absPath = "/img_dir/"+uuid;
+//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
             try {
                 picture.transferTo(new File(absPath));
             }catch(IOException e){
@@ -74,8 +74,8 @@ public class QuestionServiceImpl implements QuestionService{
         String uuid =  null;
         if(picture != null){
             uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
-//            String absPath = "/img_dir/"+uuid;
-            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            String absPath = "/img_dir/"+uuid;
+//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
             try {
                 picture.transferTo(new File(absPath));
             }catch(IOException e){
