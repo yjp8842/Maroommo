@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,15 +34,16 @@ public class QuestionController {
      * @return newQuestion : 생성한 질문을 반환한다
      */
     @PostMapping
-    @ApiOperation("질문 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 상태(status), 사진(picture), 제목(title), 작성자아이디(user_id))")
-    public ResponseEntity<?> create(@RequestBody QuestionInsertDto insertDto) {
+    @ApiOperation("질문 생성 : RequestParam으로 (title, content, user_id, categorySub_id, picture = 파일)")
+    public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
+                                    @RequestParam int categorySub_id, @RequestParam MultipartFile picture) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         try {
-            questionResponseAnswerDto = questionService.join(insertDto);
+            questionResponseAnswerDto = questionService.join(title, content, user_id, categorySub_id, picture);
             resultMap.put("newQuestion", questionResponseAnswerDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

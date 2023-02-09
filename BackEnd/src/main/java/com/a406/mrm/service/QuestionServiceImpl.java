@@ -13,8 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +31,25 @@ public class QuestionServiceImpl implements QuestionService{
     private final UserRepository userRepository;
 
     @Override
-    public QuestionResponseAnswerDto join(QuestionInsertDto insertDto) throws Exception{
-        CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
-        User user = userRepository.findById(insertDto.getUser_id()).get();
+    public QuestionResponseAnswerDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception{
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+            String absPath = "/img_dir/"+uuid;
+//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        CategorySub categorySub = categorySubRepository.findById(categorySub_id);
+        User user = userRepository.findById(user_id).get();
         QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         if(categorySub != null && user != null){
-            Question question = new Question(insertDto,categorySub,user);
+            Question question = new Question(title, content, uuid, categorySub, user);
             question = questionRepository.save(question);
             questionResponseAnswerDto = new QuestionResponseAnswerDto(question);
         }
