@@ -13,6 +13,7 @@ import java.util.Date;
 public class BoardInsertDto {
 
     public BoardInsertDto(Board board) {
+        this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createtime = board.getCreateTime();
@@ -23,7 +24,7 @@ public class BoardInsertDto {
         }
         this.user_id = board.getUser().getId();
     }
-
+    private int id;
     private String title;
     private String content;
     private Date createtime;
