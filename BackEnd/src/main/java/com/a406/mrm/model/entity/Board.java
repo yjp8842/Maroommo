@@ -21,10 +21,10 @@ import java.util.List;
 @Entity
 public class Board {
 
-    public Board(String title, String content, String image, CategorySub categorySub, User user) {
+    public Board(String title, String content, String picture, CategorySub categorySub, User user) {
         this.title = title;
         this.content = content;
-        this.picture = image;
+        this.picture = picture;
         this.categorySub = categorySub;
         this.user = user;
         this.views = 0;

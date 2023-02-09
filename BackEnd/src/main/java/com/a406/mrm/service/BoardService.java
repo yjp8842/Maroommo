@@ -10,7 +10,7 @@ import java.util.List;
 public interface BoardService {
 
 
-    BoardResponseCommentDto join(String title, String content, String user_id, int categorySub_id, MultipartFile image) throws Exception;
+    BoardResponseCommentDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception;
     boolean delete(int id, String user_id) throws Exception;
     BoardResponseCommentDto update(BoardModifyDto boardModifyDto) throws Exception;
     Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable);

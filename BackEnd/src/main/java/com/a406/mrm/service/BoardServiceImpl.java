@@ -31,14 +31,14 @@ public class BoardServiceImpl implements BoardService{
     private final UserRepository userRepository;
 
     @Override
-    public BoardResponseCommentDto join(String title, String content, String user_id, int categorySub_id, MultipartFile image) throws Exception {
+    public BoardResponseCommentDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception {
         String uuid =  null;
-        if(image != null){
-            uuid = UUID.randomUUID().toString()+"."+image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".")+1);
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
 //            String absPath = "/img_dir/"+uuid;
             String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
             try {
-                image.transferTo(new File(absPath));
+                picture.transferTo(new File(absPath));
             }catch(IOException e){
                 e.printStackTrace();
             }

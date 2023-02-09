@@ -38,15 +38,15 @@ public class BoardController {
      * @return newBoard : 생성한 게시글을 반환한다
      */
     @PostMapping
-    @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, categorySub_id, image = 파일)")
+    @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, categorySub_id, picture = 파일)")
     public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
-                                    @RequestParam int categorySub_id, @RequestParam MultipartFile image) {
+                                    @RequestParam int categorySub_id, @RequestParam MultipartFile picture) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardResponseCommentDto = null;
 
         try {
-            boardResponseCommentDto = boardService.join(title, content, user_id, categorySub_id, image);
+            boardResponseCommentDto = boardService.join(title, content, user_id, categorySub_id, picture);
             resultMap.put("newBoard", boardResponseCommentDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
