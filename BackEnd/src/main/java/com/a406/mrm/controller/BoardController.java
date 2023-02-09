@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,11 +29,16 @@ public class BoardController {
         this.boardServiceImpl = boardServiceImpl;
     }
 
+//    @PostMapping
+//    @ApiOperation("게시판 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 사진(picture), 제목(title), 작성자아이디(user_id))")
+//    public ResponseEntity<?> create(@RequestBody BoardInsertDto insertDto) {
+//        logger.info("input board insert DTO : {} ",insertDto.toString());
+//        return ResponseEntity.ok(boardServiceImpl.join(insertDto));
+//    }
     @PostMapping
     @ApiOperation("게시판 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 사진(picture), 제목(title), 작성자아이디(user_id))")
-    public ResponseEntity<?> create(@RequestBody BoardInsertDto insertDto) {
-        logger.info("input board insert DTO : {} ",insertDto.toString());
-        return ResponseEntity.ok(boardServiceImpl.join(insertDto));
+    public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id, @RequestParam int categorySub_id, @RequestParam MultipartFile image) {
+        return ResponseEntity.ok(boardServiceImpl.join(title, content, user_id, categorySub_id, image));
     }
 
     @DeleteMapping("{id}/{user_id}")

@@ -3,6 +3,7 @@ package com.a406.mrm.model.entity;
 import com.a406.mrm.model.dto.BoardInsertDto;
 import com.a406.mrm.model.dto.BoardModifyDto;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +24,14 @@ public class Board {
         this.createTime = boardInsertDto.getCreatetime();
         this.views = boardInsertDto.getViews();
         this.picture = boardInsertDto.getPicture();
+        this.categorySub = categorySub;
+        this.user = user;
+    }
+
+    public Board(String title, String content, String image, CategorySub categorySub, User user) {
+        this.title = title;
+        this.content = content;
+        this.picture = image;
         this.categorySub = categorySub;
         this.user = user;
     }

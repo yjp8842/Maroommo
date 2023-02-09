@@ -10,8 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,9 +33,26 @@ public class BoardServiceImpl implements BoardService{
         this.userRepository = userRepository;
     }
 
+//    @Override
+//    public BoardInsertDto join(BoardInsertDto insertDto) {
+//        Board board = new Board(insertDto,categorySubRepository.findById(insertDto.getCategorysub_id()), userRepository.findById(insertDto.getUser_id()).get());
+//        return new BoardInsertDto(boardRepository.save(board));
+//    }
     @Override
-    public BoardInsertDto join(BoardInsertDto insertDto) {
-        Board board = new Board(insertDto,categorySubRepository.findById(insertDto.getCategorysub_id()), userRepository.findById(insertDto.getUser_id()).get());
+    public BoardInsertDto join(String title, String content, String user_id, int categorySub_id, MultipartFile image) {
+        String uuid =  null;
+        if(image != null){
+            uuid = UUID.randomUUID().toString()+"."+image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".")+1);
+            String absPath = "/img_dir/"+uuid;
+            System.out.println(absPath);
+            try {
+                image.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        Board board = new Board(title, content, uuid, categorySubRepository.findById(categorySub_id), userRepository.findById(user_id).get());
         return new BoardInsertDto(boardRepository.save(board));
     }
 
