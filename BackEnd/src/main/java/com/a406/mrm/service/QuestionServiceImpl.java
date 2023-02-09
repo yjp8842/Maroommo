@@ -1,10 +1,13 @@
 package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.*;
+import com.a406.mrm.model.entity.CategorySub;
 import com.a406.mrm.model.entity.Question;
+import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.CategorySubRepository;
 import com.a406.mrm.repository.QuestionRepository;
 import com.a406.mrm.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,58 +19,70 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService{
 
     private final QuestionRepository questionRepository;
     private final CategorySubRepository categorySubRepository;
     private final UserRepository userRepository;
 
-    @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepository, CategorySubRepository categorySubRepository, UserRepository userRepository) {
-        this.questionRepository = questionRepository;
-        this.categorySubRepository = categorySubRepository;
-        this.userRepository = userRepository;
-    }
-
     @Override
-    public QuestionInsertDto join(QuestionInsertDto insertDto) {
-        Question question = new Question(insertDto,categorySubRepository.findById(insertDto.getCategorysub_id()), userRepository.findById(insertDto.getUser_id()).get());
-        return new QuestionInsertDto(questionRepository.save(question));
-    }
+    public QuestionInsertDto join(QuestionInsertDto insertDto) throws Exception{
+        CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
+        User user = userRepository.findById(insertDto.getUser_id()).get();
+        QuestionInsertDto questionInsertDto = null;
 
-    @Override
-    public String delete(int id, String user_id) {
-        if (questionRepository.findById(id).getUser().getId().equals(user_id)){
-            questionRepository.deleteById(id);
-            return "OK";
-        }else{
-            return "Fail";
+        if(categorySub != null && user != null){
+            Question question = new Question(insertDto,categorySub,user);
+            question = questionRepository.save(question);
+            questionInsertDto = new QuestionInsertDto(question);
         }
+
+        return questionInsertDto;
     }
 
     @Override
-    public QuestionModifyDto update(QuestionModifyDto modifyDto) {
-        if (questionRepository.findById(modifyDto.getId()).getUser().getId().equals(modifyDto.getUser_id())){
-            Question question = questionRepository.findById(modifyDto.getId());
+    public boolean delete(int id, String user_id) throws Exception{
+        Question question = questionRepository.findById(id);
+
+        if (question != null && question.getUser().getId().equals(user_id)) {
+            questionRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public QuestionModifyDto update(QuestionModifyDto modifyDto) throws Exception{
+        Question question = questionRepository.findById(modifyDto.getId());
+        QuestionModifyDto questionModifyDto = null;
+
+        if (question != null && question.getUser().getId().equals(modifyDto.getUser_id())){
             question.setTitle(modifyDto.getTitle());
             question.setContent(modifyDto.getContent());
             question.setPicture(modifyDto.getPicture());
             question.setStatus(modifyDto.getStatus());
-            return new QuestionModifyDto(questionRepository.save(question));
-        }else{
-            return null;
+            question = questionRepository.save(question);
+
+            questionModifyDto = new QuestionModifyDto(question);
         }
+
+        return questionModifyDto;
     }
 
     @Override
-    public QuestionResponseStatusDto status(QuestionResponseStatusDto responseStatusDto) {
-        if (questionRepository.findById(responseStatusDto.getId()).getUser().getId().equals(responseStatusDto.getUser_id())){
-            Question question = questionRepository.findById(responseStatusDto.getId());
+    public QuestionResponseStatusDto status(QuestionResponseStatusDto responseStatusDto) throws Exception{
+        Question question = questionRepository.findById(responseStatusDto.getId());
+        QuestionResponseStatusDto questionResponseStatusDto = null;
+
+        if(question != null && question.getUser().getId().equals(responseStatusDto.getUser_id())){
             question.setStatus(responseStatusDto.getStatus());
-            return new QuestionResponseStatusDto(questionRepository.save(question));
-        }else{
-            return null;
+            question = questionRepository.save(question);
+            questionResponseStatusDto = new QuestionResponseStatusDto(question);
         }
+
+        return  questionResponseStatusDto;
     }
 
     @Override
@@ -76,16 +91,19 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public List<QuestionResponseAnswerDto> QuestionDetail(int question_id) {
+    public QuestionResponseAnswerDto QuestionDetail(int question_id) throws Exception{
         Question question = questionRepository.findById(question_id);
-        int views = question.getViews();
-        views++;
-        question.setViews(views);
-        questionRepository.save(question);
+        QuestionResponseAnswerDto result = null;
 
-        List<QuestionResponseAnswerDto> result = questionRepository.findByid(question_id)
-                .stream()
-                .map(x -> new QuestionResponseAnswerDto(x)).collect(Collectors.toList());
+        if(question != null){
+            int views = question.getViews();
+            views++;
+            question.setViews(views);
+            question = questionRepository.save(question);
+
+            result = new QuestionResponseAnswerDto(question);
+        }
+
         return result;
     }
 

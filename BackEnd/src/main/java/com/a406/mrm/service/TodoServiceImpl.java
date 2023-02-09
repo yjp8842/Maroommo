@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
+
     private final UserRepository userRepository;
     private final TodoRepository todoRepository;
     private final TodoTagRepository todoTagRepository;
@@ -24,28 +25,45 @@ public class TodoServiceImpl implements TodoService {
     private final RoomRepository roomRepository;
 
     @Override
-    public List<Todo> getTodoAll(String userId) {
-        return userRepository.findById(userId).get().getTodos();
+    public List<Todo> getTodoAll(String userId) throws Exception{
+        User user = userRepository.findById(userId).get();
+        List<Todo> todoList = null;
+
+        if(user != null){
+            todoList = user.getTodos();
+        }
+
+        return todoList;
     }
 
     @Override
-    public Todo addTodo(String userId, TodoRequestDto todoRequestDto) {
+    public TodoResponseDto addTodo(String userId, TodoRequestDto todoRequestDto) throws Exception{
         User user = userRepository.findById(userId).get();
         Room room = todoRequestDto.getRoomId() == -1 ? null : roomRepository.findById(todoRequestDto.getRoomId()).get();
-        Todo todo = todoRepository.save(new Todo(todoRequestDto,
-                user,
-                room));
-        user.getTodos().add(todo);
-        if(room!=null) {
+        TodoResponseDto todoResponseDto = null;
+
+        if(user != null && room != null){
+            Todo todo = new Todo(todoRequestDto,user,room);
+            todo = todoRepository.save(todo);
+
+            user.getTodos().add(todo);
             room.getTodos().add(todo);
+
+            Todo finalTodo = todo;
+            List<TodoTag> tags = todoRequestDto
+                                    .getTags()
+                                    .stream()
+                                    .map(x -> todoTagRepository.save(new TodoTag(x, finalTodo))).collect(Collectors.toList());
+            todo.setTodoTags(tags);
+
+            todoResponseDto = new TodoResponseDto(todo);
         }
-        List<TodoTag> tags = todoRequestDto.getTags().stream().map(x -> todoTagRepository.save(new TodoTag(x, todo))).collect(Collectors.toList());
-        todo.setTodoTags(tags);
-        return todo;
+
+        return todoResponseDto;
     }
 
     @Override
-    public int changeState(TodoChangeStateRequestDto todoChangeStateRequestDto) {
+    public int changeState(TodoChangeStateRequestDto todoChangeStateRequestDto) throws Exception{
         /***
          * todo : 0
          * doing : 1
@@ -62,6 +80,7 @@ public class TodoServiceImpl implements TodoService {
         int todoId = todoChangeStateRequestDto.getTodoId();
         int doingTimeId = todoChangeStateRequestDto.getDoingTimeId();
         int ret = -1;
+
         if (doingTimeId != -1){
             todoTimeRepository.updateEndTimeAndTotalTime(doingTimeId);
         }
@@ -86,12 +105,17 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo modifyTodo(TodoModifyDto todoModifyDto) {
+    public TodoResponseDto modifyTodo(TodoModifyDto todoModifyDto) throws Exception{
         Todo todo = todoRepository.findById(todoModifyDto.getId()).get();
+        TodoResponseDto todoResponseDto = null;
+
+        if(todo == null) return null;
+
         if(!todoModifyDto.getTags().isEmpty()){
             todoTagRepository.deleteAllByTodoId(todo.getId());
+            Todo finalTodo = todo;
             List<TodoTag> todoTags = todoModifyDto.getTags().stream()
-                    .map(x->todoTagRepository.save(new TodoTag(x,todo))).collect(Collectors.toList());
+                    .map(x->todoTagRepository.save(new TodoTag(x, finalTodo))).collect(Collectors.toList());
             todo.setTodoTags(todoTags);
         }
         if(todoModifyDto.getContent() != null){
@@ -102,11 +126,15 @@ public class TodoServiceImpl implements TodoService {
             room.setTodos(room.getTodos().stream().filter(x -> x.getRoom().getId() != todoModifyDto.getRoomId()).collect(Collectors.toList()));
             todo.setRoom(room);
         }
-        return todoRepository.save(todo);
+
+        todo = todoRepository.save(todo);
+        todoResponseDto = new TodoResponseDto(todo);
+
+        return todoResponseDto;
     }
 
     @Override
-    public List<TodoResponseDto> searchRoomTodo(int roomId, String userId) {
+    public List<TodoResponseDto> searchRoomTodo(int roomId, String userId) throws Exception{
         List<TodoResponseDto> result = todoRepository.findByUserId(userId).stream()
                 .filter(x ->
                         (x.getRoom() == null ? false : x.getRoom().getId() == roomId)
@@ -115,7 +143,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<TodoResponseDto> searchMyTodo(String userId) {
+    public List<TodoResponseDto> searchMyTodo(String userId) throws Exception{
         List<TodoResponseDto> result = todoRepository.findByUserId(userId)
                 .stream()
                 .map(x->new TodoResponseDto(x)).collect(Collectors.toList());
@@ -123,7 +151,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> getTodoRoomAll(int room_id) {
+    public List<Todo> getTodoRoomAll(int room_id) throws Exception{
         return roomRepository.findById(room_id).get().getTodos();
     }
 

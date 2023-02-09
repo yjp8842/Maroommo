@@ -7,12 +7,7 @@ import java.util.List;
 
 public interface CategorySubService {
 
-    CategorySubInsertDto join(CategorySubInsertDto categorySubInsertDto);
-
-    void delete(int id);
-
-    String update_name(int id, String name);
-
-
-
+    CategorySubInsertDto join(CategorySubInsertDto categorySubInsertDto) throws Exception;
+    void delete(int id) throws Exception;
+    String update_name(int id, String name) throws Exception;
 }

@@ -14,17 +14,16 @@ import java.util.Date;
 public class CommentInsertDto {
 
     public CommentInsertDto(Comment comment) {
+        this.id = comment.getId();
         this.content = comment.getContent();
         this.createtime = comment.getCreateTime();
         this.board_id = comment.getBoard().getId();
         this.user_id = comment.getUser().getId();
-
     }
 
+    private int id;
     private String content;
     private Date createtime;
     private int board_id;
     private String user_id;
-
-
 }

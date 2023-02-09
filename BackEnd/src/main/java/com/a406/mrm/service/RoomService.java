@@ -8,20 +8,16 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface RoomService {
-    MyRoomResponseDto getMyRoomDto(String userId);
-    RoomMoveResponseDto getMoveRoomDto(int roomId, String userId);
-    void removeRoom(int roomId);
-    String modifyName(int roomId, String name);
-    String modifyIntro(int roomId, String intro);
-    String modifyProfile(int roomId, MultipartFile profile);
-    RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile);
-    RoomMoveResponseDto enterRoom(int roomId, String userId);
-    boolean existsRoomByIdAndCode(int roomId, String code);
-    boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId);
-    String updateCode(int roomId);
-
-//    List<RoomAllResponseDto> SearchRoom(int room_id);
-
-    List<RoomMoveResponseDto> RoomListAll();
-
+    MyRoomResponseDto getMyRoomDto(String userId) throws Exception;
+    RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) throws Exception;
+    void removeRoom(int roomId) throws Exception;
+    String modifyName(int roomId, String name) throws Exception;
+    String modifyIntro(int roomId, String intro) throws Exception;
+    String modifyProfile(int roomId, MultipartFile profile) throws Exception;
+    RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) throws Exception;
+    RoomMoveResponseDto enterRoom(int roomId, String userId) throws Exception;
+    boolean existsRoomByIdAndCode(int roomId, String code) throws Exception;
+    boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId) throws Exception;
+    String updateCode(int roomId) throws Exception;
+    List<RoomMoveResponseDto> RoomListAll() throws Exception;
 }

@@ -27,9 +27,9 @@ public class ChatRoomController {
     private final ChatMessageService chatMessageService;
 
     /**
-     *  채팅방 입장 메서드
-     *  해당 room의 채팅방에 입장하면 요청이 들어온다.
-     *  roomId가 일치하는 채팅 내역을 모두 불러온다.
+     * @param roomId
+     *          를 통해 채팅방의 모든 채팅 내역을 가져온다
+     * @return chats : 채팅방의 모든 채팅 내역을 반환한다
      */
     @ApiOperation("Enter Chat Room")
     @GetMapping("/room/{roomId}")

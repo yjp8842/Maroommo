@@ -24,7 +24,6 @@ public class QuestionResponseAnswerDto {
         this.views = question.getViews();
         this.status = question.getStatus();
         this.user_id = question.getUser().getId();
-//        this.answers = question.getAnswers().stream().map(x -> x.getContent()).collect(Collectors.toList());
         this.answers = question.getAnswers().stream().map(x->new AnswerResponseDto(x)).collect(Collectors.toList());
     }
 
@@ -35,7 +34,6 @@ public class QuestionResponseAnswerDto {
     private int views;
     private int status;
     private String user_id;
-//    private List<String> answers = new ArrayList<>();
     private List<AnswerResponseDto> answers = new ArrayList<>();
 
 }

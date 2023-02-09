@@ -28,7 +28,9 @@ public class MemoController {
     private final MemoService memoService;
 
     /**
-     *  회원 메모 가져오기 메서드
+     * @param userId
+     *            를 통해 회원의 메모를 가져온다
+     * @return userMemo : 회원의 메모를 반환한다
      */
     @ApiOperation("get user memo info")
     @GetMapping("user/{userId}")
@@ -53,7 +55,9 @@ public class MemoController {
     }
 
     /**
-     *  회원 메모 가져오기 메서드
+     * @param roomId
+     *            를 통해 방의 메모를 가져온다
+     * @return roomMemo : 방의 메모를 반환한다
      */
     @ApiOperation("get room memo info")
     @GetMapping("room/{roomId}")
@@ -66,7 +70,6 @@ public class MemoController {
         try {
             RoomMemoDto roomMemoDto = memoService.findRoomMemoByRoomId(roomId);
             resultMap.put("roomMemo",roomMemoDto.getContent());
-            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

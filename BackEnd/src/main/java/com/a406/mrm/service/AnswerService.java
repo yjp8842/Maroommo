@@ -4,12 +4,8 @@ import com.a406.mrm.model.dto.*;
 
 public interface AnswerService {
 
-    AnswerInsertDto join(AnswerInsertDto answerInsertDto);
-
-    String delete(int id, String user_id);
-
-    AnswerModifyDto update(AnswerModifyDto answerModifyDto);
-    int goodPlus(AnswerGoodDto goodDto);
-
-
+    AnswerInsertDto join(AnswerInsertDto answerInsertDto) throws Exception;
+    boolean delete(int id, String user_id) throws Exception;
+    AnswerModifyDto update(AnswerModifyDto answerModifyDto) throws Exception;
+    int goodPlus(AnswerGoodDto goodDto) throws Exception;
 }
