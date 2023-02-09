@@ -20,15 +20,6 @@ import java.util.List;
 @Table(name = "board")
 @Entity
 public class Board {
-    public Board(BoardInsertDto boardInsertDto, CategorySub categorySub, User user) {
-        this.title = boardInsertDto.getTitle();
-        this.content = boardInsertDto.getContent();
-        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        this.views = 0;
-        this.picture = boardInsertDto.getPicture();
-        this.categorySub = categorySub;
-        this.user = user;
-    }
 
     public Board(String title, String content, String image, CategorySub categorySub, User user) {
         this.title = title;
@@ -36,6 +27,8 @@ public class Board {
         this.picture = image;
         this.categorySub = categorySub;
         this.user = user;
+        this.views = 0;
+        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
     public Board(BoardModifyDto boardModifyDto, int board_id) {

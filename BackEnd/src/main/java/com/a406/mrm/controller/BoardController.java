@@ -33,15 +33,14 @@ public class BoardController {
     private final BoardService boardService;
 
     /**
-     * @param insertDto
+     * @param RequestParam 6개
      *              를 가지고 게시글을 생성한다
      * @return newBoard : 생성한 게시글을 반환한다
      */
     @PostMapping
-    @ApiOperation("게시판 생성 : json(카테고리 서브 아이디(categorysub_id), 내용(content), 생성시간(createtime), 조회수(views), 사진(picture), 제목(title), 작성자아이디(user_id))")
-    public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id, @RequestParam int categorySub_id, @RequestParam MultipartFile image) {
-//        return ResponseEntity.ok(boardServiceImpl.join(title, content, user_id, categorySub_id, image));
-
+    @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, categorySub_id, image = 파일)")
+    public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
+                                    @RequestParam int categorySub_id, @RequestParam MultipartFile image) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardResponseCommentDto = null;

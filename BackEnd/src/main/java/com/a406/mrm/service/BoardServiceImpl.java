@@ -35,8 +35,8 @@ public class BoardServiceImpl implements BoardService{
         String uuid =  null;
         if(image != null){
             uuid = UUID.randomUUID().toString()+"."+image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf(".")+1);
-            String absPath = "/img_dir/"+uuid;
-            System.out.println(absPath);
+//            String absPath = "/img_dir/"+uuid;
+            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
             try {
                 image.transferTo(new File(absPath));
             }catch(IOException e){
