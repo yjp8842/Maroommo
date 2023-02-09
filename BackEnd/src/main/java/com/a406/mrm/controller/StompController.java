@@ -72,6 +72,7 @@ public class StompController {
     @MessageMapping("/room/memo")
     public ResponseEntity<Map<String, Object>> sendMemo(
             @ApiParam("Send Room Memo") RoomMemoDto memo) {
+        // 프론트에서 보내줄때 메모 DTO에서 id를 제외한 모든 정보가 담겨야 한다
         logger.info("[sendMemo] 메모 발송 : "+memo);
 
         Map<String, Object> resultMap = new HashMap<>();

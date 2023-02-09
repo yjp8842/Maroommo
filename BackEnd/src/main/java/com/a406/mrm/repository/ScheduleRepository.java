@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     List<Schedule> findByUserId(@Param("userId") String userId);
+    List<Schedule> findByRoomId(int roomId);
 }

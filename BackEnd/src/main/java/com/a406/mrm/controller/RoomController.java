@@ -51,6 +51,11 @@ public class RoomController {
     @Autowired
     private TodoTimeService todoTimeService;
 
+
+    /**
+     *  방 만들기 메서드
+     *  방 생성 후 해당 방의 정보와 방목록 정보를 반환한다
+     */
     @ApiOperation("make a room(=group)")
     @PostMapping(value = "{userId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
@@ -61,10 +66,33 @@ public class RoomController {
                                      @RequestParam MultipartFile profile
                                      ) {
 //        logger.debug("new Room information : {}", roomRequestDto.toString());
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        RoomMoveResponseDto moveRoomInfo = null ;
+        MyRoomResponseDto myRoomInfo = null;
+
         RoomRequestDto roomRequestDto = new RoomRequestDto(intro,name);
-        RoomResponseDto addRoomResult = new RoomResponseDto(roomService.makeRoom(roomRequestDto,userId,profile));
-        return ResponseEntity.status(HttpStatus.CREATED).body(addRoomResult);
+
+        try {
+            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId,profile);
+            myRoomInfo = roomService.getMyRoomDto(userId);
+            resultMap.put("moveRoomInfo",moveRoomInfo);
+            resultMap.put("myRoomInfo",myRoomInfo);
+            status = HttpStatus.CREATED;
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
+
+    /**
+     *  방 입장 메서드
+     *  방 입장 후 해당 방의 정보와 방목록 정보를 반환한다
+     */
     @ApiOperation("enter the room(=group)")
     @PostMapping("enter/{roomId}/{userId}")
     public ResponseEntity<?> enterRoom(@PathVariable("userId") String userId,
@@ -73,19 +101,37 @@ public class RoomController {
         // front에서 전해준 entry code는 (code+id) 처리가 되어 있다
         logger.debug("Room Entry Code information : {}", roomCode);
 
-        // 반환 내용을 어떻게 할지 고민....
-        // 해당 코드를 가진 room이 없다면 retrun
-        if(!roomService.existsRoomByIdAndCode(roomId, roomCode))
-            return ResponseEntity.status(HttpStatus.OK).body(false);
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        RoomMoveResponseDto moveRoomInfo = null ;
+        MyRoomResponseDto myRoomInfo = null;
 
-        // 이미 방에 입장되어 있다면 return
-        if(roomService.existsUserHasRoomByRoomIdAndUserId(roomId, userId))
-            return ResponseEntity.status(HttpStatus.OK).body(false);
+        try {
+            // 반환 내용을 어떻게 할지 고민....
+            // 해당 코드를 가진 room이 없다면 retrun
+            if(!roomService.existsRoomByIdAndCode(roomId, roomCode)){
+                resultMap.put("fail", "입장 가능한 room이 없습니다");
+                return new ResponseEntity<Map<String, Object>>(resultMap, status);
+            }
 
-        // 있다면 room에 입장 처리 후 room 정보 반환
-        RoomResponseDto enterRoomResult = new RoomResponseDto(roomService.enterRoom(roomId, userId));
-        return ResponseEntity.status(HttpStatus.CREATED).body(enterRoomResult);
+            // 이미 방에 입장되어 있다면 return
+            if(roomService.existsUserHasRoomByRoomIdAndUserId(roomId, userId)){
+                resultMap.put("fail", "이미 room에 입장하였습니다");
+                return new ResponseEntity<Map<String, Object>>(resultMap, status);
+            }
+
+            moveRoomInfo = roomService.enterRoom(roomId, userId);
+            myRoomInfo = roomService.getMyRoomDto(userId);
+            resultMap.put("moveRoomInfo",moveRoomInfo);
+            resultMap.put("myRoomInfo",myRoomInfo);
+            status = HttpStatus.OK;
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
+
     @ApiOperation("refresh entry code of room(=group)")
     @PatchMapping("/{roomId}/code")
     public ResponseEntity<?> refreshCode(@PathVariable("roomId") int roomId) {
@@ -100,7 +146,6 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    // /room/{roomId}/name
     @ApiOperation("modify room name")
     @PatchMapping("{roomId}/name")
     public ResponseEntity<?> modifyName(@PathVariable("roomId") int roomId,
@@ -121,6 +166,7 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK).body(roomService.modifyProfile(roomId,profile));
     }
 
+    // 추후 userId는 security에서 가져오도록 한다
     @ApiOperation("my room - without room information")
     @GetMapping("/my/{userId}")
     public ResponseEntity<?> getMyRoom(@PathVariable("userId") String userId){
@@ -128,15 +174,31 @@ public class RoomController {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        UserLoginResponseDto user = null;
-        UserMemoDto userMemo = null;
+        MyRoomResponseDto myRoomInfo = null;
 
         try {
-            user = userService.getLoginUser(userId);
-            userMemo = memoService.findUserMemoByUserId(userId);
-            resultMap.put("user",user);
-            resultMap.put("userMemo",userMemo);
+            myRoomInfo = roomService.getMyRoomDto(userId);
+            resultMap.put("myRoomInfo",myRoomInfo);
             status = HttpStatus.ACCEPTED;
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @ApiOperation("select room and get room info")
+    @GetMapping("/{roomId}/{userId}")
+    public ResponseEntity<?> getRoomDetail(@PathVariable("roomId") int roomId, @PathVariable("userId") String userId){
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        RoomMoveResponseDto moveRoomInfo = null;
+
+        try {
+            moveRoomInfo = roomService.getMoveRoomDto(roomId, userId);
+            resultMap.put("moveRoomInfo",moveRoomInfo);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -152,25 +214,4 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @ApiOperation("select room and get room info")
-    @GetMapping("/{room_id}")
-    public ResponseEntity<?> SearchMyRoom(@PathVariable("room_id") int roomId){
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        RoomMemoDto roomMemo = null;
-        RoomMoveResponseDto move = null;
-
-        try {
-            move = new RoomMoveResponseDto(roomRepository.findById(roomId).get());
-            roomMemo = memoService.findRoomMemoByRoomId(roomId);
-            resultMap.put("move",move);
-            resultMap.put("roomMemo", roomMemo);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
 }

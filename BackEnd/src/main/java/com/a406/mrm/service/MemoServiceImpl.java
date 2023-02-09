@@ -45,12 +45,24 @@ public class MemoServiceImpl implements MemoService{
 
     @Override
     public UserMemoDto findUserMemoByUserId(String userId) throws Exception {
-        return new UserMemoDto(userMemoRepository.findByUserId(userId));
+        UserMemo userMemo = userMemoRepository.findByUserId(userId);
+        UserMemoDto userMemoDto = null;
+
+        if(userMemo != null){
+            userMemoDto = new UserMemoDto(userMemo);
+        }
+        return userMemoDto;
     }
 
     @Override
     public RoomMemoDto findRoomMemoByRoomId(int roomId) throws Exception {
-        return new RoomMemoDto(roomMemoRepository.findByRoomId(roomId));
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
+        RoomMemoDto roomMemoDto = null;
+
+        if(roomMemo != null){
+            roomMemoDto = new RoomMemoDto(roomMemo);
+        }
+        return roomMemoDto;
     }
 
     @Override

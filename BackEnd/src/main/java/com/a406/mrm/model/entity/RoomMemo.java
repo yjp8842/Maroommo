@@ -21,4 +21,9 @@ public class RoomMemo {
         this.roomId = memoRoomDto.getRoomId();
         this.content = memoRoomDto.getContent();
     }
+
+    public RoomMemo(int roomId, String content){
+        this.roomId = roomId;
+        this.content = content;
+    }
 }

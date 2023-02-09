@@ -9,7 +9,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class RoomMemoDto {
     private String id;
     private int roomId;
@@ -19,5 +18,10 @@ public class RoomMemoDto {
         this.id = roomMemo.getId();
         this.roomId = roomMemo.getRoomId();
         this.content = roomMemo.getContent();
+    }
+
+    public RoomMemoDto(int roomId, String content){
+        this.roomId = roomId;
+        this.content = content;
     }
 }

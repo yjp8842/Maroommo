@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -24,14 +23,44 @@ public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
-    private final TodoRepository todoRepository;
-    private final TodoTimeRepository todoTimeRepository;
+    private final ScheduleService scheduleService;
+    private final RoomMemoRepository roomMemoRepository;
 
+    // 마이 페이지를 눌렀을 시 유저가 참가한 room list를 가져온다
     @Override
-    public Room makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
-        // room의 users에 추가
-        // user의 rooms에 추가
-        // ManyToMany 공부 필요 ;-;
+    public MyRoomResponseDto getMyRoomDto(String userId) {
+        MyRoomResponseDto myRoomResponseDto = null;
+        User user = userRepository.findById(userId).get();
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
+
+        // 애초에 user가 없는데 요청을 할 일이 없긴 하지,,,
+        if(user != null){
+            myRoomResponseDto = new MyRoomResponseDto(user,schedules);
+        }
+        return myRoomResponseDto;
+    }
+
+    // 그룹 페이지를 눌렀을 시 그룹의 자세한 정보를 받아온다
+    @Override
+    public RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) {
+        RoomMoveResponseDto moveRoomResponseDto = null;
+        Room room = roomRepository.findById(roomId).get();
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
+
+        if(room != null){
+            moveRoomResponseDto = new RoomMoveResponseDto(room, roomMemo,schedules);
+        }
+
+        return moveRoomResponseDto;
+    }
+
+    // room을 생성하고 해당 room으로 이돟한다 -> detail한 정보를 반환해야 하고 room list도 줘야한다
+    @Override
+    public RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) {
+        RoomMoveResponseDto moveRoomResponseDto = null;
+
+        // 파일 저장
         String uuid =  null;
         if(profile != null){
             uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
@@ -43,35 +72,43 @@ public class RoomServiceImpl implements RoomService {
                 e.printStackTrace();
             }
         }
-        Room roomInfo = new Room(roomRequestDto,uuid); // 입력받은 room 정보를 세팅한 후
-        String code = createEntryCode(); // entry code를 생성하여
-//        String code = UUID.randomUUID().toString();
-        roomInfo.setCode(code); // 추가
-        Room roomRegisterResult = roomRepository.save(roomInfo);
+        Room registRoom = new Room(roomRequestDto,uuid); // 입력받은 room 정보를 세팅한 후
 
+        String code = UUID.randomUUID().toString(); // entry code를 생성하여
+        registRoom.setCode(code); // 추가
+        registRoom = roomRepository.save(registRoom);
+
+        // 유저에 룸 연동
         User user = userRepository.findById(userId).get();
-        UserHasRoom userHasRoom = new UserHasRoom();
-        userHasRoom.setRoom(roomRegisterResult);
-        userHasRoom.setUser(user);
+        UserHasRoom userHasRoom = new UserHasRoom(user, registRoom);
         userHasRoomRepository.save(userHasRoom);
 
-        return roomRegisterResult;
+        // 그룹 메모를 저장
+        RoomMemo roomMemo = roomMemoRepository.save(new RoomMemo(registRoom.getId(), ""));
+
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
+        moveRoomResponseDto = new RoomMoveResponseDto(registRoom, roomMemo, schedules);
+
+        return moveRoomResponseDto;
     }
 
     // room 입장
     @Override
-    public Room enterRoom(int roomId, String userId) {
+    public RoomMoveResponseDto enterRoom(int roomId, String userId) {
+        RoomMoveResponseDto moveRoomResponseDto = null;
         Room enterRoomInfo = roomRepository.findById(roomId).get(); // id가 일치하는 room 정보를 가져온다
-
-        // room의 users에 추가
-        // user의 rooms에 추가
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
         User user = userRepository.findById(userId).get();
-        UserHasRoom userHasRoom = new UserHasRoom();
-        userHasRoom.setRoom(enterRoomInfo);
-        userHasRoom.setUser(user);
-        userHasRoomRepository.save(userHasRoom);
+        List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
+        UserHasRoom userHasRoom = null;
 
-        return enterRoomInfo;
+        if(enterRoomInfo != null){
+            userHasRoom = new UserHasRoom(user, enterRoomInfo);
+            userHasRoomRepository.save(userHasRoom);
+            moveRoomResponseDto = new RoomMoveResponseDto(enterRoomInfo, roomMemo, schedules);
+        }
+
+        return moveRoomResponseDto;
     }
 
     @Override
@@ -88,8 +125,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public String updateCode(int roomId) {
         Room nowRoomInfo = roomRepository.findById(roomId).get(); // room 정보를 가져온다
-        String newCode = createEntryCode();
-//        String newCode = UUID.randomUUID().toString();
+        String newCode = UUID.randomUUID().toString();
         nowRoomInfo.setCode(newCode);
         roomRepository.save(nowRoomInfo);
 
@@ -140,37 +176,11 @@ public class RoomServiceImpl implements RoomService {
     }
 
 
-    public static String createEntryCode() {
-        StringBuffer code = new StringBuffer();
-        Random rnd = new Random();
-        int codeLength = 32;
-
-        for (int i = 0; i < codeLength; i++) { // 입장 코드 16자리
-            int index = rnd.nextInt(3); // 0~2 까지 랜덤
-
-            switch (index) {
-                case 0:
-                    code.append((char) ((int) (rnd.nextInt(26)) + 97));
-                    //  a~z
-                    break;
-                case 1:
-                    code.append((char) ((int) (rnd.nextInt(26)) + 65));
-                    //  A~Z
-                    break;
-                case 2:
-                    code.append((rnd.nextInt(10)));
-                    // 0~9
-                    break;
-            }
-        }
-        return code.toString();
-    }
-
-
     public List<RoomMoveResponseDto> RoomListAll () {
-        List<RoomMoveResponseDto> result = roomRepository.RoomListAll()
-                .stream()
-                .map(x -> new RoomMoveResponseDto(x)).collect(Collectors.toList());
+        List<RoomMoveResponseDto> result =
+                roomRepository.RoomListAll()
+                                .stream()
+                                .map(x -> new RoomMoveResponseDto(x, roomMemoRepository.findByRoomId(x.getId()), null)).collect(Collectors.toList());
         return result;
     }
 
