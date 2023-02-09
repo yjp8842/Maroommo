@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService{
         return categoryName;
     }
 
-    public List<CategoryResponseDto> listCategory(int category_id) throws Exception{
+    public List<CategoryResponseDto> CategoryDetail(int category_id) throws Exception{
         List<CategoryResponseDto> result = categoryRepository.findCategoryById(category_id)
                 .stream()
                 .map(x -> new CategoryResponseDto(x)).collect(Collectors.toList());

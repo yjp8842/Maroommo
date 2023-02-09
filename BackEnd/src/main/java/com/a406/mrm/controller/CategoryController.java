@@ -24,7 +24,6 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-
     /**
      * @param insertDto
      *              를 통해 카테고리를 생성합니다
@@ -103,7 +102,7 @@ public class CategoryController {
      * @return categories : 카테고리 목록을 반환합니다
      */
     @GetMapping
-    @ApiOperation("카테고리 리스트 출력 : 카테고리 아이디(id) -> 카테고리 정보와 해당 카테고리의 서브 정보(서브 아이디, 서브 이름)")
+    @ApiOperation("카테고리 리스트 출력 : 카테고리 아이디(id) -> 카테고리 정보와 해당 카테고리의 서브 정보")
     public ResponseEntity<?> CategoryList(@RequestParam("id") int cid) {
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -111,7 +110,7 @@ public class CategoryController {
         List<CategoryResponseDto> categoryResponseDtoList = null;
 
         try {
-            categoryResponseDtoList = categoryService.listCategory(cid);
+            categoryResponseDtoList = categoryService.CategoryDetail(cid);
             resultMap.put("categories", categoryResponseDtoList);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
