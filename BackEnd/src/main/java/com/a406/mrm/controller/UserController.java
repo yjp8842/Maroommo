@@ -1,9 +1,6 @@
 package com.a406.mrm.controller;
 ;
-import com.a406.mrm.model.dto.ScheduleResponseDto;
-import com.a406.mrm.model.dto.UserJoinRequestDto;
-import com.a406.mrm.model.dto.UserLoginResponseDto;
-import com.a406.mrm.model.dto.UserModifyRequestDto;
+import com.a406.mrm.model.dto.*;
 import com.a406.mrm.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +28,6 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
-    private final ScheduleService scheduleService;
 
     /**
      *  회원가입 메서드
@@ -255,21 +252,22 @@ public class UserController {
     @ApiOperation("Modify user infomation")
     @PatchMapping
     private ResponseEntity<Map<String, Object>> modifyUserInfo(
-            @RequestBody @ApiParam("user Information to modify") UserModifyRequestDto user) {
-
+                                                        @RequestParam String userId,
+                                                        @RequestParam String intro,
+                                                        @RequestParam String nickname,
+                                                        @RequestParam String name,
+                                                        @RequestParam MultipartFile profile
+                                                        ) {
+        UserModifyRequestDto user = new UserModifyRequestDto(userId, intro,  nickname, name);
         logger.info("[modifyUserInfo] user:{}", user);
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
+        UserModifyResponseDto userModifyResponseDto = null;
+
         try {
-            // 유저가 존재한다면
-            if(userService.existsByUserForId(user.getId())){
-                userService.modify(user);
-                resultMap.put("isModify", "success");
-            }
-            else{
-                resultMap.put("isModify", "fail");
-            }
+            userModifyResponseDto = userService.modify(user,profile);
+            resultMap.put("user", userModifyResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

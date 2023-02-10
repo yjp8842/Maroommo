@@ -8,8 +8,12 @@ import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -82,15 +86,30 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void modify(UserModifyRequestDto userDto) throws Exception {
+    public UserModifyResponseDto modify(UserModifyRequestDto userDto, MultipartFile profile) throws Exception {
         User user = userRepository.findById(userDto.getId()).get();
+        UserModifyResponseDto userModifyResponseDto = null;
+        String uuid =  null;
+
         if(user != null){
             user.setIntro(userDto.getIntro());
             user.setName(userDto.getName());
             user.setNickname(userDto.getNickname());
-            user.setProfile(userDto.getProfile());
-            userRepository.save(user);
+            // 파일 저장
+            if(profile != null){
+                uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
+                String absPath = "/img_dir/"+uuid;
+                try {
+                    profile.transferTo(new File(absPath));
+                    user.setProfile(uuid);
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+            userModifyResponseDto = new UserModifyResponseDto(userRepository.save(user));
         }
+
+        return userModifyResponseDto;
     }
 
     @Override

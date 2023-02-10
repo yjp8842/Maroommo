@@ -13,5 +13,11 @@ public class UserModifyRequestDto {
     private String intro;
     private String nickname;
     private String name;
-    private String profile;
+
+    public UserModifyRequestDto(String id, String intro, String nickname, String name){
+        this.id = id;
+        this.intro = intro;
+        this.nickname = nickname;
+        this.name = name;
+    }
 }
