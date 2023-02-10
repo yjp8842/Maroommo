@@ -1,7 +1,5 @@
 package com.a406.mrm.model.entity;
 
-import com.a406.mrm.model.dto.BoardInsertDto;
-import com.a406.mrm.model.dto.BoardModifyDto;
 import com.a406.mrm.model.dto.QuestionInsertDto;
 import com.a406.mrm.model.dto.QuestionModifyDto;
 import lombok.*;
@@ -30,6 +28,17 @@ public class Question {
         this.picture = questionInsertDto.getPicture();
         this.categorySub = categorySub;
         this.user = user;
+    }
+
+    public Question(String title, String content, String picture, CategorySub categorySub, User user) {
+        this.title = title;
+        this.content = content;
+        this.picture = picture;
+        this.categorySub = categorySub;
+        this.user = user;
+        this.views = 0;
+        this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.status = 0;
     }
 
     public Question(QuestionModifyDto questionModifyDto, int question_id) {

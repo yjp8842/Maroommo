@@ -13,8 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +31,25 @@ public class QuestionServiceImpl implements QuestionService{
     private final UserRepository userRepository;
 
     @Override
-    public QuestionResponseAnswerDto join(QuestionInsertDto insertDto) throws Exception{
-        CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
-        User user = userRepository.findById(insertDto.getUser_id()).get();
+    public QuestionResponseAnswerDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception{
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+            String absPath = "/img_dir/"+uuid;
+//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        CategorySub categorySub = categorySubRepository.findById(categorySub_id);
+        User user = userRepository.findById(user_id).get();
         QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         if(categorySub != null && user != null){
-            Question question = new Question(insertDto,categorySub,user);
+            Question question = new Question(title, content, uuid, categorySub, user);
             question = questionRepository.save(question);
             questionResponseAnswerDto = new QuestionResponseAnswerDto(question);
         }
@@ -54,18 +70,30 @@ public class QuestionServiceImpl implements QuestionService{
     }
 
     @Override
-    public QuestionModifyDto update(QuestionModifyDto modifyDto) throws Exception{
-        Question question = questionRepository.findById(modifyDto.getId());
-        QuestionModifyDto questionModifyDto = null;
+    public QuestionResponseAnswerDto update(int id, String content, MultipartFile picture, int status, String title, String user_id) throws Exception{
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+            String absPath = "/img_dir/"+uuid;
+//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
 
-        if (question != null && question.getUser().getId().equals(modifyDto.getUser_id())){
-            question.setTitle(modifyDto.getTitle());
-            question.setContent(modifyDto.getContent());
-            question.setPicture(modifyDto.getPicture());
-            question.setStatus(modifyDto.getStatus());
+        Question question = questionRepository.findById(id);
+        QuestionResponseAnswerDto questionModifyDto = null;
+
+        if (question != null && question.getUser().getId().equals(user_id)){
+            question.setTitle(title);
+            question.setContent(content);
+            question.setPicture(uuid);
+            question.setStatus(status);
             question = questionRepository.save(question);
 
-            questionModifyDto = new QuestionModifyDto(question);
+            questionModifyDto = new QuestionResponseAnswerDto(question);
         }
 
         return questionModifyDto;
