@@ -29,7 +29,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     /**
-     * @param insertDto
+     * @param(title,content,user_id,categorySub_id,picture)
      *              를 통해 질문을 생성한다
      * @return newQuestion : 생성한 질문을 반환한다
      */
@@ -76,7 +76,7 @@ public class QuestionController {
     }
 
     /**
-     * @param modifyDto
+     * @param (id,content,picture,status,title,user_id)
      *              를 통해 질문을 수정한다
      * @return question : 수정한 질문을 반환한다
      */

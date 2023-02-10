@@ -33,7 +33,7 @@ public class BoardController {
     private final BoardService boardService;
 
     /**
-     * @param RequestParam 6개
+     * @param (title,content,user_id,categorySub_id,picture)
      *              를 가지고 게시글을 생성한다
      * @return newBoard : 생성한 게시글을 반환한다
      */
@@ -82,12 +82,12 @@ public class BoardController {
     }
 
     /**
-     * @param modifyDto
+     * @param (id,content,title,picture,user_id)
      *              를 가지고 게시글을 수정한다
      * @return board : 수정한 게시글의 자세한 정보를 반환한다
      */
     @PatchMapping
-    @ApiOperation("게시판 수정 : 게시판 아이디(id),, 수정내용(content), title(제목), 사진(picture), title(제목), 작성자 아이디(user_id))")
+    @ApiOperation("게시판 수정 : 게시판 아이디(id),, 수정내용(content), title(제목), 사진(picture), 작성자 아이디(user_id))")
     public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestParam MultipartFile picture,
                                     @RequestParam String title, @RequestParam String user_id) {
 
