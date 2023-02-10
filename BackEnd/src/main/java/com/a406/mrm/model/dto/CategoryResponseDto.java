@@ -1,7 +1,6 @@
 package com.a406.mrm.model.dto;
 
 import com.a406.mrm.model.entity.Category;
-import com.a406.mrm.model.entity.CategorySub;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,14 +19,11 @@ public class CategoryResponseDto {
         this.id = category.getId();
         this.name = category.getName();
         this.roomId = category.getRoom().getId();
-        this.categorySubs = category.getCategorySubs().stream().map(x -> x.getName()).collect(Collectors.toList());
+        this.categorySubs = category.getCategorySubs().stream().map(x->new CategorySubResponseDto(x)).collect(Collectors.toList());
     }
 
     private int id;
     private String name;
     private int roomId;
-
-    private List<String> categorySubs = new ArrayList<>();
-
-
+    private List<CategorySubResponseDto> categorySubs = new ArrayList<>();
 }

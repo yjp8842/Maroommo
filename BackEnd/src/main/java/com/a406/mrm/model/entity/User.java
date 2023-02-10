@@ -30,14 +30,11 @@ public class User extends BaseTimeEntity{
     @Column(nullable = true)
     private String intro;
     @Column(nullable = true)
-    private String memo;
-    @Column(nullable = true)
     private String roles; // ROLE_USER, ROLE_ADMIN
     @Column(nullable = true)
     private String provider;
     @Column(nullable = true)
     private String providerId;
-
 
     @ApiModelProperty("User - Room relation table mapping")
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
@@ -46,5 +43,8 @@ public class User extends BaseTimeEntity{
     private List<Todo> todos = new ArrayList<>();
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Schedule> schedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Board> boards = new ArrayList<>();
 }
 

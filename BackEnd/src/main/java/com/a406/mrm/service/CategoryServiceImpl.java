@@ -3,8 +3,10 @@ package com.a406.mrm.service;
 import com.a406.mrm.model.dto.CategoryInsertDto;
 import com.a406.mrm.model.dto.CategoryResponseDto;
 import com.a406.mrm.model.entity.Category;
+import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.repository.CategoryRepository;
 import com.a406.mrm.repository.RoomRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,33 +16,43 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
     private final RoomRepository roomRepository;
 
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, RoomRepository roomRepository) {
-        this.categoryRepository = categoryRepository;
-        this.roomRepository = roomRepository;
-    }
+    public CategoryResponseDto join(CategoryInsertDto insertDto) throws Exception{
+        Room room = roomRepository.findById(insertDto.getRoomId()).get();
+        CategoryResponseDto categoryResponseDto = null;
 
-    public CategoryInsertDto join(CategoryInsertDto categoryInsertDto, int roomId){
-        Category category = new Category(categoryInsertDto, roomRepository.findById(roomId).get());
-        return new CategoryInsertDto(categoryRepository.save(category));
+        if(room != null){
+            Category category = new Category(insertDto, room);
+            category = categoryRepository.save(category);
+            categoryResponseDto = new CategoryResponseDto(category);
+        }
+
+        return categoryResponseDto;
     }
-    public void delete(int id){
+    public void delete(int id) throws Exception{
         categoryRepository.deleteById(id);
     }
 
-    public String update(int id, String name){
+    public String update(int id, String name) throws Exception{
         Category category = categoryRepository.findById(id);
-        category.setName(name);
-        return categoryRepository.save(category).getName();
+        String categoryName = null;
+
+        if(category != null){
+            category.setName(name);
+            category = categoryRepository.save(category);
+            categoryName = category.getName();
+        }
+
+        return categoryName;
     }
 
-    public List<CategoryResponseDto> listCategory(int room_id) {
-        List<CategoryResponseDto> result = categoryRepository.findByroom_Id(room_id)
+    public List<CategoryResponseDto> CategoryDetail(int category_id) throws Exception{
+        List<CategoryResponseDto> result = categoryRepository.findCategoryById(category_id)
                 .stream()
                 .map(x -> new CategoryResponseDto(x)).collect(Collectors.toList());
         return result;

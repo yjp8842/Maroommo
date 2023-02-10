@@ -9,10 +9,11 @@ import com.a406.mrm.model.entity.Todo;
 import java.util.List;
 
 public interface TodoService {
-    List<Todo> getTodoAll(String userId);
-    Todo addTodo(String userId, TodoRequestDto todoRequestDto);
-    int changeState(TodoChangeStateRequestDto todoChangeStateRequestDto);
-    Todo modifyTodo(TodoModifyDto todoModifyDto);
-    List<TodoResponseDto> searchRoomTodo(int roomId, String userId);
-    List<TodoResponseDto> searchMyTodo(String userId);
+    List<Todo> getTodoAll(String userId) throws Exception;
+    TodoResponseDto addTodo(String userId, TodoRequestDto todoRequestDto) throws Exception;
+    int changeState(TodoChangeStateRequestDto todoChangeStateRequestDto) throws Exception;
+    TodoResponseDto modifyTodo(TodoModifyDto todoModifyDto) throws Exception;
+    List<TodoResponseDto> searchRoomTodo(int roomId, String userId) throws Exception;
+    List<TodoResponseDto> searchMyTodo(String userId) throws Exception;
+    List<Todo> getTodoRoomAll(int room_id) throws Exception;
 }

@@ -15,6 +15,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration // IoC 빈(bean)을 등록
 @EnableWebSecurity // 필터 체인 관리 시작 어노테이션
@@ -49,14 +54,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
 
         http.authorizeRequests()
-//            .antMatchers("/room/**").authenticated() // room에 입장하려면 권한이 있어야함
-            .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
-            .antMatchers("/swagger-ui.html/**").permitAll() // 스웨거 동작 권한
+            .antMatchers("/admin/**").authenticated() // room에 입장하려면 권한이 있어야함
+                // 지금은 admin이지만 추후 권한이 필요한 요청으로 수정해야한다
+//            .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
+//            .antMatchers("/swagger-ui.html/**").permitAll() // 스웨거 동작 권한
             .anyRequest().permitAll()
+        .and()
+            .cors()
         .and()
             .formLogin()
             .usernameParameter("id") // 유저 id 파라미터를 username->id로 변경
-            .loginPage("/login") // 로그인 페이지는 해당 주소이며
+            .loginPage("/") // 로그인 페이지는 해당 주소 -> 나중에는 /가 될 것이다
             .loginProcessingUrl("/user/login") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
             .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
             .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
@@ -71,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .sessionManagement()
             .maximumSessions(1) // 세션 최대 허용 수 1 (-1이면 무제한 세션 허용)
             .maxSessionsPreventsLogin(false) // true:중복로그인막음 / false:이전로그인세션해제
-            .expiredUrl("/login?error=true&exception=Have been attempted to login from a new place. or sesseion expired") // 세션 만료시 이동할 페이지
+            .expiredUrl("/user/login/error?loginFailMessage=Have been attempted to login from a new place. or sesseion expired") // 세션 만료시 이동할 페이지
         .and()
             .and().rememberMe() // 로그인 유지
             .alwaysRemember(false) // 항상 기억할 것인지
@@ -86,5 +94,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .userInfoEndpoint()
             .userService(principalOauth2UserService)
                 ;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("http://localhost:3000");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("GET");
+        configuration.addAllowedMethod("POST");
+        configuration.addAllowedMethod("PUT");
+        configuration.addAllowedMethod("PATCH");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
