@@ -13,8 +13,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,13 +31,25 @@ public class BoardServiceImpl implements BoardService{
     private final UserRepository userRepository;
 
     @Override
-    public BoardResponseCommentDto join(BoardInsertDto insertDto) throws Exception {
-        CategorySub categorySub = categorySubRepository.findById(insertDto.getCategorysub_id());
-        User user = userRepository.findById(insertDto.getUser_id()).get();
+    public BoardResponseCommentDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception {
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+            String absPath = "/img_dir/"+uuid;
+//            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        CategorySub categorySub = categorySubRepository.findById(categorySub_id);
+        User user = userRepository.findById(user_id).get();
         BoardResponseCommentDto boardResponseCommentDto = null;
 
         if(categorySub != null && user != null){
-            Board board = new Board(insertDto,categorySub,user);
+            Board board = new Board(title, content, uuid, categorySub, user);
             board = boardRepository.save(board);
             boardResponseCommentDto = new BoardResponseCommentDto(board);
         }
@@ -54,14 +70,26 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public BoardResponseCommentDto update(BoardModifyDto modifyDto) throws Exception {
-        Board board = boardRepository.findById(modifyDto.getId());
+    public BoardResponseCommentDto update(int id, String content, MultipartFile picture, String title, String user_id) throws Exception {
+        String uuid =  null;
+        if(picture != null){
+            uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
+//            String absPath = "/img_dir/"+uuid;
+            String absPath = "/Users/dhwnsgh/Desktop/S08P12A406/BackEnd/src/main/resources/img"+uuid;
+            try {
+                picture.transferTo(new File(absPath));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        Board board = boardRepository.findById(id);
         BoardResponseCommentDto boardModifyDto = null;
 
-        if (board != null && board.getUser().getId().equals(modifyDto.getUser_id())){
-            board.setTitle(modifyDto.getTitle());
-            board.setContent(modifyDto.getContent());
-            board.setPicture(modifyDto.getPicture());
+        if (board != null && board.getUser().getId().equals(user_id)){
+            board.setTitle(title);
+            board.setContent(content);
+            board.setPicture(uuid);
             board = boardRepository.save(board);
             boardModifyDto = new BoardResponseCommentDto(board);
         }
