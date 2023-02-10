@@ -1,37 +1,36 @@
 package com.a406.mrm.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Table(name="users")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
-
     @Id
     private String id;
+    @Column(nullable = false)
     private String password;
-    private String name;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String nickname;
+    @Column(nullable = true)
+    private String profile;
+    @Column(nullable = true)
+    private String intro;
+    @Column(nullable = true)
     private String roles; // ROLE_USER, ROLE_ADMIN
-    private String providerId;
+    @Column(nullable = true)
     private String provider;
-
-    public List<String> getRoleList(){
-        if(this.roles.length() > 0){
-            return Arrays.asList(this.roles.split(","));
-        }
-        return new ArrayList<>();
-    }
-
+    @Column(nullable = true)
+    private String providerId;
 }
+
