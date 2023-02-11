@@ -1,115 +1,104 @@
 package com.a406.mrm.config;
 
-import com.a406.mrm.common.handler.AuthFailureHandler;
-import com.a406.mrm.common.handler.AuthSuccessHandler;
-import com.a406.mrm.config.auth.PrincipalDetailsService;
+import com.a406.mrm.common.handler.*;
+import com.a406.mrm.config.jwt.TokenProvider;
 import com.a406.mrm.config.oauth.PrincipalOauth2UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 
-@Configuration // IoC 빈(bean)을 등록
-@EnableWebSecurity // 필터 체인 관리 시작 어노테이션
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // 특정 주소 접근시 권한 및 인증을 위한 어노테이션 활성화
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+@RequiredArgsConstructor
+@Configuration
+@EnableWebSecurity
+@Component
+public class SecurityConfig{
 
-    @Autowired
-    private PrincipalOauth2UserService principalOauth2UserService;
-
-    @Autowired
-    private AuthSuccessHandler authSuccessHandler;
-
-    @Autowired
-    private AuthFailureHandler authFailureHandler;
-
-    @Autowired
-    private PrincipalDetailsService principalDetailsService;
+    private final TokenProvider tokenProvider;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
     @Bean
-    public BCryptPasswordEncoder encodePwd() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 시큐리티가 로그인 과정에서 password를 가로챌 때 해당 해쉬로 암호화해서 비교한다
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(principalDetailsService).passwordEncoder(encodePwd());
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
 
-        http.authorizeRequests()
-            .antMatchers("/admin/**").authenticated() // room에 입장하려면 권한이 있어야함
-                // 지금은 admin이지만 추후 권한이 필요한 요청으로 수정해야한다
-//            .antMatchers("/user/**").permitAll() // 로그인, 회원가입 등은 권한이 필요없다
-//            .antMatchers("/swagger-ui.html/**").permitAll() // 스웨거 동작 권한
-            .anyRequest().permitAll()
+        http
+            // exception handling 할 때 우리가 만든 클래스를 추가
+            .exceptionHandling()
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            .accessDeniedHandler(jwtAccessDeniedHandler)
+
         .and()
             .cors()
+            .configurationSource(corsConfigurationSource())
+
         .and()
-            .formLogin()
-            .usernameParameter("id") // 유저 id 파라미터를 username->id로 변경
-            .loginPage("/") // 로그인 페이지는 해당 주소 -> 나중에는 /가 될 것이다
-            .loginProcessingUrl("/user/login") // 로그인 요청 url이 들어오면 시큐리티가 대신 로그인 진행
-            .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
-            .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
-//            .defaultSuccessUrl("/room") // 로그인 후 디폴트 페이지로 가짐
+            .headers()
+            .frameOptions()
+            .sameOrigin()
+
+        // 시큐리티는 기본적으로 세션을 사용
+        // 여기서는 세션을 사용하지 않기 때문에 세션 설정을 Stateless 로 설정
         .and()
-            .logout()
-            .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // 해당 로그아웃 요청이 왔을 때 로그아웃을 진행한다
-            .logoutSuccessUrl("/") // 로그아웃 성공시 해당 주소로 이동
-            .deleteCookies("JSESSIONID","remember-me") // 세션, 쿠키 삭제
-            .permitAll()
-            .and()
             .sessionManagement()
-            .maximumSessions(1) // 세션 최대 허용 수 1 (-1이면 무제한 세션 허용)
-            .maxSessionsPreventsLogin(false) // true:중복로그인막음 / false:이전로그인세션해제
-            .expiredUrl("/user/login/error?loginFailMessage=Have been attempted to login from a new place. or sesseion expired") // 세션 만료시 이동할 페이지
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+        // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
         .and()
-            .and().rememberMe() // 로그인 유지
-            .alwaysRemember(false) // 항상 기억할 것인지
-            .tokenValiditySeconds(43200) // 12시간 유지(초 단위)
-            .rememberMeParameter("remember-me")
-        .and() // 소셜 로그인을 위한 설정
+            .authorizeRequests()
+            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+            .antMatchers("/user/**").permitAll()
+            .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
+
+        // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
+        .and()
+            .apply(new JwtSecurityConfig(tokenProvider))
+
+
+        // oauth2 를 이용한 소셜 로그인 설정 적용
+        .and()
             .oauth2Login()
-            .loginPage("/")
-            .successHandler(authSuccessHandler) // 로그인 성공시 처리할 핸들러
-            .failureHandler(authFailureHandler) // 로그인 실패시 처리할 핸들러
-//            .defaultSuccessUrl("/login-success")
             .userInfoEndpoint()
             .userService(principalOauth2UserService)
-                ;
+
+        .and()
+            .successHandler(oAuth2AuthenticationSuccessHandler)
+        ;
+
+        return http.build();
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
 
-        configuration.addAllowedOriginPattern("http://localhost:3000");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("GET");
-        configuration.addAllowedMethod("POST");
-        configuration.addAllowedMethod("PUT");
-        configuration.addAllowedMethod("PATCH");
-        configuration.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:3000"); // 로컬
+        config.addAllowedOrigin("https://i8a406.p.ssafy.io"); // 프론트 IPv4 주소
+        config.addAllowedMethod("*"); // 모든 메소드 허용.
+        config.addAllowedHeader("*");
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 }
