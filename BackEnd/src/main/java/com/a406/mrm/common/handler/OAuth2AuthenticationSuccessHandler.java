@@ -1,8 +1,8 @@
 package com.a406.mrm.common.handler;
 
-import com.a406.mrm.common.CookieUtil;
+import com.a406.mrm.common.util.CookieUtil;
 import com.a406.mrm.config.jwt.TokenProvider;
-import com.a406.mrm.model.dto.TokenDto;
+import com.a406.mrm.model.dto.TokenResponseDto;
 import com.a406.mrm.model.entity.RefreshToken;
 import com.a406.mrm.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +45,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        String targetUrl = "/oauth2/social/success";
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        TokenResponseDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
