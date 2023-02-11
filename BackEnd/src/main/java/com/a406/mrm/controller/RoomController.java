@@ -2,6 +2,7 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.*;
 import com.a406.mrm.service.RoomService;
+import com.a406.mrm.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -27,6 +28,7 @@ public class RoomController {
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
 
     private final RoomService roomService;
+    private final UserService userService;
 
     /**
      * @param userId
@@ -292,6 +294,41 @@ public class RoomController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    /**
+     * @param userId
+     * @param intro
+     * @param nickname
+     * @param name
+     * @param profile
+     *              를 통해 유저의 정보를 변경합니다
+     * @return user : 변경항 유저의 정보를 반환합니다
+     */
+    @ApiOperation("Modify user infomation")
+    @PatchMapping("user")
+    private ResponseEntity<Map<String, Object>> modifyUserInfo(
+            @RequestParam String userId,
+            @RequestParam String intro,
+            @RequestParam String nickname,
+            @RequestParam String name,
+            @RequestParam MultipartFile profile
+    ) {
+        UserModifyRequestDto user = new UserModifyRequestDto(userId, intro,  nickname, name);
+        logger.info("[modifyUserInfo] user:{}", user);
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+        UserModifyResponseDto userModifyResponseDto = null;
+
+        try {
+            userModifyResponseDto = userService.modify(user,profile);
+            resultMap.put("user", userModifyResponseDto);
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 

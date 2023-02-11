@@ -94,31 +94,6 @@ public class UserController {
     }
 
     /**
-     * @param user
-     *          를 통해 소셜 로그인 후 유저 정보를 제공한다
-     * @return user : 소셜 로그인 한 유저의 정보를 반환한다
-     */
-    @GetMapping("oauth2")
-    private ResponseEntity<Map<String, Object>> getUser(@AuthenticationPrincipal User user) {
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        UserLoginResponseDto userLoginResponseDto = null;
-
-        String userId = user.getUsername();
-        
-        try {
-            userLoginResponseDto = userService.getLoginUser(userId);
-            resultMap.put("user", userLoginResponseDto);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-
-    /**
      * @param name
      * @param email
      *          을 통해 아이디를 찾는다
@@ -242,44 +217,6 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
-
-
-    /**
-     * @param userId
-     * @param intro
-     * @param nickname
-     * @param name
-     * @param profile
-     *              를 통해 유저의 정보를 변경합니다
-     * @return user : 변경항 유저의 정보를 반환합니다
-     */
-    @ApiOperation("Modify user infomation")
-    @PatchMapping
-    private ResponseEntity<Map<String, Object>> modifyUserInfo(
-                                                        @RequestParam String userId,
-                                                        @RequestParam String intro,
-                                                        @RequestParam String nickname,
-                                                        @RequestParam String name,
-                                                        @RequestParam MultipartFile profile
-                                                        ) {
-        UserModifyRequestDto user = new UserModifyRequestDto(userId, intro,  nickname, name);
-        logger.info("[modifyUserInfo] user:{}", user);
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        UserModifyResponseDto userModifyResponseDto = null;
-
-        try {
-            userModifyResponseDto = userService.modify(user,profile);
-            resultMap.put("user", userModifyResponseDto);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-
 
 
 
