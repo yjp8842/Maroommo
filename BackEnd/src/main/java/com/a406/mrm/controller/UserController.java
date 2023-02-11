@@ -17,6 +17,7 @@ public class UserController {
 
     @GetMapping("me")
     public ResponseEntity<?> findUserById() {
+        System.out.println("findUserById 호출");
         return ResponseEntity.ok(userService.findUserById(SecurityUtil.getCurrentMemberId()));
     }
 

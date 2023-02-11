@@ -3,11 +3,11 @@ package com.a406.mrm.config.auth;
 import com.a406.mrm.model.entity.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 // 시큐리티가 /login 요청을 보고 로그인을 대신 진행해준다
 // 로그인 진행 완료시 시큐리티 세션이 만들어진다
@@ -61,7 +61,9 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
     // 해당 user의 권한을 리턴하는 곳
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> listRole = new ArrayList<>();
+        listRole.add(new SimpleGrantedAuthority(user.getRoles()));
+        return listRole;
     }
 
     @Override

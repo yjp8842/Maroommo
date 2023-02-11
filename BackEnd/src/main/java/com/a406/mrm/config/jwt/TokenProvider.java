@@ -36,6 +36,10 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public Long getExpiration(){
+        return REFRESH_TOKEN_EXPIRE_TIME;
+    }
+
     public TokenDto generateTokenDto(Authentication authentication) {
         // 권한들 가져오기
         String authorities = authentication.getAuthorities().stream()
@@ -78,12 +82,12 @@ public class TokenProvider {
         // 클레임에서 권한 정보 가져오기
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+//                Arrays.stream(new String[]{claims.get(AUTHORITIES_KEY).toString()})
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails principal = new User(claims.getSubject(), "", authorities);
-        System.out.println("[getAuthentication] "+principal.getUsername()+","+principal.getPassword());
 
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }

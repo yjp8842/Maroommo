@@ -3,6 +3,7 @@ package com.a406.mrm.config;
 import com.a406.mrm.config.jwt.JwtAccessDeniedHandler;
 import com.a406.mrm.config.jwt.JwtAuthenticationEntryPoint;
 import com.a406.mrm.config.jwt.TokenProvider;
+import com.a406.mrm.config.oauth.OAuth2AuthenticationSuccessHandler;
 import com.a406.mrm.config.oauth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +29,7 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final PrincipalOauth2UserService principalOauth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,12 +68,16 @@ public class SecurityConfig {
             // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
             .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
+
+            // oauth2 를 이용한 소셜 로그인 설정 적용
             .and()
                 .oauth2Login()
-                .defaultSuccessUrl("/login-success")
-//                .successHandler(oAuth2AuthenticationSuccessHandler)
+//                .defaultSuccessUrl("/login-success")
                 .userInfoEndpoint()
-                .userService(principalOauth2UserService);
+                .userService(principalOauth2UserService)
+            .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+        ;
 
         return http.build();
     }
