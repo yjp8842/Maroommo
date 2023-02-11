@@ -1,10 +1,13 @@
 package com.a406.mrm.config.auth;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.a406.mrm.model.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -63,7 +66,9 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     // 해당 user의 권한을 리턴하는 곳
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<GrantedAuthority> listRole = new ArrayList<>();
+        listRole.add(new SimpleGrantedAuthority(user.getRoles()));
+        return listRole;
     }
 
     @Override
