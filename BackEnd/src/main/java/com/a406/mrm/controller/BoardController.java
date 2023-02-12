@@ -86,11 +86,10 @@ public class BoardController {
      *              를 가지고 게시글을 수정한다
      * @return board : 수정한 게시글의 자세한 정보를 반환한다
      */
-    @PatchMapping
+    @PostMapping("update")
     @ApiOperation("게시판 수정 : 게시판 아이디(id),, 수정내용(content), title(제목), 사진(picture), 작성자 아이디(user_id))")
     public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestPart(value="picture", required = false) MultipartFile picture,
                                     @RequestParam String title, @RequestParam String user_id) {
-
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardModifyDto = null;
