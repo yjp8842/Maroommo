@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,12 +35,14 @@ public class OauthController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         UserLoginResponseDto userLoginResponseDto = null;
-
+        String refreshToken = null;
         String userId = user.getUsername();
 
         try {
             userLoginResponseDto = userService.getLoginUser(userId);
+            refreshToken = userService.getRefreshToken(userId);
             resultMap.put("user", userLoginResponseDto);
+            resultMap.put("refreshToken", refreshToken);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

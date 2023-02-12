@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 @Api("User Controller API")
 @RequiredArgsConstructor
 public class UserController {
@@ -36,7 +36,7 @@ public class UserController {
      * @return token : 유저 정보가 포함된 jwt token을 반환합니다
      * @return user : 유저의 자세한 정보를 반환합니다
      */
-    @PostMapping("login")
+    @PostMapping("/login")
     private ResponseEntity<Map<String, Object>> login(
             @RequestBody UserLoginRequestDto userLoginRequestDto) {
 
@@ -61,7 +61,7 @@ public class UserController {
      *              를 통해 회원가입을 진행한다
      * @return x
      */
-    @PostMapping("signup")
+    @PostMapping("/signup")
     private ResponseEntity<Map<String, Object>> signup(
             @RequestBody UserJoinRequestDto userJoinDto) {
 
@@ -76,7 +76,7 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    @PostMapping("reissue")
+    @PostMapping("/reissue")
     private ResponseEntity<Map<String, Object>> reissue(
             @RequestBody TokenRequestDto tokenRequestDto) {
 
@@ -101,10 +101,10 @@ public class UserController {
      * @return userId : 중복된 아이디를 가공처리하여 반환
      */
     @ApiOperation("Find Id by name and email")
-    @GetMapping("help/id")
+    @PostMapping("/help/id")
     private ResponseEntity<Map<String, Object>> findId(
-            @RequestParam @ApiParam("name Information to find id") String name,
-            @RequestParam @ApiParam("email Information to find id") String email) {
+            @RequestBody @ApiParam("name Information to find id") String name,
+            @RequestBody @ApiParam("email Information to find id") String email) {
 
         logger.info("[findId] name:{}, email:{}", name, email);
 
@@ -144,11 +144,11 @@ public class UserController {
      * @return userId : 중복된 아이디를 반환한다
      */
     @ApiOperation("Find Password by id, name and email")
-    @GetMapping("help/pw")
+    @PostMapping("/help/pw")
     private ResponseEntity<Map<String, Object>> findPassword(
-            @RequestParam @ApiParam("id Information to find password") String id,
-            @RequestParam @ApiParam("name Information to find password") String name,
-            @RequestParam @ApiParam("email Information to find password") String email) {
+            @RequestBody @ApiParam("id Information to find password") String id,
+            @RequestBody @ApiParam("name Information to find password") String name,
+            @RequestBody @ApiParam("email Information to find password") String email) {
 
         logger.info("[findPassword] id:{}, name:{}, email:{}", id, name, email);
 
@@ -175,7 +175,7 @@ public class UserController {
      * @return emailCode : 전송한 이메일 인증 코드를 반환한다
      */
     @ApiOperation("Send Email With authentication Code")
-    @GetMapping("help/{email}")
+    @GetMapping("/help/{email}")
     private ResponseEntity<Map<String, Object>> sendEmail(
             @PathVariable @ApiParam("send email Information") String email) {
         logger.info("[sendEmail] email:{}", email);
@@ -202,7 +202,7 @@ public class UserController {
      * @return x
      */
     @ApiOperation("Modify Password")
-    @PatchMapping("help/pw")
+    @PatchMapping("/help/pw")
     private ResponseEntity<Map<String, Object>> modifyPassword(
             @RequestBody String userId,
             @RequestBody @ApiParam("id, password Information to modify password") UserPasswordModifyRequestDto userPasswordModifyRequestDto) {
