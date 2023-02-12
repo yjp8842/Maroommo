@@ -80,14 +80,21 @@ export function* updateArticleAsync(action) {
   //   BASE_URL + `/api/board`,
   //   article
   // );
-  const response = yield api.patch(`/board`, article);
+  const response =
+  // yield api.post(`/board/update`, article);
+  yield api.post(
+    `/board/update?id=${article.id}&content=${article.content}&title=${article.title}&user_id=${article.user_id}`,
+    article.picture
+  )
+
+  
   alert("저장되었습니다.");
 
-  console.log(response.data.id);
+  console.log(response.data.board);
 
   // history.push(`/article/${response.data.id}`);
 
-  history.push(`/group/board/article/${response.data.id}`, response.data.id);
+  history.push(`/group/board/article/${response.data.board.id}`, response.data.board.id);
 }
 
 export function* deleteArticleAsync(action) {
