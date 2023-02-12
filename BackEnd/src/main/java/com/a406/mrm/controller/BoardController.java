@@ -41,7 +41,6 @@ public class BoardController {
     @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, categorySub_id, picture = 파일)")
     public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
                                     @RequestParam int categorySub_id, @RequestPart(value="picture", required = false) MultipartFile picture) {
-        System.out.println(picture);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardResponseCommentDto = null;
