@@ -11,6 +11,7 @@ public interface UserService {
     TokenResponseDto login(UserLoginRequestDto userLoginRequestDto) throws Exception;
     TokenResponseDto reissue(TokenRequestDto tokenRequestDto) throws Exception;
     UserLoginResponseDto getLoginUser(String userId) throws Exception;
+    String getRefreshToken(String userId) throws Exception;
     String findByUserForNameAndEmail(String name, String email) throws Exception;
     boolean existsByUserForIdAndNameAndEmail(String id, String name, String email) throws Exception;
     void modifyPassword(String userId, UserPasswordModifyRequestDto userPasswordModifyRequestDto) throws Exception;
