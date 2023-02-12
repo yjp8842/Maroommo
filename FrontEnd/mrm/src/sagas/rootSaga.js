@@ -8,11 +8,21 @@ import { fetchArticleAsync, updateArticleAsync, deleteArticleAsync } from "./art
 import { commentActions } from "../slice/commentSlice";
 import { registerCommentAsync, getCommentsAsync, deleteCommentAsync } from "./commentSaga";
 
+import { questionArticleActions } from "../slice/questionArticleSlice";
+import { questionActions } from "../slice/questionSlice";
+import { deleteQuestionArticleAsync, fetchQuestionArticleAsync, getQuestionArticleAsync, registerQuestionArticleAsync, updateQuestionArticleAsync } from "./questionArticleSaga";
+import { getQuestionAsync } from "./questionSaga";
+// import { fetchQuestionArticleAsync, updateQuestionArticleAsync, deleteQuestionArticleAsync } from "./questionArticleSaga";
+import { answerActions } from "../slice/answerSlice";
+import { registerAnswerAsync, deleteAnswerAsync } from "./answerSaga";
 
 const { registerArticle, getArticle, fetchArticle, updateArticle, deleteArticle } = articleActions;
+const { registerQuestionArticle, getQuestionArticle, fetchQuestionArticle, updateQuestionArticle, deleteQuestionArticle } = questionArticleActions
 const {getBoard} = boardActions;
+const {getQuestion} = questionActions;
 // const {fetchArticle} = articleActions;
-const { registerComment, getComments, deleteComment } = commentActions;
+const { registerComment, deleteComment } = commentActions;
+const { registerAnswer, deleteAnswer } = answerActions;
 
 export default function* rootWatcher() {
   yield takeLatest(registerArticle.type, registerArticleAsync);
@@ -21,7 +31,26 @@ export default function* rootWatcher() {
   yield takeEvery(fetchArticle.type, fetchArticleAsync);
   yield takeLatest(updateArticle.type, updateArticleAsync);
   yield takeLatest(deleteArticle.type, deleteArticleAsync);
+
   yield takeLatest(registerComment.type, registerCommentAsync);
-  yield takeEvery(getComments.type, getCommentsAsync);
+  // yield takeEvery(getComments.type, getCommentsAsync);
   yield takeLatest(deleteComment.type, deleteCommentAsync);
+
+
+  yield takeLatest(registerQuestionArticle.type, registerQuestionArticleAsync);
+  yield takeEvery(getQuestionArticle.type, getQuestionArticleAsync);
+  yield takeEvery(getQuestion.type, getQuestionAsync);
+
+  yield takeEvery(fetchQuestionArticle.type, fetchQuestionArticleAsync);
+  yield takeLatest(updateQuestionArticle.type, updateQuestionArticleAsync);
+  yield takeLatest(deleteQuestionArticle.type, deleteQuestionArticleAsync);
+
+
+  yield takeLatest(registerAnswer.type, registerAnswerAsync);
+  // yield takeEvery(getQuestionComments.type, getQuestionCommentsAsync);
+  yield takeLatest(deleteAnswer.type, deleteAnswerAsync);
+
+
+
 }
+

@@ -2,19 +2,19 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 
-function ArticleDetail(props) {
-  console.log('222222222')
+function QuestionArticleDetail(props) {
+  console.log('--------------')
   console.log(props)
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
-        <a href="/group/board">
+        <a href="/group/question">
           <button type="primary">목록</button>
         </a>
         <button></button>
       </div>
       <div style={{ textAlign: "center" }}>
-        <h2>게시글</h2>
+        <h2>질문</h2>
       </div>
       <div>
         <table>
@@ -32,14 +32,16 @@ function ArticleDetail(props) {
               <td>{props.views}</td>
             </tr>
             <tr>
+              <th>해결/미해결</th>
+              <td colSpan="3">{props.status}</td>
+            </tr>
+            <tr>
               <th>제목</th>
               <td colSpan="3">{props.title}</td>
             </tr>
             <tr>
               <th>내용</th>
               <td colSpan="3">{props.content}</td>
-              <td colSpan="3">{props.picture}</td>
-              <img src={`/images/${props.picture}`} alt='logo' className='imgbox' />
             </tr>
             <tr>
               <th>작성자</th>
@@ -47,14 +49,14 @@ function ArticleDetail(props) {
             </tr>
             <tr>
               <th>작성일</th>
-              <td colSpan="3">{props.createTime}</td>
+              <td colSpan="3">{new Date(props.date).toLocaleString()}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div>
           <div style={{ margin: "2rem auto" }}>
-            <Link to={`/group/board/register?isForEdit=true`}>
+            <Link to={`/group/question/register?isForEdit=true`}>
               <button>수정</button>
             </Link>
           </div>
@@ -64,28 +66,27 @@ function ArticleDetail(props) {
             </Link>
         </div>
         <div>
-          {props.handleComment}
+          {props.handleAnswer}
         </div>
         <br></br>
         <p>댓글</p>
         <div>
-        {props.loadComments.length > 0 &&
-          props.loadComments.map((comments) => (
+        {props.loadAnswers.length > 0 &&
+          props.loadAnswers.map((answers) => (
           <div
             style={{
               width: "100%",
               backgroundColor: "lightsteelblue",
               border: "1px dotted black",
             }}
-            key='commentform'
+            key='answerform'
           >
-            <span key={comments.id}>
-              <span>{comments.content}</span>
-              <span>{comments.user_id}</span>
+            <span key={answers.id}>
+              <span>{answers.content}</span>
               <span style={{ float: "right" }}>
-                {comments.createtime}&nbsp;
+                {new Date(answers.date).toLocaleString()}&nbsp;
                 <span style={{cursor:'pointer'}} 
-                  onClick={() => props.deleteComment(comments.id)}>[X]</span>
+                  onClick={() => props.deleteAnswer(answers.id)}>[X]</span>
               </span>
             </span>
           </div>
@@ -96,4 +97,4 @@ function ArticleDetail(props) {
   );
 }
 
-export default ArticleDetail;
+export default QuestionArticleDetail;

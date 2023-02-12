@@ -8,6 +8,7 @@ export const commentSlice = createSlice({
     date: Date.now(),
     articleId: 0,
     comments: [],
+    user_id: ""
   },
   reducers: {
     registerComment: (state, { payload: comment }) => {
