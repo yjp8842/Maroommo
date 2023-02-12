@@ -57,17 +57,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         int cookieMaxAge = tokenProvider.getExpiration().intValue() / 60;
 
-        CookieUtil.deleteCookie(request, response, "refresh_token");
-        CookieUtil.addCookie(response, "refresh_token", tokenDto.getRefreshToken(), cookieMaxAge);
+        CookieUtil.deleteCookie(request, response, "refreshToken");
+        CookieUtil.addCookie(response, "refreshToken", tokenDto.getRefreshToken(), cookieMaxAge);
 
-        CookieUtil.deleteCookie(request, response, "grant_type");
-        CookieUtil.addCookie(response, "grant_type", tokenDto.getGrantType(), cookieMaxAge);
+        CookieUtil.deleteCookie(request, response, "grantType");
+        CookieUtil.addCookie(response, "grantType", tokenDto.getGrantType(), cookieMaxAge);
 
-        CookieUtil.deleteCookie(request, response, "access_token_expires_in");
-        CookieUtil.addCookie(response, "access_token_expires_in", Long.toString(tokenDto.getAccessTokenExpiresIn()), cookieMaxAge);
+        CookieUtil.deleteCookie(request, response, "accessTokenExpiresIn");
+        CookieUtil.addCookie(response, "accessTokenExpiresIn", Long.toString(tokenDto.getAccessTokenExpiresIn()), cookieMaxAge);
 
         return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("access_token", tokenDto.getAccessToken())
+                .queryParam("accessToken", tokenDto.getAccessToken())
                 .build().toUriString();
     }
 }
