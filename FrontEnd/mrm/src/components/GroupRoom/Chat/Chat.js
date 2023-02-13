@@ -27,13 +27,18 @@ const Chat = () => {
   // roomId는 룸버튼을 눌렀을 때 roomId 정보를 store에 저장하는 방식으로 해야 하나..?
   // store에서 가져올 것 : userId, userNickname
 
+  const {id, nickname} = useSelector((state) => ({
+    id: state.userInfoReducers.user.id,
+    nickname: state.userInfoReducers.user.nickname,
+  }))
+
   useEffect(() => {
     connect();
     initRoom();
 
     // setRoomId();
-    // setUserId();
-    // setUserNickname();
+    setUserId(id);
+    setUserNickname(nickname);
 
     return () => disconnect();
   }, []);
@@ -90,14 +95,12 @@ const Chat = () => {
 
   // 메시지 받기 -> time 필요함
   const subscribe = () => {
-    console.log("sub1")
     // ROOM_SEQ -> roomId로 바꾸기
     client.current.subscribe('/sub/chat/room/'+ROOM_SEQ, (message) => {
       setChatMessages((chatMessages) => [
         ...chatMessages, JSON.parse(message.body)
       ]);
     });
-    console.log("sub2")
 
     // 메시지 받았을 때 스크롤 내려가도록.
     var chatInBox = document.getElementById('chatinbox');
@@ -122,7 +125,6 @@ const Chat = () => {
     });
 
     setMessage("");
-    console.log("pub")
   };
 
   const onKeyPress = (e) => {
@@ -212,34 +214,10 @@ const Chat = () => {
               }
             }
           } else {
-            return;
+            return 0;
           }
         })}
       </div>
-      {/* )} */}
-
-      {/* {chatMessages && chatMessages.map((chatMessage, index) => {
-        let displayDate = false;
-        const isCreated = chatMessage.date;
-
-        if (index !== chatMessages.length - 1) {
-          const nextCreated = chatMessages[index + 1].date;
-
-          if (isCreated !== nextCreated) {
-            displayDate = true;
-          } else {
-            displayDate = false;
-          }
-        }
-
-        return (
-          <div>
-            {displayDate && (
-              <div>{isCreated}</div>
-            )}
-          </div>
-        )
-      })} */}
 
       <div className="inputbox">
         {/* 된다면 엔터쳤을때 publish 되게끔 */}
