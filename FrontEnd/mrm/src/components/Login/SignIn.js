@@ -2,11 +2,10 @@ import * as React from 'react';
 import { useState } from 'react';
 import { requestLogin } from './SignInLogic';
 import { Link } from 'react-router-dom';
+
 import { useDispatch, useSelector } from "react-redux";
 
 import './Login.css';
-import { FindId } from './FindId';
-import { FindPwd } from './FindPwd';
 
 import { FormControl, FormHelperText, Button, CssBaseline, TextField, Paper, Box, Grid, Typography, Modal } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -25,13 +24,13 @@ export default function SignInSide() {
 
   const {id, email, myRooms} = useSelector((state) =>({id:state.userInfoReducers.user.id, email:state.userInfoReducers.user.email, myRooms:state.userInfoReducers.user.myRooms}) )
   console.log('@@@@', id, email, myRooms)
+
   // id와 password가 빈칸인지 체크하는 함수
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [verificationError, setVerificationError] = useState('')
 
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
+  
   function loginCheck(e) {
     const idCheck = document.getElementById('id')
     const passwordCheck = document.getElementById('password')
@@ -54,27 +53,6 @@ export default function SignInSide() {
     }
   }
     
-  function findPwd(e) {
-    const verificationCheck = document.getElementById('verificaition_number')
-
-    if (!verificationCheck.value) {
-      setVerificationError('인증번호를 입력해주세요');
-      verificationCheck.focus();
-      e.preventDefault();
-      return;
-    } else {
-      setVerificationError('');
-    }
-  }
-
-
-  // 아이디, 비번 찾기 모달 띄움
-  const [idopen, idSetOpen] = React.useState(false);
-  const [pwdopen, pwdSetOpen] = React.useState(false);
-  const idHandleOpen = () => idSetOpen(true);
-  const idHandleClose = () => idSetOpen(false);
-  const passwordHandleOpen = () => pwdSetOpen(true);
-  const passwordHandleClose = () => pwdSetOpen(false);
 
   return (
     <ThemeProvider theme={theme}>
@@ -177,147 +155,14 @@ export default function SignInSide() {
                 </Box>
                 <Grid container sx={{mt: 5, display: 'flex', justifyContent: 'center'}}>
                   <Grid item xs={3} sx={{textAlign: 'center'}}>
-                    <Link href="#" underline='hover' variant="body2" onClick={idHandleOpen}>
+                    <Link href="#" underline='hover' variant="body2" to="/findId">
                       아이디 찾기
                     </Link>
-                    <Modal
-                      open={idopen}
-                      onClose={idHandleClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <div className="style1">
-                        <Typography 
-                          id="modal-modal-title"
-                          sx={{
-                            textAlign: "center",
-                            fontFamily: 'GangwonEdu_OTFBoldA',
-                            fontSize: "30px",
-                            color: '#FFFFFF'
-                          }}
-                        >
-                          아이디 찾기
-                        </Typography>
-                        <TextField
-                          required
-                          id="name-id"
-                          placeholder='이름'
-                          sx={{
-                            marginTop: "20px",
-                            width: "80%",
-                            borderRadius: "10px",
-                            bgcolor: '#FFFFFF'
-                          }}
-                        />
-                        <TextField
-                          required
-                          id="email-id"
-                          placeholder='이메일 주소'
-                          sx={{
-                            marginTop: "20px",
-                            width: "80%",
-                            borderRadius: "10px",
-                            bgcolor: '#FFFFFF'
-                          }}
-                        />
-                        <Button
-                          onClick={FindId}
-                          type="submit"
-                          sx={{
-                            width: "80px",
-                            height: "50px",
-                            marginTop: "30px",
-                            bgcolor: '#FFFFFF',
-                            color: "#000000",
-                            fontSize: "15px",
-                            boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                            // border: "1px solid #000000",
-                            borderRadius: "15px",
-                            ":hover": {
-                              bgcolor: 'c4c4c4'
-                            }
-                          }}
-                        >
-                          <p>확인</p>
-                        </Button>
-                      </div>
-                    </Modal>
                   </Grid>
                   <Grid item xs={3} sx={{textAlign: 'center'}}>
-                    <Link href="#" underline='hover' variant="body2" onClick={passwordHandleOpen}>
+                    <Link href="#" underline='hover' variant="body2"to="/findPwd">
                       비밀번호 찾기
                     </Link>
-                    <Modal
-                      open={pwdopen}
-                      onClose={passwordHandleClose}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <div className="style2">
-                        <Typography 
-                          id="modal-modal-title"
-                          sx={{
-                            textAlign: "center",
-                            fontFamily: 'GangwonEdu_OTFBoldA',
-                            fontSize: "30px",
-                            color: '#FFFFFF'
-                          }}
-                        >
-                          비밀번호 찾기
-                        </Typography>
-                        <TextField
-                          required
-                          id="name-pwd"
-                          placeholder='이름'
-                          sx={{
-                            marginTop: "20px",
-                            width: "80%",
-                            border: "1px solid #000000",
-                            borderRadius: "10px",
-                            bgcolor: '#FFFFFF'
-                          }}
-                        />
-                        <TextField
-                          required
-                          id="id-pwd"
-                          placeholder='아이디'
-                          sx={{
-                            marginTop: "20px",
-                            width: "80%",
-                            border: "1px solid #000000",
-                            borderRadius: "10px",
-                            bgcolor: '#FFFFFF'
-                          }}
-                        />
-                        <TextField
-                          required
-                          id="email-pwd"
-                          placeholder='이메일 주소'
-                          sx={{
-                            marginTop: "20px",
-                            width: "80%",
-                            border: "1px solid #000000",
-                            borderRadius: "10px",
-                            bgcolor: '#FFFFFF'
-                          }}
-                        />
-                        <Button
-                          onClick={FindPwd}
-                          type="submit"
-                          sx={{
-                            width: "80px",
-                            height: "50px",
-                            marginTop: "20px",
-                            color: "#000000",
-                            fontSize: "15px",
-                            boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                            // border: "1px solid #000000",
-                            borderRadius: "15px",
-                            bgcolor: '#FFFFFF'
-                          }}
-                        >확인</Button>
-                      </div>
-                    </Modal>
                   </Grid>
                   <Grid item xs={3} sx={{textAlign: 'center'}}>
                     <Link href='#' underline='hover' varient='body2' to="/signup">
@@ -325,6 +170,48 @@ export default function SignInSide() {
                     </Link>
                   </Grid>
                 </Grid>
+                
+                <Grid container sx={{mt: 4, display: 'flex', justifyContent: 'center'}}>
+                  
+                    {/* <Button> */}
+                      <a href='https://i8a406.p.ssafy.io/api/oauth2/authorization/google'>
+                        <img className="googleLogin" 
+                            alt="google_login"                       
+                            src="images/google_login.png"
+                            // height="80px"
+                            width="340px" 
+                            />
+                      </a>
+                    {/* </Button> */}
+                </Grid>
+                    
+                <Grid container sx={{ display: 'flex', justifyContent: 'center'}}>
+                    {/* <Button> */}
+                      <a href='https://i8a406.p.ssafy.io/api/oauth2/authorization/kakao'>
+                        <img className="kakaoLogin" 
+                            alt="kakao_login"                       
+                            src="images/kakao_login.png"
+                            // height="80px"
+                            width="340px" 
+                            />
+                      </a>
+                    {/* </Button> */}
+                </Grid>
+                
+                <Grid container sx={{ display: 'flex', justifyContent: 'center'}}>
+                    {/* <Button> */}
+                      <a href='https://i8a406.p.ssafy.io/api/oauth2/authorization/naver'>
+                        <img className="naverLogin" 
+                            alt="naver_login"                       
+                            src="images/naver_login.png"
+                            // height="80px"
+                            width="340px" 
+                            />
+                      </a>
+                    {/* </Button> */}
+                </Grid>
+
+
               </FormControl>
             </Box>
           </Box>
