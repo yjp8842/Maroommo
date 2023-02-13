@@ -1,6 +1,9 @@
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { userInfoActions, userInfoReducers } from "../../slice/userInfoSlice";
+import history from "../../utils/history";
 
-export function requestLogin() {
+export function requestLogin(dispatch) {
   const id = document.getElementById('id').value;
   const password = document.getElementById('password').value;
 
@@ -14,17 +17,20 @@ export function requestLogin() {
     // .post("http://localhost:8080/user/login",
           axiosBody)
     .then((res) => {
-      // console.log("로그인 성공!");
-      // console.log(res);
+      console.log("로그인 성공!");
+      console.log(res);
 
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
 
       // user 정보를 store에다가 저장하는 로직을 추가해야해
+      dispatch(userInfoActions.updateUserInfo(res.data.user))
 
 
+      console.log('로그인시 받은 정보로 updateUserInfo 호출')
+      alert('로그인 되었습니다.')
       // -> myRoom으로 이동시키는 로직 추가
-
+      history.push('/myroom')
 
 
     })

@@ -15,6 +15,8 @@ import { getQuestionAsync } from "./questionSaga";
 // import { fetchQuestionArticleAsync, updateQuestionArticleAsync, deleteQuestionArticleAsync } from "./questionArticleSaga";
 import { answerActions } from "../slice/answerSlice";
 import { registerAnswerAsync, deleteAnswerAsync } from "./answerSaga";
+import { updateUserInfoAsync } from "./userInfoSaga";
+import { userInfoActions } from "../slice/userInfoSlice";
 
 const { registerArticle, getArticle, fetchArticle, updateArticle, deleteArticle } = articleActions;
 const { registerQuestionArticle, getQuestionArticle, fetchQuestionArticle, updateQuestionArticle, deleteQuestionArticle } = questionArticleActions
@@ -23,6 +25,8 @@ const {getQuestion} = questionActions;
 // const {fetchArticle} = articleActions;
 const { registerComment, deleteComment } = commentActions;
 const { registerAnswer, deleteAnswer } = answerActions;
+const { updateUserInfo} = userInfoActions
+
 
 export default function* rootWatcher() {
   yield takeLatest(registerArticle.type, registerArticleAsync);
@@ -49,6 +53,7 @@ export default function* rootWatcher() {
   yield takeLatest(registerAnswer.type, registerAnswerAsync);
   // yield takeEvery(getQuestionComments.type, getQuestionCommentsAsync);
   yield takeLatest(deleteAnswer.type, deleteAnswerAsync);
+  // yield takeLatest(updateUserInfo.type, updateUserInfoAsync);
 
 
 

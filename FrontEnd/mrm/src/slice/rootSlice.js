@@ -8,7 +8,19 @@ import { questionArticleReducers } from "./questionArticleSlice";
 import { answerReducers } from "./answerSlice";
 import { userInfoReducers } from "./userInfoSlice";
 
-const rootReducer = combineReducers({articleReducers, boardReducers, commentReducers, questionReducers, questionArticleReducers, answerReducers, userInfoReducers})
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const persistConfig = {
+  key: 'root',
+  storage,
+
+}
 
 
-export default rootReducer;
+export const rootReducer = combineReducers({articleReducers, boardReducers, commentReducers, questionReducers, questionArticleReducers, answerReducers, userInfoReducers})
+export default persistReducer(persistConfig, rootReducer);
+
+// export default rootReducer;
+
+// export const persistReducer(persistConfig, rootReducer);
