@@ -16,16 +16,35 @@ import TodoTable from './MyRoomItem/TodoTable';
 
 import RoomModal from "../Modal/Group/RoomModal";
 import styled from "styled-components";
-import { useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { userInfoActions } from '../../slice/userInfoSlice';
+import api from '../../utils/axiosInstance';
+import history from '../../utils/history';
+
+
 
 const MyRoom = () => {
 
   const [isOpen, setIsOpen] = useState(false);
-
+  const dispatch = useDispatch();
   const onClickButton = () => {
     setIsOpen(true);
   };
+  
+  const {roomId, userId} = useSelector((state) => 
+  ({
+    roomId: state.userInfoReducers.user.myRooms[0],
+    userId: state.userInfoReducers.user.id
+  }))
+
+  const onClickGroup = () => {
+    api.get(`/room/${roomId}/${userId}`)
+    .then((res) => {
+      dispatch(userInfoActions.saveGroupInfo(res.data.moveRoomInfo))
+      history.push(`/group/:groupId`)
+  })
+  }
+
 
   const {id, email, intro, profile, nickname, myRooms, schedule, userMemo} = useSelector((state) => 
   ({
@@ -72,7 +91,7 @@ const MyRoom = () => {
           }}>
           <Box>
             {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-            <Link to={`/group`}><PageIcon /></Link>
+            <PageIcon onClick={onClickGroup} />
           </Box>
           <Box>
             <AppWrap>
