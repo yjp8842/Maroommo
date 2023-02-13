@@ -3,6 +3,7 @@ package com.a406.mrm.model.dto;
 import com.a406.mrm.model.entity.*;
 import lombok.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ public class UserLoginResponseDto {
     private List<TodoResponseDto> done = new ArrayList<>();
     private List<ScheduleResponseDto> schedules = new ArrayList<>();
 
-    public UserLoginResponseDto(User user, UserMemo userMemo, List<ScheduleResponseDto> schedules){
+    public UserLoginResponseDto(User user, UserMemo userMemo, List<ScheduleResponseDto> schedules, String DATE_FORMAT){
         this.id=user.getId();
         this.email=user.getEmail();
         this.name=user.getName();
@@ -40,9 +41,9 @@ public class UserLoginResponseDto {
 
         for(Todo todo : user.getTodos()){
             if(todo.getState()==2){
-                this.done.add(new TodoResponseDto(todo));
+                this.done.add(new TodoResponseDto(todo,new SimpleDateFormat(DATE_FORMAT).format(todo.getStartTime())));
             }else{
-                this.doing.add(new TodoResponseDto(todo));
+                this.doing.add(new TodoResponseDto(todo,new SimpleDateFormat(DATE_FORMAT).format(todo.getStartTime())));
             }
         }
 
