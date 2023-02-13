@@ -1,0 +1,137 @@
+.chatbox {
+  width: 1150px;
+  height: 960px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatinbox {
+  width: 1150px; 
+  height: 740px;
+  padding: 30px;
+  overflow-y: scroll;
+}
+
+.chatinbox::-webkit-scrollbar {
+  width: 10px;  /* 스크롤바의 너비 */
+}
+
+.chatinbox::-webkit-scrollbar-thumb {
+  height: 20%; /* 스크롤바의 길이 */
+  background: rgba(165, 165, 165, 0.2); /* 스크롤바의 색상 */
+  border-radius: 10px;
+}
+
+.chatinbox::-webkit-scrollbar-track {
+  background: rgb(161, 161, 161, 0.1);  /*스크롤바 뒷 배경 색상*/
+  border-radius: 10px;
+}
+
+.datebox {
+  width: 1150px;
+  height: 40px;
+  /* background-color: #ebe5d1;
+  border-radius: 10px; */
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.datebox p {
+  width: 200px;
+  height: 26px;
+  background-color: #ebe5d1;
+  border-radius: 20px;
+  text-align: center;
+  padding-top: 13px;
+}
+
+.userchat {
+  width: 100%;
+  /* height: 80px; */
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.userchat-inbox {
+  margin-top: 20px;
+}
+
+.usermsg {
+  width: 300px;
+  height: auto;
+  padding: 20px;
+  margin-left: 7px;
+  background-color: #fce5a4;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+}
+
+.receivechat {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.receivechat-inbox {
+  margin-top: 20px;
+}
+
+.receivemsg {
+  width: 300px;
+  height: auto;
+  padding: 20px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+}
+
+.inputbox {
+  width: 930px;
+  height: 80px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.chatinput {
+  width: 700px;
+  height: 10px;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 18px;
+  border: none;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+}
+
+.chatinput:focus {
+  outline: none;
+}
+
+.chatbtn {
+  width: 100px !important;
+  height: 50px !important;
+  border-radius: 20px;
+  border: none;
+  background-color: #ebe5d1;
+  /* color: #ffffff; */
+  font-size: 15px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+}
+
+.chatbtn:hover {
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #4A4A4A;
+  /* border: 3px solid #4A4A4A; */
+}
+
+.time {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+}
