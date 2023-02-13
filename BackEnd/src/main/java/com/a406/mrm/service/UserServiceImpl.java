@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userPasswordModifyRequestDto.getId()).get();
 
         if(user != null) {
-            user.setPassword(passwordEncoder.encode(userPasswordModifyRequestDto.getAfterPassword()));// 비밀번호 암호화
+            user.setPassword(passwordEncoder.encode(userPasswordModifyRequestDto.getPassword()));// 비밀번호 암호화
             userRepository.save(user);
         }
     }

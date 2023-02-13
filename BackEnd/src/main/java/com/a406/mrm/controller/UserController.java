@@ -196,7 +196,7 @@ public class UserController {
     @ApiOperation("Modify Password")
     @PatchMapping("/help/pw")
     private ResponseEntity<Map<String, Object>> modifyPassword(
-            @RequestBody @ApiParam("id, password Information to modify password") UserPasswordModifyRequestDto userPasswordModifyRequestDto) {
+            @RequestBody UserPasswordModifyRequestDto userPasswordModifyRequestDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;

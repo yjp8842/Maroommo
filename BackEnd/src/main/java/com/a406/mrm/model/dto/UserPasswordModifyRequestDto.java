@@ -9,5 +9,5 @@ import lombok.*;
 @ToString
 public class UserPasswordModifyRequestDto {
     private String id;
-    private String AfterPassword;
+    private String password;
 }
