@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface QuestionService {
 
-    QuestionResponseAnswerDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception;
+    QuestionResponseAnswerDto join(String title, String content, String user_id, int room_id, MultipartFile picture) throws Exception;
     boolean delete(int id, String user_id) throws Exception;
     QuestionResponseAnswerDto update(int id, String content, MultipartFile picture, int status, String title, String user_id) throws Exception;
     QuestionResponseStatusDto status(QuestionResponseStatusDto questionResponseStatusDto) throws Exception;
-    Page<QuestionResponseDto> listQuestion_Pageable(int categorysub_id, Pageable pageable);
+    Page<QuestionResponseDto> listQuestion_Pageable(int room_id, Pageable pageable);
     QuestionResponseAnswerDto QuestionDetail(int question_id) throws Exception;
 
 }

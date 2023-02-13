@@ -38,15 +38,15 @@ public class BoardController {
      * @return newBoard : 생성한 게시글을 반환한다
      */
     @PostMapping
-    @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, categorySub_id, picture = 파일)")
+    @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
     public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
-                                    @RequestParam int categorySub_id, @RequestPart(value="picture", required = false) MultipartFile picture) {
+                                    @RequestParam int room_id, @RequestPart(value="picture", required = false) MultipartFile picture) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardResponseCommentDto = null;
 
         try {
-            boardResponseCommentDto = boardService.join(title, content, user_id, categorySub_id, picture);
+            boardResponseCommentDto = boardService.join(title, content, user_id, room_id, picture);
             resultMap.put("newBoard", boardResponseCommentDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -110,17 +110,17 @@ public class BoardController {
     // 이 부분은 Page<> 객체를 반환하는데 프론트랑 연동시 잘 동작되는지 확인바람
     /**
      * @param model
-     * @param categorySub_id
+     * @param room_id
      * @param pageable
      *              를 가지고 게시글 목록을 가져온다
      * @return page : 페이징 처리가 된 게시글 목록을 반환한다
      */
     @GetMapping
-    @ApiOperation("게시판 조회 (pageable) : 카테고리 서브 아이디(id) + size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호 ")
-    public Page<BoardResponseDto> BoardPageable (Model model, @RequestParam("categorySub_id") int categorySub_id,
+    @ApiOperation("게시판 조회 (pageable) : 룸 아이디(id) + size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호 ")
+    public Page<BoardResponseDto> BoardPageable (Model model, @RequestParam("room_id") int room_id,
          @PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
 
-        Page<BoardResponseDto> page = boardService.listBoard_Pageable(categorySub_id,pageable);
+        Page<BoardResponseDto> page = boardService.listBoard_Pageable(room_id,pageable);
 
         return page;
     }

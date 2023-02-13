@@ -48,12 +48,15 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
     private List<UserHasRoom> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Category> categories = new ArrayList<>();
-
     @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
     private List<Todo> todos = new ArrayList<>();
 
     @OneToMany(mappedBy = "room", cascade ={CascadeType.REMOVE})
     private List<Schedule> schedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
+    private List<Board> boards = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade = {CascadeType.ALL})
+    private List<Question> questions = new ArrayList<>();
 }

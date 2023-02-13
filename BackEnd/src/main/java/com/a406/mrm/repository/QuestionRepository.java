@@ -19,7 +19,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     Question findById(int id);
 
-    Page<QuestionResponseDto> findBycategorySub_Id (int categorysub_Id, Pageable pageable);
+    Page<QuestionResponseDto> findByroom_Id (int room_id, Pageable pageable);
 
     List<Question> findByid (int question_id);
 

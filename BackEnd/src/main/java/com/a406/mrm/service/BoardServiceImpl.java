@@ -2,10 +2,10 @@ package com.a406.mrm.service;
 
 import com.a406.mrm.model.dto.*;
 import com.a406.mrm.model.entity.Board;
-import com.a406.mrm.model.entity.CategorySub;
+import com.a406.mrm.model.entity.Room;
 import com.a406.mrm.model.entity.User;
 import com.a406.mrm.repository.BoardRepository;
-import com.a406.mrm.repository.CategorySubRepository;
+import com.a406.mrm.repository.RoomRepository;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
-    private final CategorySubRepository categorySubRepository;
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
 
     @Override
-    public BoardResponseCommentDto join(String title, String content, String user_id, int categorySub_id, MultipartFile picture) throws Exception {
+    public BoardResponseCommentDto join(String title, String content, String user_id, int room_id, MultipartFile picture) throws Exception {
         String uuid =  null;
         if(picture != null){
             uuid = UUID.randomUUID().toString()+"."+picture.getOriginalFilename().substring(picture.getOriginalFilename().lastIndexOf(".")+1);
@@ -44,12 +44,12 @@ public class BoardServiceImpl implements BoardService{
             }
         }
 
-        CategorySub categorySub = categorySubRepository.findById(categorySub_id);
         User user = userRepository.findById(user_id).get();
+        Room room = roomRepository.findById(room_id).get();
         BoardResponseCommentDto boardResponseCommentDto = null;
 
-        if(categorySub != null && user != null){
-            Board board = new Board(title, content, uuid, categorySub, user);
+        if(room != null &&user != null){
+            Board board = new Board(title, content, uuid, user, room);
             board = boardRepository.save(board);
             boardResponseCommentDto = new BoardResponseCommentDto(board);
         }
@@ -98,8 +98,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public Page<BoardResponseDto> listBoard_Pageable(int categorysub_id, Pageable pageable){
-        return boardRepository.findBycategorySub_Id(categorysub_id, pageable);
+    public Page<BoardResponseDto> listBoard_Pageable(int room_id, Pageable pageable){
+        return boardRepository.findByroom_Id(room_id, pageable);
     }
 
     @Override
