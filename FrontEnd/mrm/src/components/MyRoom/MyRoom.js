@@ -16,6 +16,8 @@ import TodoTable from './MyRoomItem/TodoTable';
 
 import RoomModal from "../Modal/Group/RoomModal";
 import styled from "styled-components";
+import { useSelector, shallowEqual } from 'react-redux';
+import { userInfoActions } from '../../slice/userInfoSlice';
 
 const MyRoom = () => {
 
@@ -24,6 +26,20 @@ const MyRoom = () => {
   const onClickButton = () => {
     setIsOpen(true);
   };
+
+  const {id, email, intro, profile, nickname, myRooms, schedule, userMemo} = useSelector((state) => 
+  ({
+    id: state.userInfoReducers.user.id,
+    email: state.userInfoReducers.user.email,
+    intro: state.userInfoReducers.user.intro,
+    profile: state.userInfoReducers.user.profile,
+    nickname: state.userInfoReducers.user.nickname,
+    myRooms: state.userInfoReducers.user.myRooms,
+    schedule: state.userInfoReducers.user.schedule,
+    userMemo: state.userInfoReducers.user.userMemo
+    
+  }), shallowEqual)
+  console.log(id, email, intro)
 
   return (
     <Grid container>
@@ -85,7 +101,17 @@ const MyRoom = () => {
             justifyContent: "space-evenly",
             backgroundColor: "#ebe5d1",
           }}>
-          <Profile />
+          <Profile 
+            id={id}
+            email={email}
+            intro={intro}
+            profile={profile}
+            nickname={nickname}
+            myRooms={myRooms}
+            schedule={schedule}
+            userMemo={userMemo}
+            
+            />
           <StudyTime />
           <Todo />
           <CalendarBox />
