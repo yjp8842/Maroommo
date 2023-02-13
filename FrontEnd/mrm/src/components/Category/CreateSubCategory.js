@@ -4,11 +4,8 @@ import styled from "styled-components";
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-// import Box from '@mui/material/Box';
-// import JoinRoomModal from "./JoinGroup";
-// import CreateRoomModal from "./CreateGroup";
-// import FormHelperText from '@mui/material/FormHelperText';
-// import InputLabel from '@mui/material/InputLabel';
+
+import { postSubCategoryData } from "./SubCategoryLogic";
 
 export default function SubCategoryModal({ onClose }) {
   const handleClose = () => {
@@ -57,7 +54,7 @@ export default function SubCategoryModal({ onClose }) {
             />
 
             <CButton onClick={() => {
-                // postCalendarData({ name, roomId });
+                postSubCategoryData({ name });
                 handleClose();}}
             >생성</CButton>
             <CButton onClick={handleClose}>뒤로</CButton>

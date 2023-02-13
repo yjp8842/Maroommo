@@ -4,6 +4,8 @@ import styled from "styled-components";
 // import JoinRoomModal from "./JoinGroup";
 // import CreateRoomModal from "./CreateGroup";
 
+import { postCategoryData } from "./CategoryLogic";
+
 export default function CategoryModal({ onClose }) {
   const handleClose = () => {
     onClose?.();
@@ -28,7 +30,10 @@ export default function CategoryModal({ onClose }) {
                 // postCalendarData({ name, roomId });
                 handleClose();}}
             >생성</CButton>
-            <CButton onClick={handleClose}>뒤로</CButton>
+            <CButton onClick={() => {
+            postCategoryData({ name });
+            handleClose();}}
+            >뒤로</CButton>
         </Contents>
       </ModalWrap>
     </Overlay>
