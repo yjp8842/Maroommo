@@ -94,6 +94,7 @@ public class SecurityConfig{
 
         config.addAllowedOrigin("http://localhost:3000"); // 로컬
         config.addAllowedOrigin("https://i8a406.p.ssafy.io"); // 프론트 IPv4 주소
+        config.addAllowedOrigin("http://localhost:8080"); // 프론트 IPv4 주소
         config.addAllowedMethod("*"); // 모든 메소드 허용.
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
