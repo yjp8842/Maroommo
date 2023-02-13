@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Content from '../../DnD/Content';
+import TodoAll from '../../TodoThings/TodoAll'
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -9,9 +9,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 // import TodoTemplate from "../../DnD/TodoTemplate";
 // import TodoHead from "../../DnD/TodoHead";
 // import TodoList from "../../DnD/TodoList";
-import TodoCreate from "../../DnD/TodoCreate";
+// import TodoCreate from "../../DnD/TodoCreate";
 // import { TodoProvider } from "../../DnD/TodoContext";
-import styled from "styled-components";
+// import styled from "styled-components";
 // import TodoModal from "../../Modal/TodoModal"
 
 
@@ -23,30 +23,16 @@ import styled from "styled-components";
 
 const TodoBox = () => {
 
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const onClickButton = () => {
-    setIsOpen(true);
-  };
+  // const onClickButton = () => {
+  //   setIsOpen(true);
+  // };
 
     return (
       <div>
-
-      {/* <TodoProvider>
-          <TodoTemplate>
-            <TodoHead />
-            <TodoList />
-          </TodoTemplate>
-        </TodoProvider> */}
-        <Button onClick={onClickButton}>할 일 생성</Button>
-          {isOpen && (<TodoCreate
-            open={isOpen}
-            onClose={() => {
-            setIsOpen(false);
-          }}
-        />)}
         <DndProvider backend={HTML5Backend}>
-          <Content />
+          <TodoAll />
         </DndProvider>
       </div>
     )
@@ -55,19 +41,19 @@ const TodoBox = () => {
 
 export default TodoBox;
 
-const Button = styled.button`
-  font-size: 15px;
-  padding: 10px 20px;
-  border: none;
-  background-color: #ffffff;
-  border-radius: 10px;
-  color: black;
-  font-weight: 200;
-  cursor: pointer;
-  &:hover {
-    background-color: #fac2be;
-  }
-`;
+// const Button = styled.button`
+//   font-size: 15px;
+//   padding: 10px 20px;
+//   border: none;
+//   background-color: #ffffff;
+//   border-radius: 10px;
+//   color: black;
+//   font-weight: 200;
+//   cursor: pointer;
+//   &:hover {
+//     background-color: #fac2be;
+//   }
+// `;
 
       // <Box 
       //   sx={{

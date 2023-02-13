@@ -1,0 +1,18 @@
+.droppable {
+  border: 2px solid greenyellow;
+  text-align: center;
+  width: 80%;
+  padding: 20px 0;
+}
+
+.over {
+  background-color: #ebffd4;
+}
+
+.can {
+  background-color: #f7ffee;
+}
+
+.big {
+  height: 70%;
+}

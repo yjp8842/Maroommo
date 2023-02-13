@@ -1,5 +1,6 @@
 // import { Fragment } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -17,7 +18,25 @@ import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
 
 import './GroupRoomItem/Category.css';
 
+import SideNav from '../Category/SideNav';
+import CategoryModal from '../Category/CreateCategory';
+import SubCategoryModal from '../Category/CreateSubCategory';
+// import SideNavigation from './GroupRoomItem/SideNavigation';
+
 const GroupRoom = () => {
+
+  const [isOpen1, setIsOpen1] = useState(false);
+
+  const onClickButton1 = () => {
+    setIsOpen1(true);
+  };
+
+  const [isOpen2, setIsOpen2] = useState(false);
+
+  const onClickButton2 = () => {
+    setIsOpen2(true);
+  };
+
   return (
     <Grid container>
       <Box
@@ -103,6 +122,25 @@ const GroupRoom = () => {
             </div>
           </NavItem>
 
+              <Button onClick={onClickButton1}>+</Button>
+              {isOpen1 && (<CategoryModal
+                open={isOpen1}
+                onClose={() => {
+                  setIsOpen1(false);
+                }}
+              />)}
+
+              <Button onClick={onClickButton2}>+</Button>
+              {isOpen2 && (<SubCategoryModal
+                open={isOpen2}
+                onClose={() => {
+                  setIsOpen2(false);
+                }}
+              />)}
+
+          <SideNav />
+
+
         </Box>
         
         <Box
@@ -115,7 +153,6 @@ const GroupRoom = () => {
           <TodoBox />
           <MemoBox />
           <TimeTableBox />
-          
         </Box>
 
         <Box
@@ -166,5 +203,20 @@ const GroupRoom = () => {
     </Grid>
   );
 };
+
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-style: italic;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
 
 export default GroupRoom;

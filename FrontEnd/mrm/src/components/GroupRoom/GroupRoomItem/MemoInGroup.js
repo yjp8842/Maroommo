@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "@mui/system";
 
+
 class MemoBox extends React.Component {
   render() {
     return (
