@@ -16,14 +16,10 @@ public class BoardInsertDto {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.picture = board.getPicture();
-        if(board.getCategorySub() != null) {
-            this.categorysub_id = board.getCategorySub().getId();
-        }
         this.user_id = board.getUser().getId();
     }
     private String title;
     private String content;
     private String picture;
-    private int categorysub_id;
     private String user_id;
 }

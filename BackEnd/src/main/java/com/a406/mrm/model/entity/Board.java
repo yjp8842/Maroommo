@@ -21,12 +21,12 @@ import java.util.List;
 @Entity
 public class Board {
 
-    public Board(String title, String content, String picture, CategorySub categorySub, User user) {
+    public Board(String title, String content, String picture, User user, Room room) {
         this.title = title;
         this.content = content;
         this.picture = picture;
-        this.categorySub = categorySub;
         this.user = user;
+        this.room = room;
         this.views = 0;
         this.createTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
@@ -49,9 +49,9 @@ public class Board {
     private int views;
     private String picture;
 
-    @ManyToOne(targetEntity = CategorySub.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "categorySub_id")
-    private CategorySub categorySub;
+    @ManyToOne(targetEntity = Room.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
