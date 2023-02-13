@@ -18,20 +18,24 @@ function ArticlePage() {
 
   useEffect(() => {
     dispatch(articleActions.getArticle(params.articleId));
-    dispatch(commentActions.getComments(params.articleId));
+    // dispatch(commentActions.getComments(params.articleId));
   }, [params.articleId]);
 
   // , [{articleId}]);
-
-  const { id, title, content, date } = useSelector((state) => ({
+// categorysub_id, content, createtime, hit, picture, title, user_id
+  const { id, title, content, picture, createTime, user_id, comments  } = useSelector((state) => ({
     id: state.articleReducers.id,
     title: state.articleReducers.title,
     content: state.articleReducers.content,
-    date: state.articleReducers.date
+    createTime: state.articleReducers.createTime,
+    user_id: state.articleReducers.user_id,
+    comments: state.articleReducers.comments,
+    picture: state.articleReducers.picture
   }),
   shallowEqual);
   // const date = useSelector((state) => state.articleReducers.date);
-  
+  console.log('4444')
+  console.log(id, title, content)
   const views = useSelector((state) => state.articleReducers.views);
   // console.log(title)
 
@@ -46,15 +50,16 @@ function ArticlePage() {
   //댓글
   const [CommentValue, setCommentValue] = useState("");
 
-  const comments = useSelector((state) =>
-  state.commentReducers.comments);
-  console.log(comments)
+  // const comments = useSelector((state) =>
+  // state.commentReducers.comments);
+  // console.log(comments)
 
   const onCommentChange = (e) => {
     setCommentValue(e.currentTarget.value);
   };
 
-  const onCommentSubmit = () => {
+  const onCommentSubmit = (e) => {
+    e.preventDefault()
     if (
       CommentValue === '' ||
       CommentValue === null ||
@@ -64,7 +69,8 @@ function ArticlePage() {
       return false;
     }
     const comment = {
-      id: 0,
+      // id: 0,
+      user_id: 'hd',
       content: CommentValue,
       date: Date.now(),
       articleId: id,
@@ -84,7 +90,10 @@ function ArticlePage() {
           title={title}
           content={content}
           views={views}
-          date={date}
+          createTime={createTime}
+          user_id={user_id}
+          comments={comments}
+          picture={picture}
           handleDeleteClick={onDeleteClick}
           handleComment={<Comment
             comment={CommentValue}

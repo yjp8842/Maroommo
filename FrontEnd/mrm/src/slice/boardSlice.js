@@ -20,6 +20,7 @@ export const boardSlice = createSlice({
         isSuccess: true,
         isLoading: false,
       };
+      
     },
     getBoardFailedAsync: (state, { payload: error }) => {
       console.log("saga에서 put 액션 호출 -- getBoardFailedAsync");
