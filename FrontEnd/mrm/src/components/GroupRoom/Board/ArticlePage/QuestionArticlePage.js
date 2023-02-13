@@ -15,19 +15,18 @@ import {answerActions} from '../../../../slice/answerSlice'
 function QuestionArticlePage() {
 
   const params = useParams();
-  console.log(params)
-  console.log(params.questionArticleId)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(questionArticleActions.getQuestionArticle(params.questionArticleId));
     dispatch(answerActions.getAnswers(params.questionArticleId));
   }, [params.questionArticleId]);
-  console.log('getQuestionArticle 호출')
+  // console.log('getQuestionArticle 호출')
 
   // , [{articleId}]);_
 // categorysub_id, content, createtime, hit, picture, title, user_id
-  const { id, title, content, date, user_id, status, answers  } = useSelector((state) => ({
+  const { id, title, content, createTime, user_id, status, answers  } = useSelector((state) => ({
     id: state.questionArticleReducers.id,
     title: state.questionArticleReducers.title,
     content: state.questionArticleReducers.content,
@@ -37,6 +36,8 @@ function QuestionArticlePage() {
     answers: state.questionArticleReducers.answers,
   }),
   shallowEqual);
+  console.log('questionarticle page 출력 ')
+  console.log(id, title, content)
   // const date = useSelector((state) => state.articleReducers.date);
   
   const views = useSelector((state) => state.questionArticleReducers.views);
@@ -69,7 +70,7 @@ function QuestionArticlePage() {
       return false;
     }
     const answer = {
-      id: 0,
+      // id: 0,
       content: AnswerValue,
       date: Date.now(),
       questionArticleId: id,
@@ -89,7 +90,7 @@ function QuestionArticlePage() {
           title={title}
           content={content}
           views={views}
-          date={date}
+          createTime={createTime}
           user_id={user_id}
           status={status}
           answers={answers}
