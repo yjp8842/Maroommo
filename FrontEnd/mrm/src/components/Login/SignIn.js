@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { requestLogin } from './SignInLogic';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
 
 import './Login.css';
 import { FindId } from './FindId';
@@ -22,10 +23,14 @@ export default function SignInSide() {
     });
   };
 
+  const {id, email, myRooms} = useSelector((state) =>({id:state.userInfoReducers.user.id, email:state.userInfoReducers.user.email, myRooms:state.userInfoReducers.user.myRooms}) )
+  console.log('@@@@', id, email, myRooms)
   // id와 password가 빈칸인지 체크하는 함수
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [verificationError, setVerificationError] = useState('')
+
+  const dispatch = useDispatch()
 
   function loginCheck(e) {
     const idCheck = document.getElementById('id')
@@ -162,7 +167,7 @@ export default function SignInSide() {
                       boxShadow: "5px 5px 4px rgba(0, 0, 0, 0.15)"
                     }}
                     onClick={() => {
-                      requestLogin();
+                      requestLogin(dispatch);
                       loginCheck();
                     }}
                     >

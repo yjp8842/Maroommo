@@ -18,9 +18,9 @@ export function* updateUserInfoAsync(action) {
   history.go(0);
 }
 
-export function* getUserInfoAsync(action) {
-  const user_id = action.payload;
+// export function* getUserInfoAsync(action) {
+//   const user_id = action.payload;
 
-  const response = yield api.get('room/user'
-  )
-}
+//   const response = yield api.get('room/user'
+//   )
+// }

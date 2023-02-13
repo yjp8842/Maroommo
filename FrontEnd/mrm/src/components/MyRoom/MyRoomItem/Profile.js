@@ -6,7 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import './Profile.css';
 
-const Profile = () => {
+const Profile = (props) => {
 
   const [isOpen, setIsOpen] = useState(false);
   
@@ -14,13 +14,17 @@ const Profile = () => {
     setIsOpen(true);
   };
 
-  let getUserName = localStorage.getItem('username');
-  let getUserIntro = localStorage.getItem('userintro');
+  // let getUserName = localStorage.getItem('username');
+  // let getUserIntro = localStorage.getItem('userintro');
+  console.log('userInfo props 출력', props)
+  console.log('토큰확인', localStorage.getItem('accessToken'))
+  const getUserName = props.name;
+  const getUserIntro = props.intro
 
-  if (!getUserName || !getUserIntro) {
-    getUserName = '이름';
-    getUserIntro = '한 줄 소개';
-  }
+  // if (!getUserName || !getUserIntro) {
+  //   getUserName = '이름';
+  //   getUserIntro = '한 줄 소개';
+  // }
 
   return (
     <Box
