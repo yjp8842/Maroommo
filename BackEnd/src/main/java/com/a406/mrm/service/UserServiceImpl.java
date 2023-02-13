@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
-
+    private final String DATE_FORMAT = "yyyy-MM-dd";
     // 유저 정보를 암호화하여 db에 저장한다
     @Override
     @Transactional
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService{
         List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
 
         if(user != null){
-            userLoginResponseDto = new UserLoginResponseDto(user, userMemo,schedules);
+            userLoginResponseDto = new UserLoginResponseDto(user, userMemo,schedules,DATE_FORMAT);
         }
         return userLoginResponseDto;
     }
@@ -204,7 +204,7 @@ public class UserServiceImpl implements UserService{
                 .stream()
                 .map(x -> {
                     try {
-                        return new UserLoginResponseDto(x, userMemoRepository.findByUserId(x.getId()), scheduleService.getSchedule(x.getId()));
+                        return new UserLoginResponseDto(x, userMemoRepository.findByUserId(x.getId()), scheduleService.getSchedule(x.getId()),DATE_FORMAT);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
