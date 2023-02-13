@@ -10,6 +10,7 @@ import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
 import HomeBtn from './GroupRoomItem/HomeBtn';
 import ChatRoom from './GroupRoomItem/ChatRoom';
+import Chat from './Chat/Chat';
 import { NavItem } from './GroupRoomItem/Category';
 
 import './GroupRoomItem/Category.css';
@@ -111,9 +112,7 @@ const GroupChat = () => {
             flexDirection: 'column'
           }}>
 
-          <Box sx={{mt:5}}>
-            <h1>채팅방</h1>
-          </Box>
+          <Chat />
         </Box>
 
         <Box
