@@ -16,7 +16,7 @@ export function postSignUpData() {
     nickname: nickname,
   };
 
-  const url = '/user/join';
+  const url = 'https://i8a406.p.ssafy.io/api/user/signup';
   
   return (
     axios
@@ -24,7 +24,7 @@ export function postSignUpData() {
       .then((response) => {
         if (response.status >= 200 && response.status <= 204) {
           alert('가입에 성공하셨습니다!');
-          this.props.history.push('/user/login');
+          window.location.replace("/"); 
         }
       })
       .catch(() => {
