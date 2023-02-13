@@ -1,6 +1,7 @@
 
 .idea
-
+/BackEnd/src/main/resources/application.properties
+/BackEnd/src/main/resources/email.properties
 /BackEnd/HELP.md
 /BackEnd/.gradle
 /BackEnd/build/
