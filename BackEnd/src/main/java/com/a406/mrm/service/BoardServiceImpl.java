@@ -48,7 +48,7 @@ public class BoardServiceImpl implements BoardService{
         Room room = roomRepository.findById(room_id).get();
         BoardResponseCommentDto boardResponseCommentDto = null;
 
-        if(user != null){
+        if(room != null &&user != null){
             Board board = new Board(title, content, uuid, user, room);
             board = boardRepository.save(board);
             boardResponseCommentDto = new BoardResponseCommentDto(board);
