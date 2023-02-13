@@ -11,14 +11,12 @@ import { commentActions } from "../../../../slice/commentSlice";
 function ArticlePage() {
 
   const params = useParams();
-  console.log(params)
-  console.log(params.articleId)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(articleActions.getArticle(params.articleId));
-    // dispatch(commentActions.getComments(params.articleId));
+    dispatch(commentActions.getComments(params.articleId));
   }, [params.articleId]);
 
   // , [{articleId}]);
@@ -34,7 +32,7 @@ function ArticlePage() {
   }),
   shallowEqual);
   // const date = useSelector((state) => state.articleReducers.date);
-  console.log('4444')
+  console.log('article page 출력 ')
   console.log(id, title, content)
   const views = useSelector((state) => state.articleReducers.views);
   // console.log(title)

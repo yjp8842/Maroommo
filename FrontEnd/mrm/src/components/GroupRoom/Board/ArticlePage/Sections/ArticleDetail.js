@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 
 function ArticleDetail(props) {
-  console.log('222222222')
-  console.log(props)
+  console.log('--------------')
+  console.log('article detail 출력 : ', props)
+  console.log('--------------')
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
