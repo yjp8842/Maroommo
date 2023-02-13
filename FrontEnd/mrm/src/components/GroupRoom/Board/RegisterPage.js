@@ -10,7 +10,7 @@ import { useLocation, useParams } from "react-router-dom";
 function RegisterPage (props) {
   console.log(props);
 
-  const {id, views, date, editDate, title, content} = useSelector((state) =>
+  const {id, views, date, editDate, title, content, picture} = useSelector((state) =>
   ({
     id: state.articleReducers.id,
     views: state.articleReducers.views,
@@ -18,7 +18,10 @@ function RegisterPage (props) {
     editDate: state.articleReducers.editDate,  
     title: state.articleReducers.title,
     content: state.articleReducers.content,
+    picture: state.articleReducers.picture,
   }), shallowEqual)
+  
+const formData = new FormData()
 
   // const {title} = useSelector((state) => ({
   //   title: state.articleReducers.title,
@@ -39,14 +42,19 @@ function RegisterPage (props) {
 
   //여기 체크
   useEffect(() => {
-    const searchParams = new URLSearchParams(search);
-    if (searchParams.get("isForEdit") === 'true') {
-      dispatch(articleActions.fetchArticle(params.articleId))
+    const paramsSearch = new URLSearchParams(search).get('search');
+    const isRegisterForEdit = paramsSearch.split("=")[1]
+
+    if (isRegisterForEdit === 'true') {
+      console.log('true')
+      dispatch(articleActions.fetchArticle(id))
       setIsForUpdate(true);
+    } else {
+      console.log('false')
     }
     setTitleValue(title);
     setContentValue(content);
-  }, [id]);
+  }, []);
 
   // const onTitleChange = (event) => {
   //   setTitleValue(event.currentTarget.value)
@@ -61,6 +69,14 @@ function RegisterPage (props) {
     const { name, value } = event.target;
     dispatch(articleActions.changeRegisterInput({ name: name, value: value }));
   };
+  const [image, setImage] = useState({name: ""})
+  const onImageChange = (event) => {
+    console.log("event ======", event)
+    console.log("event.target", event.target)
+    console.log("event.target.files[0]", event.target.files[0])
+    setImage(()=>event.target.files[0])
+    console.log("image", image)
+  }
 
   const onSubmitArticle = (event) => {
     event.preventDefault();
@@ -77,12 +93,25 @@ function RegisterPage (props) {
       alert("내용을 작성하십시오.");
       return false;
     }
-    const article = { title: title, content: content, views: views, date: date, editDate: IsForUpdate ? Date.now() : editDate };
+
+    // const articleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', editDate: IsForUpdate ? Date.now() : editDate };
+    // const articleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', picture: image};
+    // const formdata = new FormData();
+
+    const formdata = new FormData();
+    formdata.append('picture', image)
+    const articleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', picture: formdata};
+
+    const articleForUpdate = {content: content, id: id, picture: formdata, title: title, user_id:'hd'};
+
     if (IsForUpdate) {
-      dispatch(articleActions.updateArticle(article)); // 추가
+      console.log('업데이트 ㄱㄱ')
+      dispatch(articleActions.updateArticle(articleForUpdate)); // 추가
     } else {
-      dispatch(articleActions.registerArticle(article));
+      console.log('작성 ㄱㄱ')
+      dispatch(articleActions.registerArticle(articleForRegister));
     } 
+
   }
 
 
@@ -91,9 +120,14 @@ function RegisterPage (props) {
       <RegisterOrEdit
         titleValue={title}
         contentValue={content}
+        categorysub_id='1'
+        user_id='hd'
         handleRegisterChange={onRegisterChange}
+        onImageHandler={onImageChange}
         handleSubmit={onSubmitArticle}
         updateRequest={IsForUpdate}
+        formData = {formData}
+        picture={image.name}
         />
     </>
   )

@@ -41,7 +41,8 @@ const GroupBoard = () => {
     isLoading: state.boardReducers.isLoading,
     isSuccess: state.boardReducers.isSuccess,
     error: state.boardReducers.error}));
-
+    
+    console.log(isSuccess);
   return (
     <Grid container>
       <Box
@@ -125,7 +126,7 @@ const GroupBoard = () => {
             <div className='category-box'>
               <Link to={`/group/board`}><li>게시판</li></Link> 
               <li>화상회의</li>  
-              <Link to={`/group/qna`}><li>Q&A</li></Link>   
+              <Link to={`/group/question`}><li>Q&A</li></Link>   
             </div>
             {/* </ul> */}
           </NavItem>
@@ -146,12 +147,12 @@ const GroupBoard = () => {
             <div style={{ width: "80%", margin: "3rem auto" }}>
             {error ? (
               <h2>에러 발생: {error}</h2>
-            ) : isSuccess && board.length > 0 ? (
+            ) : isSuccess && board.content.length > 0 ? (
               <BoardList 
                 board={board}
                 // handleDeleteClick={onDeleteClick}
                 handleArticleTitleClick={onArticleTitleClick} />
-            ) : isSuccess && board.length <= 0 ? (
+            ) : isSuccess && board.content.length <= 0 ? (
               <p> 조회할 내용이 없습니다. </p>
             ) : (
               <p> 목록을 불러오는 중입니다. </p>

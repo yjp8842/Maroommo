@@ -2,14 +2,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const articleSlice = createSlice({
+  // categorysub_id 로 그룹 정보까지...
   name: "article",
   initialState: {
     id: 0,
     title: "",
     content: "",
     views: 0,
-    date: Date.now(),
+    createTime: "",
     editDate: "",
+    categorysub_id: "",
+    user_id: "",
+    picture: null,
+    comments: []
   },
   reducers: {
     registerArticle: (state, { payload: article }) => {
@@ -19,15 +24,19 @@ export const articleSlice = createSlice({
       console.log('조회 액션 호출'); // saga에서 감시용
     },
     getArticleAsync: (state, { payload: article }) => {
-      console.log(article); // saga에서 호출용
+      console.log('33333333')
+      console.log(Object.values(article)[0])
       return {
         ...state,
-        id: article.id,
-        title: article.title,
-        content: article.content,
-        date: article.date,
-        editDate: article.editDate,
-        views: article.views,
+        id: Object.values(article)[0].id,
+        title: Object.values(article)[0].title,
+        content: Object.values(article)[0].content,
+        createTime: Object.values(article)[0].createTime,
+        editDate: Object.values(article)[0].editDate,
+        views: Object.values(article)[0].views,
+        user_id: Object.values(article)[0].user_id,
+        picture: Object.values(article)[0].picture,
+        comments: Object.values(article)[0].comments
       };
     },
     fetchArticle: (state, {payload: id}) => {
