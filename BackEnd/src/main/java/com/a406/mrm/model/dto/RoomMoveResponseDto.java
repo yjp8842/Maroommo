@@ -24,7 +24,6 @@ public class RoomMoveResponseDto {
     private String code;
     private String roomMemo;
 
-    private List<RoomMoveCategoryResponseDto> categories = new ArrayList<>();
     private List<RoomMoveUserResponseDto> users = new ArrayList<>();
     private List<ScheduleResponseDto> schedules = new ArrayList<>();
 
@@ -37,10 +36,6 @@ public class RoomMoveResponseDto {
 
         if(roomMemo != null)
             this.roomMemo = roomMemo.getContent();
-
-        this.categories = room.getCategories()
-                                .stream()
-                                .map(x-> new RoomMoveCategoryResponseDto(x)).collect(Collectors.toList());
 
         this.users = room.getUsers()
                             .stream()
