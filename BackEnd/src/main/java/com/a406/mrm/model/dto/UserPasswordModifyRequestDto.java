@@ -8,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 public class UserPasswordModifyRequestDto {
-    private String beforePassword;
+    private String id;
     private String AfterPassword;
 }
