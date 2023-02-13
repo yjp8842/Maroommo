@@ -26,8 +26,8 @@ import java.util.Map;
 public class TodoController {
     private final Logger logger = LoggerFactory.getLogger(TodoController.class);
 
-    private TodoService todoService;
-    private UserRepository userRepository;
+    private final TodoService todoService;
+    private final UserRepository userRepository;
 
     /**
      * @param userId

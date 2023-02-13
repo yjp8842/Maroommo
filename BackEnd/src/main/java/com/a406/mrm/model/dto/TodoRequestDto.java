@@ -14,7 +14,9 @@ import java.util.List;
 @ToString
 public class TodoRequestDto {
     private String content;
-    private Date startTime;
+    private int year;
+    private int month;
+    private int day;
     private List<String> tags;
     private int roomId;
 }

@@ -21,9 +21,9 @@ import java.util.List;
 @Table(name = "todo")
 @NoArgsConstructor
 public class Todo {
-    public Todo(TodoRequestDto todoRequestDto, User user, Room room){
+    public Todo(TodoRequestDto todoRequestDto, User user, Room room, Date startTime){
         this.content = todoRequestDto.getContent();
-        this.startTime = todoRequestDto.getStartTime();
+        this.startTime = startTime;
         this.state = 0;
         this.user = user;
         this.room = room;

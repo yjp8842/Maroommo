@@ -13,14 +13,22 @@ import java.util.stream.Collectors;
 @ToString
 @NoArgsConstructor
 public class TodoResponseDto {
-    public TodoResponseDto(Todo todo){
+    public TodoResponseDto(Todo todo, String startTime){
         this.id = todo.getId();
         this.content = todo.getContent();
         this.tags = todo.getTodoTags().stream().map(x->x.getName()).collect(Collectors.toList());
+        this.state = todo.getState();
+        this.startTime = startTime;
+    }
+    public TodoResponseDto(Todo todo) {
+        this.id = todo.getId();
+        this.content = todo.getContent();
+        this.tags = todo.getTodoTags().stream().map(x -> x.getName()).collect(Collectors.toList());
         this.state = todo.getState();
     }
     private int id;
     private List<String> tags = new ArrayList<>();
     private String content;
     private int state;
+    private String startTime;
 }
