@@ -7,7 +7,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserPasswordModifyRequestDto {
+public class UserFindRequestDto {
     private String id;
-    private String AfterPassword;
+    private String email;
+    private String name;
 }

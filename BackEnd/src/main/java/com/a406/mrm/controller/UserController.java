@@ -94,8 +94,7 @@ public class UserController {
     }
 
     /**
-     * @param name
-     * @param email
+     * @param userFindRequestDto
      *          을 통해 아이디를 찾는다
      * @return isExist : 아이디 중복 여부를 반환
      * @return userId : 중복된 아이디를 가공처리하여 반환
@@ -103,15 +102,12 @@ public class UserController {
     @ApiOperation("Find Id by name and email")
     @PostMapping("/help/id")
     private ResponseEntity<Map<String, Object>> findId(
-            @RequestBody @ApiParam("name Information to find id") String name,
-            @RequestBody @ApiParam("email Information to find id") String email) {
-
-        logger.info("[findId] name:{}, email:{}", name, email);
+            @RequestBody @ApiParam("name Information to find id") UserFindRequestDto userFindRequestDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
-            String userId = userService.findByUserForNameAndEmail(name,email);
+            String userId = userService.findByUserForNameAndEmail(userFindRequestDto.getName(),userFindRequestDto.getEmail());
 
             // 해당 유저가 존재한다면
             if(userId != null){
@@ -137,27 +133,23 @@ public class UserController {
 
 
     /**
-     * @param id
-     * @param name
-     * @param email
+     * @param userFindRequestDto
      *          를 통해 중복된 아이디가 있는지 확인한다
      * @return userId : 중복된 아이디를 반환한다
      */
     @ApiOperation("Find Password by id, name and email")
     @PostMapping("/help/pw")
     private ResponseEntity<Map<String, Object>> findPassword(
-            @RequestBody @ApiParam("id Information to find password") String id,
-            @RequestBody @ApiParam("name Information to find password") String name,
-            @RequestBody @ApiParam("email Information to find password") String email) {
-
-        logger.info("[findPassword] id:{}, name:{}, email:{}", id, name, email);
+            @RequestBody @ApiParam("id Information to find password") UserFindRequestDto userFindRequestDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
             // 해당 유저가 존재한다면
-            if(userService.existsByUserForIdAndNameAndEmail(id,name,email)){
-                resultMap.put("userId",id);
+            if(userService.existsByUserForIdAndNameAndEmail(userFindRequestDto.getId(),
+                                                            userFindRequestDto.getName(),
+                                                            userFindRequestDto.getEmail())){
+                resultMap.put("userId",userFindRequestDto.getId());
             }
             else {
                 resultMap.put("userId", null);
@@ -204,13 +196,12 @@ public class UserController {
     @ApiOperation("Modify Password")
     @PatchMapping("/help/pw")
     private ResponseEntity<Map<String, Object>> modifyPassword(
-            @RequestBody String userId,
             @RequestBody @ApiParam("id, password Information to modify password") UserPasswordModifyRequestDto userPasswordModifyRequestDto) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         try {
-            userService.modifyPassword(userId, userPasswordModifyRequestDto);
+            userService.modifyPassword(userPasswordModifyRequestDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;

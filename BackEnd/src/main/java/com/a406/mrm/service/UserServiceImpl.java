@@ -159,13 +159,10 @@ public class UserServiceImpl implements UserService{
     // 비밀번호 변경
     @Override
     @Transactional
-    public void modifyPassword(String userId, UserPasswordModifyRequestDto userPasswordModifyRequestDto) throws Exception {
-        User user = userRepository.findById(userId).get();
+    public void modifyPassword(UserPasswordModifyRequestDto userPasswordModifyRequestDto) throws Exception {
+        User user = userRepository.findById(userPasswordModifyRequestDto.getId()).get();
 
         if(user != null) {
-            if(!user.getPassword().equals(passwordEncoder.encode(userPasswordModifyRequestDto.getBeforePassword())))  {
-                throw new RuntimeException("입력한 비밀번호가 다릅니다.");
-            }
             user.setPassword(passwordEncoder.encode(userPasswordModifyRequestDto.getAfterPassword()));// 비밀번호 암호화
             userRepository.save(user);
         }
