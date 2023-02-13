@@ -1,6 +1,8 @@
 import React from "react";
 import { Box } from "@mui/system";
 
+import ScheduleAll from '../../ScheduleThings/ScheduleAll'
+
 class TimeTableBox extends React.Component {
   render() {
     return (
@@ -17,6 +19,8 @@ class TimeTableBox extends React.Component {
           justifyContent: 'center'
         }}>
         <h3>Time Table</h3>
+        
+        <ScheduleAll />
       </Box>
     )
   }

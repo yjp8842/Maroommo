@@ -12,15 +12,15 @@ export default function CalendarApp() {
   // const [mark, setMark] = useState([]);
   // const {data} = useQuery()
   const marks_red = [
-    '2023-01-20',
-    '2023-01-21',
-    '2023-01-22',
-    '2023-01-23',
+    '2023-02-20',
+    '2023-02-21',
+    '2023-02-22',
+    '2023-02-23',
   ];
 
   const marks_blue = [
-    '2023-01-26',
-    '2023-01-27',
+    '2023-02-26',
+    '2023-02-27',
   ];
 
   return (

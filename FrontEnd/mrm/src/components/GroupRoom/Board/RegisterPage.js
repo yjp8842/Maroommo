@@ -96,7 +96,6 @@ function RegisterPage (props) {
         updateRequest={IsForUpdate}
         />
     </>
-    
   )
 }
 
