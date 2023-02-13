@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +25,7 @@ public class TodoServiceImpl implements TodoService {
     private final TodoTagRepository todoTagRepository;
     private final TodoTimeRepository todoTimeRepository;
     private final RoomRepository roomRepository;
+    private final String DATE_FORMAT = "yyyy-MM-dd";
 
     @Override
     public List<Todo> getTodoAll(String userId) throws Exception{
@@ -41,14 +44,21 @@ public class TodoServiceImpl implements TodoService {
 
         User user = userRepository.findById(userId).get();
         Room room = todoRequestDto.getRoomId() == -1 ? null : roomRepository.findById(todoRequestDto.getRoomId()).get();
-        Todo todo = todoRepository.save(new Todo(todoRequestDto, user, room));
+        SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+        StringBuffer sb = new StringBuffer();
+        sb.append(todoRequestDto.getYear()).append("-")
+                .append(todoRequestDto.getMonth()).append("-")
+                .append(todoRequestDto.getDay());
+        String changeStringToDate = sb.toString();
+        Date startTime = formatter.parse(changeStringToDate);
+        Todo todo = todoRepository.save(new Todo(todoRequestDto, user, room, startTime));
         user.getTodos().add(todo);
         if(room!=null) {
             room.getTodos().add(todo);
         }
         List<TodoTag> tags = todoRequestDto.getTags().stream().map(x -> todoTagRepository.save(new TodoTag(x, todo))).collect(Collectors.toList());
         todo.setTodoTags(tags);
-        return new TodoResponseDto(todo);
+        return new TodoResponseDto(todo,changeStringToDate);
     }
 
     @Override
@@ -117,7 +127,7 @@ public class TodoServiceImpl implements TodoService {
         }
 
         todo = todoRepository.save(todo);
-        todoResponseDto = new TodoResponseDto(todo);
+        todoResponseDto = new TodoResponseDto(todo, new SimpleDateFormat(DATE_FORMAT).format(todo.getStartTime()));
 
         return todoResponseDto;
     }
@@ -127,7 +137,8 @@ public class TodoServiceImpl implements TodoService {
         List<TodoResponseDto> result = todoRepository.findByUserId(userId).stream()
                 .filter(x ->
                         (x.getRoom() == null ? false : x.getRoom().getId() == roomId)
-                ).map(x -> new TodoResponseDto(x)).collect(Collectors.toList());
+                ).map(x -> new TodoResponseDto(x,new SimpleDateFormat(DATE_FORMAT).format(x.getStartTime())))
+                .collect(Collectors.toList());
         return result;
     }
 
@@ -135,7 +146,8 @@ public class TodoServiceImpl implements TodoService {
     public List<TodoResponseDto> searchMyTodo(String userId) throws Exception{
         List<TodoResponseDto> result = todoRepository.findByUserId(userId)
                 .stream()
-                .map(x->new TodoResponseDto(x)).collect(Collectors.toList());
+                .map(x->new TodoResponseDto(x,new SimpleDateFormat(DATE_FORMAT).format(x.getStartTime())))
+                .collect(Collectors.toList());
         return result;
     }
 
