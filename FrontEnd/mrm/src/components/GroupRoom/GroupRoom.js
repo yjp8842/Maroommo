@@ -17,7 +17,14 @@ import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
 
 import './GroupRoomItem/Category.css';
 
+import OpenChatRoom from './OpenVidu/OpenChatRoom';
+import './Group.css';
+
 const GroupRoom = () => {
+  const handleOpenNewTab = (url) => {
+    window.open(url, "_blank", "noopener, noreferrer");
+  };
+
   return (
     <Grid container>
       <Box
@@ -93,6 +100,9 @@ const GroupRoom = () => {
           <Link to={`/group`}><HomeBtn /></Link>
           <Link to={`/group/chat`}><ChatRoom /></Link>
           
+          <div className='openvidu-btn' onClick={() => handleOpenNewTab("/group/openvidu")}>
+            <OpenChatRoom />
+          </div>
 
           <NavItem>
             {/* 하위 메뉴 열림 */}

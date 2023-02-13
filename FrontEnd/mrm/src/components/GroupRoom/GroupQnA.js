@@ -24,8 +24,14 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { boardActions } from '../../slice/boardSlice';
 import { questionActions } from '../../slice/questionSlice';
 
+import OpenChatRoom from './OpenVidu/OpenChatRoom';
+import './Group.css';
+
 
 const GroupQnA = () => {
+  const handleOpenNewTab = (url) => {
+    window.open(url, "_blank", "noopener, noreferrer");
+  };
 
   const navigate = useNavigate();
   const onQuestionArticleTitleClick = (id) => {
@@ -120,6 +126,9 @@ const GroupQnA = () => {
           <Link to={`/group`}><HomeBtn /></Link>
           <Link to={`/group/chat`}><ChatRoom /></Link>
           
+          <div className='openvidu-btn' onClick={() => handleOpenNewTab("/group/openvidu")}>
+            <OpenChatRoom />
+          </div>
 
           <NavItem>
             {/** 하위에 있는 메뉴가 열립니다. **/}

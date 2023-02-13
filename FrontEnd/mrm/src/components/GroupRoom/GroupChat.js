@@ -11,10 +11,16 @@ import CalendarBox from '../Calendar/Calendar';
 import HomeBtn from './GroupRoomItem/HomeBtn';
 import ChatRoom from './GroupRoomItem/ChatRoom';
 import { NavItem } from './GroupRoomItem/Category';
+import OpenChatRoom from './OpenVidu/OpenChatRoom';
 
 import './GroupRoomItem/Category.css';
+import './Group.css';
 
 const GroupChat = () => {
+  const handleOpenNewTab = (url) => {
+    window.open(url, "_blank", "noopener, noreferrer");
+  };
+  
   return (
     <Grid container>
       <Box
@@ -90,8 +96,11 @@ const GroupChat = () => {
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
           <Link to={`/group`}><HomeBtn /></Link>
           <Link to={`/group/chat`}><ChatRoom /></Link>
-          
 
+          <div className='openvidu-btn' onClick={() => handleOpenNewTab("/group/openvidu")}>
+            <OpenChatRoom />
+          </div>
+          
           <NavItem>
             {/** 하위에 있는 메뉴가 열립니다. **/}
             {/* <ul> */}

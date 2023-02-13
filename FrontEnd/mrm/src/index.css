@@ -30,3 +30,9 @@ body {
 a {
   color: rgb(90, 90, 90);
 }
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}

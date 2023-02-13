@@ -12,6 +12,7 @@ import RegisterPage from './components/GroupRoom/Board/RegisterPage';
 import QuestionArticlePage from './components/GroupRoom/Board/ArticlePage/QuestionArticlePage';
 import RegisterQuestionPage from './components/GroupRoom/Board/RegisterQuestionPage';
 import history from './utils/history';
+import OpenChat from './components/GroupRoom/OpenVidu/OpenVidu';
 // import { Box } from '@mui/system';
 // import { Fragment } from 'react';
 
@@ -30,7 +31,7 @@ function App() {
         <Route path="/group/question/questionArticle/:questionArticleId" element={<QuestionArticlePage/>}/>
         <Route path="/group/board/register" element={<RegisterPage/>}/>
         <Route path="/group/question/register" element={<RegisterQuestionPage/>}/>
-
+        <Route path="/group/openvidu" element={<OpenChat/>} />
       </Routes>
     </BrowserRouter>
 
