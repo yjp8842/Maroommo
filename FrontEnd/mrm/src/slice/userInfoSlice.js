@@ -11,12 +11,12 @@ export const userInfoSlice = createSlice({
 
   },
   reducers: {
-    updateUserInfo: (state, {payload}) => {
-      console.log('userInfo 수정 액션 호출')
+    saveUserInfo: (state, {payload}) => {
+      console.log('userInfo 저장 액션 호출')
       // console.log(data)
       state.user = payload
     },
-    
+
   }
 })
 
