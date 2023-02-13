@@ -14,7 +14,37 @@ import { NavItem } from './GroupRoomItem/Category';
 
 import './GroupRoomItem/Category.css';
 
+import QuestionList from './Board/ArticlePage/Sections/QuestionList';
+import { useNavigate } from 'react-router-dom';
+
+import { useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+//바꾸기
+// import { boardActions } from '../../slice/boardSlice';
+import { questionActions } from '../../slice/questionSlice';
+
+
 const GroupQnA = () => {
+
+  const navigate = useNavigate();
+  const onQuestionArticleTitleClick = (id) => {
+    const path = `/group/question/questionArticle/${id}`;
+    navigate(path)
+  }
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(questionActions.getQuestion());
+  }, [dispatch]);
+
+  const {question, isLoading, isSuccess, error } = 
+  useSelector((state) => ({
+    question: state.questionReducers.question,
+    isLoading: state.questionReducers.isLoading,
+    isSuccess: state.questionReducers.isSuccess,
+    error: state.questionReducers.error}));
+
   return (
     <Grid container>
       <Box
@@ -97,7 +127,7 @@ const GroupQnA = () => {
             <div className='category-box'>
               <Link to={`/group/board`}><li>게시판</li></Link> 
               <li>화상회의</li>  
-              <Link to={`/group/qna`}><li>Q&A</li></Link>   
+              <Link to={`/group/question`}><li>Q&A</li></Link>   
             </div>
             {/* </ul> */}
           </NavItem>
@@ -112,6 +142,25 @@ const GroupQnA = () => {
 
           <Box sx={{mt:5}}>
             <h1>Q&A</h1>
+            <br></br>
+          {/* 완료여부 포함된 board..어떻게 넣지? */}
+          <div style={{ width: "80%", margin: "3rem auto" }}>
+            {error ? (
+              <h2>에러 발생: {error}</h2>
+            ) : isSuccess && question.content.length > 0 ? (
+              <QuestionList 
+                question={question}
+                // handleDeleteClick={onDeleteClick}
+                handleQuestionArticleTitleClick={onQuestionArticleTitleClick} />
+            ) : isSuccess && question.content.length <= 0 ? (
+              <p> 조회할 내용이 없습니다. </p>
+            ) : (
+              <p> 목록을 불러오는 중입니다. </p>
+            )}
+            </div>
+            <Link to='/group/question/register?isForEdit=false'>
+              <button>글쓰기</button>
+            </Link>
           </Box>
         </Box>
 

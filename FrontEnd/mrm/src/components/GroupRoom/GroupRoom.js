@@ -99,7 +99,7 @@ const GroupRoom = () => {
             <div className='category-box'>
               <Link to={`/group/board`}><li>게시판</li></Link>  
               <li>화상회의</li>  
-              <Link to={`/group/qna`}><li>Q&A</li></Link>   
+              <Link to={`/group/question`}><li>Q&A</li></Link>   
             </div>
           </NavItem>
 
