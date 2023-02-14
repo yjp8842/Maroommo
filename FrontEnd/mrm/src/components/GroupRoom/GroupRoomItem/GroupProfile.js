@@ -7,9 +7,14 @@ import GroupProfileModal from '../../Modal/Profile/GroupProfileModal';
 import EditIcon from '@mui/icons-material/Edit';
 // import PersonIcon from '@mui/icons-material/Person';
 
+import { useSelector, useDispatch } from "react-redux";
+
 import './GroupProfile.css';
 
 const GroupProfile = () => {
+  const {group} = useSelector((state) => ({
+    group: state.groupInfoReducers.group
+  }))
 
   const [isOpen, setIsOpen] = useState(false);
   
@@ -17,8 +22,8 @@ const GroupProfile = () => {
     setIsOpen(true);
   };
 
-  let getGroupName = localStorage.getItem('groupname');
-  let getGroupIntro = localStorage.getItem('groupintro');
+  let getGroupName = group.name;
+  let getGroupIntro = group.intro;
 
   if (!getGroupName || !getGroupIntro) {
     getGroupName = '그룹명';
@@ -56,12 +61,6 @@ const GroupProfile = () => {
         />)}
       </div>
       <div className='inbox1'>
-        {/* <PersonIcon
-          sx={{
-            width: "120px",
-            height: "120px",
-          }}>
-        </PersonIcon> */}
         <img src='/images/user.png' alt="user" className='user-image' />
         <h2>{getGroupName}</h2>
         <h4>{getGroupIntro}</h4>

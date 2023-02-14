@@ -8,7 +8,7 @@ import HomePage from '../MyRoom/MyRoomItem/PageIcon';
 import { Link } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/HomeBtn';
+import HomeBtn from './GroupRoomItem/MenuBtn';
 import ChatRoom from './GroupRoomItem/ChatRoom';
 import { NavItem } from './GroupRoomItem/Category';
 
@@ -20,8 +20,6 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-//바꾸기
-// import { boardActions } from '../../slice/boardSlice';
 import { questionActions } from '../../slice/questionSlice';
 
 
@@ -29,7 +27,8 @@ const GroupQnA = () => {
 
   const navigate = useNavigate();
   const onQuestionArticleTitleClick = (id) => {
-    const path = `/group/question/questionArticle/${id}`;
+    {/* 룸아이디 넣는 식으로 수정해야함 */}
+    const path = `/group/1/question/questionArticle/${id}`;
     navigate(path)
   }
 
@@ -44,6 +43,9 @@ const GroupQnA = () => {
     isLoading: state.questionReducers.isLoading,
     isSuccess: state.questionReducers.isSuccess,
     error: state.questionReducers.error}));
+    // console.log('333333333')
+    // console.log(question.content)
+    // console.log(question.content.length)
 
   return (
     <Grid container>
@@ -117,17 +119,20 @@ const GroupQnA = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/group`}><HomeBtn /></Link>
-          <Link to={`/group/chat`}><ChatRoom /></Link>
+          {/* 룸아이디 넣는 식으로 수정해야함 */}
+          <Link to={`/group/1`}><HomeBtn /></Link>
+          <Link to={`/group/1/chat`}><ChatRoom /></Link>
           
 
           <NavItem>
             {/** 하위에 있는 메뉴가 열립니다. **/}
             {/* <ul> */}
             <div className='category-box'>
-              <Link to={`/group/board`}><li>게시판</li></Link> 
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/board`}><li>게시판</li></Link> 
               <li>화상회의</li>  
-              <Link to={`/group/question`}><li>Q&A</li></Link>   
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
             </div>
             {/* </ul> */}
           </NavItem>
@@ -147,18 +152,19 @@ const GroupQnA = () => {
           <div style={{ width: "80%", margin: "3rem auto" }}>
             {error ? (
               <h2>에러 발생: {error}</h2>
-            ) : isSuccess && question.content.length > 0 ? (
+            ) : isSuccess && question.content.length <= 0 ? (
+              <p> 조회할 내용이 없습니다. </p>
+            ) 
+            : isSuccess && question.content.length > 0 ? (
               <QuestionList 
                 question={question}
                 // handleDeleteClick={onDeleteClick}
                 handleQuestionArticleTitleClick={onQuestionArticleTitleClick} />
-            ) : isSuccess && question.content.length <= 0 ? (
-              <p> 조회할 내용이 없습니다. </p>
             ) : (
               <p> 목록을 불러오는 중입니다. </p>
             )}
             </div>
-            <Link to='/group/question/register?isForEdit=false'>
+            <Link to='/group/1/question/register?isForEdit=false'>
               <button>글쓰기</button>
             </Link>
           </Box>

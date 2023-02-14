@@ -1,24 +1,88 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import PictureUploader from "../../ImageUpload/PictureUploader";
+// import { groupInfoActions} from "../../slice/groupInfoSlice";
 
 function GroupProfileModal({ onClose }) {
+  const dispatch = useDispatch();
+
+  const {group} = useSelector((state) => ({
+    group: state.groupInfoReducers.group
+  }))
 
   const handleClose = () => {
     onClose?.();
   };
 
-  const pushData = () => {
-    let groupname = document.getElementById('groupname').value;
-    let groupintro = document.getElementById('groupintro').value;
-    if (groupname && groupintro) {
-      localStorage.setItem('groupname', groupname);
-      localStorage.setItem('groupintro', groupintro);
+  const [nameValue, setNameValue] = useState(group.name)
+  const [introValue, setIntroValue] = useState(group.intro)
+
+  const [image, setImage] = useState({
+    image_file: "",
+    preview_URL: 'images/user.jpg',
+  });
+
+  const saveImage = (e) => {
+    e.preventDefault();
+    if(e.target.files[0]){
+      // 새로운 이미지를 올리면 createObjectURL()을 통해 생성한 기존 URL을 폐기
+      URL.revokeObjectURL(image.preview_URL);
+      const preview_URL = URL.createObjectURL(e.target.files[0]);
+      setImage(() => (
+        {
+          image_file: e.target.files[0],
+          preview_URL: preview_URL
+        }
+      ))
     }
   }
 
-  let nameValue = localStorage.getItem('groupname');
-  let introValue = localStorage.getItem('groupintro');
+  const deleteImage = () => {
+    // createObjectURL()을 통해 생성한 기존 URL을 폐기
+    URL.revokeObjectURL(image.preview_URL);
+    setImage({
+      image_file: "",
+      preview_URL: "images/user.jpg",
+    });
+  }
+
+  useEffect(()=> {
+    // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
+    return () => {
+      URL.revokeObjectURL(image.preview_URL)
+    }
+  })
+
+  const onChangeName= e => {
+    setNameValue(e.target.value)
+  }
+  const onChangeIntro= e => {
+    setIntroValue(e.target.value)
+  }
+
+  const onSubmitProfile = (event) => {
+    event.preventDefault();
+    console.log(introValue, nameValue)
+    console.log('이건 프로필 이미지',image)
+
+    const formdata = new FormData();
+    formdata.append('profileImage', image)
+    console.log(formdata)
+
+    // api.post(
+    //   `/room/user?userId=${group.id}&intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
+    //   formdata).
+    // then((res)=>{
+    //   console.log(res);
+    //   userInfoActions.modifyUserInfo(res.data.user);
+    //   alert('수정되었습니다');
+    // })
+    // .catch((err) => {
+    //   alert('수정 중 오류가 발생했습니다.');
+    // })
+  }
+
 
   return (
     <div>
@@ -28,15 +92,15 @@ function GroupProfileModal({ onClose }) {
             <h1>프로필 수정하기</h1>
   
             <ProfilePicture>
-              <PictureUploader />
+              <PictureUploader image={image} saveImage={saveImage} deleteImage={deleteImage}  />
             </ProfilePicture>
             <form>
-            
-              <InputWithLabel label="| 사용자명" id="groupname" placeholder={nameValue} />
-              <InputWithLabel label="| 한줄소개" id="groupintro" placeholder={introValue} />
-            
+
+              <InputWithLabel onChange={onChangeName}  label="| 그룹명" id="groupname" placeholder={group.name} name='groupname'/>
+              <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="groupintro" placeholder={group.intro} name='groupintro' />
+
               <CButton onClick={handleClose}>취소</CButton>
-              <CButton type="submit" onClick={pushData}>수정</CButton>
+              <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
             </form>
           </Contents>
         </ModalWrap>

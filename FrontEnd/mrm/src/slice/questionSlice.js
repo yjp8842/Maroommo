@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const questionSlice = createSlice({
   name: "question",
   initialState: {
-    question: [],
+    question: {},
     isLoading: true,
     isSuccess: false,
     error: null,
@@ -19,6 +19,7 @@ export const questionSlice = createSlice({
         question: data,
         isSuccess: true,
         isLoading: false,
+        error: null,
       };
     },
     getQuestionFailedAsync: (state, { payload: error }) => {

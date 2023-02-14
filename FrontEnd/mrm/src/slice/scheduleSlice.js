@@ -1,21 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
 export const scheduleSlice = createSlice({
 
   name: 'schedule',
   initialState: {
-    schedule:{},
-
+    schedules:{},
 
   },
   reducers: {
     saveSchedule: (state, {payload}) => {
-      console.log('schedule 저장 액션 호출')
-      // console.log(data)
-      // 추가하는 식..?
-      state.schedule = payload
+      console.log('schedules 저장 액션 호출')
+      state.schedules = payload
     },
 
   }

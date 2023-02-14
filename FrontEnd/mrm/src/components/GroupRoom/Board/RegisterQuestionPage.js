@@ -98,7 +98,7 @@ function RegisterQuestionPage (props) {
 
     const formdata = new FormData();
     formdata.append('picture', image)
-    const questionArticleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', picture: formdata};
+    const questionArticleForRegister = {title: title, content: content, room_id: 1, user_id: 'hd', picture: formdata};
 
     const questionArticleForUpdate = {content: content, id: id, status:status, picture: formdata, title: title, user_id:'hd'};
 
@@ -110,7 +110,7 @@ function RegisterQuestionPage (props) {
       dispatch(questionArticleActions.registerQuestionArticle(questionArticleForRegister));
     } 
 
-    // const questionArticle = { title: title, content: content, views: views, date: date, categorysub_id:1, user_id:'hd', editDate: IsForUpdate ? Date.now() : editDate };
+    // const questionArticle = { title: title, content: content, views: views, date: date, room_id:1, user_id:'hd', editDate: IsForUpdate ? Date.now() : editDate };
     // if (IsForUpdate) {
     //   dispatch(questionArticleActions.updateQuestionArticle(questionArticle)); // 추가
     // } else {
@@ -124,7 +124,7 @@ function RegisterQuestionPage (props) {
       <RegisterOrEditQuestion
         titleValue={title}
         contentValue={content}
-        categorysub_id='1'
+        room_id='1'
         user_id='hd'
         handleRegisterChange={onRegisterChange}
         onImageHandler={onImageChange}
