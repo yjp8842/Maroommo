@@ -4,28 +4,57 @@ import DragGroup from './DragGroup';
 import Droppable from './Droppable';
 import styled from 'styled-components';
 
+import { userTodoActions } from '../TodoThings/TodoSlice';
+import { useSelector } from 'react-redux';
+import { id } from 'date-fns/locale';
 // import axios from 'axios';
+  
+//tags 파트 배열 -> 스트링
 
 function TodoDnD() {
 
-  const [box1, setBox1] = React.useState([
-    { text: 'CS',
+
+  // const { todo_id, todo_content, todo_tag } = useSelector((state) =>
+  // ({
+  //   todo_id: state.userTodoReducers.newTodo.id,
+  //   todo_content: state.userTodoReducers.newTodo.content,
+  //   todo_tag: state.userTodoReducers.newTodo.tags
+  // }))
+
+
+  const {todolist, donelist} = useSelector((state) => 
+  ({
+    todolist: state.userInfoReducers.user.doing,
+    donelist: state.userInfoReducers.user.done
+  }))
+
+  // console.log("doinglist ===", todolist);
+  // console.log("donelist ===", donelist);
+
+  const [todobox, setTodoBox] = React.useState([
+    { content: 'CS',
     tag: 'tag3' },
-    { text: 'React2',
+    { content: 'React2',
     tag: 'tag2' },
+    // {
+    //   content: todo_content,
+    //   tag: todo_tag
+    // }
   ]);
-  const [box2, setBox2] = React.useState([
-    { text: 'React1',
+
+  const [doingbox, setDoingBox] = React.useState([
+    ]);
+
+  const [donebox, setDoneBox] = React.useState([
+    { content: 'React1',
       tag: 'tag1'  },
     ]);
-  // const [box3, setBox3] = React.useState([
-  //   ]);
 
-  const handleBox1 = (item, monitor, state) => {
-    if (state.find((each) => (each.text === item.text))) return;
-    // remove from box2
-    setBox2((prev) => {
-      const index = prev.findIndex((each) => each.text === item.text);
+  const handleTodoBox = (item, monitor, state) => {
+    if (state.find((each) => (each.content === item.content))) return;
+    // remove from DoneBox
+    setDoneBox((prev) => {
+      const index = prev.findIndex((each) => each.content === item.content);
       const copy = [...prev];
       copy.splice(index, 1);
       const index1 = prev.findIndex((each) => each.tag === item.tag);
@@ -33,17 +62,17 @@ function TodoDnD() {
       copy1.splice(index1, 1);
       return copy1;
     });
-    // add to box1
-    setBox1((prev) => {
-      return [...prev, { text: item.text, tag: item.tag }];
+    // add to todobox
+    setTodoBox((prev) => {
+      return [...prev, { content: item.content, tag: item.tag }];
     });
   };
 
-  const handleBox2 = (item, monitor, state) => {
-    if (state.find((each) => each.text === item.text)) return;
-    // remove from box1
-    setBox1((prev) => {
-      const index = prev.findIndex((each) => each.text === item.text);
+  const handleDoingBox = (item, monitor, state) => {
+    if (state.find((each) => each.content === item.content)) return;
+    // remove from todobox
+    setTodoBox((prev) => {
+      const index = prev.findIndex((each) => each.content === item.content);
       const copy = [...prev];
       copy.splice(index, 1);
       const index1 = prev.findIndex((each) => each.tag === item.tag);
@@ -51,9 +80,27 @@ function TodoDnD() {
       copy1.splice(index1, 1);
       return copy1;
     });
-    // add to box2
-    setBox2((prev) => {
-      return [...prev, { text: item.text, tag: item.tag }];
+    // add to DoneBox
+    setDoingBox((prev) => {
+      return [...prev, { content: item.content, tag: item.tag }];
+    });
+  };
+
+  const handleDoneBox = (item, monitor, state) => {
+    if (state.find((each) => each.content === item.content)) return;
+    // remove from todobox
+    setDoingBox((prev) => {
+      const index = prev.findIndex((each) => each.content === item.content);
+      const copy = [...prev];
+      copy.splice(index, 1);
+      const index1 = prev.findIndex((each) => each.tag === item.tag);
+      const copy1 = [...prev];
+      copy1.splice(index1, 1);
+      return copy1;
+    });
+    // add to DoneBox
+    setDoneBox((prev) => {
+      return [...prev, { content: item.content, tag: item.tag }];
     });
   };
 
@@ -61,19 +108,19 @@ function TodoDnD() {
     <TodoDiv>
       <Droppable
         accept='drag-3'
-        handleDrop={handleBox1}
-        text='To do'
-        state={box1}
+        handleDrop={handleTodoBox}
+        content='To do'
+        state={todobox}
       >
         <DragGroup>
-          {box1.map((drag) => (
+          {todolist.map((drag) => (
             <Draggable
-              key={drag.text}
+              key={drag.content}
               type='drag-3'
-              text={drag.text}
-              tag={drag.tag}
-              item={{ text: drag.text, tag: drag.tag }}
-              state={box1}
+              content={drag.content}
+              tag={drag.tags}
+              item={{ content: drag.content, tag: drag.tag }}
+              state={todobox}
             />
           ))}
         </DragGroup>
@@ -81,43 +128,43 @@ function TodoDnD() {
 
       <Droppable
         accept='drag-3'
-        handleDrop={handleBox2}
-        text='Done'
-        state={box2}
+        handleDrop={handleDoingBox}
+        content='Doing'
+        state={doingbox}
       >
         <DragGroup>
-          {box2.map((drag) => (
+          {doingbox.map((drag) => (
             <Draggable
-              key={drag.text}
+              key={drag.content}
               type='drag-3'
-              text={drag.text}
-              tag={drag.tag}
-              item={{ text: drag.text, tag: drag.tag  }}
-              state={box2}
+              content={drag.content}
+              tag={drag.tags}
+              item={{ content: drag.content, tag: drag.tag }}
+              state={doingbox}
             />
           ))}
         </DragGroup>
       </Droppable>
-{/* 
+
       <Droppable
         accept='drag-3'
-        handleDrop={handleBox3}
-        text='Done'
-        state={box3}
+        handleDrop={handleDoneBox}
+        content='Done'
+        state={donebox}
       >
         <DragGroup>
-          {box2.map((drag) => (
+          {donelist.map((drag) => (
             <Draggable
-              key={drag.text}
+              key={drag.content}
               type='drag-3'
-              text={drag.text}
-              tag={drag.tag}
-              item={{ text: drag.text, tag: drag.tag  }}
-              state={box2}
+              content={drag.content}
+              tag={drag.tags}
+              item={{ content: drag.content, tag: drag.tag }}
+              state={donebox}
             />
           ))}
         </DragGroup>
-      </Droppable> */}
+      </Droppable>
     </TodoDiv>
   );
 }
