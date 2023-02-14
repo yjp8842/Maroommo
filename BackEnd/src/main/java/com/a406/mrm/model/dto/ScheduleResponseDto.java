@@ -24,5 +24,5 @@ public class ScheduleResponseDto {
     private String userId;
     private int roomId;
     private String content;
-    private Date startTime;
+    private String startTime;
 }

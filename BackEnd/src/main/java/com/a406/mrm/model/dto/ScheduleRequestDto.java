@@ -11,7 +11,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class ScheduleRequestDto {
     private String content;
-    private Date startTime;
+    private int year;
+    private int month;
+    private int day;
     private String userId;
     private int roomId;
 }

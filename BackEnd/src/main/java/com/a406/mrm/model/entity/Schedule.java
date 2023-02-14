@@ -22,16 +22,17 @@ public class Schedule {
         this.user = user;
         this.room = room;
         this.content = scheduleRequestDto.getContent();
-        this.startTime = scheduleRequestDto.getStartTime();
+        String month = String.format("%02d",scheduleRequestDto.getMonth());
+        String day = String.format("%02d",scheduleRequestDto.getDay());
+        this.startTime = ""+scheduleRequestDto.getYear()+"-"+month+"-"+day;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
     private String content;
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date startTime;
+    private String startTime;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
