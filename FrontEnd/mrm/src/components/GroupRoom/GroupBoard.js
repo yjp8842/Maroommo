@@ -149,14 +149,15 @@ const GroupBoard = () => {
             <div style={{ width: "80%", margin: "3rem auto" }}>
             {error ? (
               <h2>에러 발생: {error}</h2>
-            ) : isSuccess && board.data.content.length > 0 ? (
-              <BoardList 
-                board={board.data}
-                // handleDeleteClick={onDeleteClick}
-                handleArticleTitleClick={onArticleTitleClick} />
-            ) : isSuccess && board.content.length <= 0 ? (
-              <p> 조회할 내용이 없습니다. </p>
-            ) : (
+              ) :  isSuccess && board.data.content.length <= 0 ? (
+                <p> 조회할 내용이 없습니다.</p>
+              ) : isSuccess && board.data.content.length > 0 ? (
+                <BoardList 
+                  board={board.data}
+                  // handleDeleteClick={onDeleteClick}
+                  handleArticleTitleClick={onArticleTitleClick} />
+              )
+             : (
               <p> 목록을 불러오는 중입니다. </p>
             )}
             </div>
