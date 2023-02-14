@@ -29,10 +29,10 @@ function UserProfileModal({ onClose }) {
           <Contents>
             <h1>프로필 수정하기</h1>
   
+            <ProfilePicture>
+              <PictureUploader />
+            </ProfilePicture>
             <form>
-              <ProfilePicture>
-                <PictureUploader />
-              </ProfilePicture>
             
               <InputWithLabel label="| 사용자명" id="username" placeholder={usernameValue} />
               <InputWithLabel label="| 한줄소개" id="userintro" placeholder={userintroValue} />

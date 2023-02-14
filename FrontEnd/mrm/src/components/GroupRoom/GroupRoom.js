@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from '@mui/material';
@@ -232,7 +230,6 @@ const GroupRoom = () => {
             </div>
           </NavItem>
 
-
         </Box>
         
         <Box
@@ -302,6 +299,7 @@ const GroupRoom = () => {
         </Box> 
       </Box>
           <TimeTableBox />
+          
         </Box>
 
         <Box

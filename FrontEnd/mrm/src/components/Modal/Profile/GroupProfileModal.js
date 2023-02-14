@@ -27,10 +27,10 @@ function GroupProfileModal({ onClose }) {
           <Contents>
             <h1>프로필 수정하기</h1>
   
+            <ProfilePicture>
+              <PictureUploader />
+            </ProfilePicture>
             <form>
-              <ProfilePicture>
-                <PictureUploader />
-              </ProfilePicture>
             
               <InputWithLabel label="| 사용자명" id="groupname" placeholder={nameValue} />
               <InputWithLabel label="| 한줄소개" id="groupintro" placeholder={introValue} />
