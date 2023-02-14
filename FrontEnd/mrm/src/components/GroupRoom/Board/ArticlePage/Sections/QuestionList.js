@@ -42,7 +42,7 @@ function QuestionList(props) {
                 </QuestionArticle>
               <td>{questionArticle.user_id}</td>
               <td>{questionArticle.views}</td>
-              <td>{new Date(questionArticle.date).toLocaleString()}</td>
+              <td>{new Date(questionArticle.createTime).toLocaleString()}</td>
             </tr>
           </thead>
         ))}

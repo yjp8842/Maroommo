@@ -14,17 +14,9 @@ const Profile = (props) => {
     setIsOpen(true);
   };
 
-  // let getUserName = localStorage.getItem('username');
-  // let getUserIntro = localStorage.getItem('userintro');
-  console.log('userInfo props 출력', props)
-  console.log('토큰확인', localStorage.getItem('accessToken'))
-  const getUserName = props.name;
-  const getUserIntro = props.intro
-
-  // if (!getUserName || !getUserIntro) {
-  //   getUserName = '이름';
-  //   getUserIntro = '한 줄 소개';
-  // }
+  const getUserName = props.user.name;
+  const getUserIntro = props.user.intro;
+  const getUserProfile = props.user.profile;
 
   return (
     <Box
@@ -58,7 +50,10 @@ const Profile = (props) => {
       </div>
       <div className='inbox1'>
         {/* img를 userId에 맞는 이미지 src로 변경해야함 */}
-        <img src='images/user.png' alt="user" className='user-image' />
+        { getUserProfile
+        ? <img src={`${getUserProfile}`} alt="user" className='user-image' />
+        : <img src='images/user.png' alt="user" className='user-image' />
+        }
         <h2>{getUserName}</h2>
         <h4>{getUserIntro}</h4>
       </div>

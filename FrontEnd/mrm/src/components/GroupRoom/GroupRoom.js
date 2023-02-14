@@ -1,21 +1,27 @@
-// import { Fragment } from 'react';
-import React from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
-import HomePage from '../MyRoom/MyRoomItem/PageIcon';
-import { Link } from 'react-router-dom';
+import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
+import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
 import HomeBtn from './GroupRoomItem/HomeBtn';
 import ChatRoom from './GroupRoomItem/ChatRoom';
 import { NavItem } from './GroupRoomItem/Category';
 import TodoBox from './GroupRoomItem/TodoInGroup';
-import MemoBox from './GroupRoomItem/MemoInGroup';
 import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
+import { userInfoActions} from "../../slice/userInfoSlice";
+import { groupInfoActions} from "../../slice/groupInfoSlice";
+
+import api from "../../utils/axiosInstance";
+import * as StompJs from "@stomp/stompjs";
+import * as SockJS from "sockjs-client";
+import { useSelector, useDispatch } from "react-redux";
 
 import './GroupRoomItem/Category.css';
+import './GroupRoomItem/TextArea.css';
 
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
@@ -23,6 +29,129 @@ import './Group.css';
 const GroupRoom = () => {
   const handleOpenNewTab = (url) => {
     window.open(url, "_blank", "noopener, noreferrer");
+  }
+
+  const dispatch = useDispatch();
+	const params = useParams();
+  const groupId = params.groupId;
+
+  useEffect(() => {
+
+    api.get(`/room/${groupId}/${user.id}`)
+    .then((res) => {    
+      console.log("이동!")
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
+    })
+    .catch((err) => {
+      console.log(err);
+    });        
+  }, [groupId])
+
+  const {user, group} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group
+  }))
+
+  const client = useRef({});
+  const [groupMemoContent, setGroupMemoContent] = useState("");
+  const [myMemoContent, setMyMemoContent] = useState(user.userMemo);
+
+  const handleSetGroupMemo = (e) => {
+    setGroupMemoContent(e.target.value);
+    publish(e.target.value);
+  };
+
+  const handleSetMyMemo = (e) => {
+    setMyMemoContent(e.target.value);
+    saveMyMemo(e.target.value);
+    dispatch(userInfoActions.saveUserMemo(e.target.value))
+  };
+
+  const saveMyMemo = (content) => {
+
+    const data = {
+      userId: user.id,
+      content: content
+    };
+
+    api
+    .post('/my/memo', data)
+    .then(response => {
+    })
+    .catch((err) => {
+      console.log("내 메모 저장 중 오류 발생");
+    })
+  }
+
+  // roomId는 룸버튼을 눌렀을 때 roomId 정보를 store에 저장하는 방식으로 해야 하나..?
+  // store에서 가져올 것 : userId, roomId
+
+  useEffect(() => {
+    connect();
+    initRoom();
+
+    return () => disconnect();
+  }, []);
+
+  const initRoom = () => {
+    api
+    .get('/memo/room/'+group.id)
+    .then(response => {
+      var responseMemo = response.data.roomMemo;
+      setGroupMemoContent(responseMemo.content);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  }
+
+  const connect = () => {
+    client.current = new StompJs.Client({
+      // brokerURL: "ws://localhost:8080/ws/websocket", // 웹소켓 서버로 직접 접속
+      webSocketFactory: () => new SockJS("https://i8a406.p.ssafy.io/api/ws"), // proxy를 통한 접속
+      // webSocketFactory: () => new SockJS("http://localhost:8080/ws"), // proxy를 통한 접속
+      debug: function (str) {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      onConnect: () => {
+        console.log('success');
+        subscribe();
+      },
+      onStompError: (frame) => {
+        console.error(frame);
+      },
+    });
+
+    client.current.activate();
+  };
+
+  const disconnect = () => {
+    client.current.deactivate();
+  };
+
+  // 메시지 받기 -> time 필요함
+  const subscribe = () => {
+    client.current.subscribe('/sub/memo/room/'+group.id, (res) => {
+      setGroupMemoContent(JSON.parse(res.body).content);
+    });
+  };
+
+  // 메시지 보내기 + time 보낼 필요없음
+  const publish = (req) => {
+    if (!client.current.connected) {
+      return;
+    }
+
+    client.current.publish({
+      destination: "/pub/room/memo",
+      body: JSON.stringify({
+        roomId: group.id,
+        content: req
+      }),
+    });
   };
 
   return (
@@ -37,8 +166,7 @@ const GroupRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><HomePage /></Link>
+          <Link to={`/myroom`}><PageIcon /></Link>
         </Box>
         <Box
           sx={{
@@ -56,7 +184,9 @@ const GroupRoom = () => {
             justifyContent: "space-between"
           }}>
           <Box>
-            <HomePage />
+            {user.myRooms.map((room, index) => {
+              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+            })}
           </Box>
           <Box>
             <Box
@@ -107,9 +237,11 @@ const GroupRoom = () => {
           <NavItem>
             {/* 하위 메뉴 열림 */}
             <div className='category-box'>
-              <Link to={`/group/board`}><li>게시판</li></Link>  
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/board`}><li>게시판</li></Link>  
               <li>화상회의</li>  
-              <Link to={`/group/question`}><li>Q&A</li></Link>   
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
             </div>
           </NavItem>
 
@@ -122,8 +254,65 @@ const GroupRoom = () => {
             alignItems: 'center',
           }}>
 
-          <TodoBox />
-          <MemoBox />
+          <TodoBox /><Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          width: '1000px'
+        }}>
+        <Box
+          sx={{
+            width: "450px",
+            height: "250px",
+            marginTop: "20px",
+            paddingY: '20px',
+            borderRadius: "30px",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <h3>My MEMO</h3>
+            <hr align="center" width="80%"/>   
+            <textarea 
+              id="myMemo" 
+              name="myMemo"
+              value={myMemoContent}
+              onChange={(e) => handleSetMyMemo(e)}
+              rows={20} 
+              cols={50}   
+            >
+            </textarea>
+        </Box>
+        <Box
+          sx={{
+            width: "450px",
+            height: "250px",
+            marginTop: "20px",
+            paddingY: '20px',
+            borderRadius: "30px",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+            <h3>Group MEMO</h3>
+            <hr align="center" width="80%"/>   
+            <textarea 
+              id="roomMemo" 
+              name="roomMemo"
+              value={groupMemoContent}
+              onChange={(e) => handleSetGroupMemo(e)}
+              rows={20} 
+              cols={50}   
+            >
+            </textarea>
+        </Box> 
+      </Box>
           <TimeTableBox />
           
         </Box>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -16,10 +16,12 @@ import TodoTable from './MyRoomItem/TodoTable';
 
 import RoomModal from "../Modal/Group/RoomModal";
 import styled from "styled-components";
-import { useSelector, shallowEqual } from 'react-redux';
-import { userInfoActions } from '../../slice/userInfoSlice';
+import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import api from "../../utils/axiosInstance"
+import { userInfoActions } from "../../slice/userInfoSlice";
 
 const MyRoom = () => {
+  const dispatch = useDispatch()
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -27,19 +29,20 @@ const MyRoom = () => {
     setIsOpen(true);
   };
 
-  const {id, email, intro, profile, nickname, myRooms, schedule, userMemo} = useSelector((state) => 
+  useEffect(() => {
+    api.get(`/room/my/${user.id}`)
+    .then((res) => {      
+      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo))
+    })
+    .catch((err) => {
+      console.log(err);
+    });        
+  }, [])
+
+  const {user} = useSelector((state) => 
   ({
-    id: state.userInfoReducers.user.id,
-    email: state.userInfoReducers.user.email,
-    intro: state.userInfoReducers.user.intro,
-    profile: state.userInfoReducers.user.profile,
-    nickname: state.userInfoReducers.user.nickname,
-    myRooms: state.userInfoReducers.user.myRooms,
-    schedule: state.userInfoReducers.user.schedule,
-    userMemo: state.userInfoReducers.user.userMemo
-    
+    user: state.userInfoReducers.user
   }), shallowEqual)
-  console.log(id, email, intro)
 
   return (
     <Grid container>
@@ -53,7 +56,7 @@ const MyRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <PageIcon />
+          <Link to={`/myroom`}><PageIcon/></Link>
         </Box>
         <Box
           sx={{
@@ -72,7 +75,9 @@ const MyRoom = () => {
           }}>
           <Box>
             {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-            <Link to={`/group`}><PageIcon /></Link>
+            {user.myRooms.map((room, index) => {
+              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+            })}
           </Box>
           <Box>
             <AppWrap>
@@ -102,15 +107,7 @@ const MyRoom = () => {
             backgroundColor: "#ebe5d1",
           }}>
           <Profile 
-            id={id}
-            email={email}
-            intro={intro}
-            profile={profile}
-            nickname={nickname}
-            myRooms={myRooms}
-            schedule={schedule}
-            userMemo={userMemo}
-            
+            user={user}  
             />
           <StudyTime />
           <Todo />
@@ -161,7 +158,6 @@ const MyRoom = () => {
               }}>
               <TodoTable sx={{
                 fontSize:"55"
-
               }}/>
             </Box>
           </Box>

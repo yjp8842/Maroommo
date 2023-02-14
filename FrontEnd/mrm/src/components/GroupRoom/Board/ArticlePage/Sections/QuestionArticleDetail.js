@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 
 function QuestionArticleDetail(props) {
   console.log('--------------')
-  console.log(props)
+  console.log('questionarticle detail 출력 : ', props)
+  console.log('--------------')
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
-        <a href="/group/question">
+        {/* 룸 아이디 넣는식으로 수정 */}
+        <a href="/group/1/question">
           <button type="primary">목록</button>
         </a>
         <button></button>
@@ -42,6 +44,8 @@ function QuestionArticleDetail(props) {
             <tr>
               <th>내용</th>
               <td colSpan="3">{props.content}</td>
+              <td colSpan="3">{props.picture}</td>
+              <img src={`/images/${props.picture}`} alt='logo' className='imgbox' />
             </tr>
             <tr>
               <th>작성자</th>
@@ -49,14 +53,16 @@ function QuestionArticleDetail(props) {
             </tr>
             <tr>
               <th>작성일</th>
-              <td colSpan="3">{new Date(props.date).toLocaleString()}</td>
+              <td colSpan="3">{props.createTime}</td>
             </tr>
+            
           </tbody>
         </table>
       </div>
       <div>
           <div style={{ margin: "2rem auto" }}>
-            <Link to={`/group/question/register?isForEdit=true`}>
+            {/* roomid 넣는식으로 수정 */}
+            <Link to={`/group/1/question/register?isForEdit=true`}>
               <button>수정</button>
             </Link>
           </div>
@@ -83,8 +89,9 @@ function QuestionArticleDetail(props) {
           >
             <span key={answers.id}>
               <span>{answers.content}</span>
+              <span>{answers.good}</span>
               <span style={{ float: "right" }}>
-                {new Date(answers.date).toLocaleString()}&nbsp;
+                {answers.createTime}&nbsp;
                 <span style={{cursor:'pointer'}} 
                   onClick={() => props.deleteAnswer(answers.id)}>[X]</span>
               </span>

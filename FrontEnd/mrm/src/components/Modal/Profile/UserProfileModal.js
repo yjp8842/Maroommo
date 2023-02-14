@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 // import { Form } from "react-router-dom";
-// import { useState } from "react";
 import styled from "styled-components";
 import PictureUploader from "../../ImageUpload/PictureUploader";
+import { userInfoActions } from "../../../slice/userInfoSlice";
+import api from "../../../utils/axiosInstance";
 
 function UserProfileModal({ onClose }) {
 
@@ -10,17 +12,79 @@ function UserProfileModal({ onClose }) {
     onClose?.();
   };
 
-  const pushData = () => {
-    let username = document.getElementById('username').value;
-    let userintro = document.getElementById('userintro').value;
-    if (username && userintro) {
-      localStorage.setItem('username', username);
-      localStorage.setItem('userintro', userintro);
+  const {user} = useSelector((state) => ({
+    user: state.userInfoReducers.user
+  }), shallowEqual)
+
+  const dispatch = useDispatch()
+  const [nicknameValue, setNicknameValue] = useState(user.nickname)
+  const [introValue, setIntroValue] = useState(user.intro)
+
+  const [image, setImage] = useState({
+    image_file: "",
+    preview_URL: 'images/user.jpg',
+  });
+
+
+  const saveImage = (e) => {
+    e.preventDefault();
+    if(e.target.files[0]){
+      // 새로운 이미지를 올리면 createObjectURL()을 통해 생성한 기존 URL을 폐기
+      URL.revokeObjectURL(image.preview_URL);
+      const preview_URL = URL.createObjectURL(e.target.files[0]);
+      setImage(() => (
+        {
+          image_file: e.target.files[0],
+          preview_URL: preview_URL
+        }
+      ))
     }
   }
 
-  let usernameValue = localStorage.getItem('username');
-  let userintroValue = localStorage.getItem('userintro');
+  const deleteImage = () => {
+    // createObjectURL()을 통해 생성한 기존 URL을 폐기
+    URL.revokeObjectURL(image.preview_URL);
+    setImage({
+      image_file: "",
+      preview_URL: "images/user.jpg",
+    });
+  }
+
+  useEffect(()=> {
+    // 컴포넌트가 언마운트되면 createObjectURL()을 통해 생성한 기존 URL을 폐기
+    return () => {
+      URL.revokeObjectURL(image.preview_URL)
+    }
+  })
+
+  const onChangeNickname= e => {
+    setNicknameValue(e.target.value)
+  }
+  const onChangeIntro= e => {
+    setIntroValue(e.target.value)
+  }
+
+  const onSubmitProfile = (event) => {
+    event.preventDefault();
+    console.log(introValue, nicknameValue)
+    console.log('이건 프로필 이미지',image)
+
+    const formdata = new FormData();
+    formdata.append('profileImage', image)
+    console.log(formdata)
+
+    api.post(
+      `/room/user?userId=${user.id}&intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
+      formdata).
+    then((res)=>{
+      console.log(res);
+      userInfoActions.modifyUserInfo(res.data.user);
+      alert('수정되었습니다');
+    })
+    .catch((err) => {
+      alert('수정 중 오류가 발생했습니다.');
+    })
+  }
 
   return (
     <div>
@@ -29,16 +93,16 @@ function UserProfileModal({ onClose }) {
           <Contents>
             <h1>프로필 수정하기</h1>
   
+            <ProfilePicture>
+              <PictureUploader image={image} saveImage={saveImage} deleteImage={deleteImage}  />
+            </ProfilePicture>
             <form>
-              <ProfilePicture>
-                <PictureUploader />
-              </ProfilePicture>
             
-              <InputWithLabel label="| 사용자명" id="username" placeholder={usernameValue} />
-              <InputWithLabel label="| 한줄소개" id="userintro" placeholder={userintroValue} />
+              <InputWithLabel onChange={onChangeNickname}  label="| 사용자명" id="username" placeholder={user.name} name='nickname'/>
+              <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="userintro" placeholder={user.intro} name='intro' />
             
               <CButton onClick={handleClose}>취소</CButton>
-              <CButton type="submit" onClick={pushData}>수정</CButton>
+              <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
             </form>
           </Contents>
         </ModalWrap>

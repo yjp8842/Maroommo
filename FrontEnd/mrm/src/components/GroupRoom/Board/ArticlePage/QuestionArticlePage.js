@@ -15,19 +15,17 @@ import {answerActions} from '../../../../slice/answerSlice'
 function QuestionArticlePage() {
 
   const params = useParams();
-  console.log(params)
-  console.log(params.questionArticleId)
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(questionArticleActions.getQuestionArticle(params.questionArticleId));
     dispatch(answerActions.getAnswers(params.questionArticleId));
   }, [params.questionArticleId]);
-  console.log('getQuestionArticle 호출')
 
   // , [{articleId}]);_
 // categorysub_id, content, createtime, hit, picture, title, user_id
-  const { id, title, content, date, user_id, status, answers  } = useSelector((state) => ({
+  const { id, title, content, createTime, user_id, status, answers, picture  } = useSelector((state) => ({
     id: state.questionArticleReducers.id,
     title: state.questionArticleReducers.title,
     content: state.questionArticleReducers.content,
@@ -35,10 +33,11 @@ function QuestionArticlePage() {
     user_id: state.questionArticleReducers.user_id,
     status: state.questionArticleReducers.status,
     answers: state.questionArticleReducers.answers,
+    picture: state.questionArticleReducers.picture
   }),
   shallowEqual);
-  // const date = useSelector((state) => state.articleReducers.date);
-  
+  console.log('questionarticle page 출력 ')
+  console.log(id, title, content)
   const views = useSelector((state) => state.questionArticleReducers.views);
   // console.log(title)
 
@@ -50,7 +49,7 @@ function QuestionArticlePage() {
     dispatch(questionArticleActions.deleteQuestionArticle(id))
   } 
 
-  //댓글
+  //답변
   const [AnswerValue, setAnswerValue] = useState("");
 
   
@@ -59,22 +58,24 @@ function QuestionArticlePage() {
     setAnswerValue(e.currentTarget.value);
   };
 
-  const onAnswerSubmit = () => {
+  const onAnswerSubmit = (e) => {
+    e.preventDefault()
     if (
       AnswerValue === '' ||
       AnswerValue === null ||
       AnswerValue === undefined
     ) {
-      alert('댓글을 입력하세요.');
+      alert('답변을 입력하세요.');
       return false;
     }
     const answer = {
-      id: 0,
+      // id: 0,
+      user_id: 'hd',
       content: AnswerValue,
       date: Date.now(),
-      questionArticleId: id,
+      question_id: id,
     };
-    dispatch(answerActions.registerQuestionComment(answer))
+    dispatch(answerActions.registerAnswer(answer))
   };
 
   const onDeleteAnswer = (answerId) => {
@@ -89,10 +90,11 @@ function QuestionArticlePage() {
           title={title}
           content={content}
           views={views}
-          date={date}
+          createTime={createTime}
           user_id={user_id}
           status={status}
           answers={answers}
+          picture={picture}
           handleDeleteClick={onDeleteClick}
           handleAnswer={<Answer
             answer={AnswerValue}

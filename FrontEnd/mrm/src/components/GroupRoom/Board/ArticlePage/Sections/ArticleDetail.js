@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 
 
 function ArticleDetail(props) {
-  console.log('222222222')
-  console.log(props)
+  console.log('--------------')
+  console.log('article detail 출력 : ', props)
+  console.log('--------------')
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
-        <a href="/group/board">
+        <a href="/group/1/board">
           <button type="primary">목록</button>
         </a>
         <button></button>
@@ -54,7 +55,7 @@ function ArticleDetail(props) {
       </div>
       <div>
           <div style={{ margin: "2rem auto" }}>
-            <Link to={`/group/board/register?isForEdit=true`}>
+            <Link to={`/group/1/board/register?isForEdit=true`}>
               <button>수정</button>
             </Link>
           </div>

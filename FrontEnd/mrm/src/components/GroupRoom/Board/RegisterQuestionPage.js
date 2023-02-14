@@ -11,7 +11,7 @@ import { useLocation, useParams } from "react-router-dom";
 function RegisterQuestionPage (props) {
   console.log(props);
 
-  const {id, views, date, editDate, title, content, } = useSelector((state) =>
+  const {id, views, date, editDate, title, content, picture, status} = useSelector((state) =>
   ({
     id: state.questionArticleReducers.id,
     views: state.questionArticleReducers.views,
@@ -19,7 +19,11 @@ function RegisterQuestionPage (props) {
     editDate: state.questionArticleReducers.editDate,  
     title: state.questionArticleReducers.title,
     content: state.questionArticleReducers.content,
+    picture: state.questionArticleReducers.picture,
+    status: state.questionArticleReducers.status
   }), shallowEqual)
+
+  const formData = new FormData()
 
   // const {title} = useSelector((state) => ({
   //   title: state.questionArticleReducers.title,
@@ -40,14 +44,19 @@ function RegisterQuestionPage (props) {
 
   //여기 체크
   useEffect(() => {
-    const searchParams = new URLSearchParams(search);
-    if (searchParams.get("isForEdit") === 'true') {
-      dispatch(questionArticleActions.fetchQuestionArticle(params.questionArticleId))
+    const paramsSearch = new URLSearchParams(search).get('search');
+    const isRegisterForEdit = paramsSearch.split("=")[1]
+
+    if (isRegisterForEdit === 'true') {
+      console.log('true')
+      dispatch(questionArticleActions.fetchQuestionArticle(id))
       setIsForUpdate(true);
+    } else {
+      console.log('false')
     }
     setTitleValue(title);
     setContentValue(content);
-  }, [id]);
+  }, []);
 
   // const onTitleChange = (event) => {
   //   setTitleValue(event.currentTarget.value)
@@ -62,6 +71,14 @@ function RegisterQuestionPage (props) {
     const { name, value } = event.target;
     dispatch(questionArticleActions.changeQuestionRegisterInput({ name: name, value: value }));
   };
+  const [image, setImage] = useState({name: ""})
+  const onImageChange = (event) => {
+    console.log("event ======", event)
+    console.log("event.target", event.target)
+    console.log("event.target.files[0]", event.target.files[0])
+    setImage(()=>event.target.files[0])
+    console.log("image", image)
+  }
 
   const onSubmitQuestionArticle = (event) => {
     event.preventDefault();
@@ -78,12 +95,27 @@ function RegisterQuestionPage (props) {
       alert("내용을 작성하십시오.");
       return false;
     }
-    const questionArticle = { title: title, content: content, views: views, date: date, categorysub_id:1, user_id:'hd', editDate: IsForUpdate ? Date.now() : editDate };
+
+    const formdata = new FormData();
+    formdata.append('picture', image)
+    const questionArticleForRegister = {title: title, content: content, room_id: 1, user_id: 'hd', picture: formdata};
+
+    const questionArticleForUpdate = {content: content, id: id, status:status, picture: formdata, title: title, user_id:'hd'};
+
     if (IsForUpdate) {
-      dispatch(questionArticleActions.updateQuestionArticle(questionArticle)); // 추가
+      console.log('업데이트 ㄱㄱ')
+      dispatch(questionArticleActions.updateQuestionArticle(questionArticleForUpdate)); // 추가
     } else {
-      dispatch(questionArticleActions.registerQuestionArticle(questionArticle));
+      console.log('작성 ㄱㄱ')
+      dispatch(questionArticleActions.registerQuestionArticle(questionArticleForRegister));
     } 
+
+    // const questionArticle = { title: title, content: content, views: views, date: date, room_id:1, user_id:'hd', editDate: IsForUpdate ? Date.now() : editDate };
+    // if (IsForUpdate) {
+    //   dispatch(questionArticleActions.updateQuestionArticle(questionArticle)); // 추가
+    // } else {
+    //   dispatch(questionArticleActions.registerQuestionArticle(questionArticle));
+    // } 
   }
 
 
@@ -92,11 +124,15 @@ function RegisterQuestionPage (props) {
       <RegisterOrEditQuestion
         titleValue={title}
         contentValue={content}
-        categorysub_id='1'
+        room_id='1'
         user_id='hd'
         handleRegisterChange={onRegisterChange}
+        onImageHandler={onImageChange}
         handleSubmit={onSubmitQuestionArticle}
         updateRequest={IsForUpdate}
+        formData = {formData}
+        picture={image.name}
+        status={status}
         />
     </>
     
