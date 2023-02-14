@@ -11,10 +11,9 @@ export function* registerAnswerAsync(action) {
   console.log(data)
 
   const response = yield api.post('/answer', data)
-  console.log('777777777777')
   console.log(response)
 
-  // history.go(0); // refresh
+  history.go(0); // refresh
 }
 
 // export function* getQuestionCommentsAsync(action) {
