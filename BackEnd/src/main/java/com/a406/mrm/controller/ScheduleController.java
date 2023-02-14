@@ -22,7 +22,7 @@ import java.util.Map;
 public class ScheduleController {
     private final Logger logger = LoggerFactory.getLogger(ScheduleController.class);
 
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
     
     // 유저의 스케쥴을 가져온다...?
     // 지금 논의되는 스케쥴은 그룹의 스케쥴이기도 하고

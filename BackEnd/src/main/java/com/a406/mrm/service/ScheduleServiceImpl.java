@@ -10,6 +10,7 @@ import com.a406.mrm.repository.RoomRepository;
 import com.a406.mrm.repository.ScheduleRepository;
 import com.a406.mrm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -84,7 +85,9 @@ public class ScheduleServiceImpl implements ScheduleService{
         ScheduleResponseDto scheduleResponseDto = null;
 
         if (schedule != null){
-            schedule.setStartTime(scheduleRequestDto.getStartTime());
+            String month = String.format("%02d",scheduleRequestDto.getMonth());
+            String day = String.format("%02d",scheduleRequestDto.getDay());
+            schedule.setStartTime(""+scheduleRequestDto.getYear()+"-"+month+"-"+day);
             schedule.setContent(scheduleRequestDto.getContent());
             schedule = scheduleRepository.save(schedule);
             scheduleResponseDto = new ScheduleResponseDto(schedule);
