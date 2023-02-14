@@ -24,6 +24,8 @@ export function* registerQuestionArticleAsync(action) {
   console.log('----------');
 
   history.push(`/group/1/question/questionArticle/${response.data.newQuestion.id}`, response.data.newQuestion.id);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
 }
 
 
@@ -54,6 +56,8 @@ export function* updateQuestionArticleAsync(action) {
   console.log(response.data.board);
 
   history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
 }
 
 export function* deleteQuestionArticleAsync(action) {
@@ -65,4 +69,6 @@ export function* deleteQuestionArticleAsync(action) {
   alert("삭제되었습니다.");
 
   history.push(`/group/1/question`);
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
 }
