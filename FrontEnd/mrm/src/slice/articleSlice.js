@@ -2,7 +2,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const articleSlice = createSlice({
-  // categorysub_id 로 그룹 정보까지...
   name: "article",
   initialState: {
     id: 0,
@@ -11,7 +10,7 @@ export const articleSlice = createSlice({
     views: 0,
     createTime: "",
     editDate: "",
-    categorysub_id: "",
+    room_id: "",
     user_id: "",
     picture: null,
     comments: []
