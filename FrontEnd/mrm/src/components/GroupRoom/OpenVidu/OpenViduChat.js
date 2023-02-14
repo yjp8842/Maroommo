@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState, useSelector } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from 'react-redux'
 import * as StompJs from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import axios from "axios";
 import "./OpenViduChat.css";
-
-// const ROOM_SEQ = 5;
 
 // 데이터 타입
 // private int roomId;
@@ -23,20 +22,18 @@ const OpenViduChat = () => {
   const [message, setMessage] = useState("");
   let [chatMessages, setChatMessages] = useState([]);
 
-  const {roomid, userid, nickname} = useSelector((state) => ({
-    roomid: state.userInfoReducers.user.myRooms[0],
-    userid: state.userInfoReducers.user.id,
-    nickname: state.userInfoReducers.user.nickname,
+  const {group, user} = useSelector((state) => ({
+    group: state.groupInfoReducers.group,
+    user: state.userInfoReducers.user,
   }))
-
 
   useEffect(() => {
     connect();
     initRoom();
 
-    setRoomId(roomid);
-    setUserId(userid);
-    setUserNickname(nickname);
+    setRoomId(group.id);
+    setUserId(user.id);
+    setUserNickname(user.nickname);
 
     return () => disconnect();
   }, []);

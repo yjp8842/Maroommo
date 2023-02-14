@@ -19,7 +19,7 @@ import OpenViduChat from "./OpenViduChat";
 import OpenViduQnA from "./OpenViduQnA";
 
 import "./OpenVidu.css";
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 
 // server url
 const APPLICATION_SERVER_URL = "https://i8a406.p.ssafy.io:8085/";
@@ -30,7 +30,6 @@ const APPLICATION_SERVER_URL = "https://i8a406.p.ssafy.io:8085/";
 const StreamContainerWrapper = styled.div`
   display: grid;
   place-items: center;
-  grid-auto-columns: minmax(auto, 1fr);
   grid-gap: 20px;
   height: 100%;
   padding: 10px;
@@ -107,22 +106,108 @@ class OpenChat extends Component {
             <div className="middle">
               <div className="left">
                 <div className="video-container">
+
+                  {/* 총 1명일 때 */}
+                  {this.state.subscribers.length < 1 ? (
                     <StreamContainerWrapper
+                      className="width1"
                       ref={this.userRef}
                     >
                       {this.state.publisher !== undefined ? (
-                        <div className="stream-container" key={this.state.publisher.stream.streamId}>
+                        <div className="stream-container under-one">
                           <UserVideoComponent
                             streamManager={this.state.publisher}
+                            key={this.state.publisher.stream.streamId}
                           />
+                          {this.state.subscribers.map((sub, i) => (
+                            <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                          ))}
                         </div>
                       ) : null}
-                      {this.state.subscribers.map((sub, i) => (
-                        <div className="stream-container" key={sub.stream.streamId}>
-                          <UserVideoComponent streamManager={sub} />
-                        </div>
-                      ))}
                     </StreamContainerWrapper>
+                  ) : (
+
+                    // 총 2명일 때
+                    this.state.subscribers.length < 2 ? (
+                      <StreamContainerWrapper
+                        className="width2"
+                        ref={this.userRef}
+                      >
+                        {this.state.publisher !== undefined ? (
+                          <div className="stream-container under-two">
+                            <UserVideoComponent
+                              streamManager={this.state.publisher}
+                              key={this.state.publisher.stream.streamId}
+                            />
+                            {this.state.subscribers.map((sub, i) => (
+                              <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                            ))}
+                          </div>
+                        ) : null}
+                      </StreamContainerWrapper>
+                    ) : (
+                      
+                      // 총 3-4명일 때
+                      this.state.subscribers.length < 4 ? (
+                        <StreamContainerWrapper
+                        className="width3"
+                          ref={this.userRef}
+                        >
+                          {this.state.publisher !== undefined ? (
+                            <div className="stream-container under-four">
+                              <UserVideoComponent
+                                streamManager={this.state.publisher}
+                                key={this.state.publisher.stream.streamId}
+                              />
+                              {this.state.subscribers.map((sub, i) => (
+                                <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                              ))}
+                            </div>
+                          ) : null}
+                        </StreamContainerWrapper>
+                      ) : (
+
+                        // 총 5-6명일 때
+                        this.state.subscribers.length < 6 ? (
+                          <StreamContainerWrapper
+                          className="width4"
+                            ref={this.userRef}
+                          >
+                            {this.state.publisher !== undefined ? (
+                              <div className="stream-container under-six">
+                                <UserVideoComponent
+                                  streamManager={this.state.publisher}
+                                  key={this.state.publisher.stream.streamId}
+                                />
+                                {this.state.subscribers.map((sub, i) => (
+                                  <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                ))}
+                              </div>
+                            ) : null}
+                          </StreamContainerWrapper>
+                        ) : (
+
+                          // 총 7-9명일 때
+                          <StreamContainerWrapper
+                          className="width5"
+                            ref={this.userRef}
+                          >
+                            {this.state.publisher !== undefined ? (
+                              <div className="stream-container under-nine">
+                                <UserVideoComponent
+                                  streamManager={this.state.publisher}
+                                  key={this.state.publisher.stream.streamId}
+                                />
+                                {this.state.subscribers.map((sub, i) => (
+                                  <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                ))}
+                              </div>
+                            ) : null}
+                          </StreamContainerWrapper>
+                        )
+                      )
+                    )
+                  )}
                 </div>
               </div>
 
@@ -228,10 +313,10 @@ class OpenChat extends Component {
     this.userRef = React.createRef();
 
     this.state = {
-      // mySessionId: this.props.userinfo.myRooms[0],  // store에 저장된 roomId
-      // myUserName: this.props.userinfo.nickname,  // store에 저장된 nickname
-      mySessionId: "4",  // store에 저장된 roomId
-      myUserName: "유진",  // store에 저장된 nickname
+      mySessionId: this.props.group.id.toString(),  // store에 저장된 roomId
+      myUserName: this.props.user.nickname,  // store에 저장된 nickname
+      // mySessionId: "2",  // store에 저장된 roomId
+      // myUserName: "testId",  // store에 저장된 nickname
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, // 로컬 웹캠 스트림
@@ -331,13 +416,6 @@ class OpenChat extends Component {
     // OpenVidu 객체 생성
     this.OV = new OpenVidu();
 
-    // this.OV.setAdvancedConfiguration({
-    //   publisherSpeakingEventsOptions: {
-    //     interval: 50,
-    //     threshold: -75,
-    //   },
-    // });
-
     this.setState(
       {
         session: this.OV.initSession(),
@@ -347,15 +425,12 @@ class OpenChat extends Component {
 
         // Session 객체가 각각 새로운 stream에 대해 구독 후, subscribers 상태값 업뎃
         mySession.on("streamCreated", (e) => {
-          // OpenVidu -> Session -> 102번째 줄 확인 UserVideoComponent를 사용하기 때문에 2번째 인자로 HTML
-          // 요소 삽입X
           let subscriber = mySession.subscribe(e.stream, undefined);
           var subscribers = this.state.subscribers;
           subscribers.push(subscriber);
 
           this.setState({ subscribers });
 
-          console.log(subscribers);
         });
 
         // 사용자가 화상회의를 떠나면 Session 객체에서 소멸된 stream을 받아와 subscribers 상태값 업뎃
@@ -399,7 +474,7 @@ class OpenChat extends Component {
           }
         });
 
-        this.getToken().then((token) => {
+        this.getToken(this.state.mySessionId).then((token) => {
           mySession
             .connect(token, {
               clientData: this.state.myUserName,
@@ -428,8 +503,8 @@ class OpenChat extends Component {
     );
   }
 
-  async getToken() {
-    return this.createSession(this.state.mySessionId).then((sessionId) => 
+  async getToken(mySessionId) {
+    return this.createSession(mySessionId).then((sessionId) => 
       this.createToken(sessionId)
     );
   }
@@ -454,6 +529,8 @@ class OpenChat extends Component {
           },
         })
         .then((res) => {
+          console.log(typeof(this.props.group.id))
+          console.log(typeof(this.props.user.nickname))
           resolve(res.data.id);
         })
         .catch((res) => {
@@ -509,9 +586,10 @@ class OpenChat extends Component {
   };
 };
 
-// const getStoreData = (state) => {
-//   return { userinfo: state.userInfoReducers.user }
-// }
+const getStoreData = (state) => ({
+  user: state.userInfoReducers.user, 
+  group: state.groupInfoReducers.group
+})
 
-// export default connect(getStoreData)(OpenChat);
-export default OpenChat;
+export default connect(getStoreData)(OpenChat);
+// export default OpenChat;
