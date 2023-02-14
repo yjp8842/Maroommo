@@ -161,6 +161,7 @@ const GroupBoard = () => {
               <p> 목록을 불러오는 중입니다. </p>
             )}
             </div>
+            {/* 룸아이디 넣는 식으로 수정해야함 */}
             <Link to='/group/1/board/register?isForEdit=false'>
               <button>글쓰기</button>
             </Link>
