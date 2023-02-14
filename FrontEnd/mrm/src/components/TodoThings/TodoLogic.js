@@ -1,5 +1,5 @@
 import axios from "axios";
-import { userTodoActions } from "./TodoSlice"
+import { userInfoActions } from "../../slice/userInfoSlice"
 
 // import history from "../../utils/history";
 
@@ -37,7 +37,7 @@ export function postTodoData({ roomId, tags, content, selectedDate, dispatch }) 
             // console.log(response.data.newTodo.content);
             // console.log(response.data.newTodo.startTime);
 
-            dispatch(userTodoActions.saveTodoInfo(response.data.newTodo))
+            dispatch(userInfoActions.saveTodoInfo(response.data.newTodo))
             
             // history.push('/group/1')
         })

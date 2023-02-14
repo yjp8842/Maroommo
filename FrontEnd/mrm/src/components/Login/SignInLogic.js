@@ -21,7 +21,6 @@ export function requestLogin(dispatch) {
     .then((res) => {
       console.log("로그인 성공!");
       console.log(res);
-      console.log(res.user.data.doing);
 
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);

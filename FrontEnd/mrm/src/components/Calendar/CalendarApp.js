@@ -13,27 +13,38 @@ export default function CalendarApp() {
   // const [mark, setMark] = useState([]);
   // const {data} = useQuery()
 
-  const marks_red = [
-    '2023-02-20',
-    '2023-02-21',
-    '2023-02-22',
-    '2023-02-23',
-  ];
+  // const marks_red = [
+  //   '2023-02-20',
+  //   '2023-02-21',
+  //   '2023-02-22',
+  //   '2023-02-23',
+  // ];
 
-  const marks_blue = [
-    '2023-02-26',
-    '2023-02-27',
-  ];
+  // const marks_blue = [
+  //   '2023-02-26',
+  //   '2023-02-27',
+  // ];
 
   const {todolist} = useSelector((state) =>
   ({
     todolist: state.userInfoReducers.user.doing,
   }))
-  console.log("todolist ===", todolist[0].startTime);
+  // console.log("todolist ===", todolist[0].startTime);
 
   const todoList = [];
   todolist.map((list) => {
     return todoList.push(list.startTime)
+  })
+
+  const {schedulelist} = useSelector((state) =>
+  ({
+    schedulelist: state.scheduleReducers.schedule
+  }))
+  // console.log("schedulelist ===", schedulelist[0].startTime);
+
+  const scheduleList = [];
+  schedulelist.map((list) => {
+    return scheduleList.push(list.startTime)
   })
 
   return (
@@ -52,11 +63,11 @@ export default function CalendarApp() {
             </>
           )
         }
-        if (marks_blue.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
+        if (scheduleList.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
           return (
             <>
               <div className='flex justify-center items-center absoluteDiv'>
-                <div className='blue_dot'></div>
+                <div className='blue_dot'>abcdef</div>
               </div>
             </>
           )
