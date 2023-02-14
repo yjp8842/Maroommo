@@ -136,7 +136,10 @@ public class QuestionController {
     @ApiOperation("질문 조회 (pageable) : 룸 아이디(id) + size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호 ")
     public Page<QuestionResponseDto> QuestionPageable (Model model, @RequestParam("room_id") int room_id,
          @PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return questionService.listQuestion_Pageable(room_id, pageable);
+
+        Page<QuestionResponseDto> page = questionService.listQuestion_Pageable(room_id, pageable);
+
+        return page;
     }
 
     /**
