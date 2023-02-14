@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSelector } from "react";
 import * as StompJs from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
 import axios from "axios";
@@ -26,13 +26,19 @@ const OpenViduChat = () => {
   // roomId는 룸버튼을 눌렀을 때 roomId 정보를 store에 저장하는 방식으로 해야 하나..?
   // store에서 가져올 것 : userId, userNickname
 
+  const {id, nickname} = useSelector((state) => ({
+    id: state.userInfoReducers.user.id,
+    nickname: state.userInfoReducers.user.nickname,
+  }))
+
+
   useEffect(() => {
     connect();
     initRoom();
 
     // setRoomId();
-    // setUserId();
-    // setUserNickname();
+    setUserId(id);
+    setUserNickname(nickname);
 
     return () => disconnect();
   }, []);
