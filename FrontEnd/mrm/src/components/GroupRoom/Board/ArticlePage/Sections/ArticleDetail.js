@@ -39,7 +39,6 @@ function ArticleDetail(props) {
             <tr>
               <th>내용</th>
               <td colSpan="3">{props.content}</td>
-              <td colSpan="3">{props.picture}</td>
               <img src={`/images/${props.picture}`} alt='logo' className='imgbox' />
             </tr>
             <tr>
