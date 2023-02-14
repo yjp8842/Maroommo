@@ -71,7 +71,7 @@ function ArticlePage() {
       user_id: 'hd',
       content: CommentValue,
       date: Date.now(),
-      articleId: id,
+      board_id: id,
     };
     dispatch(commentActions.registerComment(comment))
   };
