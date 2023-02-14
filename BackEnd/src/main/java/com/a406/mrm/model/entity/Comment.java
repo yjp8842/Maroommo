@@ -1,10 +1,8 @@
 package com.a406.mrm.model.entity;
 
-import com.a406.mrm.model.dto.BoardInsertDto;
-import com.a406.mrm.model.dto.BoardModifyDto;
+
 import com.a406.mrm.model.dto.CommentInsertDto;
 import com.a406.mrm.model.dto.CommentModifyDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;

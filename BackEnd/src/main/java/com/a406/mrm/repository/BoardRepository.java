@@ -17,7 +17,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     Board findById(int id);
 
-    Page<BoardResponseDto> findBycategorySub_Id (int categorysub_Id, Pageable pageable);
+    Page<BoardResponseDto> findByroom_Id (int room_id, Pageable pageable);
 
     List<Board> findByid (int board_id);
 

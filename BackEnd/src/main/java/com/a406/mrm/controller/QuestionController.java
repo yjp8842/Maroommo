@@ -29,21 +29,21 @@ public class QuestionController {
     private final QuestionService questionService;
 
     /**
-     * @param(title,content,user_id,categorySub_id,picture)
+     * @param(title,content,user_id,room_id,picture)
      *              를 통해 질문을 생성한다
      * @return newQuestion : 생성한 질문을 반환한다
      */
     @PostMapping
-    @ApiOperation("질문 생성 : RequestParam으로 (title, content, user_id, categorySub_id, picture = 파일)")
+    @ApiOperation("질문 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
     public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
-                                    @RequestParam int categorySub_id, @RequestPart MultipartFile picture) {
+                                    @RequestParam int room_id, @RequestPart MultipartFile picture) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         try {
-            questionResponseAnswerDto = questionService.join(title, content, user_id, categorySub_id, picture);
+            questionResponseAnswerDto = questionService.join(title, content, user_id, room_id, picture);
             resultMap.put("newQuestion", questionResponseAnswerDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -127,16 +127,16 @@ public class QuestionController {
 
     /**
      * @param model
-     * @param categorySub_id
+     * @param room_id
      * @param pageable
      *              를 통해 질문 목록을 가져온다
      * @return 페이징 처리된 질문 목록을 반환한다
      */
     @GetMapping
-    @ApiOperation("질문 조회 (pageable) : 카테고리 서브 아이디(id) + size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호 ")
-    public Page<QuestionResponseDto> QuestionPageable (Model model, @RequestParam("categorySub_id") int categorySub_id,
+    @ApiOperation("질문 조회 (pageable) : 룸 아이디(id) + size = 받을 데이터 개수 -> page = 이에 따른 페이지 번호 ")
+    public Page<QuestionResponseDto> QuestionPageable (Model model, @RequestParam("room_id") int room_id,
          @PageableDefault(size = page_num, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        return questionService.listQuestion_Pageable(categorySub_id, pageable);
+        return questionService.listQuestion_Pageable(room_id, pageable);
     }
 
     /**
