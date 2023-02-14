@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { requestLogin } from './SignInLogic';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,6 +13,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme();
 
 export default function SignInSide() {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -145,7 +147,7 @@ export default function SignInSide() {
                       boxShadow: "5px 5px 4px rgba(0, 0, 0, 0.15)"
                     }}
                     onClick={() => {
-                      requestLogin(dispatch);
+                      requestLogin(dispatch, navigate);
                       loginCheck();
                     }}
                     >

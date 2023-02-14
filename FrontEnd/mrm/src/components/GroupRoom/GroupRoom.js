@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
-import HomePage from '../MyRoom/MyRoomItem/PageIcon';
-import { Link } from 'react-router-dom';
+import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
+import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
 import HomeBtn from './GroupRoomItem/HomeBtn';
@@ -12,28 +12,42 @@ import ChatRoom from './GroupRoomItem/ChatRoom';
 import { NavItem } from './GroupRoomItem/Category';
 import TodoBox from './GroupRoomItem/TodoInGroup';
 import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
+import { userInfoActions} from "../../slice/userInfoSlice";
+import { groupInfoActions} from "../../slice/groupInfoSlice";
 
-import axios from "axios";
+import api from "../../utils/axiosInstance";
 import * as StompJs from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import './GroupRoomItem/Category.css';
 import './GroupRoomItem/TextArea.css';
 
-const ROOM_SEQ = 1;
-const USER_ID = "hd";
-
 const GroupRoom = () => {
+  const dispatch = useDispatch();
+	const params = useParams();
+  const groupId = params.groupId;
 
-  // const {roomId, myMemo} = useSelector((state) => ({
-  //   roomId: state.userInfoReducers.room.roomId,
-  //   myMemo: state.userInfoReducers.user.myMemo.content
-  // }))
+  useEffect(() => {
+
+    api.get(`/room/${groupId}/${user.id}`)
+    .then((res) => {    
+      console.log("이동!")
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
+    })
+    .catch((err) => {
+      console.log(err);
+    });        
+  }, [groupId])
+
+  const {user, group} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group
+  }))
 
   const client = useRef({});
   const [groupMemoContent, setGroupMemoContent] = useState("");
-  const [myMemoContent, setMyMemoContent] = useState("");
+  const [myMemoContent, setMyMemoContent] = useState(user.userMemo);
 
   const handleSetGroupMemo = (e) => {
     setGroupMemoContent(e.target.value);
@@ -43,17 +57,19 @@ const GroupRoom = () => {
   const handleSetMyMemo = (e) => {
     setMyMemoContent(e.target.value);
     saveMyMemo(e.target.value);
+    dispatch(userInfoActions.saveUserMemo(e.target.value))
   };
 
   const saveMyMemo = (content) => {
 
     const data = {
-      userId: USER_ID,
+      userId: user.id,
       content: content
     };
 
-    axios.post('https://i8a406.p.ssafy.io/api/my/memo', data).then(response => {
-      // axios.get('http://localhost:8080/memo/room/'+ROOM_SEQ).then(response => {
+    api
+    .post('/my/memo', data)
+    .then(response => {
     })
     .catch((err) => {
       console.log("내 메모 저장 중 오류 발생");
@@ -71,24 +87,14 @@ const GroupRoom = () => {
   }, []);
 
   const initRoom = () => {
-    // ROOM_SEQ -> roomId로 바꾸기
-    axios.get('https://i8a406.p.ssafy.io/api/memo/room/'+ROOM_SEQ).then(response => {
-      // axios.get('http://localhost:8080/memo/room/'+ROOM_SEQ).then(response => {
+    api
+    .get('/memo/room/'+group.id)
+    .then(response => {
       var responseMemo = response.data.roomMemo;
       setGroupMemoContent(responseMemo.content);
     })
     .catch((err) => {
-      setGroupMemoContent("그룹 메모를 불러오지 못했습니다... 새로고침 해주세요");
-    })
-    
-    // 테스트 용 my memo 불러오기 코드
-    axios.get('https://i8a406.p.ssafy.io/api/memo/user/'+USER_ID).then(response => {
-      // axios.get('http://localhost:8080/memo/room/'+ROOM_SEQ).then(response => {
-      var responseMemo = response.data.userMemo;
-      setMyMemoContent(responseMemo);
-    })
-    .catch((err) => {
-      setMyMemoContent("나의 메모를 불러오지 못했습니다... 새로고침 해주세요");
+      console.log(err);
     })
   }
 
@@ -121,8 +127,7 @@ const GroupRoom = () => {
 
   // 메시지 받기 -> time 필요함
   const subscribe = () => {
-    // ROOM_SEQ -> roomId로 바꾸기
-    client.current.subscribe('/sub/memo/room/'+ROOM_SEQ, (res) => {
+    client.current.subscribe('/sub/memo/room/'+group.id, (res) => {
       setGroupMemoContent(JSON.parse(res.body).content);
     });
   };
@@ -136,8 +141,7 @@ const GroupRoom = () => {
     client.current.publish({
       destination: "/pub/room/memo",
       body: JSON.stringify({
-        // ROOM_SEQ -> roomId로 바꾸기
-        roomId: ROOM_SEQ,
+        roomId: group.id,
         content: req
       }),
     });
@@ -155,8 +159,7 @@ const GroupRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><HomePage /></Link>
+          <Link to={`/myroom`}><PageIcon /></Link>
         </Box>
         <Box
           sx={{
@@ -174,7 +177,9 @@ const GroupRoom = () => {
             justifyContent: "space-between"
           }}>
           <Box>
-            <HomePage />
+            {user.myRooms.map((room, index) => {
+              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+            })}
           </Box>
           <Box>
             <Box
