@@ -20,12 +20,12 @@ import java.util.UUID;
 @Transactional
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
-
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
     private final UserHasRoomRepository userHasRoomRepository;
     private final ScheduleService scheduleService;
     private final RoomMemoRepository roomMemoRepository;
+    private final TodoTimeService todoTimeService;
 
     // 마이 페이지를 눌렀을 시 유저가 참가한 room list를 가져온다
     @Override
@@ -46,11 +46,11 @@ public class RoomServiceImpl implements RoomService {
     public RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) throws Exception{
         RoomMoveResponseDto moveRoomResponseDto = null;
         Room room = roomRepository.findById(roomId).get();
-        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
         List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
-
+        List<TodoTimeDto> todoTimes = todoTimeService.getTodayTodoTime(roomId);
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(roomId);
         if(room != null){
-            moveRoomResponseDto = new RoomMoveResponseDto(room, roomMemo,schedules);
+            moveRoomResponseDto = new RoomMoveResponseDto(room, roomMemo,schedules,todoTimes);
         }
 
         return moveRoomResponseDto;
