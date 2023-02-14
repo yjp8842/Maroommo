@@ -2,10 +2,9 @@ import axios from "axios";
 // import { useSelector } from "react-redux";
 import { scheduleActions } from "../../slice/scheduleSlice";
 import { userInfoActions} from "../../slice/userInfoSlice";
-import history from "../../utils/history";
-import { useNavigate } from "react-router-dom";
 
-export function requestLogin(dispatch) {
+export function requestLogin(dispatch, navigate) {
+
   const id = document.getElementById('id').value;
   const password = document.getElementById('password').value;
 
@@ -16,14 +15,13 @@ export function requestLogin(dispatch) {
 
   axios
     .post("https://i8a406.p.ssafy.io/api/user/login",
-    // .post("http://localhost:8080/user/login",
           axiosBody)
     .then((res) => {
       console.log("로그인 성공!");
       console.log(res);
 
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
+      localStorage.setItem("accessToken", res.data.token.accessToken);
+      localStorage.setItem("refreshToken", res.data.token.refreshToken);
 
       // user 정보를 store에다가 저장하는 로직을 추가해야해
       dispatch(userInfoActions.saveUserInfo(res.data.user))
@@ -32,7 +30,7 @@ export function requestLogin(dispatch) {
       console.log('로그인시 받은 정보로 updateUserInfo 호출')
       alert('로그인 되었습니다.')
       // -> myRoom으로 이동시키는 로직 추가
-      history.push('/myroom')
+      navigate(`/myroom`);
     })
     .catch((err)=>{
       console.log(err);

@@ -72,7 +72,7 @@ const Chat = () => {
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
-        console.log('success');
+        console.log('connect success');
         subscribe();
       },
       onStompError: (frame) => {

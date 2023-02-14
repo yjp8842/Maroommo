@@ -7,13 +7,11 @@ export const groupInfoSlice = createSlice({
   name: 'groupInfo',
   initialState: {
     group:{},
-
-
   },
   reducers: {
     saveGroupInfo: (state, {payload}) => {
-      console.log('groupInfo 저장 액션 호출')
-      state.groupInfo = payload
+      console.log('saveGroupInfo 저장 액션 호출')
+      state.group = payload
     }
   }
 })
