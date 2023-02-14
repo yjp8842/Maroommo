@@ -86,7 +86,14 @@ public class RoomServiceImpl implements RoomService {
         userHasRoomRepository.save(userHasRoom);
 
         // 그룹 메모를 저장
-        RoomMemo roomMemo = roomMemoRepository.save(new RoomMemo(registRoom.getId(), ""));
+        RoomMemo roomMemo = roomMemoRepository.findByRoomId(registRoom.getId());
+        if(roomMemo != null){
+            roomMemo.setContent("");
+            roomMemoRepository.save(roomMemo);
+        }
+        else{
+            roomMemoRepository.save(new RoomMemo(registRoom.getId(), ""));
+        }
 
         List<ScheduleResponseDto> schedules = scheduleService.getSchedule(userId);
         moveRoomResponseDto = new RoomMoveResponseDto(registRoom, roomMemo, schedules);
