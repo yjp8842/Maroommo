@@ -1,5 +1,5 @@
 // import { Fragment } from 'react';
-import React from 'react';
+import React, { useSelector } from 'react';
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -21,6 +21,10 @@ const GroupChat = () => {
   const handleOpenNewTab = (url) => {
     window.open(url, "_blank", "noopener, noreferrer");
   };
+
+  const {group} = useSelector((state) => ({
+    group: state.groupInfoReducers.group
+  }))
   
   return (
     <Grid container>
@@ -98,7 +102,7 @@ const GroupChat = () => {
           <Link to={`/group`}><HomeBtn /></Link>
           <Link to={`/group/chat`}><ChatRoom /></Link>
 
-          <div className='openvidu-btn' onClick={() => handleOpenNewTab("/group/openvidu")}>
+          <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
             <OpenChatRoom />
           </div>
           

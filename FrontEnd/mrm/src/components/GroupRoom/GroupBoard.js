@@ -27,6 +27,10 @@ const GroupBoard = () => {
     window.open(url, "_blank", "noopener, noreferrer");
   };
 
+  const {group} = useSelector((state) => ({
+    group: state.groupInfoReducers.group
+  }))
+
   const navigate = useNavigate();
   const onArticleTitleClick = (id) => {
     {/* 룸아이디 넣는 식으로 수정해야함 */}
@@ -122,7 +126,7 @@ const GroupBoard = () => {
           <Link to={`/group/1`}><HomeBtn /></Link>
           <Link to={`/group/1/chat`}><ChatRoom /></Link>
           
-          <div className='openvidu-btn' onClick={() => handleOpenNewTab("/group/openvidu")}>
+          <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
             <OpenChatRoom />
           </div>
 

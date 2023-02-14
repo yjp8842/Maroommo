@@ -230,7 +230,7 @@ const GroupRoom = () => {
           <Link to={`/group`}><HomeBtn /></Link>
           <Link to={`/group/chat`}><ChatRoom /></Link>
           
-          <div className='openvidu-btn' onClick={() => handleOpenNewTab("/group/openvidu")}>
+          <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
             <OpenChatRoom />
           </div>
 
