@@ -37,7 +37,7 @@ class MemoBox extends React.Component {
             justifyContent: 'center'
           }}>
             <h3>Group MEMO</h3>
-        </Box>
+        </Box>  
       </Box>
     )
   }
