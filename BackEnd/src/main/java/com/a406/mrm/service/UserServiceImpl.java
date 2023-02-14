@@ -58,6 +58,15 @@ public class UserServiceImpl implements UserService{
                 .build();
 
         userRepository.save(user);
+
+        UserMemo userMemo = userMemoRepository.findByUserId(userJoinRequestDto.getId());
+        if(userMemo != null){
+            userMemo.setContent("");
+            userMemoRepository.save(userMemo);
+        }
+        else{
+            userMemoRepository.save(new UserMemo(userJoinRequestDto.getId()));
+        }
     }
 
     @Override
