@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 
 import './Login.css';
 
@@ -11,12 +12,40 @@ import { Paper } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import styled from 'styled-components';
+import FormHelperText from '@mui/material/FormHelperText';
 
-import { FindId } from './FindIdLogic';
+import { modifyPwd } from './FindPwdLogic';
+
+const FormHelperTexts = styled(FormHelperText)`
+width: 100%;
+padding-left: 16px;
+font-weight: 700 !important;
+color: #d32f2f !important;
+`;
 
 const theme = createTheme();
 
-export default function FindIdPage() {
+export default function ModifyPwdPage() {
+
+  const [pwdError, setPwdError] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const modifyPwdData = {
+        AfterPassword: data.get('AfterPassword'),
+        CheckAfterPassword: data.get('CheckAfterPassword'),
+    };
+    const {AfterPassword, CheckAfterPassword} = modifyPwdData;
+
+    // 유효성 체크
+    if (AfterPassword === CheckAfterPassword) {
+        setPwdError('');
+    } else {
+        setPwdError('재입력한 비밀번호가 동일하지 않습니다');
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -57,18 +86,18 @@ export default function FindIdPage() {
             }}
           >
 
-            <h1>아이디 찾기</h1>
-            <Box component="form" noValidate sx={{ mt: 3 }}>
+            <h1>비밀번호 변경</h1>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Grid container spacing={2} justifyContent='center'>
                 <Grid item xs={8}>
                   <TextField
+                    type="password"
                     margin='normal'
-                    autoComplete="given-name"
-                    name="name"
+                    name="AfterPassword"
                     required
                     fullWidth
-                    id="name"
-                    label="이름"
+                    id="AfterPassword"
+                    label="변경할 비밀번호를 입력하세요"
                     autoFocus
                     sx={{
                       bgcolor: '#FFFFFF'
@@ -77,21 +106,24 @@ export default function FindIdPage() {
                 </Grid>  
                 <Grid item xs={8}>
                   <TextField
+                    type="password"
                     margin='normal'
                     required
                     fullWidth
-                    id="email"
-                    label="Email Address"
-                    name="email"
-                    autoComplete="이메일 주소"
+                    id="CheckAfterPassword"
+                    label="변경할 비밀번호를 재입력하세요"
+                    name="CheckAfterPassword"
+                    error={pwdError !== '' || false}
                     sx={{
                       bgcolor: '#FFFFFF'
                     }}
                   />
                 </Grid>  
+                <FormHelperTexts>{pwdError}</FormHelperTexts>
                 <Grid item xs={8}>
                   <Button
-                    onClick={FindId}
+                    onClick={modifyPwd}
+                    type="submit"
                     fullWidth
                     variant="contained"
                     sx={{ 
@@ -103,9 +135,8 @@ export default function FindIdPage() {
                       boxShadow: "5px 5px 4px rgba(0, 0, 0, 0.15)" 
                     }}
                   >
-                    아이디 찾기
+                    비밀번호 변경하기
                   </Button>
-                  {/* <FormHelperTexts>{signUPError}</FormHelperTexts> */}
                   <Grid container justifyContent="flex-end">
                     <Grid item>
                         <Link href="./" variant="body2" underline='hover'>
