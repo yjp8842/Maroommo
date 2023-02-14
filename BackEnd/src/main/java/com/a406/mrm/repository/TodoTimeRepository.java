@@ -21,5 +21,6 @@ public interface TodoTimeRepository extends JpaRepository<TodoTime, Integer> {
             "WHERE id = :todoTimeId ", nativeQuery = true)
     void updateEndTimeAndTotalTime(@Param("todoTimeId") int todoTimeId);
 
-
+    @Query(value= "select * from todo_time where DATE_FORMAT(start_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') AND user_id= :user_id", nativeQuery = true)
+    List<TodoTime> getTodayTodoTime(@Param("user_id") String user_id);
 }
