@@ -1,10 +1,7 @@
 import axios from "axios";
 
 export function googleLogin() {
-  axios({
-    method:"GET",
-    url: 'https://i8a406.p.ssafy.io/api/oauth2/authorization/google'
-  })
+  axios.get('https://i8a406.p.ssafy.io/api/oauth2/authorization/google')
     .then((res) => {      
       console.log(res);
   })
@@ -14,10 +11,7 @@ export function googleLogin() {
 }
 
 export function kakaoLogin() {
-    axios({
-      method:"GET",
-      url: 'https://i8a406.p.ssafy.io/api/oauth2/authorization/kakao'
-    })
+    axios.get('https://i8a406.p.ssafy.io/api/oauth2/authorization/kakao')
       .then((res) => {
       console.log(res);
     })

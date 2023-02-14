@@ -7,6 +7,8 @@ import api from '../utils/axiosInstance'
 
 
 
+// 이거는 프로필 수정할 때 재사용?? 그러면 rootsaga에서 주석처리한거는 어떡하지?
+
 export function* updateUserInfoAsync(action) {
   const data = action.payload;
   console.log(data)
