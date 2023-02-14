@@ -28,14 +28,24 @@ const GroupRoom = () => {
 	const params = useParams();
   const groupId = params.groupId;
 
-  useEffect(() => {
 
+  /*
+  처음에 로그인하면 user가 store에 저장이 되고 myPage로 이동한다
+  이후 groupPage로 이동을 하면 useEffect 시 
+
+
+  */
+  useEffect(() => {
+    console.log("그룹 페이지 이동!")
+    console.log(groupId)
+    console.log(user.id)
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
-      console.log("그룹 페이지 이동!")
       console.log(res)
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
       dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
+
+      group = res.data.moveRoomInfo;
     })
     .catch((err) => {
       console.log(err);
@@ -71,8 +81,6 @@ const GroupRoom = () => {
 
     api
     .post('/my/memo', data)
-    .then(response => {
-    })
     .catch((err) => {
       console.log("내 메모 저장 중 오류 발생");
     })
@@ -326,9 +334,9 @@ const GroupRoom = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {group.users.map((user, index) => {
+            {/* {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })}
+            })} */}
           </Box>
           <Box
             sx={{

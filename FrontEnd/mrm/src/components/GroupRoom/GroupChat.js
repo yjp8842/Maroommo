@@ -156,9 +156,9 @@ const GroupChat = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {group.users.map((user, index) => {
+            {/* {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })}
+            })} */}
           </Box>
           <Box
             sx={{
