@@ -171,72 +171,25 @@ public class RoomController {
     /**
      * @param roomId
      * @param name
-     *          를 통해 방 이름을 수정한다
-     * @return roomName : 수정한 이름을 반환한다
-     */
-    @ApiOperation("modify room name")
-    @PatchMapping("{roomId}/name")
-    public ResponseEntity<?> modifyName(@PathVariable("roomId") int roomId,
-                                        @RequestBody String name){
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        String roomName = null;
-
-        try {
-            roomName = roomService.modifyName(roomId,name);
-            resultMap.put("roomName", roomName);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-    /**
-     * @param roomId
-     * @param intro
-     *           를 통해 방 intro를 수정한다
-     * @return roomIntro : 수정한 intro를 반환한다
-     */
-    @ApiOperation("modify room intro")
-    @PatchMapping("{roomId}/intro")
-    public ResponseEntity<?> modifyIntro(@PathVariable("roomId") int roomId,
-                                         @RequestBody String intro){
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        String roomIntro = null;
-
-        try {
-            roomIntro = roomService.modifyIntro(roomId,intro);
-            resultMap.put("roomIntro", roomIntro);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-    /**
-     * @param roomId
+     * @Param intro
      * @param profile
-     *              를 통해 방 profile을 수정한다
-     * @return roomProfile : 수정한 profile을 반환한다
+     *          를 통해 방 정보를 수정한다
+     * @return roomName : 수정한 방 정보 반환한다
      */
-    @ApiOperation("modfy room profile")
-    @PatchMapping("/profile/{roomId}")
-    public ResponseEntity<?> modifyProfile(@PathVariable("roomId") int roomId, @RequestParam MultipartFile profile){
+    @ApiOperation("modify room info")
+    @PostMapping("/modify")
+    public ResponseEntity<?> modifyRoomInfo(@RequestParam int roomId,
+                                        @RequestParam String name,
+                                        @RequestParam String intro,
+                                        @RequestPart(value="profile",required = false) MultipartFile profile){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
-        String roomProfile = null;
-
+        RoomDto roomDto = new RoomDto(intro, name, profile);
+        RoomResponseDto roomResponseDto = null;
         try {
-            roomProfile = roomService.modifyProfile(roomId,profile);
-            resultMap.put("roomProfile", roomProfile);
+            roomResponseDto = roomService.modifyInfo(roomId,roomDto);
+            resultMap.put("room", roomResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
