@@ -5,10 +5,9 @@ import api from "../utils/axiosInstance";
 
 
 export function* getQuestionAsync() {
-  // const BASE_URL = "https://i8a406.p.ssafy.io";
 
   try {
-    const response = yield api.get(`/question?categorySub_id=1&size=10`);
+    const response = yield api.get(`/question?room_id=1&size=10`);
     console.log(response);
     yield put(questionActions.getQuestionSuccessAsync(response.data));
   } catch (e) {

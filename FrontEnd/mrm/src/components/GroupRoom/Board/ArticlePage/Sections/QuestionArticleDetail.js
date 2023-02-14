@@ -9,7 +9,8 @@ function QuestionArticleDetail(props) {
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
-        <a href="/group/question">
+        {/* 룸 아이디 넣는식으로 수정 */}
+        <a href="/group/1/question">
           <button type="primary">목록</button>
         </a>
         <button></button>
@@ -60,7 +61,8 @@ function QuestionArticleDetail(props) {
       </div>
       <div>
           <div style={{ margin: "2rem auto" }}>
-            <Link to={`/group/question/register?isForEdit=true`}>
+            {/* roomid 넣는식으로 수정 */}
+            <Link to={`/group/1/question/register?isForEdit=true`}>
               <button>수정</button>
             </Link>
           </div>
