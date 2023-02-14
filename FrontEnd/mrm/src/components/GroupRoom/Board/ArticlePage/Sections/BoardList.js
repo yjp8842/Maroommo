@@ -11,7 +11,6 @@ function BoardList(props) {
       <table>
         <colgroup>
           <col width="10%" />
-          {/* <col width="15%" /> */}
           <col width="35%" />
           <col width="15%" />
           <col width="10%" />
@@ -20,7 +19,6 @@ function BoardList(props) {
         <thead>
           <tr>
             <th>번호</th>
-            {/* <th>카테고리</th> */}
             <th>제목</th>
             <th>작성자</th>
             <th>조회수</th>
@@ -31,7 +29,6 @@ function BoardList(props) {
           <thead>
             <tr key={article.id}>
               <td>{article.id}</td>
-              {/* <td>{article.categorysub_id}</td> */}
               <Article onClick={() => props.handleArticleTitleClick(article.id)} // 추가
                 >
                   {article.title}

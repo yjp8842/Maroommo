@@ -8,11 +8,13 @@ export function* getBoardAsync() {
   // const BASE_URL = "https://i8a406.p.ssafy.io";
 
   // pagination, size 손보기!!!!
+  // room_id 데이터 받아와야함
   try {
-    const response = yield api.get(`/board?categorySub_id=1&page=0&size=30`);
+    const response = yield api.get(`/board?room_id=1&page=0&size=30`);
     console.log('----------');
-    console.log(response);
-    yield put(boardActions.getBoardSuccessAsync(response.data));
+    console.log('boardSaga response 출력 : ',response.data);
+    console.log('----------');
+    yield put(boardActions.getBoardSuccessAsync(response));
   } catch (e) {
     yield put(boardActions.getBoardFailedAsync(e.message));
   }

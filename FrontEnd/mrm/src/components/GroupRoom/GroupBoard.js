@@ -26,7 +26,8 @@ const GroupBoard = () => {
 
   const navigate = useNavigate();
   const onArticleTitleClick = (id) => {
-    const path = `/group/board/article/${id}`;
+    {/* 룸아이디 넣는 식으로 수정해야함 */}
+    const path = `/group/1/board/article/${id}`;
     navigate(path)
   }
 
@@ -42,7 +43,6 @@ const GroupBoard = () => {
     isSuccess: state.boardReducers.isSuccess,
     error: state.boardReducers.error}));
     
-    console.log(isSuccess);
   return (
     <Grid container>
       <Box
@@ -116,17 +116,19 @@ const GroupBoard = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/group`}><HomeBtn /></Link>
-          <Link to={`/group/chat`}><ChatRoom /></Link>
+          <Link to={`/group/1`}><HomeBtn /></Link>
+          <Link to={`/group/1/chat`}><ChatRoom /></Link>
           
 
           <NavItem>
             {/** 하위에 있는 메뉴가 열립니다. **/}
             {/* <ul> */}
             <div className='category-box'>
-              <Link to={`/group/board`}><li>게시판</li></Link> 
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/board`}><li>게시판</li></Link> 
               <li>화상회의</li>  
-              <Link to={`/group/question`}><li>Q&A</li></Link>   
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
             </div>
             {/* </ul> */}
           </NavItem>
@@ -147,18 +149,20 @@ const GroupBoard = () => {
             <div style={{ width: "80%", margin: "3rem auto" }}>
             {error ? (
               <h2>에러 발생: {error}</h2>
-            ) : isSuccess && board.content.length > 0 ? (
-              <BoardList 
-                board={board}
-                // handleDeleteClick={onDeleteClick}
-                handleArticleTitleClick={onArticleTitleClick} />
-            ) : isSuccess && board.content.length <= 0 ? (
-              <p> 조회할 내용이 없습니다. </p>
-            ) : (
+              ) :  isSuccess && board.data.content.length <= 0 ? (
+                <p> 조회할 내용이 없습니다.</p>
+              ) : isSuccess && board.data.content.length > 0 ? (
+                <BoardList 
+                  board={board.data}
+                  // handleDeleteClick={onDeleteClick}
+                  handleArticleTitleClick={onArticleTitleClick} />
+              )
+             : (
               <p> 목록을 불러오는 중입니다. </p>
             )}
             </div>
-            <Link to='/group/board/register?isForEdit=false'>
+            {/* 룸아이디 넣는 식으로 수정해야함 */}
+            <Link to='/group/1/board/register?isForEdit=false'>
               <button>글쓰기</button>
             </Link>
 
