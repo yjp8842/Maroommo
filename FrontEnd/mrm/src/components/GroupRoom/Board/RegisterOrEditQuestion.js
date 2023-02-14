@@ -25,7 +25,7 @@ function RegisterOrEditQuestion(props) {
           {props.updateRequest ? "수정" : "등록"}
         </button>
       </form>
-      <Link to='/group/question'>
+      <Link to='/group/1/question'>
         <button>뒤로가기</button>
       </Link>
     </div>
