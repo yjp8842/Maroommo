@@ -313,7 +313,7 @@ public class RoomController {
             @RequestParam String intro,
             @RequestParam String nickname,
             @RequestParam String name,
-            @RequestParam MultipartFile profile
+            @RequestPart(value="profile", required = false) MultipartFile profile
     ) {
         UserModifyRequestDto user = new UserModifyRequestDto(userId, intro,  nickname, name);
         logger.info("[modifyUserInfo] user:{}", user);
