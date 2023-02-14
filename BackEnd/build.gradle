@@ -2,12 +2,19 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.8'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "org.sonarqube" version "3.0"
 }
 
 group = 'com.a406'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-
+sonarqube {
+	properties {
+		property "sonar.projectKey", "qwe123"
+		property "sonar.login","a38fe363bd59a97750b0c1feea0289203fc9e133"
+		property "sonar.host.url", "https://sonarqube.ssafy.com"
+	}
+}
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
