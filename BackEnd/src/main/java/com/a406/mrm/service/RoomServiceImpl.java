@@ -156,64 +156,35 @@ public class RoomServiceImpl implements RoomService {
 
         roomRepository.delete(room);
     }
-
-    @Override
-    public String modifyName(int roomId, String name)throws Exception{
-        Room room = roomRepository.findById(roomId).get();
-        String roomName = null;
-
-        if (room != null){
-            room.setName(name);
-            room = roomRepository.save(room);
-            roomName = room.getName();
-        }
-
-        return roomName;
-    }
-
-    @Override
-    public String modifyIntro(int roomId, String intro)throws Exception{
-        Room room = roomRepository.findById(roomId).get();
-        String res = null;
-
-        if(room != null){
-            room.setIntro(intro);
-            room = roomRepository.save(room);
-            res = room.getIntro();
-        }
-
-        return res;
-    }
-
-    @Override
-    public String modifyProfile(int roomId, MultipartFile profile) throws Exception{
-        Room room = roomRepository.findById(roomId).get();
-        String res =  null;
-
-        if(room != null && profile != null){
-            String uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
-//            String absPath = "C:/SSAFY/S08P12A406/img_dir/"+uuid;
-            String absPath = "/img_dir/"+uuid;
-            try {
-                profile.transferTo(new File(absPath));
-                room.setProfile(uuid);
-                room = roomRepository.save(room);
-                res = room.getProfile();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-
-        return res;
-    }
-
-
     public List<RoomMoveResponseDto> RoomListAll () throws Exception{
         List<RoomMoveResponseDto> result =
                 roomRepository.RoomListAll()
                                 .stream()
                                 .map(x -> new RoomMoveResponseDto(x, roomMemoRepository.findByRoomId(x.getId()), null)).collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public RoomResponseDto modifyInfo(int roomId, RoomDto roomDto) {
+        Room room = roomRepository.findById(roomId).orElse(null);
+        if (room!=null){
+            room.setIntro(roomDto.getIntro());
+            room.setName(roomDto.getName());
+            MultipartFile profile = roomDto.getProfile();
+            if(profile != null){
+                String uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename()
+                        .substring(profile.getOriginalFilename().lastIndexOf(".")+1);
+                String absPath = "/img_dir/"+uuid;
+                try{
+                    profile.transferTo(new File(absPath));
+                    room.setProfile(uuid);
+
+                }catch(IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        return new RoomResponseDto(room);
     }
 
 }
