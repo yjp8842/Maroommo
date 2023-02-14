@@ -34,7 +34,7 @@ function Answer(props) {
               }}
               onClick={props.handleAnswerSubmit}
             >
-              댓글 등록
+              답변 등록
             </button>
           </div>
         </div>

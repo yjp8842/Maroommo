@@ -6,15 +6,15 @@ import history from "../utils/history";
 import api from "../utils/axiosInstance";
 
 export function* registerAnswerAsync(action) {
-  // const data = action.payload;
-  // const BASE_URL = "https://i8a406.p.ssafy.io";
-
-
-  // yield Axios.post(BASE_URL + `/api/answer/`, data);
   const data = action.payload;
-  yield api.post('/answer', data)
+  console.log('답변 등록')
+  console.log(data)
 
-  history.go(0); // refresh
+  const response = yield api.post('/answer', data)
+  console.log('777777777777')
+  console.log(response)
+
+  // history.go(0); // refresh
 }
 
 // export function* getQuestionCommentsAsync(action) {
@@ -32,6 +32,6 @@ export function* deleteAnswerAsync(action) {
   // const BASE_URL = "https://i8a406.p.ssafy.io";
 
   // yield Axios.delete(BASE_URL + `/api/answer/${answerId}`);
-  yield api.delete(`/answer/${answerId}`)
+  yield api.delete(`/answer/${answerId}/hd`)
   history.go(0);
 }
