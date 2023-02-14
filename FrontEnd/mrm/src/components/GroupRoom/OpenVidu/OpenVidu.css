@@ -33,7 +33,7 @@
 
 .video-container {
   margin-top: 10px;
-  width: 100%;
+  width: 98%;
   height: 85vh;
   overflow: hidden;
   display: flex;
@@ -41,10 +41,10 @@
 }
 
 .stream-container {
-  width: 100%;
+  width: 90%;
   position: relative;
   border-radius: 5px;
-  max-height: 45vh;
+  max-height: 42vh;
   height: auto;
   overflow: hidden;
   box-sizing: border-box;
