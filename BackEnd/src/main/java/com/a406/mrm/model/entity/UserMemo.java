@@ -21,4 +21,9 @@ public class UserMemo {
         this.userId = memoUserDto.getUserId();
         this.content = memoUserDto.getContent();
     }
+
+    public UserMemo(String userId){
+        this.userId = userId;
+        this.content = "";
+    }
 }
