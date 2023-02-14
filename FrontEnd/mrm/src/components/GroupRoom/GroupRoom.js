@@ -7,9 +7,8 @@ import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
 import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/HomeBtn';
-import ChatRoom from './GroupRoomItem/ChatRoom';
-import { NavItem } from './GroupRoomItem/Category';
+import MenuBtn from './GroupRoomItem/MenuBtn';
+import GroupMemberList from './GroupRoomItem/GroupMemberList';
 import TodoBox from './GroupRoomItem/TodoInGroup';
 import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
 import { userInfoActions} from "../../slice/userInfoSlice";
@@ -220,21 +219,11 @@ const GroupRoom = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/group`}><HomeBtn /></Link>
-          <Link to={`/group/chat`}><ChatRoom /></Link>
-          
-
-          <NavItem>
-            {/* 하위 메뉴 열림 */}
-            <div className='category-box'>
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/board`}><li>게시판</li></Link>  
-              <li>화상회의</li>  
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
-            </div>
-          </NavItem>
-
+          <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
+          <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
+          <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
+          <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
+          <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
         </Box>
         
         <Box
@@ -328,9 +317,15 @@ const GroupRoom = () => {
               backgroundColor: "#FFFFFF",
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
-              justifyContent: 'center'
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
             <h3>그룹 인원</h3>
+            <hr align="center" width="80%"/>   
+            {group.users.map((user, index) => {
+              return (<GroupMemberList user={user}/>)
+            })}
           </Box>
           <Box
             sx={{
@@ -348,7 +343,7 @@ const GroupRoom = () => {
                 cursor: 'pointer'
               }
             }}>
-              <h2>탈퇴하기</h2>
+            <h2>탈퇴하기</h2>
           </Box>
         </Box>
       </Box>

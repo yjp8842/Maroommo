@@ -1,25 +1,23 @@
 import React from "react"
 import { Box } from '@mui/system';
 
-class HomeBtn extends React.Component {
-  render() {
+function GroupMemberList(props) {
     return (
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          width: "250px",
-          height: "80px",
-          marginTop: "20px",
+          width: "220px",
+          height: "40px",
+          marginTop: "10px",
           borderRadius: "20px",
           backgroundColor: "#FFFFFF",
-          boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+        //   boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
         }}>
-        <h2>Home</h2>
+        <h2>- {props.user.name}</h2>
       </Box>
     )
-  }
 }
 
-export default HomeBtn;
+export default GroupMemberList;

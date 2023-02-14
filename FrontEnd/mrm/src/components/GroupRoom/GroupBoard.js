@@ -8,7 +8,7 @@ import HomePage from '../MyRoom/MyRoomItem/PageIcon';
 import { Link, useNavigate } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/HomeBtn';
+import HomeBtn from './GroupRoomItem/MenuBtn';
 import ChatRoom from './GroupRoomItem/ChatRoom';
 import { NavItem } from './GroupRoomItem/Category';
 
