@@ -19,6 +19,7 @@ import OpenViduChat from "./OpenViduChat";
 import OpenViduQnA from "./OpenViduQnA";
 
 import "./OpenVidu.css";
+// import { connect } from "react-redux";
 
 // server url
 const APPLICATION_SERVER_URL = "https://i8a406.p.ssafy.io:8085/";
@@ -29,15 +30,7 @@ const APPLICATION_SERVER_URL = "https://i8a406.p.ssafy.io:8085/";
 const StreamContainerWrapper = styled.div`
   display: grid;
   place-items: center;
-  ${(props) =>
-    props.primary
-      ? `
-    grid-template-columns: repeat(1, 1fr);
-    grid-template-rows: repeat(1, 1fr);
-    `
-      : `
-    grid-template-columns: repeat(3, 1fr);
-    `}
+  grid-auto-columns: minmax(auto, 1fr);
   grid-gap: 20px;
   height: 100%;
   padding: 10px;
@@ -75,9 +68,6 @@ class OpenChat extends Component {
   render() {
     return (
       <div className="container">
-        {/* <Header>
-          <StudyTitle>Java Study</StudyTitle>
-        </Header> */}
         {this.state.session === undefined ? (
           <div className="middle">
             <div
@@ -117,7 +107,6 @@ class OpenChat extends Component {
             <div className="middle">
               <div className="left">
                 <div className="video-container">
-                  {this.state.isShare === false ? (
                     <StreamContainerWrapper
                       ref={this.userRef}
                     >
@@ -134,22 +123,6 @@ class OpenChat extends Component {
                         </div>
                       ))}
                     </StreamContainerWrapper>
-                  ) : 
-                    <div className="share">
-                      {this.state.publisher !== undefined ? (
-                        <div className="stream-container" key={this.state.publisher.stream.streamId}>
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                          />
-                        </div>
-                      ) : null}
-                      {this.state.subscribers.map((sub, i) => (
-                        <div className="stream-container" key={sub.stream.streamId}>
-                          <UserVideoComponent streamManager={sub} />
-                        </div>
-                      ))}
-                    </div>
-                  }
                 </div>
               </div>
 
@@ -188,35 +161,35 @@ class OpenChat extends Component {
                   </Icon>
 
                   <Icon 
-                    onClick={() => this.setState({ isShare: !this.state.isShare })}
-                    // onClick={() => {
-                    //   let publisher = this.OV.initPublisher("html-element-id", {
-                    //     audioSource: undefined,
-                    //     videoSource: "screen", // 웹캠 기본 값으로
-                    //     publishAudio: true,
-                    //     publishVideo: true,
-                    //     resolution: "640x480",
-                    //     frameRate: 30,
-                    //     insertMode: "APPEND",
-                    //     mirror: "false",
-                    //   });
+                    onClick={() => {
+                      let newPublisher = this.OV.initPublisher("html-element-id", {
+                        audioSource: undefined,
+                        videoSource: "screen", // 웹캠 기본 값으로
+                        publishAudio: true,
+                        publishVideo: true,
+                        resolution: "640x480",
+                        frameRate: 30,
+                        insertMode: "APPEND",
+                        mirror: "false",
+                      });
         
-                    //   // this.mySession.publish(publisher);
+                      this.mySession.publish(newPublisher);
+                      this.setState({ mainStreamManager: newPublisher, newPublisher });
         
-                      
-                    //   publisher.once('accessAllowed', (event) => {
-                    //     publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
-                    //       console.log('User pressed the "Stop sharing" button');
-                    //     });
-                    //     this.mySession.publish(publisher);
-                    //     this.setState({ mainStreamManager: publisher, publisher });
+                      newPublisher.once('accessAllowed', (event) => {
+                        newPublisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+                          console.log('User pressed the "Stop sharing" button');
+                        });
+                        this.mySession.unpublish(this.publisher);
+                        // this.mySession.publish(newPublisher);
+                        // this.setState({ mainStreamManager: newPublisher, newPublisher });
             
-                    //   });
+                      });
               
-                    //   publisher.once('accessDenied', (event) => {
-                    //     console.warn('ScreenShare: Access Denied');
-                    //   });
-                    // }}
+                      newPublisher.once('accessDenied', (event) => {
+                        console.warn('ScreenShare: Access Denied');
+                      });
+                    }}
                   >
                     <ScreenShareIcon />
                   </Icon>
@@ -255,8 +228,10 @@ class OpenChat extends Component {
     this.userRef = React.createRef();
 
     this.state = {
-      mySessionId: "1",
-      myUserName: "유진",  // userId
+      // mySessionId: this.props.userinfo.myRooms[0],  // store에 저장된 roomId
+      // myUserName: this.props.userinfo.nickname,  // store에 저장된 nickname
+      mySessionId: "4",  // store에 저장된 roomId
+      myUserName: "유진",  // store에 저장된 nickname
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, // 로컬 웹캠 스트림
@@ -454,7 +429,7 @@ class OpenChat extends Component {
   }
 
   async getToken() {
-    return this.createSession(this.state.mySessionId).then((sessionId) =>
+    return this.createSession(this.state.mySessionId).then((sessionId) => 
       this.createToken(sessionId)
     );
   }
@@ -531,7 +506,12 @@ class OpenChat extends Component {
         })
         .catch((error) => reject(error));
     });
-  }
-}
+  };
+};
 
+// const getStoreData = (state) => {
+//   return { userinfo: state.userInfoReducers.user }
+// }
+
+// export default connect(getStoreData)(OpenChat);
 export default OpenChat;
