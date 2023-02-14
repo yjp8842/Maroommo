@@ -97,9 +97,11 @@ const GroupRoom = () => {
           <NavItem>
             {/* 하위 메뉴 열림 */}
             <div className='category-box'>
-              <Link to={`/group/board`}><li>게시판</li></Link>  
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/board`}><li>게시판</li></Link>  
               <li>화상회의</li>  
-              <Link to={`/group/question`}><li>Q&A</li></Link>   
+              {/* 룸아이디 넣는 식으로 수정해야함 */}
+              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
             </div>
           </NavItem>
 

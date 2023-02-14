@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 function QuestionArticleDetail(props) {
   console.log('--------------')
-  console.log(props)
+  console.log('questionarticle detail 출력 : ', props)
+  console.log('--------------')
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
@@ -42,6 +43,8 @@ function QuestionArticleDetail(props) {
             <tr>
               <th>내용</th>
               <td colSpan="3">{props.content}</td>
+              <td colSpan="3">{props.picture}</td>
+              <img src={`/images/${props.picture}`} alt='logo' className='imgbox' />
             </tr>
             <tr>
               <th>작성자</th>
@@ -49,8 +52,9 @@ function QuestionArticleDetail(props) {
             </tr>
             <tr>
               <th>작성일</th>
-              <td colSpan="3">{new Date(props.date).toLocaleString()}</td>
+              <td colSpan="3">{props.createTime}</td>
             </tr>
+            
           </tbody>
         </table>
       </div>
@@ -83,8 +87,9 @@ function QuestionArticleDetail(props) {
           >
             <span key={answers.id}>
               <span>{answers.content}</span>
+              <span>{answers.good}</span>
               <span style={{ float: "right" }}>
-                {new Date(answers.date).toLocaleString()}&nbsp;
+                {answers.createTime}&nbsp;
                 <span style={{cursor:'pointer'}} 
                   onClick={() => props.deleteAnswer(answers.id)}>[X]</span>
               </span>

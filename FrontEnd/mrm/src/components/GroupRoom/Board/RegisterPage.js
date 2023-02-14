@@ -94,13 +94,9 @@ const formData = new FormData()
       return false;
     }
 
-    // const articleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', editDate: IsForUpdate ? Date.now() : editDate };
-    // const articleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', picture: image};
-    // const formdata = new FormData();
-
     const formdata = new FormData();
     formdata.append('picture', image)
-    const articleForRegister = {title: title, content: content, categorysub_id: 1, user_id: 'hd', picture: formdata};
+    const articleForRegister = {title: title, content: content, room_id: 1, user_id: 'hd', picture: formdata};
 
     const articleForUpdate = {content: content, id: id, picture: formdata, title: title, user_id:'hd'};
 
@@ -120,7 +116,7 @@ const formData = new FormData()
       <RegisterOrEdit
         titleValue={title}
         contentValue={content}
-        categorysub_id='1'
+        room_id='1'
         user_id='hd'
         handleRegisterChange={onRegisterChange}
         onImageHandler={onImageChange}
