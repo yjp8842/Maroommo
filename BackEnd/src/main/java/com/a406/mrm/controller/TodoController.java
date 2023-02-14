@@ -89,8 +89,8 @@ public class TodoController {
         HttpStatus status = HttpStatus.OK;
 
         try {
-            todoService.changeState(todoChangeStateRequestDto);
-            resultMap.put("isChange", true);
+            int doingTimeId = todoService.changeState(todoChangeStateRequestDto);
+            resultMap.put("doingTimeId", doingTimeId);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
