@@ -307,7 +307,7 @@ public class RoomController {
      * @return user : 변경항 유저의 정보를 반환합니다
      */
     @ApiOperation("Modify user infomation")
-    @PatchMapping("user")
+    @PostMapping("user")
     private ResponseEntity<Map<String, Object>> modifyUserInfo(
             @RequestParam String userId,
             @RequestParam String intro,
