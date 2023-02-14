@@ -2,6 +2,7 @@ package com.a406.mrm.controller;
 
 import com.a406.mrm.model.dto.RoomMemoDto;
 import com.a406.mrm.model.dto.UserMemoDto;
+import com.a406.mrm.repository.RoomMemoRepository;
 import com.a406.mrm.service.MemoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,7 @@ public class MemoController {
     private static final Logger logger = LoggerFactory.getLogger(RoomController.class);
 
     private final MemoService memoService;
+    private final RoomMemoRepository roomMemoRepository;
 
     /**
      * @param userId
@@ -69,7 +71,23 @@ public class MemoController {
 
         try {
             RoomMemoDto roomMemoDto = memoService.findRoomMemoByRoomId(roomId);
-            resultMap.put("roomMemo",roomMemoDto.getContent());
+            resultMap.put("roomMemo",roomMemoDto);
+        } catch (Exception e) {
+            resultMap.put("error", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteAllMemo(){
+
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+            roomMemoRepository.deleteAll();
+            status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
