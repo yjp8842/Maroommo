@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
+import { useSelector } from 'react-redux';
 import './CalendarApp.css'
 // import moment from 'moment';
 
@@ -11,6 +12,7 @@ export default function CalendarApp() {
   // https://velog.io/@khy226/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%95%B1%EC%97%90-%EB%8B%AC%EB%A0%A5react-calendar-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
   // const [mark, setMark] = useState([]);
   // const {data} = useQuery()
+
   const marks_red = [
     '2023-02-20',
     '2023-02-21',
@@ -23,6 +25,17 @@ export default function CalendarApp() {
     '2023-02-27',
   ];
 
+  const {todolist} = useSelector((state) =>
+  ({
+    todolist: state.userInfoReducers.user.doing,
+  }))
+  console.log("todolist ===", todolist[0].startTime);
+
+  const todoList = [];
+  todolist.map((list) => {
+    return todoList.push(list.startTime)
+  })
+
   return (
     <Calendar
       onChange={onChange} value={value} locale='ko-KR'
@@ -30,7 +43,7 @@ export default function CalendarApp() {
       className='mx-auto w-full text-sm border-b'
       selectRange={false}
       tileContent={({date, view}) => {
-        if (marks_red.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
+        if (todoList.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
           return (
             <>
               <div className='flex justify-center items-center absoluteDiv'>
