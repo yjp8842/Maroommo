@@ -5,6 +5,7 @@ import axios from "axios";
 import api from "../utils/axiosInstance";
 
 
+
 export function* registerArticleAsync(action) {
   const data = action.payload;
   console.log('----------');
@@ -21,6 +22,8 @@ export function* registerArticleAsync(action) {
   console.log('----------');
 
   history.push(`/group/1/board/article/${response.data.newBoard.id}`, response.data.newBoard.id);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
 }
 
 
@@ -53,6 +56,8 @@ export function* updateArticleAsync(action) {
   console.log(response.data.board);
 
   history.push(`/group/1/board/article/${response.data.board.id}`, response.data.board.id);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
 }
 
 export function* deleteArticleAsync(action) {
@@ -77,4 +82,6 @@ export function* deleteArticleAsync(action) {
   alert("삭제되었습니다.");
 
   history.push(`/group/1/board`);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
 }

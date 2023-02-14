@@ -43,7 +43,9 @@ const GroupQnA = () => {
     isLoading: state.questionReducers.isLoading,
     isSuccess: state.questionReducers.isSuccess,
     error: state.questionReducers.error}));
-    console.log(question.content.length)
+    // console.log('333333333')
+    // console.log(question.content)
+    // console.log(question.content.length)
 
   return (
     <Grid container>
