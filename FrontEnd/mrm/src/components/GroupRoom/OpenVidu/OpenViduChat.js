@@ -26,8 +26,9 @@ const OpenViduChat = () => {
   // roomId는 룸버튼을 눌렀을 때 roomId 정보를 store에 저장하는 방식으로 해야 하나..?
   // store에서 가져올 것 : userId, userNickname
 
-  const {id, nickname} = useSelector((state) => ({
-    id: state.userInfoReducers.user.id,
+  const {roomid, userid, nickname} = useSelector((state) => ({
+    roomid: state.userInfoReducers.user.myRooms[0],
+    userid: state.userInfoReducers.user.id,
     nickname: state.userInfoReducers.user.nickname,
   }))
 
@@ -36,8 +37,8 @@ const OpenViduChat = () => {
     connect();
     initRoom();
 
-    // setRoomId();
-    setUserId(id);
+    setRoomId(roomid);
+    setUserId(userid);
     setUserNickname(nickname);
 
     return () => disconnect();
