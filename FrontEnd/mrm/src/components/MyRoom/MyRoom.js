@@ -46,7 +46,7 @@ const MyRoom = () => {
   }
 
 
-  const {id, email, intro, profile, nickname, myRooms, doing, schedule, userMemo} = useSelector((state) => 
+  const {id, email, intro, profile, nickname, myRooms, schedule, userMemo} = useSelector((state) => 
   ({
     id: state.userInfoReducers.user.id,
     email: state.userInfoReducers.user.email,
@@ -56,7 +56,6 @@ const MyRoom = () => {
     myRooms: state.userInfoReducers.user.myRooms,
     schedule: state.userInfoReducers.user.schedule,
     userMemo: state.userInfoReducers.user.userMemo,
-    doing: state.userInfoReducers.user.doing
 
     
   }), shallowEqual)

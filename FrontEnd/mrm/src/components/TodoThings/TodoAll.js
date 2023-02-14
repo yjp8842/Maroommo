@@ -1,19 +1,19 @@
-import React, { useState, useReducer, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useReducer, useCallback, useRef } from 'react';
 import styles from './styles/Content.module.css';
 import AllBox from './AllBox';
 import TodoDnD from '../DnD/TodoDnD';
 import CreateTodoModal from './CreateTodoModal'
-import TodoList from './TodoList';
+// import TodoList from './TodoList';
 
 import dayjs from 'dayjs';
 import styled from "styled-components";
 import useInputs from './useInputs';
 // import TodoModal from '../Modal/Todo/TodoModal'
 
-function countDoneTodos(todos) {
-  // console.log('활성 사용자 수를 세는중...');
-  return todos.filter(todo => todo.done).length;
-}
+// function countDoneTodos(todos) {
+//   // console.log('활성 사용자 수를 세는중...');
+//   return todos.filter(todo => todo.done).length;
+// }
 
 const initialState = {
   todos: [
@@ -23,7 +23,7 @@ const initialState = {
       tags : 'React',
       content: 'Chapter2 강의 듣기',
       done: 1,
-      Year: 2023, Month: 2, Day: 9
+      year: 2023, month: 2, day: 9
     },
     {
       id: 2,
@@ -31,7 +31,7 @@ const initialState = {
       tags : 'React',
       content: 'Chapter1 실습',
       done: 0,
-      Year: 2023, Month: 2, Day: 9
+      year: 2023, month: 2, day: 9
     },
     {
       id: 3,
@@ -39,7 +39,7 @@ const initialState = {
       tags : 'CS',
       content: 'Chapter2 강의 듣기',
       done: 0,
-      Year: 2023, Month: 2, Day: 9
+      year: 2023, month: 2, day: 9
     }
   ]
 };
@@ -87,13 +87,11 @@ function Content() {
   const nextId = useRef(4);
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { todos } = state;
+  // const { todos } = state;
   
-  console.log(selectedDate);
-  // console.log(selectedDate);
-  const Year = selectedDate.$y;
-  const Month = selectedDate.$M + 1;
-  const Day = selectedDate.$D;
+  const year = selectedDate.$y;
+  const month = selectedDate.$M + 1;
+  const day = selectedDate.$D;
 
   const onCreate = useCallback(() => {
     dispatch({
@@ -104,15 +102,15 @@ function Content() {
         roomId,
         tags,
         content,
-        Year, Month, Day
+        year, month, day
       }
     });
     onReset();
     nextId.current += 1;
-  }, [roomId, tags, done, content, Year, Month, Day, onReset]);
+  }, [roomId, tags, done, content, year, month, day, onReset]);
 
 
-  const count = useMemo(() => countDoneTodos(todos), [todos]);
+  // const count = useMemo(() => countDoneTodos(todos), [todos]);
 
   return (
     <div className={styles.content}>
@@ -132,8 +130,8 @@ function Content() {
                     onChange={onChange}
                     onCreate={onCreate}
                 />)}
-          <TodoList todos={todos} />
-          <div>Doing : {count}</div>
+          {/* <TodoList todos={todos} />
+          <div>Doing : {count}</div> */}
         </TodoDispatch.Provider>
         <TodoDnD />
       </AllBox>

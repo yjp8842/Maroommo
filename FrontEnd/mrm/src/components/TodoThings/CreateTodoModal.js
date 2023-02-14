@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postTodoData } from "./TodoLogic";
+import { useDispatch } from "react-redux";
 // import moment from "moment/moment";
 
 // export function changeFormat(date, format) {
@@ -18,12 +19,14 @@ import { postTodoData } from "./TodoLogic";
 //   }
 // }
 
+
 const CreateTodoModal = ({ onClose }) => {
     // onchange
      const handleClose = () => {
       onClose?.();
     };
-
+    const dispatch = useDispatch()
+    
     const [ roomId, setroomId ] = useState('');
     const [ tags, settags ] = useState('');
     const [ content, setcontent ] = useState('');
@@ -96,7 +99,7 @@ const CreateTodoModal = ({ onClose }) => {
         </LocalizationProvider>
 
         <CloseButton onClick={() => {
-          postTodoData({ roomId, tags, content, selectedDate });
+          postTodoData({ roomId, tags, content, selectedDate, dispatch });
           handleClose();}}
         >등록</CloseButton>
         <CloseButton onClick={handleClose}>뒤로</CloseButton>

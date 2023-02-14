@@ -1,32 +1,45 @@
 import axios from "axios";
+import { userTodoActions } from "./TodoSlice"
 
-export function postTodoData({ roomId, tags, content, selectedDate }) {
+// import history from "../../utils/history";
 
-    const Year = selectedDate.$y;
-    const Month = selectedDate.$M + 1;
-    const Day = selectedDate.$D;
+export function postTodoData({ roomId, tags, content, selectedDate, dispatch }) {
 
+    const year = selectedDate.$y;
+    const month = selectedDate.$M + 1;
+    const day = selectedDate.$D;
+    const reqTags = [];
+    reqTags.push(tags);
+    const numRoomId = Number(roomId);
 
     const todo = {
-        roomId: roomId,
-        tags: tags,
+        roomId: numRoomId,
+        tags: reqTags,
         content: content,
-        // date: date,
-        Year: Year,
-        Month: Month,
-        Day: Day,
+        year: year,
+        month: month,
+        day: day,
     };
 
+    console.log("todo")
     console.log(todo)
 
     const BASE_URL = 'https://i8a406.p.ssafy.io';   
-    const url = BASE_URL + '/api/todo/testId';
+    const url = BASE_URL + '/api/todo/hd';
 
     
     axios
         .post(url, todo)
         .then((response)=> {
             console.log(response);
+            // console.log(response.data.newTodo.id);
+            // console.log(response.data.newTodo.tags);
+            // console.log(response.data.newTodo.content);
+            // console.log(response.data.newTodo.startTime);
+
+            dispatch(userTodoActions.saveTodoInfo(response.data.newTodo))
+            
+            // history.push('/group/1')
         })
     
 }

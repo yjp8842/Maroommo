@@ -21,9 +21,9 @@ const Todo = React.memo(function Todo({ todo }) {
       &nbsp;
       <span>#{todo.tags}</span>
       <span>({todo.roomId})</span>
-      <span>/{todo.Year}</span>
-      <span>/{todo.Month}</span>
-      <span>/{todo.Day}/</span>
+      <span>/{todo.year}</span>
+      <span>/{todo.month}</span>
+      <span>/{todo.day}/</span>
       <button
         onClick={() => {
           dispatch({ type: 'REMOVE_TODO', id: todo.id });
