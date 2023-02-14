@@ -26,7 +26,7 @@ public class RoomMoveResponseDto {
 
     private List<RoomMoveUserResponseDto> users = new ArrayList<>();
     private List<ScheduleResponseDto> schedules = new ArrayList<>();
-
+    private List<TodoTimeDto> todayTodoTimes = new ArrayList<>();
     public RoomMoveResponseDto(Room room, RoomMemo roomMemo, List<ScheduleResponseDto> schedules){
         this.id = room.getId();
         this.name = room.getName();
@@ -42,5 +42,22 @@ public class RoomMoveResponseDto {
                             .map(x->new RoomMoveUserResponseDto(x.getUser())).collect(Collectors.toList());
 
         this.schedules = schedules;
+    }
+    public RoomMoveResponseDto(Room room, RoomMemo roomMemo, List<ScheduleResponseDto> schedules, List<TodoTimeDto> todayTodoTimes){
+        this.id = room.getId();
+        this.name = room.getName();
+        this.profile = room.getProfile();
+        this.intro = room.getIntro();
+        this.code = room.getCode();
+
+        if(roomMemo != null)
+            this.roomMemo = roomMemo.getContent();
+
+        this.users = room.getUsers()
+                .stream()
+                .map(x->new RoomMoveUserResponseDto(x.getUser())).collect(Collectors.toList());
+
+        this.schedules = schedules;
+        this.todayTodoTimes = todayTodoTimes;
     }
 }
