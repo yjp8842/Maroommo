@@ -26,9 +26,11 @@ function RegisterOrEdit(props) {
           {props.updateRequest ? "수정" : "등록"}
         </button>
       </form>
-      <Link to='/group/board'>
-        <button>뒤로가기</button>
-      </Link>
+        <Link to= {props.updateRequest
+            ? `/group/${props.groupId}/board/article/${props.id}`
+            : `/group/${props.groupId}/board`}>   
+          <button>뒤로가기</button>
+        </Link>
     </div>
   )
 }

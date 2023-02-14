@@ -4,18 +4,14 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
 import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
-import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
 import MenuBtn from './GroupRoomItem/MenuBtn';
 import GroupMemberList from './GroupRoomItem/GroupMemberList';
 
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { boardActions } from '../../slice/boardSlice';
-import BoardList from './Board/ArticlePage/Sections/BoardList';
-import { userInfoActions} from "../../slice/userInfoSlice";
-import { groupInfoActions} from "../../slice/groupInfoSlice";
-import { scheduleActions } from "../../slice/scheduleSlice";
 
 import api from "../../utils/axiosInstance";
 
@@ -24,33 +20,25 @@ const GroupBoard = () => {
 	const params = useParams();
   const groupId = params.groupId;
 
-  const onArticleTitleClick = (id) => {
-    {/* 룸아이디 넣는 식으로 수정해야함 */}
-    const path = `/group/1/board/article/${id}`;
-    // navigate(path)
-  }
-
   useEffect(() => {
 
-    api.get(`/room/${groupId}/${user.id}`)
-    .then((res) => {    
-      console.log("그룹 페이지 이동!")
-      // console.log(res)
-      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
-      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules))
-    })
-    .catch((err) => {
-      console.log(err);
-    });        
-
+    api.get(`/board?room_id=${groupId}`)
+      .then((res) => {
+        console.log("게시글 목록 가져오기");
+        console.log(res);
+        dispatch(boardActions.getBoardSuccess(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(boardActions.getBoardFailed(err));
+      });
     // 보드에서 가져오기
     // dispatch(boardActions.getBoard());
   }, [groupId]);
 
-  const {user, group, board, isLoading, isSuccess, error } = 
+  const {user, board, isLoading, isSuccess, error } = 
   useSelector((state) => ({
     user: state.userInfoReducers.user,
-    group: state.groupInfoReducers.group,
     board: state.boardReducers.board,
     isLoading: state.boardReducers.isLoading,
     isSuccess: state.boardReducers.isSuccess,
@@ -147,23 +135,57 @@ const GroupBoard = () => {
             <h1>게시판</h1>
             <br></br>
 
-            <div style={{ width: "80%", margin: "3rem auto" }}>
-            {error ? (
-              <h2>에러 발생: {error}</h2>
-              ) :  isSuccess && board.data.content.length <= 0 ? (
-                <p> 조회할 내용이 없습니다.</p>
-              ) : isSuccess && board.data.content.length > 0 ? (
-                <BoardList 
-                  board={board.data}
-                  // handleDeleteClick={onDeleteClick}
-                  handleArticleTitleClick={onArticleTitleClick} />
-              )
-             : (
-              <p> 목록을 불러오는 중입니다. </p>
-            )}
-            </div>
+            {/* <div style={{ width: "80%", margin: "3rem auto" }}>
+              {error
+                ? (<h2>에러 발생: {error}</h2>)
+                : isSuccess && board.content.length <= 0
+                  ? (<p> 조회할 내용이 없습니다.</p>)
+                  : isSuccess && board.content.length > 0
+                    ? (<BoardList
+                      board={board}
+                      groupId={group.id}
+                        // handleDeleteClick={onDeleteClick}
+                        handleArticleTitleClick={onArticleTitleClick}
+                      />)
+                    : (<p> 목록을 불러오는 중입니다. </p>)
+              }
+            </div> */}
+
+            <table>
+              <colgroup>
+                <col width="10%" />
+                <col width="35%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="15%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>조회수</th>
+                  <th>작성일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {board.content.map((article, index) => {
+                  return (
+                    <tr>
+                      <td>{article.id}</td>
+                        <Link to={`/group/${groupId}/board/article/${article.id}`}>{article.title}</Link>
+                      <td>{article.user}</td>
+                      <td>{article.views}</td>
+                      <td>{new Date(article.createTime).toLocaleString()}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+
+
             {/* 룸아이디 넣는 식으로 수정해야함 */}
-            <Link to='/group/1/board/register?isForEdit=false'>
+            <Link to={`/group/${groupId}/board/register?isForEdit=false`}>
               <button>글쓰기</button>
             </Link>
 

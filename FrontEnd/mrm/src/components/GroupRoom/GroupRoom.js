@@ -44,8 +44,6 @@ const GroupRoom = () => {
       console.log(res)
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
       dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
-
-      group = res.data.moveRoomInfo;
     })
     .catch((err) => {
       console.log(err);
