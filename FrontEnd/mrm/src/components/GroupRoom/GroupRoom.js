@@ -13,6 +13,7 @@ import TodoBox from './GroupRoomItem/TodoInGroup';
 import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
 import { userInfoActions} from "../../slice/userInfoSlice";
 import { groupInfoActions} from "../../slice/groupInfoSlice";
+import { scheduleActions } from "../../slice/scheduleSlice";
 
 import api from "../../utils/axiosInstance";
 import * as StompJs from "@stomp/stompjs";
@@ -31,8 +32,10 @@ const GroupRoom = () => {
 
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
-      console.log("이동!")
+      console.log("그룹 페이지 이동!")
+      // console.log(res)
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
+      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules))
     })
     .catch((err) => {
       console.log(err);

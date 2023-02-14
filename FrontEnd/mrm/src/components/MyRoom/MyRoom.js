@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import api from "../../utils/axiosInstance"
 import { userInfoActions } from "../../slice/userInfoSlice";
+import { scheduleActions } from "../../slice/scheduleSlice";
 
 const MyRoom = () => {
   const dispatch = useDispatch()
@@ -31,8 +32,11 @@ const MyRoom = () => {
 
   useEffect(() => {
     api.get(`/room/my/${user.id}`)
-    .then((res) => {      
+    .then((res) => {   
+      console.log("마이 페이지 이동!");  
+      // console.log(res);
       dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo))
+      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules))
     })
     .catch((err) => {
       console.log(err);
