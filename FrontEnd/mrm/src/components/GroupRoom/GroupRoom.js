@@ -33,9 +33,9 @@ const GroupRoom = () => {
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
       console.log("그룹 페이지 이동!")
-      // console.log(res)
-      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
-      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules))
+      console.log(res)
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
     })
     .catch((err) => {
       console.log(err);
