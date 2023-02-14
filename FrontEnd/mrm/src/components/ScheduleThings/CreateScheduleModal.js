@@ -47,7 +47,12 @@ const CreateScheduleModal = ({ onClose }) => {
             }}
             renderInput={({ inputRef, inputProps, InputProps }) => (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <input ref={inputRef} {...inputProps} />
+                <InputWithLabel 
+                  id="date"
+                  label="| 날짜" 
+                  ref={inputRef} {...inputProps} 
+                />
+              {/* <input ref={inputRef} {...inputProps} /> */}
               {InputProps?.endAdornment}
             </Box>
               )}

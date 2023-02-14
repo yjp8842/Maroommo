@@ -1,43 +1,28 @@
 import axios from "axios";
 
 export function postScheduleData({ roomId, content, selectedDate }) {
-    // const roomId = document.getElementById("roomId").value;
-    // const tags = document.getElementById("tags").value;
-    // const content = document.getElementById("content").value;
-    // const date = document.getElementById("date").value;
-    // // const Month = document.getElementById("date").value.$M + 1;
-    // // const Day = document.getElementById("date").value.$D;
 
-    // console.log(roomId);
-    // console.log(tags);
-    // console.log(content);
-    // console.log(selectedDate);
-    // console.log(Year);
-    // console.log(Month);
-    // console.log(Day);
-
-    const Year = selectedDate.$y;
-    const Month = selectedDate.$M + 1;
-    const Day = selectedDate.$D;
+    const year = selectedDate.$y;
+    const month = selectedDate.$M + 1;
+    const day = selectedDate.$D;
 
 
-    const todo = {
+    const schedule = {
         roomId: roomId,
         content: content,
-        Year: Year,
-        Month: Month,
-        Day: Day,
+        year: year,
+        month: month,
+        day: day,
     };
 
-    console.log(todo)
-
-    const url = '/todo/testId';
+    const BASE_URL = 'https://i8a406.p.ssafy.io';   
+    const url = BASE_URL + '/api/schedule/testId';
 
     
-    // axios
-    //     .post(url, todo)
-    //     .then((response)=> {
-
-    //     })
+    axios
+        .post(url, schedule)
+        .then((response)=> {
+            console.log(response);
+        })
     
 }

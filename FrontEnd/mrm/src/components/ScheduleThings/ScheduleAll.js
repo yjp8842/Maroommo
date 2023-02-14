@@ -1,6 +1,6 @@
 import React, { useState, useReducer, useCallback, useRef } from 'react';
 import styles from './styles/Content.module.css';
-import AllBox from './AllBox';
+// import AllBox from './AllBox';
 // import TodoDnD from '../DnD/TodoDnD';
 import CreateScheduleModal from './CreateScheduleModal'
 import ScheduleList from './ScheduleList';
@@ -13,27 +13,27 @@ import useInputs from './useInputs';
 
 const initialState = {
   schedules: [
-    {
-      id: 1,
-      roomId: 1,
-      content: 'Chapter2 강의 듣기',
-      active: 1,
-      Year: 2023, Month: 2, Day: 9
-    },
-    {
-      id: 2,
-      roomId: 1,
-      content: 'Chapter1 실습',
-      active: 0,
-      Year: 2023, Month: 2, Day: 9
-    },
-    {
-      id: 3,
-      roomId: 2,
-      content: 'Chapter2 강의 듣기',
-      active: 0,
-      Year: 2023, Month: 2, Day: 9
-    }
+    // {
+    //   id: 1,
+    //   roomId: 1,
+    //   content: 'Chapter2 강의 듣기',
+    //   active: 1,
+    //   year: 2023, month: 2, day: 9
+    // },
+    // {
+    //   id: 2,
+    //   roomId: 1,
+    //   content: 'Chapter1 실습',
+    //   active: 0,
+    //   year: 2023, month: 2, day: 9
+    // },
+    // {
+    //   id: 3,
+    //   roomId: 2,
+    //   content: 'Chapter2 강의 듣기',
+    //   active: 0,
+    //   year: 2023, month: 2, day: 9
+    // }
   ]
 };
 
@@ -82,9 +82,9 @@ function ScheduleAll() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { schedules } = state;
   
-  const Year = selectedDate.$y;
-  const Month = selectedDate.$M + 1;
-  const Day = selectedDate.$D;
+  const year = selectedDate.$y;
+  const month = selectedDate.$M + 1;
+  const day = selectedDate.$D;
 
   const onCreate = useCallback(() => {
     dispatch({
@@ -93,16 +93,15 @@ function ScheduleAll() {
         id: nextId.current,
         roomId,
         content,
-        Year, Month, Day
+        year, month, day
       }
     });
     onReset();
     nextId.current += 1;
-  }, [roomId,  content, Year, Month, Day, onReset]);
+  }, [roomId,  content, year, month, day, onReset]);
 
   return (
     <div className={styles.content}>
-      <AllBox title='ScheduleList'>
       <ScheduleDispatch.Provider value={dispatch}>
         <Button onClick={onClickButton}>+</Button>
           {isOpen && (<CreateScheduleModal
@@ -120,7 +119,6 @@ function ScheduleAll() {
           <ScheduleList schedules={schedules} />
         </ScheduleDispatch.Provider>
         {/* <ScheduleDnD /> */}
-      </AllBox>
     </div>
   );
 }
