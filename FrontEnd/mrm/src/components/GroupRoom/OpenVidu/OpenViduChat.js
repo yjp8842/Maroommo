@@ -4,7 +4,7 @@ import * as SockJS from "sockjs-client";
 import axios from "axios";
 import "./OpenViduChat.css";
 
-const ROOM_SEQ = 5;
+// const ROOM_SEQ = 5;
 
 // 데이터 타입
 // private int roomId;
@@ -22,9 +22,6 @@ const OpenViduChat = () => {
   const [userNickname, setUserNickname] = useState("");
   const [message, setMessage] = useState("");
   let [chatMessages, setChatMessages] = useState([]);
-
-  // roomId는 룸버튼을 눌렀을 때 roomId 정보를 store에 저장하는 방식으로 해야 하나..?
-  // store에서 가져올 것 : userId, userNickname
 
   const {roomid, userid, nickname} = useSelector((state) => ({
     roomid: state.userInfoReducers.user.myRooms[0],
@@ -46,7 +43,7 @@ const OpenViduChat = () => {
 
   const initRoom = () => {
     // ROOM_SEQ -> roomId로 바꾸기
-    axios.get('https://i8a406.p.ssafy.io/api/chat/room/'+ROOM_SEQ).then(response => {
+    axios.get('https://i8a406.p.ssafy.io/api/chat/room/'+roomId).then(response => {
       var list = [];
       response.data.chats.forEach(chat => {
         list.push({
@@ -98,7 +95,7 @@ const OpenViduChat = () => {
   const subscribe = () => {
     console.log("sub1")
     // ROOM_SEQ -> roomId로 바꾸기
-    client.current.subscribe('/sub/chat/room/'+ROOM_SEQ, (message) => {
+    client.current.subscribe('/sub/chat/room/'+roomId, (message) => {
       setChatMessages((chatMessages) => [
         ...chatMessages, JSON.parse(message.body)
       ]);
@@ -120,7 +117,7 @@ const OpenViduChat = () => {
       destination: "/pub/chat/message",
       body: JSON.stringify({
         // ROOM_SEQ -> roomId로 바꾸기
-        roomId: ROOM_SEQ,
+        roomId: roomId,
         userId: userId,
         userNickname: userNickname,
         message: message
