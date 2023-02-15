@@ -42,7 +42,7 @@ const GroupQnA = () => {
     error: state.questionReducers.error
   })
   );
-
+  console.log(question.content, question.content.length)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
   const offset = (page - 1) * limit;

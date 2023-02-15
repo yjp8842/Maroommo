@@ -10,7 +10,7 @@ export function* getBoardAsync() {
   // pagination, size 손보기!!!!
   // room_id 데이터 받아와야함
   try {
-    const response = yield api.get(`/board?room_id=1&page=0&size=30`);
+    const response = yield api.get(`/board?room_id=1&page=0&size=100`);
     console.log('----------');
     console.log('boardSaga response 출력 : ',response.data);
     console.log('----------');
