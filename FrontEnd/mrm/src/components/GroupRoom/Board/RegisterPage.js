@@ -91,6 +91,7 @@ function RegisterPage (props) {
 
     const formdata = new FormData();
     formdata.append('picture', image)
+    console.log(formdata, '이건 폼데이터')
     const articleForRegister = {
       title: title, content: content, room_id: groupId, user_id: user.id, picture: formdata
     };

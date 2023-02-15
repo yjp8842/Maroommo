@@ -27,7 +27,7 @@ const GroupBoard = () => {
   };
   
   const dispatch = useDispatch();
-	const params = useParams();
+  const params = useParams();
   const groupId = params.groupId;
 
   useEffect(() => {
