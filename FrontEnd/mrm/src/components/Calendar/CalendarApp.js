@@ -29,27 +29,30 @@ export default function CalendarApp() {
   //   '2023-02-27',
   // ];
 
-  const {todolist} = useSelector((state) =>
+  const {todolist, schedulelist} = useSelector((state) =>
   ({
     todolist: state.userInfoReducers.user.doing,
+    schedulelist: state.userInfoReducers.user.schedules,
   }))
-  // console.log("todolist ===", todolist[0].startTime);
 
-  const todoList = [];
-  todolist.map((list) => {
-    return todoList.push(list.startTime)
+  const todo_schedule_list = [];
+
+  todolist.map((todo,index) => {
+    return todo_schedule_list.push({
+      content:todo.content,
+      startTime:todo.startTime,
+      state:todo.state
+    })    
   })
-
-  const {schedulelist} = useSelector((state) =>
-  ({
-    schedulelist: state.scheduleReducers.schedule
-  }))
-  // console.log("schedulelist ===", schedulelist[0].startTime);
-
-  const scheduleList = [];
-  schedulelist.map((list) => {
-    return scheduleList.push(list.startTime)
+  
+  schedulelist.map((schedule,index) => {
+    return todo_schedule_list.push({
+      content:schedule.content,
+      startTime:schedule.startTime,
+      state:-1
+    })    
   })
+  
 
   return (
     <div>
@@ -59,26 +62,44 @@ export default function CalendarApp() {
       className='mx-auto w-full text-sm border-b'
       selectRange={false}
       tileContent={({date, view}) => {
-        if (todoList.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
-          return (
-            <>
+        return (
+          (todo_schedule_list.map((value, index) => {
+            return (value.startTime === moment(date).format('YYYY-MM-DD') 
+              ? 
               <div className='flex justify-center items-center absoluteDiv'>
-                {/* <div className='red_dot'></div> */}
-                <Todocontent>React 강의 수강하기</Todocontent>
+                {value.state === -1 
+                ? <Schedulecontent>{value.content}</Schedulecontent>
+                : (value.state === 0) 
+                  ? <Todocontent>{value.content}</Todocontent>
+                  : (value.state === 1) 
+                    ? <Doingcontent>{value.content}</Doingcontent>
+                    : <Donecontent>{value.content}</Donecontent>
+                }                
               </div>
-            </>
-          )
-        }
-        if (scheduleList.find((x) => x === moment(date).format('YYYY-MM-DD'))) {
-          return (
-            <>
-              <div className='flex justify-center items-center absoluteDiv'>
-                {/* <div className='blue_dot'></div> */}
-                <Schedulecontent>알고리즘 스터디</Schedulecontent>
-              </div>
-            </>
-          )
-        }
+              : <div></div>)
+          }))
+        )
+
+        // if (todolist.find((x) => x.startTime === moment(date).format('YYYY-MM-DD'))) {
+        //   return (
+        //     <>
+        //       <div className='flex justify-center items-center absoluteDiv'>
+        //         {/* <div className='red_dot'></div> */}
+        //         <Todocontent>{x.content}</Todocontent>
+        //       </div>
+        //     </>
+        //   )
+        // }
+        // if (schedulelist.find((x) => x.startTime === moment(date).format('YYYY-MM-DD'))) {
+        //   return (
+        //     <>
+        //       <div className='flex justify-center items-center absoluteDiv'>
+        //         {/* <div className='blue_dot'></div> */}
+        //         <Schedulecontent>알고리즘 스터디</Schedulecontent>
+        //       </div>
+        //     </>
+        //   )
+        // }
       }}
     />
     <Plusbox>
@@ -97,7 +118,31 @@ outline: none;
 border-radius: 15px;
 font-size: 15px;
 color: white;
+background-color: gray;
+padding: 5px 5px 0px 10px;
+`
+
+const Doingcontent = styled.div`
+// width: 170px;
+height: 20px;
+width: 90%;
+outline: none;
+border-radius: 15px;
+font-size: 15px;
+color: white;
 background-color: red;
+padding: 5px 5px 0px 10px;
+`
+
+const Donecontent = styled.div`
+// width: 170px;
+height: 20px;
+width: 90%;
+outline: none;
+border-radius: 15px;
+font-size: 15px;
+color: white;
+background-color: blue;
 padding: 5px 5px 0px 10px;
 `
 
@@ -109,7 +154,7 @@ outline: none;
 border-radius: 15px;
 font-size: 15px;
 color: white;
-background-color: blue;
+background-color: green;
 padding: 5px 5px 0px 10px;
 `
 
