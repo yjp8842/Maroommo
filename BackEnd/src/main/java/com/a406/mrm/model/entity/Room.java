@@ -21,6 +21,11 @@ import java.util.List;
 @Table(name = "room")
 public class Room {
 
+    public Room(RoomRequestDto roomRequestDto){
+        this.name = roomRequestDto.getName();
+        this.intro = roomRequestDto.getIntro();
+    }
+
     public Room(RoomRequestDto roomRequestDto, String profile){
         this.name = roomRequestDto.getName();
         this.intro = roomRequestDto.getIntro();
