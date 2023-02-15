@@ -18,7 +18,6 @@ class MrmApplicationTests {
 
 	@Test
 	public void test() {
-		logger.info(roomRepository.selectRoom().toString());
 	}
 
 
