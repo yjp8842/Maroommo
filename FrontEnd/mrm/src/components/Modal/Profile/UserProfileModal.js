@@ -38,6 +38,8 @@ function UserProfileModal({ onClose }) {
           preview_URL: preview_URL
         }
       ))
+      console.log('saveImage작동')
+      console.log(image)
     }
   }
 
@@ -67,15 +69,24 @@ function UserProfileModal({ onClose }) {
   const onSubmitProfile = (event) => {
     event.preventDefault();
     console.log(introValue, nicknameValue)
-    console.log('이건 프로필 이미지',image)
+    console.log('이건 프로필 이미지',image.image_file)
 
     const formdata = new FormData();
-    formdata.append('profileImage', image)
-    console.log(formdata)
+    formdata.append('profileImage', image.image_file)
+    // console.log(formdata)
+    for (let key of formdata.entries()) {
+        console.log("이것은 폼 데이터",key[0], key[1])
+
+    }
+
 
     api.post(
       `/room/user?userId=${user.id}&intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
-      formdata).
+      formdata, {
+        headers : {
+          "Content-Type": 'multipart/form-data'
+        }
+      }).
     then((res)=>{
       console.log(res);
       console.log(formdata)
