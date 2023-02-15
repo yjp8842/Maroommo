@@ -2,6 +2,7 @@ import { Link } from "@mui/material";
 import React from "react";
 // import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Pagination from "../../../Pagination";
 
 function BoardList(props) {
   console.log('success');
@@ -26,7 +27,7 @@ function BoardList(props) {
             <th>작성일</th>
           </tr>
         </thead>
-        {props.board.content.map((article, index) => {
+        {props.board.content.slice(props.offset, props.offset+props.limit).map((article, index) => {
           return (
             <thead>
               <tr key={article.id}>
@@ -44,6 +45,14 @@ function BoardList(props) {
           )
         })}
       </table>
+      <footer>
+        <Pagination
+          total={props.board.data.content.length}
+          limit={props.limit}
+          page={props.page}
+          setPage={props.setPage}
+        />
+      </footer>
     </div>
   );
 }

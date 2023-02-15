@@ -78,6 +78,7 @@ function UserProfileModal({ onClose }) {
       formdata).
     then((res)=>{
       console.log(res);
+      console.log(formdata)
       userInfoActions.modifyUserInfo(res.data.user);
       alert('수정되었습니다');
     })
