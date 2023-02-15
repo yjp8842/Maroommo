@@ -40,7 +40,7 @@ public class RoomController {
      * @return myRoomInfo: 방 목록과 스케쥴 정보를 반환한다
      */
     @ApiOperation("make a room(=group)")
-    @PostMapping(value = "{userId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping("/{userId}")
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
 //                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto,
