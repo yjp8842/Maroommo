@@ -132,7 +132,7 @@ class OpenChat extends Component {
                           <div className="share-screen">
                             <div className="share-sub">
                               {this.state.subscribers.map((sub, i) => (
-                                <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                <div className="share-subs"><UserVideoComponent streamManager={sub} key={sub.stream.streamId} /></div>
                               ))}
                             </div>
                             <div className="share-pub">
@@ -296,7 +296,7 @@ class OpenChat extends Component {
                   <Icon 
                     onClick={() => 
                     {
-                      this.setState({ isShare: !this.state.isShare })
+                      // this.setState({ isShare: !this.state.isShare })
                       this.state.session.unpublish(this.state.publisher);
                       let newPublisher = this.OV.initPublisher("html-element-id", {
                         audioSource: undefined,
@@ -314,9 +314,9 @@ class OpenChat extends Component {
                           console.log('User pressed the "Stop sharing" button');
                           this.state.session.unpublish(newPublisher);
                           this.state.session.publish(this.state.publisher);
-                          this.setState({ isShare: !this.state.isShare })
                         });
                         this.state.session.publish(newPublisher);
+                        this.setState({ isShare: !this.state.isShare })
                         this.setState({ mainStreamManager: newPublisher, newPublisher });
 
                       });
