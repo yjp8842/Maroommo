@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link, useParams } from 'react-router-dom';
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import styled from "styled-components";
@@ -252,12 +253,16 @@ class OpenChat extends Component {
                     {this.state.isSpeaker ? <HeadsetIcon /> : <HeadsetOffIcon />}
                   </Icon>
 
-                  <Icon style={{ marginLeft: '100px', marginRight: '100px' }} primary onClick={() => {
-                    this.leaveSession();
-                    window.close();  // session 나가면서 윈도우 창 꺼지도록
-                  }}>
-                    <CallEndIcon />
-                  </Icon>
+                  <Link to={`/group/`+this.props.group.id} onClick={() => {this.leaveSession();}}>
+                    <Icon style={{ marginLeft: '100px', marginRight: '100px' }} primary 
+                    //   onClick={() => {
+                    //     this.leaveSession();
+                    //     // window.close();  // session 나가면서 윈도우 창 꺼지도록
+                    // }}
+                    >
+                      <CallEndIcon />
+                    </Icon>
+                  </Link>
 
                   <Icon 
                     onClick={() => {
