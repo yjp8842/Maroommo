@@ -19,16 +19,22 @@ public class TodoResponseDto {
         this.tags = todo.getTodoTags().stream().map(x->x.getName()).collect(Collectors.toList());
         this.state = todo.getState();
         this.startTime = startTime;
+        this.roomName = todo.getRoom() == null ? "" : todo.getRoom().getName();
+        this.todoTimes = todo.getTodoTimes().stream().map(x->new TodoTimeDto(x)).collect(Collectors.toList());
     }
     public TodoResponseDto(Todo todo) {
         this.id = todo.getId();
         this.content = todo.getContent();
         this.tags = todo.getTodoTags().stream().map(x -> x.getName()).collect(Collectors.toList());
         this.state = todo.getState();
+        this.roomName = todo.getRoom() == null ? "" : todo.getRoom().getName();
+        this.todoTimes = todo.getTodoTimes().stream().map(x->new TodoTimeDto(x)).collect(Collectors.toList());
     }
     private int id;
     private List<String> tags = new ArrayList<>();
     private String content;
     private int state;
     private String startTime;
+    private String roomName;
+    private List<TodoTimeDto> todoTimes = new ArrayList<>();
 }

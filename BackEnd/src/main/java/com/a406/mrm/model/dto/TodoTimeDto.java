@@ -16,11 +16,14 @@ public class TodoTimeDto {
     private int todoId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-
+    private int totalMinute;
     public TodoTimeDto(TodoTime todoTime){
         this.userId = todoTime.getUser().getId();
         this.todoId = todoTime.getTodo().getId();
         this.startTime = LocalDateTime.ofInstant(todoTime.getStartTime().toInstant(), ZoneId.systemDefault());
         this.endTime = todoTime.getEndTime() == null ? LocalDateTime.now() : LocalDateTime.ofInstant(todoTime.getEndTime().toInstant(),ZoneId.systemDefault());
+        LocalDateTime TIME = LocalDateTime.ofInstant(todoTime.getTotalTime().toInstant(), ZoneId.systemDefault());
+        this.totalMinute = TIME.getHour() * 60 + TIME.getMinute() ;
+
     }
 }
