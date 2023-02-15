@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
-import axios from "axios";
+import api from "../../../utils/axiosInstance";
 import "./Chat.css";
-import { useSelector } from "react-redux";
-
-const ROOM_SEQ = 1;
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // 데이터 타입
 // private int roomId;
@@ -17,35 +16,29 @@ const ROOM_SEQ = 1;
 // private String time;  PM 22시 13분
 
 const Chat = () => {
+	const params = useParams();
+  const groupId = params.groupId;
+
   const client = useRef({});
-  const [roomId, setRoomId] = useState("");
-  const [userId, setUserId] = useState("");
-  const [userNickname, setUserNickname] = useState("");
   const [message, setMessage] = useState("");
   let [chatMessages, setChatMessages] = useState([]);
 
   // roomId는 룸버튼을 눌렀을 때 roomId 정보를 store에 저장하는 방식으로 해야 하나..?
   // store에서 가져올 것 : userId, userNickname
 
-  const {id, nickname} = useSelector((state) => ({
-    id: state.userInfoReducers.user.id,
-    nickname: state.userInfoReducers.user.nickname,
+  const {user} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
   }))
 
   useEffect(() => {
     connect();
     initRoom();
-
-    // setRoomId();
-    setUserId(id);
-    setUserNickname(nickname);
-
     return () => disconnect();
   }, []);
 
   const initRoom = () => {
     // ROOM_SEQ -> roomId로 바꾸기
-    axios.get('https://i8a406.p.ssafy.io/api/chat/room/'+ROOM_SEQ).then(response => {
+    api.get('/chat/room/'+groupId).then(response => {
       var list = [];
       response.data.chats.forEach(chat => {
         list.push({
@@ -96,7 +89,7 @@ const Chat = () => {
   // 메시지 받기 -> time 필요함
   const subscribe = () => {
     // ROOM_SEQ -> roomId로 바꾸기
-    client.current.subscribe('/sub/chat/room/'+ROOM_SEQ, (message) => {
+    client.current.subscribe('/sub/chat/room/'+groupId, (message) => {
       setChatMessages((chatMessages) => [
         ...chatMessages, JSON.parse(message.body)
       ]);
@@ -117,9 +110,9 @@ const Chat = () => {
       destination: "/pub/chat/message",
       body: JSON.stringify({
         // ROOM_SEQ -> roomId로 바꾸기
-        roomId: ROOM_SEQ,
-        userId: userId,
-        userNickname: userNickname,
+        roomId: groupId,
+        userId: user.id,
+        userNickname: user.nickname,
         message: message
       }),
     });
@@ -158,7 +151,7 @@ const Chat = () => {
           }
 
           if (chatMessage.message.length > 0) {
-            if (chatMessage.userId === userId) {
+            if (chatMessage.userId === user.id) {
               if (displayDate) {
                 return (
                   <div>

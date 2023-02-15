@@ -25,30 +25,12 @@ function RegisterOrEditQuestion(props) {
           {props.updateRequest ? "수정" : "등록"}
         </button>
       </form>
-      <Link to='/group/1/question'>
-        <button>뒤로가기</button>
-      </Link>
+        <Link to= {props.updateRequest
+            ? `/group/${props.groupId}/question/questionArticle/${props.id}`
+            : `/group/${props.groupId}/question`}>   
+          <button>뒤로가기</button>
+        </Link>
     </div>
-    // <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
-    //   <form onSubmit={props.handleSubmit}>
-    //     <br/>
-    //     <div style={{ maxWidth: "700px", margin: "2rem" }}>
-    //       <label>제목 :</label>
-    //       <br></br>
-    //       <input onChange={props.handleRegisterChange}
-    //         value={props.titleValue} type='text' name='title'/>
-    //       <hr></hr>
-    //         <textarea onChange={props.handleRegisterChange}
-    //         value={props.contentValue} name='content'/>
-    //     </div>
-    //     <button onClick={props.handleSubmit}>
-    //       {props.updateRequest ? "수정" : "등록"}
-    //     </button>
-    //   </form>
-    //   <Link to='/group/question'>
-    //     <button>뒤로가기</button>
-    //   </Link>
-    // </div>
   )
 }
 
