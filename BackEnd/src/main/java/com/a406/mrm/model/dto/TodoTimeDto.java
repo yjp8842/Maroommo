@@ -21,9 +21,11 @@ public class TodoTimeDto {
         this.userId = todoTime.getUser().getId();
         this.todoId = todoTime.getTodo().getId();
         this.startTime = LocalDateTime.ofInstant(todoTime.getStartTime().toInstant(), ZoneId.systemDefault());
-        this.endTime = todoTime.getEndTime() == null ? LocalDateTime.now() : LocalDateTime.ofInstant(todoTime.getEndTime().toInstant(),ZoneId.systemDefault());
-        LocalDateTime TIME = LocalDateTime.ofInstant(todoTime.getTotalTime().toInstant(), ZoneId.systemDefault());
-        this.totalMinute = TIME.getHour() * 60 + TIME.getMinute() ;
-
+        this.endTime = todoTime.getEndTime() == null ? null : LocalDateTime.ofInstant(todoTime.getEndTime().toInstant(),ZoneId.systemDefault());
+        this.totalMinute = 0;
+        if(this.endTime!=null){
+            LocalDateTime TIME = LocalDateTime.ofInstant(todoTime.getTotalTime().toInstant(), ZoneId.systemDefault());
+            this.totalMinute = TIME.getHour() * 60 + TIME.getMinute() ;
+        }
     }
 }
