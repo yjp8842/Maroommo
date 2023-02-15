@@ -16,16 +16,20 @@ public class TodoTimeDto {
     private int todoId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private int totalMinute;
+    private int totalSec;
+    private String content;
+    private String userNickname;
     public TodoTimeDto(TodoTime todoTime){
         this.userId = todoTime.getUser().getId();
         this.todoId = todoTime.getTodo().getId();
         this.startTime = LocalDateTime.ofInstant(todoTime.getStartTime().toInstant(), ZoneId.systemDefault());
         this.endTime = todoTime.getEndTime() == null ? null : LocalDateTime.ofInstant(todoTime.getEndTime().toInstant(),ZoneId.systemDefault());
-        this.totalMinute = 0;
+        this.totalSec = 0;
+        this.content = todoTime.getTodo().getContent();
+        this.userNickname = todoTime.getUser().getNickname();
         if(this.endTime!=null){
             LocalDateTime TIME = LocalDateTime.ofInstant(todoTime.getTotalTime().toInstant(), ZoneId.systemDefault());
-            this.totalMinute = ((TIME.getHour()-9) * 60 + TIME.getMinute())*60 + TIME.getSecond();
+            this.totalSec = ((TIME.getHour()-9) * 60 + TIME.getMinute())*60 + TIME.getSecond();
         }
     }
 }
