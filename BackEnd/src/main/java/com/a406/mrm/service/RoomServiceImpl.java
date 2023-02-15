@@ -58,22 +58,10 @@ public class RoomServiceImpl implements RoomService {
 
     // room을 생성하고 해당 room으로 이돟한다 -> detail한 정보를 반환해야 하고 room list도 줘야한다
     @Override
-    public RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) throws Exception{
+    public RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId) throws Exception{
         RoomMoveResponseDto moveRoomResponseDto = null;
 
-        // 파일 저장
-        String uuid =  null;
-        if(profile != null){
-            uuid = UUID.randomUUID().toString()+"."+profile.getOriginalFilename().substring(profile.getOriginalFilename().lastIndexOf(".")+1);
-//            String absPath = "C:/SSAFY/S08P12A406/img_dir/"+uuid;
-            String absPath = "/img_dir/"+uuid;
-            try {
-                profile.transferTo(new File(absPath));
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-        }
-        Room registRoom = new Room(roomRequestDto,uuid); // 입력받은 room 정보를 세팅한 후
+        Room registRoom = new Room(roomRequestDto); // 입력받은 room 정보를 세팅한 후
 
         String code = UUID.randomUUID().toString(); // entry code를 생성하여
         registRoom.setCode(code); // 추가

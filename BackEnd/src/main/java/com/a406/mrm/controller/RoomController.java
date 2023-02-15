@@ -44,9 +44,7 @@ public class RoomController {
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
 //                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto,
-                                     @RequestParam String name,
-                                     @RequestParam String intro,
-                                     @RequestParam MultipartFile profile
+                                     @RequestBody RoomRequestDto roomRequestDto
                                      ) {
 //        logger.debug("new Room information : {}", roomRequestDto.toString());
 
@@ -55,12 +53,10 @@ public class RoomController {
         RoomMoveResponseDto moveRoomInfo = null ;
         MyRoomResponseDto myRoomInfo = null;
 
-        RoomRequestDto roomRequestDto = new RoomRequestDto(intro,name);
-
         try {
-            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId,profile);
+//            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId);
             myRoomInfo = roomService.getMyRoomDto(userId);
-            resultMap.put("moveRoomInfo",moveRoomInfo);
+//            resultMap.put("moveRoomInfo",moveRoomInfo);
             resultMap.put("myRoomInfo",myRoomInfo);
             status = HttpStatus.CREATED;
         } catch (Exception e) {
