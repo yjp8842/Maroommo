@@ -237,7 +237,6 @@ const Button = styled.button`
   background-color: #ffffff;
   border-radius: 10px;
   color: black;
-  font-style: italic;
   font-weight: 200;
   cursor: pointer;
   &:hover {

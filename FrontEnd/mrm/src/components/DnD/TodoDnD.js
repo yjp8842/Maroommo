@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { id } from 'date-fns/locale';
 // import axios from 'axios';
   
-//tags 파트 배열 -> 스트링
+//tags 파트 배열 -> 스트링=
 
 function TodoDnD() {
 

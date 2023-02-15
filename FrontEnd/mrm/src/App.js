@@ -18,8 +18,7 @@ import FindIdPage from './components/Login/FindId';
 import FindPwdPage from './components/Login/FindPwd';
 import ModifyPwdPage from './components/Login/ModifyPwd'
 import SuccessPage from './components/Login/SuccessPage';
-
-// import { Box } from '@mui/system';
+import { OCR } from './OCR/OCR';
 // import { Fragment } from 'react';
 
 function App() {
@@ -42,6 +41,7 @@ function App() {
         <Route path='/modifyPwd' element={<ModifyPwdPage/>}/>
         <Route path="/oauth2/social/success" element={<SuccessPage/>}/>
         <Route path="/group/:groupId/openvidu" element={<OpenChat/>}/>
+        <Route path="/OCR" element={<OCR/>}/>
       </Routes>
     </BrowserRouter>
 

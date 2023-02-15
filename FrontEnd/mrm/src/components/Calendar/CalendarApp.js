@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import './CalendarApp.css'
+import TodoButton from '../TodoThings/TodoButton';
+import ScheduleButton from '../ScheduleThings/ScheduleButton';
 // import moment from 'moment';
 
 export default function CalendarApp() {
@@ -53,6 +55,7 @@ export default function CalendarApp() {
   
 
   return (
+    <div>
     <Calendar
       onChange={onChange} value={value} locale='ko-KR'
       formatDay={(locale, date) => moment(date).format('DD')}
@@ -99,6 +102,11 @@ export default function CalendarApp() {
         // }
       }}
     />
+    <Plusbox>
+      <TodoButton />
+      <ScheduleButton />
+    </Plusbox>
+    </div>
   );
 }
 
@@ -148,4 +156,8 @@ font-size: 15px;
 color: white;
 background-color: green;
 padding: 5px 5px 0px 10px;
+`
+
+const Plusbox = styled.div`
+  justify-content: center;
 `
