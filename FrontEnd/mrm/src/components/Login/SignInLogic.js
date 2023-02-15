@@ -12,6 +12,7 @@ export function requestLogin(dispatch, navigate) {
     id:id,
     password:password
   };
+  console.log(axiosBody)
 
   axios
     .post("https://i8a406.p.ssafy.io/api/user/login",
