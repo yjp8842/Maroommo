@@ -25,7 +25,7 @@ public class TodoTimeDto {
         this.totalMinute = 0;
         if(this.endTime!=null){
             LocalDateTime TIME = LocalDateTime.ofInstant(todoTime.getTotalTime().toInstant(), ZoneId.systemDefault());
-            this.totalMinute = (TIME.getHour()-9) * 60 + TIME.getMinute();
+            this.totalMinute = ((TIME.getHour()-9) * 60 + TIME.getMinute())*60 + TIME.getSecond();
         }
     }
 }
