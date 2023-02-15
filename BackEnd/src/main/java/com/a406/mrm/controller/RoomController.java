@@ -40,13 +40,11 @@ public class RoomController {
      * @return myRoomInfo: 방 목록과 스케쥴 정보를 반환한다
      */
     @ApiOperation("make a room(=group)")
-    @PostMapping(value = "{userId}",consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping("/{userId}")
     public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
                                        @PathVariable("userId") String userId,
 //                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto,
-                                     @RequestParam String name,
-                                     @RequestParam String intro,
-                                     @RequestParam MultipartFile profile
+                                     @RequestBody RoomRequestDto roomRequestDto
                                      ) {
 //        logger.debug("new Room information : {}", roomRequestDto.toString());
 
@@ -55,10 +53,8 @@ public class RoomController {
         RoomMoveResponseDto moveRoomInfo = null ;
         MyRoomResponseDto myRoomInfo = null;
 
-        RoomRequestDto roomRequestDto = new RoomRequestDto(intro,name);
-
         try {
-            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId,profile);
+            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId);
             myRoomInfo = roomService.getMyRoomDto(userId);
             resultMap.put("moveRoomInfo",moveRoomInfo);
             resultMap.put("myRoomInfo",myRoomInfo);

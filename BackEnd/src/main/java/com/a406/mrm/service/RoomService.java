@@ -11,7 +11,7 @@ public interface RoomService {
     MyRoomResponseDto getMyRoomDto(String userId) throws Exception;
     RoomMoveResponseDto getMoveRoomDto(int roomId, String userId) throws Exception;
     void removeRoom(int roomId) throws Exception;
-    RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId, MultipartFile profile) throws Exception;
+    RoomMoveResponseDto makeRoom(RoomRequestDto roomRequestDto, String userId) throws Exception;
     RoomMoveResponseDto enterRoom(int roomId, String userId) throws Exception;
     boolean existsRoomByIdAndCode(int roomId, String code) throws Exception;
     boolean existsUserHasRoomByRoomIdAndUserId(int roomId, String userId) throws Exception;
