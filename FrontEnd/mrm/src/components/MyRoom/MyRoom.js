@@ -208,7 +208,7 @@ const MyRoom = () => {
                 >
                 </textarea>
             </Box>
-            <h2>TIME TABLE</h2>
+            {/* <h2>TIME TABLE</h2> */}
             <TimeTable />
           </Box>
         </Box>
