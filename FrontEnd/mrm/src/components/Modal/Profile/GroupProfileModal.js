@@ -98,7 +98,6 @@ function GroupProfileModal({ onClose }) {
 
               <InputWithLabel onChange={onChangeName}  label="| 그룹명" id="groupname" placeholder={group.name} name='groupname'/>
               <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="groupintro" placeholder={group.intro} name='groupintro' />
-            
 
               <CButton onClick={handleClose}>취소</CButton>
               <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
