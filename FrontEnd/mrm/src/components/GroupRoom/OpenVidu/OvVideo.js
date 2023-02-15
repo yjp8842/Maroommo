@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './UserVideo.css';
 
 export default class OpenViduVideoComponent extends Component {
 
