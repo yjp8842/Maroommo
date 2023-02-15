@@ -24,7 +24,32 @@ import { scheduleActions } from "../../slice/scheduleSlice";
 const MyRoom = () => {
   const dispatch = useDispatch()
 
+  const {user} = useSelector((state) => 
+  ({
+    user: state.userInfoReducers.user
+  }), shallowEqual)
+
+
   const [isOpen, setIsOpen] = useState(false);
+  const [myMemoContent, setMyMemoContent] = useState(user.userMemo);
+
+  const handleSetMyMemo = (e) => {
+    setMyMemoContent(e.target.value);
+    saveMyMemo(e.target.value);
+    dispatch(userInfoActions.saveUserMemo(e.target.value))
+  };
+
+  const saveMyMemo = (content) => {
+    const data = {
+      userId: user.id,
+      content: content
+    };
+    api
+    .post('/my/memo', data)
+    .catch((err) => {
+      console.log("내 메모 저장 중 오류 발생");
+    })
+  }
 
   const onClickButton = () => {
     setIsOpen(true);
@@ -42,11 +67,6 @@ const MyRoom = () => {
       console.log(err);
     });        
   }, [])
-
-  const {user} = useSelector((state) => 
-  ({
-    user: state.userInfoReducers.user
-  }), shallowEqual)
 
   return (
     <Grid container>
@@ -132,26 +152,13 @@ const MyRoom = () => {
               alignItems: "center",
               justifyContent: "space-evenly",
             }}>
-            <Box
+            {/* <Box
               sx={{
                 width: "50vw",
                 height: "10vh",
                 display: "flex",
               }}>
-              <Choice />
-              <Box
-                sx={{
-                  width: "5px",
-                  height: "5vw",
-                  backgroundColor: "#FFFFFF",
-                  marginX: "15px",
-                  boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)",
-                  borderRadius: "10px"
-                }}>
-              </Box>
-              <Choice />
-              <Choice />
-            </Box>
+            </Box> */}
             <Box
               sx={{
                 width: "50vw",
@@ -160,7 +167,8 @@ const MyRoom = () => {
                 backgroundColor: "#FFFFFF",
                 boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)"
               }}>
-              <TodoTable sx={{
+              <TodoTable 
+              sx={{
                 fontSize:"55"
               }}/>
             </Box>
@@ -174,7 +182,32 @@ const MyRoom = () => {
               alignItems: "center",
               justifyContent: "space-evenly"
             }}>
-            <Memo />
+            <Box
+              sx={{
+                width: "450px",
+                height: "250px",
+                marginTop: "20px",
+                paddingY: '20px',
+                borderRadius: "30px",
+                backgroundColor: "#FFFFFF",
+                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <h3>My MEMO</h3>
+                <hr align="center" width="80%"/>   
+                <textarea 
+                  id="myMemo" 
+                  name="myMemo"
+                  value={myMemoContent}
+                  onChange={(e) => handleSetMyMemo(e)}
+                  rows={20} 
+                  cols={50}   
+                >
+                </textarea>
+            </Box>
             <h2>TIME TABLE</h2>
             <TimeTable />
           </Box>
