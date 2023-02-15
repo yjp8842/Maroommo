@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, useParams } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import styled from "styled-components";
@@ -82,7 +82,7 @@ class OpenChat extends Component {
 
     return (
       <div className="container">
-        {this.state.session === undefined ? (
+        {/* {this.state.session === undefined ? (
           <div className="middle">
             <div
               style={{
@@ -114,7 +114,7 @@ class OpenChat extends Component {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : null} */}
 
         {this.state.session !== undefined ? (
           <div className="whole">
@@ -122,34 +122,40 @@ class OpenChat extends Component {
               <div className="left">
                 <div className="video-container">
 
-                  {/* 총 1명일 때 */}
-                  {this.state.subscribers.length < 1 ? (
-                    <StreamContainerWrapper
-                      className="width1"
-                      ref={this.userRef}
-                    >
-                      {this.state.publisher !== undefined ? (
-                        <div className="stream-container under-one">
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                            key={this.state.publisher.stream.streamId}
-                          />
-                          {this.state.subscribers.map((sub, i) => (
-                            <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                          ))}
-                        </div>
-                      ) : null}
-                    </StreamContainerWrapper>
-                  ) : (
-
-                    // 총 2명일 때
-                    this.state.subscribers.length < 2 ? (
+                  {this.state.isShare === true ? (
+                    // <div>
                       <StreamContainerWrapper
-                        className="width2"
+                        className="width1"
                         ref={this.userRef}
                       >
                         {this.state.publisher !== undefined ? (
-                          <div className="stream-container under-two">
+                          <div className="share-screen">
+                            <div className="share-sub">
+                              {this.state.subscribers.map((sub, i) => (
+                                <div className="share-subs"><UserVideoComponent streamManager={sub} key={sub.stream.streamId} /></div>
+                              ))}
+                            </div>
+                            <div className="share-pub">
+                              <UserVideoComponent
+                                streamManager={this.state.publisher}
+                                key={this.state.publisher.stream.streamId}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
+                      </StreamContainerWrapper>
+                    // </div>
+                  ) : (
+                    
+                    // 공유하지 않았을 때
+                    // 총 1명일 때
+                    this.state.subscribers.length < 1 ? (
+                      <StreamContainerWrapper
+                        className="width1"
+                        ref={this.userRef}
+                      >
+                        {this.state.publisher !== undefined ? (
+                          <div className="stream-container under-one">
                             <UserVideoComponent
                               streamManager={this.state.publisher}
                               key={this.state.publisher.stream.streamId}
@@ -161,15 +167,15 @@ class OpenChat extends Component {
                         ) : null}
                       </StreamContainerWrapper>
                     ) : (
-                      
-                      // 총 3-4명일 때
-                      this.state.subscribers.length < 4 ? (
+  
+                      // 총 2명일 때
+                      this.state.subscribers.length < 2 ? (
                         <StreamContainerWrapper
-                        className="width3"
+                          className="width1"
                           ref={this.userRef}
                         >
                           {this.state.publisher !== undefined ? (
-                            <div className="stream-container under-four">
+                            <div className="stream-container under-two">
                               <UserVideoComponent
                                 streamManager={this.state.publisher}
                                 key={this.state.publisher.stream.streamId}
@@ -181,15 +187,15 @@ class OpenChat extends Component {
                           ) : null}
                         </StreamContainerWrapper>
                       ) : (
-
-                        // 총 5-6명일 때
-                        this.state.subscribers.length < 6 ? (
+                        
+                        // 총 3-4명일 때
+                        this.state.subscribers.length < 4 ? (
                           <StreamContainerWrapper
-                          className="width4"
+                          className="width2"
                             ref={this.userRef}
                           >
                             {this.state.publisher !== undefined ? (
-                              <div className="stream-container under-six">
+                              <div className="stream-container under-four">
                                 <UserVideoComponent
                                   streamManager={this.state.publisher}
                                   key={this.state.publisher.stream.streamId}
@@ -201,28 +207,51 @@ class OpenChat extends Component {
                             ) : null}
                           </StreamContainerWrapper>
                         ) : (
-
-                          // 총 7-9명일 때
-                          <StreamContainerWrapper
-                          className="width5"
-                            ref={this.userRef}
-                          >
-                            {this.state.publisher !== undefined ? (
-                              <div className="stream-container under-nine">
-                                <UserVideoComponent
-                                  streamManager={this.state.publisher}
-                                  key={this.state.publisher.stream.streamId}
-                                />
-                                {this.state.subscribers.map((sub, i) => (
-                                  <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                ))}
-                              </div>
-                            ) : null}
-                          </StreamContainerWrapper>
+  
+                          // 총 5-6명일 때
+                          this.state.subscribers.length < 6 ? (
+                            <StreamContainerWrapper
+                            className="width1"
+                              ref={this.userRef}
+                            >
+                              {this.state.publisher !== undefined ? (
+                                <div className="stream-container under-six">
+                                  <UserVideoComponent
+                                    streamManager={this.state.publisher}
+                                    key={this.state.publisher.stream.streamId}
+                                  />
+                                  {this.state.subscribers.map((sub, i) => (
+                                    <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                  ))}
+                                </div>
+                              ) : null}
+                            </StreamContainerWrapper>
+                          ) : (
+  
+                            // 총 7-9명일 때
+                            <StreamContainerWrapper
+                            className="width2"
+                              ref={this.userRef}
+                            >
+                              {this.state.publisher !== undefined ? (
+                                <div className="stream-container under-nine">
+                                  <UserVideoComponent
+                                    streamManager={this.state.publisher}
+                                    key={this.state.publisher.stream.streamId}
+                                  />
+                                  {this.state.subscribers.map((sub, i) => (
+                                    <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                  ))}
+                                </div>
+                              ) : null}
+                            </StreamContainerWrapper>
+                          )
                         )
                       )
                     )
                   )}
+
+
                 </div>
               </div>
 
@@ -265,7 +294,10 @@ class OpenChat extends Component {
                   </Link>
 
                   <Icon 
-                    onClick={() => {
+                    onClick={() => 
+                    {
+                      // this.setState({ isShare: !this.state.isShare })
+                      this.state.session.unpublish(this.state.publisher);
                       let newPublisher = this.OV.initPublisher("html-element-id", {
                         audioSource: undefined,
                         videoSource: "screen", // 웹캠 기본 값으로
@@ -277,21 +309,22 @@ class OpenChat extends Component {
                         mirror: "false",
                       });
         
-                      this.mySession.publish(newPublisher);
-                      this.setState({ mainStreamManager: newPublisher, newPublisher });
-        
                       newPublisher.once('accessAllowed', (event) => {
                         newPublisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
                           console.log('User pressed the "Stop sharing" button');
+                          this.state.session.unpublish(newPublisher);
+                          this.state.session.publish(this.state.publisher);
                         });
-                        this.mySession.unpublish(this.publisher);
-                        // this.mySession.publish(newPublisher);
-                        // this.setState({ mainStreamManager: newPublisher, newPublisher });
-            
+                        this.state.session.publish(newPublisher);
+                        this.setState({ isShare: !this.state.isShare })
+                        this.setState({ mainStreamManager: newPublisher, newPublisher });
+
                       });
               
                       newPublisher.once('accessDenied', (event) => {
                         console.warn('ScreenShare: Access Denied');
+                        this.state.session.publish(this.state.publisher);
+                        this.setState({ isShare: !this.state.isShare });
                       });
                     }}
                   >
@@ -363,8 +396,6 @@ class OpenChat extends Component {
     this.state = {
       mySessionId: this.props.group.id.toString(),  // store에 저장된 roomId
       myUserName: this.props.user.nickname,  // store에 저장된 nickname
-      // mySessionId: "2",  // store에 저장된 roomId
-      // myUserName: "testId",  // store에 저장된 nickname
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, // 로컬 웹캠 스트림
@@ -372,7 +403,6 @@ class OpenChat extends Component {
       isMike: true,
       isCamera: true,
       isSpeaker: true,
-      isChat: false,
       isShare: false,
       messageList: [],
       message: '',
@@ -388,6 +418,22 @@ class OpenChat extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  componentDidMount(e) {
+    // this.leaveSession();
+    // window.addEventListener("beforeunload", this.onbeforeunload);
+    // if (this.session === undefined) {
+    this.joinSession();
+    // }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.onbeforeunload);
+  }
+
+  onbeforeunload(e) {
+    this.leaveSession();
   }
 
   handleChange(event) {
@@ -421,22 +467,6 @@ class OpenChat extends Component {
         this.chatScroll.current.scrollTop = this.chatScroll.current.scrollHeight;
       } catch (err) {}
     }, 20);
-  }
-
-  componentDidMount(e) {
-    // this.leaveSession();
-    // window.addEventListener("beforeunload", this.onbeforeunload);
-    // if (this.session === undefined) {
-      this.joinSession();
-    // }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.onbeforeunload);
-  }
-
-  onbeforeunload(e) {
-    this.leaveSession();
   }
 
   // 화상회의 나갈때
@@ -599,6 +629,40 @@ class OpenChat extends Component {
         });
       }
     );
+  };
+
+  shareScreen () {
+    this.state.session.unpublish(this.state.publisher);
+    let newPublisher = this.OV.initPublisher("html-element-id", {
+      audioSource: undefined,
+      videoSource: "screen", // 웹캠 기본 값으로
+      publishAudio: true,
+      publishVideo: true,
+      resolution: "640x360",
+      frameRate: 30,
+      insertMode: "APPEND",
+      mirror: "false",
+    });
+    
+    console.log("----------------------------")
+    console.log(newPublisher)
+    console.log("----------------------------")
+    
+    this.state.session.publish(newPublisher);
+    this.setState({ mainStreamManager: newPublisher, newPublisher });
+
+    newPublisher.once('accessAllowed', (event) => {
+      newPublisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+        console.log('User pressed the "Stop sharing" button');
+        this.state.session.unpublish(newPublisher);
+        this.state.session.publish(this.state.publisher);
+      });
+      this.state.session.unpublish(this.publisher);
+    });
+
+    newPublisher.once('accessDenied', (event) => {
+      console.warn('ScreenShare: Access Denied');
+    });
   }
 
   async getToken(mySessionId) {
