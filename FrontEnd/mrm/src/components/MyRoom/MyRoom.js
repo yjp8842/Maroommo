@@ -19,6 +19,7 @@ import styled from "styled-components";
 import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import api from "../../utils/axiosInstance"
 import { userInfoActions } from "../../slice/userInfoSlice";
+import { scheduleActions } from "../../slice/scheduleSlice";
 
 const MyRoom = () => {
   const dispatch = useDispatch()
@@ -31,8 +32,11 @@ const MyRoom = () => {
 
   useEffect(() => {
     api.get(`/room/my/${user.id}`)
-    .then((res) => {      
+    .then((res) => {   
+      console.log("마이 페이지 이동!");  
+      // console.log(res);
       dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo))
+      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules))
     })
     .catch((err) => {
       console.log(err);
@@ -56,7 +60,7 @@ const MyRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon/></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -76,7 +80,7 @@ const MyRoom = () => {
           <Box>
             {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>

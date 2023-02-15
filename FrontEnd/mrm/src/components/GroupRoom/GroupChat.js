@@ -1,31 +1,48 @@
-// import { Fragment } from 'react';
-import React, { useSelector } from 'react';
+
+import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
-import HomePage from '../MyRoom/MyRoomItem/PageIcon';
-import { Link } from 'react-router-dom';
+import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
+import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/HomeBtn';
-import ChatRoom from './GroupRoomItem/ChatRoom';
 import Chat from './Chat/Chat';
-import { NavItem } from './GroupRoomItem/Category';
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 
 import './GroupRoomItem/Category.css';
 import './Group.css';
 
-const GroupChat = () => {
-  const handleOpenNewTab = (url) => {
-    window.open(url, "_blank", "noopener, noreferrer");
-  };
+import { useSelector, useDispatch,  } from "react-redux";
+import api from "../../utils/axiosInstance";
+import GroupMemberList from './GroupRoomItem/GroupMemberList';
+import MenuBtn from './GroupRoomItem/MenuBtn';
+import { userInfoActions} from "../../slice/userInfoSlice";
+import { groupInfoActions} from "../../slice/groupInfoSlice";
 
-  const {group} = useSelector((state) => ({
+const GroupChat = () => {
+  const dispatch = useDispatch();
+	const params = useParams();
+  const groupId = params.groupId;
+
+  useEffect(() => {
+
+    api.get(`/room/${groupId}/${user.id}`)
+    .then((res) => {    
+      console.log("이동!")
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
+    })
+    .catch((err) => {
+      console.log(err);
+    });        
+  }, [groupId])
+
+  const {user, group} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
     group: state.groupInfoReducers.group
   }))
-  
+
   return (
     <Grid container>
       <Box
@@ -39,7 +56,7 @@ const GroupChat = () => {
         }}>
         <Box>
           {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><HomePage /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -57,7 +74,9 @@ const GroupChat = () => {
             justifyContent: "space-between"
           }}>
           <Box>
-            <HomePage />
+            {user.myRooms.map((room, index) => {
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
+            })}
           </Box>
           <Box>
             <Box
@@ -99,24 +118,16 @@ const GroupChat = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/group`}><HomeBtn /></Link>
-          <Link to={`/group/chat`}><ChatRoom /></Link>
 
-          <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
+          {/* <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
             <OpenChatRoom />
-          </div>
+          </div> */}
           
-          <NavItem>
-            {/** 하위에 있는 메뉴가 열립니다. **/}
-            {/* <ul> */}
-            <div className='category-box'>
-              <Link to={`/group/board`}><li>게시판</li></Link>
-              <li>화상회의</li>  
-              <Link to={`/group/qna`}><li>Q&A</li></Link>   
-            </div>
-            {/* </ul> */}
-          </NavItem>
-
+          <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
+          <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
+          <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
+          <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
+          <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
         </Box>
         
         <Box
@@ -149,9 +160,15 @@ const GroupChat = () => {
               backgroundColor: "#FFFFFF",
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
-              justifyContent: 'center'
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
             <h3>그룹 인원</h3>
+            <hr align="center" width="80%"/>   
+            {group.users.map((user, index) => {
+              return (<GroupMemberList user={user}/>)
+            })}
           </Box>
           <Box
             sx={{

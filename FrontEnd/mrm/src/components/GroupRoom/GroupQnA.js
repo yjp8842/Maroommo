@@ -1,25 +1,18 @@
-// import { Fragment } from 'react';
-import React from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
-import HomePage from '../MyRoom/MyRoomItem/PageIcon';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
+import { Link, useParams } from 'react-router-dom';
+
+import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/HomeBtn';
-import ChatRoom from './GroupRoomItem/ChatRoom';
-import { NavItem } from './GroupRoomItem/Category';
-
-import './GroupRoomItem/Category.css';
+import MenuBtn from './GroupRoomItem/MenuBtn';
+import GroupMemberList from './GroupRoomItem/GroupMemberList';
 
 import QuestionList from './Board/ArticlePage/Sections/QuestionList';
-import { useNavigate } from 'react-router-dom';
-
-import { useEffect } from 'react';
-
-import { useDispatch, useSelector } from 'react-redux';
 import { questionActions } from '../../slice/questionSlice';
 
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
@@ -31,31 +24,23 @@ const GroupQnA = () => {
     window.open(url, "_blank", "noopener, noreferrer");
   };
 
-  const {group} = useSelector((state) => ({
-    group: state.groupInfoReducers.group
-  }))
-
-  const navigate = useNavigate();
-  const onQuestionArticleTitleClick = (id) => {
-    {/* 룸아이디 넣는 식으로 수정해야함 */}
-    const path = `/group/1/question/questionArticle/${id}`;
-    navigate(path)
-  }
-
   const dispatch = useDispatch();
+	const params = useParams();
+  const groupId = params.groupId;
+
   useEffect(() => {
     dispatch(questionActions.getQuestion());
   }, [dispatch]);
 
-  const {question, isLoading, isSuccess, error } = 
-  useSelector((state) => ({
+  const { user, question, group, isLoading, isSuccess, error } = useSelector((state) => ({
+    user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group,
     question: state.questionReducers.question,
     isLoading: state.questionReducers.isLoading,
     isSuccess: state.questionReducers.isSuccess,
-    error: state.questionReducers.error}));
-    // console.log('333333333')
-    // console.log(question.content)
-    // console.log(question.content.length)
+    error: state.questionReducers.error
+  })
+  );
 
   return (
     <Grid container>
@@ -69,8 +54,7 @@ const GroupQnA = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><HomePage /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -88,7 +72,9 @@ const GroupQnA = () => {
             justifyContent: "space-between"
           }}>
           <Box>
-            <HomePage />
+            {user.myRooms.map((room, index) => {
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
+            })}
           </Box>
           <Box>
             <Box
@@ -119,7 +105,7 @@ const GroupQnA = () => {
         }}>
         <Box
           sx={{
-            width: "15vw",
+            width: "288px",
             height: "98vh",
             paddingY: "1vh",
             display: "flex",
@@ -129,63 +115,92 @@ const GroupQnA = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          {/* 룸아이디 넣는 식으로 수정해야함 */}
-          <Link to={`/group/1`}><HomeBtn /></Link>
-          <Link to={`/group/1/chat`}><ChatRoom /></Link>
-          
-          <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
+
+          {/* <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
             <OpenChatRoom />
-          </div>
-
-          <NavItem>
-            {/** 하위에 있는 메뉴가 열립니다. **/}
-            {/* <ul> */}
-            <div className='category-box'>
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/board`}><li>게시판</li></Link> 
-              <li>화상회의</li>  
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
-            </div>
-            {/* </ul> */}
-          </NavItem>
-
+          </div> */}
+          
+          <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
+          <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
+          <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
+          <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
+          <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
         </Box>
         
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            alignItems: 'center',
           }}>
 
           <Box sx={{mt:5}}>
             <h1>Q&A</h1>
             <br></br>
-          {/* 완료여부 포함된 board..어떻게 넣지? */}
-          <div style={{ width: "80%", margin: "3rem auto" }}>
-            {error ? (
-              <h2>에러 발생: {error}</h2>
-            ) : isSuccess && question.content.length <= 0 ? (
-              <p> 조회할 내용이 없습니다. </p>
-            ) 
-            : isSuccess && question.content.length > 0 ? (
-              <QuestionList 
-                question={question}
-                // handleDeleteClick={onDeleteClick}
-                handleQuestionArticleTitleClick={onQuestionArticleTitleClick} />
-            ) : (
-              <p> 목록을 불러오는 중입니다. </p>
-            )}
+            {/* 완료여부 포함된 board..어떻게 넣지? */}
+            {/* <div style={{ width: "80%", margin: "3rem auto" }}>
+              {error
+                ? (<h2>에러 발생: {error}</h2>)
+                : isSuccess && question.content.length <= 0
+                  ? (<p> 조회할 내용이 없습니다. </p>)
+                  : isSuccess && question.content.length > 0
+                    ? (<QuestionList
+                      question={question}
+                      // handleDeleteClick={onDeleteClick}
+                      // handleQuestionArticleTitleClick={onQuestionArticleTitleClick}
+                      />)
+                    : (<p> 목록을 불러오는 중입니다. </p>)}
+            </div> */}
+
+            <div>
+              <table>
+                <colgroup>
+                  <col width="10%" />
+                  <col width="15%" />
+                  <col width="35%" />
+                  <col width="15%" />
+                  <col width="10%" />
+                  <col width="15%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>해결/미해결</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>조회수</th>
+                    <th>작성일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {question.content.map((questionArticle, index) => {
+                  return (
+                    <tr>
+                      <td>{questionArticle.id}</td>
+                      <td>{questionArticle.status}</td>
+                      <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
+                        <td>{questionArticle.title}</td>
+                      </Link>
+                      <td>{questionArticle.user_id}</td>
+                      <td>{questionArticle.views}</td>
+                      <td>{new Date(questionArticle.createTime).toLocaleString()}</td>
+                      </tr>
+                  )
+                })}
+                </tbody>
+              </table>
             </div>
-            <Link to='/group/1/question/register?isForEdit=false'>
+
+
+            <Link to={`/group/${groupId}/question/register?isForEdit=false`}>
               <button>글쓰기</button>
             </Link>
           </Box>
-        </Box>
+        </Box>   
 
         <Box
           sx={{
-            width: "15vw",
+            width: "288px",
             height: "98vh",
             paddingY: "1vh",
             display: "flex",
@@ -204,9 +219,15 @@ const GroupQnA = () => {
               backgroundColor: "#FFFFFF",
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
-              justifyContent: 'center'
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-            <h2>그룹 인원</h2>
+            <h3>그룹 인원</h3>
+            <hr align="center" width="80%"/>   
+            {group.users.map((user, index) => {
+              return (<GroupMemberList user={user}/>)
+            })}
           </Box>
           <Box
             sx={{
@@ -219,9 +240,12 @@ const GroupQnA = () => {
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              ':hover': {
+                cursor: 'pointer'
+              }
             }}>
-              <h2>탈퇴하기</h2>
+            <h2>탈퇴하기</h2>
           </Box>
         </Box>
       </Box>

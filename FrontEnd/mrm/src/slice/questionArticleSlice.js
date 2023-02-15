@@ -11,11 +11,11 @@ export const questionArticleSlice = createSlice({
     views: 0,
     createTime: "",
     editDate: "",
-    // categorysub_id: "",
     user_id: "",
     status: 0,
     answers:[],
     good: 0,
+    picture: null
   },
   reducers: {
     registerQuestionArticle: (state, { payload: questionArticle }) => {
@@ -33,13 +33,13 @@ export const questionArticleSlice = createSlice({
         id: Object.values(questionArticle)[0].id,
         title: Object.values(questionArticle)[0].title,
         content: Object.values(questionArticle)[0].content,
-        // date: Object.values(questionArticle)[0].date,
         createTime: Object.values(questionArticle)[0].createTime,
         views: Object.values(questionArticle)[0].views,
         user_id: Object.values(questionArticle)[0].user_id,
         status: Object.values(questionArticle)[0].status,
         answers: Object.values(questionArticle)[0].answers,
-        good: questionArticle.good
+        good: Object.values(questionArticle)[0].good,
+        picture: Object.values(questionArticle)[0].picture
       };
     },
     fetchQuestionArticle: (state, {payload: id}) => {

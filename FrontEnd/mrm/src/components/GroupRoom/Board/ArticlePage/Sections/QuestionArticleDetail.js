@@ -10,10 +10,9 @@ function QuestionArticleDetail(props) {
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
         {/* 룸 아이디 넣는식으로 수정 */}
-        <a href="/group/1/question">
+        <Link to={`/group/${props.groupId}/question`}>
           <button type="primary">목록</button>
-        </a>
-        <button></button>
+        </Link>
       </div>
       <div style={{ textAlign: "center" }}>
         <h2>질문</h2>
@@ -44,7 +43,6 @@ function QuestionArticleDetail(props) {
             <tr>
               <th>내용</th>
               <td colSpan="3">{props.content}</td>
-              <td colSpan="3">{props.picture}</td>
               <img src={`/images/${props.picture}`} alt='logo' className='imgbox' />
             </tr>
             <tr>
@@ -62,7 +60,7 @@ function QuestionArticleDetail(props) {
       <div>
           <div style={{ margin: "2rem auto" }}>
             {/* roomid 넣는식으로 수정 */}
-            <Link to={`/group/1/question/register?isForEdit=true`}>
+            <Link to={`/group/${props.groupId}/question/register?isForEdit=true`}>
               <button>수정</button>
             </Link>
           </div>

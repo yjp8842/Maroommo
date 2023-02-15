@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const boardSlice = createSlice({
   name: "board",
   initialState: {
-    board: {},
+    board: {
+      content:[],
+    },
     isLoading: true,
     isSuccess: false,
     error: null,
@@ -12,6 +14,27 @@ export const boardSlice = createSlice({
     getBoard: (state, { payload }) => {
       console.log("getBoard 액션 호출");
     },
+    getBoardSuccess: (state, { payload: data }) => {
+      console.log('saga에서 get 액션 호출 - getBoardSuccessAsync : ', data)
+      return {
+        ...state,
+        board: data,
+        isSuccess: true,
+        isLoading: false,
+        error: null,
+      };
+      
+    },
+    getBoardFailed: (state, { payload: error }) => {
+      console.log("saga에서 fail 액션 호출 -- getBoardFailedAsync");
+      return {
+        ...state,
+        isLoading: false,
+        error: error,
+      };
+    },
+
+    
     getBoardSuccessAsync: (state, { payload: data }) => {
       console.log('saga에서 get 액션 호출 - getBoardSuccessAsync : ', data)
       return {

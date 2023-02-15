@@ -19,6 +19,23 @@ export const articleSlice = createSlice({
     registerArticle: (state, { payload: article }) => {
       console.log('register 액션 호출'); // saga에서 감시용
     },
+    getArticleDetail: (state, { payload: article }) => {
+      // console.log('33333333')
+      // console.log(article)
+      // console.log(Object.values(article)[0])
+      return {
+        ...state,
+        id: Object.values(article)[0].id,
+        title: Object.values(article)[0].title,
+        content: Object.values(article)[0].content,
+        createTime: Object.values(article)[0].createTime,
+        editDate: Object.values(article)[0].editDate,
+        views: Object.values(article)[0].views,
+        user_id: Object.values(article)[0].user_id,
+        picture: Object.values(article)[0].picture,
+        comments: Object.values(article)[0].comments
+      };
+    },
     getArticle: (state, { payload: id }) => {
       console.log('조회 액션 호출'); // saga에서 감시용
     },

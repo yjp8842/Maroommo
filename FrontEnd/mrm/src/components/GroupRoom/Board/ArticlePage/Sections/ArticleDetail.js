@@ -9,9 +9,9 @@ function ArticleDetail(props) {
   return (
     <div style={{ width: "80%", margin: "3rem auto" }}>
       <div style={{ margin: "2rem auto" }}>
-        <a href="/group/1/board">
+        <Link to={`/group/${props.groupId}/board`}>
           <button type="primary">목록</button>
-        </a>
+        </Link>
         <button></button>
       </div>
       <div style={{ textAlign: "center" }}>
@@ -39,7 +39,6 @@ function ArticleDetail(props) {
             <tr>
               <th>내용</th>
               <td colSpan="3">{props.content}</td>
-              <td colSpan="3">{props.picture}</td>
               <img src={`/images/${props.picture}`} alt='logo' className='imgbox' />
             </tr>
             <tr>
@@ -55,7 +54,7 @@ function ArticleDetail(props) {
       </div>
       <div>
           <div style={{ margin: "2rem auto" }}>
-            <Link to={`/group/1/board/register?isForEdit=true`}>
+            <Link to={`/group/${props.groupId}/board/register?isForEdit=true`}>
               <button>수정</button>
             </Link>
           </div>

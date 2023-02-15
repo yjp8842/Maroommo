@@ -7,13 +7,13 @@ import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
 import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/HomeBtn';
-import ChatRoom from './GroupRoomItem/ChatRoom';
-import { NavItem } from './GroupRoomItem/Category';
+import MenuBtn from './GroupRoomItem/MenuBtn';
+import GroupMemberList from './GroupRoomItem/GroupMemberList';
 import TodoBox from './GroupRoomItem/TodoInGroup';
 import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
 import { userInfoActions} from "../../slice/userInfoSlice";
 import { groupInfoActions} from "../../slice/groupInfoSlice";
+import { scheduleActions } from "../../slice/scheduleSlice";
 
 import api from "../../utils/axiosInstance";
 import * as StompJs from "@stomp/stompjs";
@@ -35,12 +35,21 @@ const GroupRoom = () => {
 	const params = useParams();
   const groupId = params.groupId;
 
-  useEffect(() => {
 
+  /*
+  처음에 로그인하면 user가 store에 저장이 되고 myPage로 이동한다
+  이후 groupPage로 이동을 하면 useEffect 시 
+
+
+  */
+  useEffect(() => {
+    console.log("그룹 페이지 이동!")
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
-      console.log("이동!")
-      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
+      console.log(res)
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
+      setGroupMemoContent(res.data.moveRoomInfo.roomMemo);
     })
     .catch((err) => {
       console.log(err);
@@ -53,7 +62,7 @@ const GroupRoom = () => {
   }))
 
   const client = useRef({});
-  const [groupMemoContent, setGroupMemoContent] = useState("");
+  const [groupMemoContent, setGroupMemoContent] = useState(group.roomMemo);
   const [myMemoContent, setMyMemoContent] = useState(user.userMemo);
 
   const handleSetGroupMemo = (e) => {
@@ -76,8 +85,6 @@ const GroupRoom = () => {
 
     api
     .post('/my/memo', data)
-    .then(response => {
-    })
     .catch((err) => {
       console.log("내 메모 저장 중 오류 발생");
     })
@@ -166,7 +173,7 @@ const GroupRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -185,7 +192,7 @@ const GroupRoom = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -227,24 +234,16 @@ const GroupRoom = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/group`}><HomeBtn /></Link>
-          <Link to={`/group/chat`}><ChatRoom /></Link>
-          
-          <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
+
+          {/* <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
             <OpenChatRoom />
-          </div>
-
-          <NavItem>
-            {/* 하위 메뉴 열림 */}
-            <div className='category-box'>
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/board`}><li>게시판</li></Link>  
-              <li>화상회의</li>  
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
-            </div>
-          </NavItem>
-
+          </div> */}
+          
+          <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
+          <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
+          <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
+          <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
+          <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
         </Box>
         
         <Box
@@ -338,9 +337,15 @@ const GroupRoom = () => {
               backgroundColor: "#FFFFFF",
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
-              justifyContent: 'center'
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
             <h3>그룹 인원</h3>
+            <hr align="center" width="80%"/>   
+            {group.users.map((user, index) => {
+              return (<GroupMemberList user={user}/>)
+            })}
           </Box>
           <Box
             sx={{
@@ -358,7 +363,7 @@ const GroupRoom = () => {
                 cursor: 'pointer'
               }
             }}>
-              <h2>탈퇴하기</h2>
+            <h2>탈퇴하기</h2>
           </Box>
         </Box>
       </Box>
