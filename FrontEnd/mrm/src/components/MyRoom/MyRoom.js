@@ -24,10 +24,22 @@ import { scheduleActions } from "../../slice/scheduleSlice";
 const MyRoom = () => {
   const dispatch = useDispatch()
 
-  const {user} = useSelector((state) => 
+  const {user, doing_list, done_list} = useSelector((state) => 
   ({
-    user: state.userInfoReducers.user
+    user: state.userInfoReducers.user,
+    doing_list: state.userInfoReducers.user.doing,
+    done_list: state.userInfoReducers.user.done
   }), shallowEqual)
+
+  var todoList = []
+
+  doing_list.map((todo, index) => {
+    return (todoList.push(todo))
+  })
+
+  done_list.map((todo, index) => {
+    return (todoList.push(todo))
+  })
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -60,8 +72,9 @@ const MyRoom = () => {
     .then((res) => {   
       console.log("마이 페이지 이동!");  
       // console.log(res);
-      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo))
-      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules))
+      dispatch(userInfoActions.saveUserInfo(res.data.user));
+      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules));
     })
     .catch((err) => {
       console.log(err);
@@ -133,7 +146,7 @@ const MyRoom = () => {
           <Profile 
             user={user}  
             />
-          <StudyTime />
+          <StudyTime todoList={todoList} />
           <Todo />
           <CalendarBox />
         </Box>
@@ -208,8 +221,8 @@ const MyRoom = () => {
                 >
                 </textarea>
             </Box>
-            <h2>TIME TABLE</h2>
-            <TimeTable />
+            {/* <h2>TIME TABLE</h2> */}
+            <TimeTable todoList={todoList}/>
           </Box>
         </Box>
       </Box>
@@ -224,7 +237,6 @@ const Button = styled.button`
   background-color: #ffffff;
   border-radius: 10px;
   color: black;
-  font-style: italic;
   font-weight: 200;
   cursor: pointer;
   &:hover {

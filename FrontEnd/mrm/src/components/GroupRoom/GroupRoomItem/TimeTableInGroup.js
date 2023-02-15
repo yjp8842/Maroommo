@@ -1,6 +1,8 @@
 import React from "react";
 import { Box } from "@mui/system";
 
+import { TimeList } from "../TimeList/TimeList";
+
 class TimeTableBox extends React.Component {
   render() {
     return (
@@ -16,7 +18,9 @@ class TimeTableBox extends React.Component {
           display: 'flex',
           justifyContent: 'center'
         }}>
-        <h3>Time Table</h3>
+        {/* <h3>Time List</h3> */}
+        <TimeList />
+
       </Box>
     )
   }

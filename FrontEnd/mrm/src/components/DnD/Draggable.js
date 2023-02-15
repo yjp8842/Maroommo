@@ -24,7 +24,7 @@ function Draggable({ children, type, item, text, style, hideWhenDrag, state }) {
       style={style}
       ref={drag}
     >
-      <span>{text}</span>
+      <span>{text}</span><br/>
       {children}
     </span>
   );

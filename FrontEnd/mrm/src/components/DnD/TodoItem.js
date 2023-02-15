@@ -1,23 +1,25 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import { MdDone, MdDelete } from 'react-icons/md';
-import { useTodoDispatch } from './TodoContext';
+import { useTodoDispatch } from './trash/TodoContext';
 
 
-function TodoItem({ Todo_id, Group_id, tag, done, text }) {
+function TodoItem({ id, Group_id, tag, done, text }) {
   const dispatch = useTodoDispatch();
 
   const onToggle = () => {
     dispatch({
       type: 'TOGGLE',
-      Todo_id
+      id,
+      tag
     });
   };
 
   const onRemove = () => {
     dispatch({
       type: 'REMOVE',
-      Todo_id
+      id,
+      tag
     });
   };
 

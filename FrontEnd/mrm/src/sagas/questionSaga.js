@@ -8,9 +8,9 @@ export function* getQuestionAsync(action) {
   console.log("getQuestionAsync 호출!");
   console.log(action);
   const groupId = action.payload;
-
+  console.log(groupId, '이건 그룹아이디')
   try {
-    const response = yield api.get(`/question?room_id=1&size=10`);
+    const response = yield api.get(`/question?room_id=${groupId}&size=10`);
     console.log(response);
     yield put(questionActions.getQuestionSuccessAsync(response.data));
   } catch (e) {

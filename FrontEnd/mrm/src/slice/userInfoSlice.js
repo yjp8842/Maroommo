@@ -6,7 +6,11 @@ export const userInfoSlice = createSlice({
 
   name: 'userInfo',
   initialState: {
-    user:{},
+    user:{
+      doing:[],
+      done:[],
+      schedules:[],
+    },
 
 
   },

@@ -25,7 +25,9 @@ function Droppable({ accept, handleDrop, text, children, state, big, style }) {
       style={style}
       ref={drop}
     >
+      {/* 여기가 박스 안에 들어가는 구역 */}
       <div>{text}</div>
+      
       {children}
     </div>
   );

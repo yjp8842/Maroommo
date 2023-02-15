@@ -20,7 +20,7 @@ import Answer from "./Sections/Answer";
 function QuestionArticlePage() {
 
   const dispatch = useDispatch();
-	const params = useParams();
+  const params = useParams();
   const groupId = params.groupId;
   const questionArticleId = params.questionArticleId;
 

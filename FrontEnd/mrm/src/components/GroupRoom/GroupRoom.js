@@ -14,7 +14,9 @@ import TimeTableBox from './GroupRoomItem/TimeTableInGroup';
 import { userInfoActions} from "../../slice/userInfoSlice";
 import { groupInfoActions} from "../../slice/groupInfoSlice";
 import { scheduleActions } from "../../slice/scheduleSlice";
+import RoomModal from "../Modal/Group/RoomModal";
 
+import styled from "styled-components";
 import api from "../../utils/axiosInstance";
 import * as StompJs from "@stomp/stompjs";
 import * as SockJS from "sockjs-client";
@@ -46,7 +48,10 @@ const GroupRoom = () => {
     console.log("그룹 페이지 이동!")
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
+      console.log("그룹 페이지 이동!")
+
       console.log(res)
+      dispatch(userInfoActions.saveUserInfo(res.data.user));
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
       dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
       setGroupMemoContent(res.data.moveRoomInfo.roomMemo);
@@ -146,6 +151,12 @@ const GroupRoom = () => {
     });
   };
 
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
+  
   // 메시지 보내기 + time 보낼 필요없음
   const publish = (req) => {
     if (!client.current.connected) {
@@ -212,6 +223,15 @@ const GroupRoom = () => {
                 }
               }}>
             </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -253,7 +273,8 @@ const GroupRoom = () => {
             alignItems: 'center',
           }}>
 
-          <TodoBox /><Box
+          <TodoBox />
+          <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-evenly',
@@ -372,3 +393,24 @@ const GroupRoom = () => {
 };
 
 export default GroupRoom;
+
+
+
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;
