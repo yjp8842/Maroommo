@@ -1,3 +1,4 @@
+import { Link } from "@mui/material";
 import React from "react";
 // import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -25,23 +26,23 @@ function BoardList(props) {
             <th>작성일</th>
           </tr>
         </thead>
-        {props.board.content.map((article) => (
-          <thead>
-            <tr key={article.id}>
-              <td>{article.id}</td>
-              <Article onClick={() => props.handleArticleTitleClick(article.id)} // 추가
-                >
-                  {article.title}
-                  {/* &nbsp;
-                  {props.commentLength[article.id] > 0 &&
-                    `[${props.commentLength[article.id]}]`} */}
-                </Article>
-              <td>{article.user}</td>  
-              <td>{article.views}</td>
-              <td>{new Date(article.createTime).toLocaleString()}</td>
-            </tr>
-          </thead>
-        ))}
+        {props.board.content.map((article, index) => {
+          return (
+            <thead>
+              <tr key={article.id}>
+                <td>{article.id}</td>
+                  <Link to={`/group/${props.groupId}/board/article/${article.id}`}>
+                    {/* <Article> */}
+                      {article.title}
+                    {/* </Article> */}
+                  </Link>
+                <td>{article.user}</td>
+                <td>{article.views}</td>
+                <td>{new Date(article.createTime).toLocaleString()}</td>
+              </tr>
+              </thead>
+          )
+        })}
       </table>
     </div>
   );
@@ -53,5 +54,4 @@ const Article = styled.td`
     text-decoration: underline;
   }
 `
-
 export default BoardList;

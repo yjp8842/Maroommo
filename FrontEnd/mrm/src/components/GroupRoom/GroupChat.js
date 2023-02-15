@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from '@mui/material';
@@ -8,6 +9,11 @@ import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
 import Chat from './Chat/Chat';
+import OpenChatRoom from './OpenVidu/OpenChatRoom';
+
+import './GroupRoomItem/Category.css';
+import './Group.css';
+
 import { useSelector, useDispatch,  } from "react-redux";
 import api from "../../utils/axiosInstance";
 import GroupMemberList from './GroupRoomItem/GroupMemberList';
@@ -50,7 +56,7 @@ const GroupChat = () => {
         }}>
         <Box>
           {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -69,7 +75,7 @@ const GroupChat = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -112,12 +118,16 @@ const GroupChat = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
+
+          {/* <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
+            <OpenChatRoom />
+          </div> */}
+          
           <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
           <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
           <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
           <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
           <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
-        
         </Box>
         
         <Box

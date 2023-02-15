@@ -13,10 +13,12 @@ import QuestionArticlePage from './components/GroupRoom/Board/ArticlePage/Questi
 import RegisterQuestionPage from './components/GroupRoom/Board/RegisterQuestionPage';
 import history from './utils/history';
 
+import OpenChat from './components/GroupRoom/OpenVidu/OpenVidu';
 import FindIdPage from './components/Login/FindId';
 import FindPwdPage from './components/Login/FindPwd';
 import ModifyPwdPage from './components/Login/ModifyPwd'
 import SuccessPage from './components/Login/SuccessPage';
+
 // import { Box } from '@mui/system';
 // import { Fragment } from 'react';
 
@@ -29,7 +31,7 @@ function App() {
         <Route path="/myroom" element={<MyRoom />} />
         <Route path="/group/:groupId" element={<GroupRoom />} />
         <Route path="/group/:groupId/chat" element={<GroupChat />} />
-        <Route path="/group/1/board" element={<GroupBoard />} />
+        <Route path="/group/:groupId/board" element={<GroupBoard />} />
         <Route path="/group/:groupId/question" element={<GroupQnA />} />
         <Route path="/group/:groupId/board/article/:articleId" element={<ArticlePage/>}/>
         <Route path="/group/:groupId/question/questionArticle/:questionArticleId" element={<QuestionArticlePage/>}/>
@@ -39,7 +41,7 @@ function App() {
         <Route path='/findPwd' element={<FindPwdPage/>}/>
         <Route path='/modifyPwd' element={<ModifyPwdPage/>}/>
         <Route path="/oauth2/social/success" element={<SuccessPage/>}/>
-
+        <Route path="/group/:groupId/openvidu" element={<OpenChat/>}/>
       </Routes>
     </BrowserRouter>
 
