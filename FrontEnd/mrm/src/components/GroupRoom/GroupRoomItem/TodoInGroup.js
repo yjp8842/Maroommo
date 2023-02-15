@@ -34,7 +34,8 @@ const TodoBox = () => {
     return (
       <div>
         <DndProvider backend={HTML5Backend}>
-          <TodoAll />/<ScheduleAll />
+          <TodoAll />
+          <ScheduleAll />
         </DndProvider>
       </div>
     )

@@ -49,6 +49,7 @@ const GroupRoom = () => {
       console.log("그룹 페이지 이동!")
 
       console.log(res)
+      dispatch(userInfoActions.saveUserInfo(res.data.user));
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
       dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
       setGroupMemoContent(res.data.moveRoomInfo.roomMemo);
@@ -255,7 +256,8 @@ const GroupRoom = () => {
             alignItems: 'center',
           }}>
 
-          <TodoBox /><Box
+          <TodoBox />
+          <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-evenly',
