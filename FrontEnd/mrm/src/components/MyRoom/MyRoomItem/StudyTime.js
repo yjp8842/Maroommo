@@ -29,6 +29,7 @@ function StudyTime (props) {
 
   const todos = [];
   props.todoList.map((todo) => {
+    console.log(todo);
     var tot = 0;
     todo.todoTimes.map((time) => (
       time.totalMinute ? tot += time.totalMinute : tot += 0
