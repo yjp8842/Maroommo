@@ -54,9 +54,9 @@ public class RoomController {
         MyRoomResponseDto myRoomInfo = null;
 
         try {
-//            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId);
+            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId);
             myRoomInfo = roomService.getMyRoomDto(userId);
-//            resultMap.put("moveRoomInfo",moveRoomInfo);
+            resultMap.put("moveRoomInfo",moveRoomInfo);
             resultMap.put("myRoomInfo",myRoomInfo);
             status = HttpStatus.CREATED;
         } catch (Exception e) {
