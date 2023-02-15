@@ -186,7 +186,7 @@ const GroupBoard = () => {
                 </tr>
               </thead>
               <tbody>
-                {board.content.map((article, index) => {
+                {/* {board.content.map((article, index) => {
                   return (
                     <tr>
                       <td>{article.id}</td>
@@ -196,7 +196,23 @@ const GroupBoard = () => {
                       <td>{new Date(article.createTime).toLocaleString()}</td>
                     </tr>
                   )
-                })}
+                })} */}
+                
+                {
+                board.content 
+                  ? board.content.map((article, index) => {
+                    return (
+                      <tr>
+                        <td>{article.id}</td>
+                          <Link to={`/group/${groupId}/board/article/${article.id}`}>{article.title}</Link>
+                        <td>{article.user}</td>
+                        <td>{article.views}</td>
+                        <td>{new Date(article.createTime).toLocaleString()}</td>
+                      </tr>
+                      )
+                    }) 
+                  : <tr></tr>
+                }
               </tbody>
             </table>
 
