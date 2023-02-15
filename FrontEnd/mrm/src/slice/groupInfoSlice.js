@@ -6,7 +6,16 @@ export const groupInfoSlice = createSlice({
 
   name: 'groupInfo',
   initialState: {
-    group:{},
+    group:{
+      id:-1,
+      intro:"",
+      name:"",
+      profile:"",
+      roomMemo:"",
+      schdules:[],
+      todayTodoTimes:[],
+      users:[]
+    },
   },
   reducers: {
     saveGroupInfo: (state, {payload}) => {

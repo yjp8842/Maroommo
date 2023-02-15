@@ -28,14 +28,21 @@ const GroupRoom = () => {
 	const params = useParams();
   const groupId = params.groupId;
 
-  useEffect(() => {
 
+  /*
+  처음에 로그인하면 user가 store에 저장이 되고 myPage로 이동한다
+  이후 groupPage로 이동을 하면 useEffect 시 
+
+
+  */
+  useEffect(() => {
+    console.log("그룹 페이지 이동!")
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
-      console.log("그룹 페이지 이동!")
-      // console.log(res)
-      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
-      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules))
+      console.log(res)
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
+      setGroupMemoContent(res.data.moveRoomInfo.roomMemo);
     })
     .catch((err) => {
       console.log(err);
@@ -48,7 +55,7 @@ const GroupRoom = () => {
   }))
 
   const client = useRef({});
-  const [groupMemoContent, setGroupMemoContent] = useState("");
+  const [groupMemoContent, setGroupMemoContent] = useState(group.roomMemo);
   const [myMemoContent, setMyMemoContent] = useState(user.userMemo);
 
   const handleSetGroupMemo = (e) => {
@@ -71,8 +78,6 @@ const GroupRoom = () => {
 
     api
     .post('/my/memo', data)
-    .then(response => {
-    })
     .catch((err) => {
       console.log("내 메모 저장 중 오류 발생");
     })
@@ -161,7 +166,7 @@ const GroupRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -180,7 +185,7 @@ const GroupRoom = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>

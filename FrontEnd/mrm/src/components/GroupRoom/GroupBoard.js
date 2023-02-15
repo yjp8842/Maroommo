@@ -1,44 +1,46 @@
-// import { Fragment } from 'react';
-import React from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
-import HomePage from '../MyRoom/MyRoomItem/PageIcon';
-import { Link, useNavigate } from 'react-router-dom';
+import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
-import HomeBtn from './GroupRoomItem/MenuBtn';
-import ChatRoom from './GroupRoomItem/ChatRoom';
-import { NavItem } from './GroupRoomItem/Category';
+import MenuBtn from './GroupRoomItem/MenuBtn';
+import GroupMemberList from './GroupRoomItem/GroupMemberList';
 
-import { useEffect } from 'react';
-
-import './GroupRoomItem/Category.css';
+import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { boardActions } from '../../slice/boardSlice';
-import BoardList from './Board/ArticlePage/Sections/BoardList';
-// import RegisterPage from './Board/RegisterPage';
-// import classes from '../rooms/myroom.css';
-// import mealsImage from '../../assets/meals.jpg';
+
+import api from "../../utils/axiosInstance";
 
 const GroupBoard = () => {
-
-  const navigate = useNavigate();
-  const onArticleTitleClick = (id) => {
-    {/* 룸아이디 넣는 식으로 수정해야함 */}
-    const path = `/group/1/board/article/${id}`;
-    navigate(path)
-  }
-
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(boardActions.getBoard());
-  }, [dispatch]);
+	const params = useParams();
+  const groupId = params.groupId;
 
-  const {board, isLoading, isSuccess, error } = 
+  useEffect(() => {
+
+    api.get(`/board?room_id=${groupId}&page=0&size=30`)
+      .then((res) => {
+        console.log("게시글 목록 가져오기");
+        console.log(res);
+        dispatch(boardActions.getBoardSuccess(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(boardActions.getBoardFailed(err));
+      });
+    // 보드에서 가져오기
+    // dispatch(boardActions.getBoard());
+  }, [groupId]);
+
+  const {user, board, group, isLoading, isSuccess, error } = 
   useSelector((state) => ({
+    user: state.userInfoReducers.user,
     board: state.boardReducers.board,
+    group: state.groupInfoReducers.group,
     isLoading: state.boardReducers.isLoading,
     isSuccess: state.boardReducers.isSuccess,
     error: state.boardReducers.error}));
@@ -55,8 +57,7 @@ const GroupBoard = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><HomePage /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -74,7 +75,9 @@ const GroupBoard = () => {
             justifyContent: "space-between"
           }}>
           <Box>
-            <HomePage />
+            {user.myRooms.map((room, index) => {
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
+            })}
           </Box>
           <Box>
             <Box
@@ -116,23 +119,11 @@ const GroupBoard = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/group/1`}><HomeBtn /></Link>
-          <Link to={`/group/1/chat`}><ChatRoom /></Link>
-          
-
-          <NavItem>
-            {/** 하위에 있는 메뉴가 열립니다. **/}
-            {/* <ul> */}
-            <div className='category-box'>
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/board`}><li>게시판</li></Link> 
-              <li>화상회의</li>  
-              {/* 룸아이디 넣는 식으로 수정해야함 */}
-              <Link to={`/group/1/question`}><li>Q&A</li></Link>   
-            </div>
-            {/* </ul> */}
-          </NavItem>
-
+          <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
+          <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
+          <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
+          <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
+          <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
         </Box>
         
         <Box
@@ -145,24 +136,57 @@ const GroupBoard = () => {
             <h1>게시판</h1>
             <br></br>
 
+            {/* <div style={{ width: "80%", margin: "3rem auto" }}>
+              {error
+                ? (<h2>에러 발생: {error}</h2>)
+                : isSuccess && board.content.length <= 0
+                  ? (<p> 조회할 내용이 없습니다.</p>)
+                  : isSuccess && board.content.length > 0
+                    ? (<BoardList
+                      board={board}
+                      groupId={group.id}
+                        // handleDeleteClick={onDeleteClick}
+                        handleArticleTitleClick={onArticleTitleClick}
+                      />)
+                    : (<p> 목록을 불러오는 중입니다. </p>)
+              }
+            </div> */}
 
-            <div style={{ width: "80%", margin: "3rem auto" }}>
-            {error ? (
-              <h2>에러 발생: {error}</h2>
-              ) :  isSuccess && board.data.content.length <= 0 ? (
-                <p> 조회할 내용이 없습니다.</p>
-              ) : isSuccess && board.data.content.length > 0 ? (
-                <BoardList 
-                  board={board.data}
-                  // handleDeleteClick={onDeleteClick}
-                  handleArticleTitleClick={onArticleTitleClick} />
-              )
-             : (
-              <p> 목록을 불러오는 중입니다. </p>
-            )}
-            </div>
+            <table>
+              <colgroup>
+                <col width="10%" />
+                <col width="35%" />
+                <col width="15%" />
+                <col width="10%" />
+                <col width="15%" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>번호</th>
+                  <th>제목</th>
+                  <th>작성자</th>
+                  <th>조회수</th>
+                  <th>작성일</th>
+                </tr>
+              </thead>
+              <tbody>
+                {board.content.map((article, index) => {
+                  return (
+                    <tr>
+                      <td>{article.id}</td>
+                        <Link to={`/group/${groupId}/board/article/${article.id}`}>{article.title}</Link>
+                      <td>{article.user}</td>
+                      <td>{article.views}</td>
+                      <td>{new Date(article.createTime).toLocaleString()}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+
+
             {/* 룸아이디 넣는 식으로 수정해야함 */}
-            <Link to='/group/1/board/register?isForEdit=false'>
+            <Link to={`/group/${groupId}/board/register?isForEdit=false`}>
               <button>글쓰기</button>
             </Link>
 
@@ -190,9 +214,15 @@ const GroupBoard = () => {
               backgroundColor: "#FFFFFF",
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
-              justifyContent: 'center'
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-            <h2>그룹 인원</h2>
+            <h3>그룹 인원</h3>
+            <hr align="center" width="80%"/>   
+            {group.users.map((user, index) => {
+              return (<GroupMemberList user={user}/>)
+            })}
           </Box>
           <Box
             sx={{
