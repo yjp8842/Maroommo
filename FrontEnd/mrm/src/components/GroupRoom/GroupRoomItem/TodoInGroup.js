@@ -4,6 +4,8 @@ import TodoAll from '../../TodoThings/TodoAll'
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import ScheduleAll from '../../ScheduleThings/ScheduleAll'
+
 
 // import { createGlobalStyle } from "styled-components";
 // import TodoTemplate from "../../DnD/TodoTemplate";
@@ -32,7 +34,7 @@ const TodoBox = () => {
     return (
       <div>
         <DndProvider backend={HTML5Backend}>
-          <TodoAll />
+          <TodoAll />/<ScheduleAll />
         </DndProvider>
       </div>
     )
