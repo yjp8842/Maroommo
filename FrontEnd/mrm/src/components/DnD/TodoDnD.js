@@ -33,7 +33,7 @@ function TodoDnD() {
     return donelist.push({text: todo.content})
   })
 
-  console.log("todolist === ", todolist);
+  // console.log("todolist === ", todolist);
 
   const [box1, setBox1] = React.useState(todolist);
   const [box2, setBox2] = React.useState(doinglist);
