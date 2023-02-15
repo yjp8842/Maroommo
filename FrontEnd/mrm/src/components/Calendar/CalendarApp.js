@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+
+import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import { useSelector } from 'react-redux';
 import './CalendarApp.css'
@@ -58,7 +60,8 @@ export default function CalendarApp() {
           return (
             <>
               <div className='flex justify-center items-center absoluteDiv'>
-                <div className='red_dot'></div>
+                {/* <div className='red_dot'></div> */}
+                <Todocontent>React 강의 수강하기</Todocontent>
               </div>
             </>
           )
@@ -67,7 +70,8 @@ export default function CalendarApp() {
           return (
             <>
               <div className='flex justify-center items-center absoluteDiv'>
-                <div className='blue_dot'>abcdef</div>
+                {/* <div className='blue_dot'></div> */}
+                <Schedulecontent>알고리즘 스터디</Schedulecontent>
               </div>
             </>
           )
@@ -76,3 +80,27 @@ export default function CalendarApp() {
     />
   );
 }
+
+const Todocontent = styled.div`
+// width: 170px;
+height: 20px;
+width: 90%;
+outline: none;
+border-radius: 15px;
+font-size: 15px;
+color: white;
+background-color: red;
+padding: 5px 5px 0px 10px;
+`
+
+const Schedulecontent = styled.div`
+// width: 170px;
+height: 20px;
+width: 90%;
+outline: none;
+border-radius: 15px;
+font-size: 15px;
+color: white;
+background-color: blue;
+padding: 5px 5px 0px 10px;
+`

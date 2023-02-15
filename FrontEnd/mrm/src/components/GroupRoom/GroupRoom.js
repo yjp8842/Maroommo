@@ -33,9 +33,9 @@ const GroupRoom = () => {
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
       console.log("그룹 페이지 이동!")
-      // console.log(res)
+      console.log(res)
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
-      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules))
+      // dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules))
     })
     .catch((err) => {
       console.log(err);
@@ -326,9 +326,9 @@ const GroupRoom = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {group.users.map((user, index) => {
+            {/* {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })}
+            })} */}
           </Box>
           <Box
             sx={{
