@@ -174,20 +174,25 @@ const GroupQnA = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {question.content.map((questionArticle, index) => {
-                  return (
-                    <tr>
-                      <td>{questionArticle.id}</td>
-                      <td>{questionArticle.status}</td>
-                      <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
-                        <td>{questionArticle.title}</td>
-                      </Link>
-                      <td>{questionArticle.user_id}</td>
-                      <td>{questionArticle.views}</td>
-                      <td>{new Date(questionArticle.createTime).toLocaleString()}</td>
-                      </tr>
-                  )
-                })}
+                {
+                question.content 
+                ?
+                  question.content.map((questionArticle, index) => {
+                    return (
+                      <tr>
+                        <td>{questionArticle.id}</td>
+                        <td>{questionArticle.status}</td>
+                        <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
+                          <td>{questionArticle.title}</td>
+                        </Link>
+                        <td>{questionArticle.user_id}</td>
+                        <td>{questionArticle.views}</td>
+                        <td>{new Date(questionArticle.createTime).toLocaleString()}</td>
+                        </tr>
+                    )
+                  })
+                : <div></div>
+                }
                 </tbody>
               </table>
             </div>
@@ -225,10 +230,13 @@ const GroupQnA = () => {
               alignItems: 'center'
             }}>
             <h3>그룹 인원</h3>
-            <hr align="center" width="80%"/>   
-            {group.users.map((user, index) => {
+            <hr align="center" width="80%"/>    
+            {group.users 
+            ? group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })}
+            })
+            : <div></div>
+            }
           </Box>
           <Box
             sx={{
