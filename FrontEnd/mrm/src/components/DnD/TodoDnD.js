@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { id } from 'date-fns/locale';
 // import axios from 'axios';
   
-//tags 파트 배열 -> 스트링
+//tags 파트 배열 -> 스트링=
 
 function TodoDnD() {
 
@@ -25,8 +25,8 @@ function TodoDnD() {
 
   todo_doing_list.map((todo => {
     return todo.state === 0
-    ? todolist.push({ text: todo.content })
-    : doinglist.push({ text : todo.content })
+    ? todolist.push({ id: todo.id, text: todo.content })
+    : doinglist.push({ id: todo.id, text : todo.content })
   }))
 
   done_list.map((todo) => {
@@ -98,7 +98,7 @@ function TodoDnD() {
         <DragGroup>
           {box1.map((drag) => (
             <Draggable
-              key={drag.text}
+              key={drag.id}
               type='drag-3'
               text={drag.text}
               item={{ text: drag.text }}
@@ -117,7 +117,7 @@ function TodoDnD() {
         <DragGroup>
           {box2.map((drag) => (
             <Draggable
-              key={drag.text}
+              key={drag.id}
               type='drag-3'
               text={drag.text}
               item={{ text: drag.text }}
@@ -136,7 +136,7 @@ function TodoDnD() {
         <DragGroup>
           {box3.map((drag) => (
             <Draggable
-              key={drag.text}
+              key={drag.id}
               type='drag-3'
               text={drag.text}
               item={{ text: drag.text }}

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ScheduleDispatch } from './ScheduleAll';
+import { ScheduleDispatch } from './ScheduleButton';
 
 const Schedule = React.memo(function Schedule({ schedule }) {
   const dispatch = useContext(ScheduleDispatch);

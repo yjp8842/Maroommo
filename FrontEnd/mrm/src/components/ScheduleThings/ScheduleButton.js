@@ -63,7 +63,7 @@ function reducer(state, action) {
 export const ScheduleDispatch = React.createContext(null);
 
 
-function ScheduleAll() {
+function ScheduleButton() {
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -103,7 +103,7 @@ function ScheduleAll() {
   return (
     <div className={styles.content}>
       <ScheduleDispatch.Provider value={dispatch}>
-        <Button onClick={onClickButton}>+</Button>
+        <Button onClick={onClickButton}>+ 일정</Button>
           {isOpen && (<CreateScheduleModal
                     open={isOpen}
                     onClose={() => {
@@ -123,18 +123,18 @@ function ScheduleAll() {
   );
 }
 
-export default ScheduleAll;
+export default ScheduleButton;
 
 
 const Button = styled.button`
 font-size: 20px;
 padding: 10px 20px;
-border: none;
+border: 0.5px solid gray;
 background-color: #ffffff;
 border-radius: 10px;
 color: black;
-font-style: italic;
 font-weight: 200;
+box-Shadow: 2px 2px 2px;
 cursor: pointer;
 &:hover {
   background-color: #fac2be;

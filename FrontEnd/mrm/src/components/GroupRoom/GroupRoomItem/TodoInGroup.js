@@ -4,25 +4,6 @@ import TodoAll from '../../TodoThings/TodoAll'
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-import ScheduleAll from '../../ScheduleThings/ScheduleAll'
-
-
-// import { createGlobalStyle } from "styled-components";
-// import TodoTemplate from "../../DnD/TodoTemplate";
-// import TodoHead from "../../DnD/TodoHead";
-// import TodoList from "../../DnD/TodoList";
-// import TodoCreate from "../../DnD/TodoCreate";
-// import { TodoProvider } from "../../DnD/TodoContext";
-// import styled from "styled-components";
-// import TodoModal from "../../Modal/TodoModal"
-
-
-// const GlobalStyle = createGlobalStyle`
-//   body {
-//     background: #e9ecef
-//   }
-// `;
-
 const TodoBox = () => {
 
   // const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +15,7 @@ const TodoBox = () => {
     return (
       <div>
         <DndProvider backend={HTML5Backend}>
-          <TodoAll />/<ScheduleAll />
+          <TodoAll />
         </DndProvider>
       </div>
     )
