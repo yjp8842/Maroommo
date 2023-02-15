@@ -212,10 +212,13 @@ public class RoomController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         MyRoomResponseDto myRoomInfo = null;
+        UserLoginResponseDto userLoginResponseDto = null;
 
         try {
             myRoomInfo = roomService.getMyRoomDto(userId);
+            userLoginResponseDto = userService.getLoginUser(userId);
             resultMap.put("myRoomInfo",myRoomInfo);
+            resultMap.put("user",userLoginResponseDto);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -238,9 +241,12 @@ public class RoomController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         RoomMoveResponseDto moveRoomInfo = null;
+        UserLoginResponseDto userLoginResponseDto = null;
 
         try {
             moveRoomInfo = roomService.getMoveRoomDto(roomId, userId);
+            userLoginResponseDto = userService.getLoginUser(userId);
+            resultMap.put("user",userLoginResponseDto);
             resultMap.put("moveRoomInfo",moveRoomInfo);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
