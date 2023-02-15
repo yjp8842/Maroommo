@@ -333,7 +333,7 @@ const GroupRoom = () => {
             </textarea>
         </Box> 
       </Box>
-          <TimeTableBox />
+          <TimeTableBox group={group} />
           
         </Box>
 

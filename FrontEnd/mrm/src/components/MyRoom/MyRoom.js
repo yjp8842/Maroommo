@@ -24,6 +24,20 @@ import { scheduleActions } from "../../slice/scheduleSlice";
 const MyRoom = () => {
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    api.get(`/room/my/${user.id}`)
+    .then((res) => {   
+      console.log("마이 페이지 이동!");  
+      console.log(res);
+      dispatch(userInfoActions.saveUserInfo(res.data.user));
+      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules));
+    })
+    .catch((err) => {
+      console.log(err);
+    });        
+  }, [])
+
   const {user, doing_list, done_list} = useSelector((state) => 
   ({
     user: state.userInfoReducers.user,
@@ -67,19 +81,6 @@ const MyRoom = () => {
     setIsOpen(true);
   };
 
-  useEffect(() => {
-    api.get(`/room/my/${user.id}`)
-    .then((res) => {   
-      console.log("마이 페이지 이동!");  
-      // console.log(res);
-      dispatch(userInfoActions.saveUserInfo(res.data.user));
-      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
-      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules));
-    })
-    .catch((err) => {
-      console.log(err);
-    });        
-  }, [])
 
   return (
     <Grid container>
