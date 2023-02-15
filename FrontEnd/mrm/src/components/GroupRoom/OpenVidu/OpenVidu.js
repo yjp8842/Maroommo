@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, useParams } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import styled from "styled-components";
@@ -82,7 +82,7 @@ class OpenChat extends Component {
 
     return (
       <div className="container">
-        {this.state.session === undefined ? (
+        {/* {this.state.session === undefined ? (
           <div className="middle">
             <div
               style={{
@@ -114,7 +114,7 @@ class OpenChat extends Component {
               </div>
             </div>
           </div>
-        ) : null}
+        ) : null} */}
 
         {this.state.session !== undefined ? (
           <div className="whole">
@@ -122,6 +122,7 @@ class OpenChat extends Component {
               <div className="left">
                 <div className="video-container">
 
+                  {/* 인원수별 grid */}
                   {/* 총 1명일 때 */}
                   {this.state.subscribers.length < 1 ? (
                     <StreamContainerWrapper
@@ -223,6 +224,7 @@ class OpenChat extends Component {
                       )
                     )
                   )}
+                {/* 인원수별 grid */}
                 </div>
               </div>
 
@@ -265,29 +267,30 @@ class OpenChat extends Component {
                   </Link>
 
                   <Icon 
-                    onClick={() => {
+                    onClick={() => 
+                    {
+                      this.setState({ isShare: !this.state.isShare })
+                      this.state.session.unpublish(this.state.publisher);
                       let newPublisher = this.OV.initPublisher("html-element-id", {
                         audioSource: undefined,
                         videoSource: "screen", // 웹캠 기본 값으로
                         publishAudio: true,
                         publishVideo: true,
-                        resolution: "1280x720",
+                        resolution: "640x360",
                         frameRate: 30,
                         insertMode: "APPEND",
                         mirror: "false",
                       });
         
-                      this.mySession.publish(newPublisher);
-                      this.setState({ mainStreamManager: newPublisher, newPublisher });
-        
                       newPublisher.once('accessAllowed', (event) => {
                         newPublisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
                           console.log('User pressed the "Stop sharing" button');
+                          this.state.session.unpublish(newPublisher);
+                          this.state.session.publish(this.state.publisher);
                         });
-                        this.mySession.unpublish(this.publisher);
-                        // this.mySession.publish(newPublisher);
-                        // this.setState({ mainStreamManager: newPublisher, newPublisher });
-            
+                        this.state.session.publish(newPublisher);
+                        this.setState({ mainStreamManager: newPublisher, newPublisher });
+
                       });
               
                       newPublisher.once('accessDenied', (event) => {
@@ -363,8 +366,6 @@ class OpenChat extends Component {
     this.state = {
       mySessionId: this.props.group.id.toString(),  // store에 저장된 roomId
       myUserName: this.props.user.nickname,  // store에 저장된 nickname
-      // mySessionId: "2",  // store에 저장된 roomId
-      // myUserName: "testId",  // store에 저장된 nickname
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined, // 로컬 웹캠 스트림
@@ -372,7 +373,6 @@ class OpenChat extends Component {
       isMike: true,
       isCamera: true,
       isSpeaker: true,
-      isChat: false,
       isShare: false,
       messageList: [],
       message: '',
@@ -388,6 +388,22 @@ class OpenChat extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  componentDidMount(e) {
+    // this.leaveSession();
+    // window.addEventListener("beforeunload", this.onbeforeunload);
+    // if (this.session === undefined) {
+    this.joinSession();
+    // }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("beforeunload", this.onbeforeunload);
+  }
+
+  onbeforeunload(e) {
+    this.leaveSession();
   }
 
   handleChange(event) {
@@ -421,22 +437,6 @@ class OpenChat extends Component {
         this.chatScroll.current.scrollTop = this.chatScroll.current.scrollHeight;
       } catch (err) {}
     }, 20);
-  }
-
-  componentDidMount(e) {
-    // this.leaveSession();
-    // window.addEventListener("beforeunload", this.onbeforeunload);
-    // if (this.session === undefined) {
-      this.joinSession();
-    // }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("beforeunload", this.onbeforeunload);
-  }
-
-  onbeforeunload(e) {
-    this.leaveSession();
   }
 
   // 화상회의 나갈때
@@ -583,7 +583,7 @@ class OpenChat extends Component {
                 videoSource: undefined, // 웹캠 기본 값으로
                 publishAudio: true,
                 publishVideo: true,
-                resolution: "1280x720",
+                resolution: "640x360",
                 frameRate: 30,
                 insertMode: "APPEND",
                 mirror: "false",
@@ -599,6 +599,40 @@ class OpenChat extends Component {
         });
       }
     );
+  };
+
+  shareScreen () {
+    this.state.session.unpublish(this.state.publisher);
+    let newPublisher = this.OV.initPublisher("html-element-id", {
+      audioSource: undefined,
+      videoSource: "screen", // 웹캠 기본 값으로
+      publishAudio: true,
+      publishVideo: true,
+      resolution: "640x360",
+      frameRate: 30,
+      insertMode: "APPEND",
+      mirror: "false",
+    });
+    
+    console.log("----------------------------")
+    console.log(newPublisher)
+    console.log("----------------------------")
+    
+    this.state.session.publish(newPublisher);
+    this.setState({ mainStreamManager: newPublisher, newPublisher });
+
+    newPublisher.once('accessAllowed', (event) => {
+      newPublisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+        console.log('User pressed the "Stop sharing" button');
+        this.state.session.unpublish(newPublisher);
+        this.state.session.publish(this.state.publisher);
+      });
+      this.state.session.unpublish(this.publisher);
+    });
+
+    newPublisher.once('accessDenied', (event) => {
+      console.warn('ScreenShare: Access Denied');
+    });
   }
 
   async getToken(mySessionId) {
