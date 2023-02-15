@@ -41,8 +41,9 @@ function ArticlePage() {
     
   }, [articleId]);
 
-  const { user, id, title, content, picture, createTime, user_id, comments  } = useSelector((state) => ({
+  const { user, group, id, title, content, picture, createTime, user_id, comments  } = useSelector((state) => ({
     user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group,
     id: state.articleReducers.id,
     title: state.articleReducers.title,
     content: state.articleReducers.content,
@@ -113,7 +114,7 @@ function ArticlePage() {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -132,7 +133,7 @@ function ArticlePage() {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -240,9 +241,9 @@ function ArticlePage() {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {/* {group.users.map((user, index) => {
+            {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })} */}
+            })}
           </Box>
           <Box
             sx={{

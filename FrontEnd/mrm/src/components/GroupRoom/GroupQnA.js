@@ -26,8 +26,9 @@ const GroupQnA = () => {
     dispatch(questionActions.getQuestion());
   }, [dispatch]);
 
-  const { user, question, isLoading, isSuccess, error } = useSelector((state) => ({
+  const { user, question, group, isLoading, isSuccess, error } = useSelector((state) => ({
     user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group,
     question: state.questionReducers.question,
     isLoading: state.questionReducers.isLoading,
     isSuccess: state.questionReducers.isSuccess,
@@ -47,7 +48,7 @@ const GroupQnA = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -66,7 +67,7 @@ const GroupQnA = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -213,9 +214,9 @@ const GroupQnA = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {/* {group.users.map((user, index) => {
+            {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })} */}
+            })}
           </Box>
           <Box
             sx={{

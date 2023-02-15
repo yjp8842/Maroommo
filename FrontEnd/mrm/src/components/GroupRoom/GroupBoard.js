@@ -22,7 +22,7 @@ const GroupBoard = () => {
 
   useEffect(() => {
 
-    api.get(`/board?room_id=${groupId}`)
+    api.get(`/board?room_id=${groupId}&page=0&size=30`)
       .then((res) => {
         console.log("게시글 목록 가져오기");
         console.log(res);
@@ -36,10 +36,11 @@ const GroupBoard = () => {
     // dispatch(boardActions.getBoard());
   }, [groupId]);
 
-  const {user, board, isLoading, isSuccess, error } = 
+  const {user, board, group, isLoading, isSuccess, error } = 
   useSelector((state) => ({
     user: state.userInfoReducers.user,
     board: state.boardReducers.board,
+    group: state.groupInfoReducers.group,
     isLoading: state.boardReducers.isLoading,
     isSuccess: state.boardReducers.isSuccess,
     error: state.boardReducers.error}));
@@ -56,7 +57,7 @@ const GroupBoard = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -75,7 +76,7 @@ const GroupBoard = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -219,9 +220,9 @@ const GroupBoard = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {/* {group.users.map((user, index) => {
+            {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })} */}
+            })}
           </Box>
           <Box
             sx={{

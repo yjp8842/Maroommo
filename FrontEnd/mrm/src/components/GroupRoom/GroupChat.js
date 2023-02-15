@@ -50,7 +50,7 @@ const GroupChat = () => {
         }}>
         <Box>
           {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -69,7 +69,7 @@ const GroupChat = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -156,9 +156,9 @@ const GroupChat = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {/* {group.users.map((user, index) => {
+            {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })} */}
+            })}
           </Box>
           <Box
             sx={{

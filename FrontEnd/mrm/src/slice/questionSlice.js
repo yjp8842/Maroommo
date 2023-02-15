@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const questionSlice = createSlice({
   name: "question",
   initialState: {
-    question: {},
+    question: {
+      content:[],
+    },
     isLoading: true,
     isSuccess: false,
     error: null,

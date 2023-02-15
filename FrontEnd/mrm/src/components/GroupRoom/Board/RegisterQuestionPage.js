@@ -21,9 +21,10 @@ function RegisterQuestionPage (props) {
 	const params = useParams();
   const groupId = params.groupId;
 
-  const {user, id, views, date, editDate, title, content, picture, status} = useSelector((state) =>
+  const {user, id, group, views, date, editDate, title, content, picture, status} = useSelector((state) =>
   ({
     user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group,
     id: state.questionArticleReducers.id,
     views: state.questionArticleReducers.views,
     date: state.questionArticleReducers.date,
@@ -122,7 +123,7 @@ function RegisterQuestionPage (props) {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -141,7 +142,7 @@ function RegisterQuestionPage (props) {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -241,9 +242,9 @@ function RegisterQuestionPage (props) {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {/* {group.users.map((user, index) => {
+            {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })} */}
+            })}
           </Box>
           <Box
             sx={{

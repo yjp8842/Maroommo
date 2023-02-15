@@ -11,7 +11,6 @@ export const questionArticleSlice = createSlice({
     views: 0,
     createTime: "",
     editDate: "",
-    // categorysub_id: "",
     user_id: "",
     status: 0,
     answers:[],

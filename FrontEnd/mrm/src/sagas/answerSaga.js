@@ -28,9 +28,6 @@ export function* registerAnswerAsync(action) {
 
 export function* deleteAnswerAsync(action) {
   const answerId = action.payload;
-  // const BASE_URL = "https://i8a406.p.ssafy.io";
-
-  // yield Axios.delete(BASE_URL + `/api/answer/${answerId}`);
   yield api.delete(`/answer/${answerId}/hd`)
   history.go(0);
 }

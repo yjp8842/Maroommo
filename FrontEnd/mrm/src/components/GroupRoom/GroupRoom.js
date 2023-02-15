@@ -37,13 +37,12 @@ const GroupRoom = () => {
   */
   useEffect(() => {
     console.log("그룹 페이지 이동!")
-    console.log(groupId)
-    console.log(user.id)
     api.get(`/room/${groupId}/${user.id}`)
     .then((res) => {    
       console.log(res)
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
       dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
+      setGroupMemoContent(res.data.moveRoomInfo.roomMemo);
     })
     .catch((err) => {
       console.log(err);
@@ -56,7 +55,7 @@ const GroupRoom = () => {
   }))
 
   const client = useRef({});
-  const [groupMemoContent, setGroupMemoContent] = useState("");
+  const [groupMemoContent, setGroupMemoContent] = useState(group.roomMemo);
   const [myMemoContent, setMyMemoContent] = useState(user.userMemo);
 
   const handleSetGroupMemo = (e) => {
@@ -167,7 +166,7 @@ const GroupRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon /></Link>
+          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
         </Box>
         <Box
           sx={{
@@ -186,7 +185,7 @@ const GroupRoom = () => {
           }}>
           <Box>
             {user.myRooms.map((room, index) => {
-              return (<Link to={`/group/`+room.id}><PageIcon/></Link>)
+              return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
           <Box>
@@ -332,9 +331,9 @@ const GroupRoom = () => {
             }}>
             <h3>그룹 인원</h3>
             <hr align="center" width="80%"/>   
-            {/* {group.users.map((user, index) => {
+            {group.users.map((user, index) => {
               return (<GroupMemberList user={user}/>)
-            })} */}
+            })}
           </Box>
           <Box
             sx={{
