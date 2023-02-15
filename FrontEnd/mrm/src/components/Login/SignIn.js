@@ -24,9 +24,6 @@ export default function SignInSide() {
     });
   };
 
-  const {id, email, myRooms} = useSelector((state) =>({id:state.userInfoReducers.user.id, email:state.userInfoReducers.user.email, myRooms:state.userInfoReducers.user.myRooms}) )
-  console.log('@@@@', id, email, myRooms)
-
   // id와 password가 빈칸인지 체크하는 함수
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
