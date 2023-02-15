@@ -1,0 +1,24 @@
+video {
+  width: 100%;
+  float: left;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.streamcomponent div {
+  position: absolute;
+  background: #f8f8f8;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #777777;
+  font-weight: bold;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+p {
+  margin: 0;
+}
+

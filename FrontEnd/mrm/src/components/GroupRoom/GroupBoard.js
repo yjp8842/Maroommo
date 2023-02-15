@@ -12,10 +12,20 @@ import GroupMemberList from './GroupRoomItem/GroupMemberList';
 import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { boardActions } from '../../slice/boardSlice';
+import BoardList from './Board/ArticlePage/Sections/BoardList';
+
+import OpenChatRoom from './OpenVidu/OpenChatRoom';
+import './Group.css';
+
 
 import api from "../../utils/axiosInstance";
 
+
 const GroupBoard = () => {
+  const handleOpenNewTab = (url) => {
+    window.open(url, "_blank", "noopener, noreferrer");
+  };
+  
   const dispatch = useDispatch();
 	const params = useParams();
   const groupId = params.groupId;
@@ -119,11 +129,17 @@ const GroupBoard = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
+
+          {/* <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
+            <OpenChatRoom />
+          </div> */}
+
           <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
           <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
           <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
           <Link to={`/group/${groupId}/board`}><MenuBtn name={"게시판"} /></Link>
           <Link to={`/group/${groupId}/question`}><MenuBtn name={"Q&A"} /></Link>
+
         </Box>
         
         <Box

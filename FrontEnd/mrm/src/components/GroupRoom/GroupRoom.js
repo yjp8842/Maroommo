@@ -23,7 +23,14 @@ import { useSelector, useDispatch } from "react-redux";
 import './GroupRoomItem/Category.css';
 import './GroupRoomItem/TextArea.css';
 
+import OpenChatRoom from './OpenVidu/OpenChatRoom';
+import './Group.css';
+
 const GroupRoom = () => {
+  const handleOpenNewTab = (url) => {
+    window.open(url, "_blank", "noopener, noreferrer");
+  }
+
   const dispatch = useDispatch();
 	const params = useParams();
   const groupId = params.groupId;
@@ -227,6 +234,11 @@ const GroupRoom = () => {
           }}>
           <GroupProfile />
           {/* 해당 groupId의 경로로 이동할 수 있도록 변경해야함 */}
+
+          {/* <div className='openvidu-btn' onClick={() => handleOpenNewTab(`/group/${group.id}/openvidu`)}>
+            <OpenChatRoom />
+          </div> */}
+          
           <Link to={`/group/${groupId}`}><MenuBtn name={"Home"} /></Link>
           <Link to={`/group/${groupId}/chat`}><MenuBtn name={"채팅방"} /></Link>
           <Link to={`/group/${groupId}/openvidu`}><MenuBtn name={"화상채팅방"} /></Link>
