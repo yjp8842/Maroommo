@@ -4,6 +4,8 @@ import com.a406.mrm.model.entity.TodoTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -12,6 +14,7 @@ import java.time.ZoneId;
 @Setter
 @NoArgsConstructor
 public class TodoTimeDto {
+    private Logger logger = LoggerFactory.getLogger(TodoTimeDto.class);
     private String userId ;
     private int todoId;
     private LocalDateTime startTime;
@@ -25,7 +28,7 @@ public class TodoTimeDto {
         this.totalMinute = 0;
         if(this.endTime!=null){
             LocalDateTime TIME = LocalDateTime.ofInstant(todoTime.getTotalTime().toInstant(), ZoneId.systemDefault());
-            this.totalMinute = TIME.getHour() * 60 + TIME.getMinute() ;
+            this.totalMinute = (TIME.getHour()-9) * 60 + TIME.getMinute() ;
         }
     }
 }
