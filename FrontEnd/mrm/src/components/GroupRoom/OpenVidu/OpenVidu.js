@@ -124,7 +124,7 @@ class OpenChat extends Component {
 
                   {this.state.isShare === true ? (
                     // <div>
-                      <StreamContainerWrapper
+                      <div
                         className="width1"
                         ref={this.userRef}
                       >
@@ -143,7 +143,7 @@ class OpenChat extends Component {
                             </div>
                           </div>
                         ) : null}
-                      </StreamContainerWrapper>
+                      </div>
                     // </div>
                   ) : (
                     
@@ -230,9 +230,9 @@ class OpenChat extends Component {
   
                             // 총 7-9명일 때
                             <StreamContainerWrapper
-                            className="width2"
-                              ref={this.userRef}
-                            >
+                              className="width2"
+                                ref={this.userRef}
+                              >
                               {this.state.publisher !== undefined ? (
                                 <div className="stream-container under-nine">
                                   <UserVideoComponent
@@ -296,7 +296,6 @@ class OpenChat extends Component {
                   <Icon 
                     onClick={() => 
                     {
-                      // this.setState({ isShare: !this.state.isShare })
                       this.state.session.unpublish(this.state.publisher);
                       let newPublisher = this.OV.initPublisher("html-element-id", {
                         audioSource: undefined,
@@ -312,11 +311,13 @@ class OpenChat extends Component {
                       newPublisher.once('accessAllowed', (event) => {
                         newPublisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
                           console.log('User pressed the "Stop sharing" button');
+                          this.setState({ isShare: false })
                           this.state.session.unpublish(newPublisher);
                           this.state.session.publish(this.state.publisher);
+                          this.setState({ mainStreamManager: this.state.publisher })
                         });
                         this.state.session.publish(newPublisher);
-                        this.setState({ isShare: !this.state.isShare })
+                        this.setState({ isShare: true })
                         this.setState({ mainStreamManager: newPublisher, newPublisher });
 
                       });
@@ -324,7 +325,7 @@ class OpenChat extends Component {
                       newPublisher.once('accessDenied', (event) => {
                         console.warn('ScreenShare: Access Denied');
                         this.state.session.publish(this.state.publisher);
-                        this.setState({ isShare: !this.state.isShare });
+                        this.setState({ isShare: false });
                       });
                     }}
                   >
