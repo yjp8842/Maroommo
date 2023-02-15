@@ -23,7 +23,7 @@ export function* registerQuestionArticleAsync(action) {
   console.log('response 출력 : ',response.data.newQuestion.id)
   console.log('----------');
 
-  history.push(`/group/1/question/questionArticle/${response.data.newQuestion.id}`, response.data.newQuestion.id);
+  history.push(`/group/${data.room_id}/question/questionArticle/${response.data.newQuestion.id}`, response.data.newQuestion.id);
   // eslint-disable-next-line no-restricted-globals
   location.reload();
 }
@@ -53,7 +53,7 @@ export function* updateQuestionArticleAsync(action) {
   );
 
   alert("저장되었습니다.");
-  console.log(response.data.board);
+  console.log(response.data);
 
   history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
   // eslint-disable-next-line no-restricted-globals

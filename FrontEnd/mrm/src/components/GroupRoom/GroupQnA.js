@@ -27,9 +27,10 @@ const GroupQnA = () => {
   const dispatch = useDispatch();
 	const params = useParams();
   const groupId = params.groupId;
+  console.log('그룹아이디!!',groupId)
 
   useEffect(() => {
-    dispatch(questionActions.getQuestion());
+    dispatch(questionActions.getQuestion(groupId));
   }, [dispatch]);
 
   const { user, question, group, isLoading, isSuccess, error } = useSelector((state) => ({
