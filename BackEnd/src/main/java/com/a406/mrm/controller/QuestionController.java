@@ -36,7 +36,7 @@ public class QuestionController {
     @PostMapping
     @ApiOperation("질문 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
     public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
-                                    @RequestParam int room_id, @RequestPart MultipartFile picture) {
+                                    @RequestParam int room_id, @RequestPart(value="picture", required = false) MultipartFile picture) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
@@ -82,7 +82,7 @@ public class QuestionController {
      */
     @PostMapping("update")
     @ApiOperation("게시판 수정 : 질문 아이디(id), 수정내용(content), 사진(picture), status(상태), 제목(title), 작성자 아이디(user_id))")
-    public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestPart MultipartFile picture,
+    public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestPart(value="picture", required = false) MultipartFile picture,
                                     @RequestParam int status, @RequestParam String title, @RequestParam String user_id) {
 
         Map<String, Object> resultMap = new HashMap<>();
