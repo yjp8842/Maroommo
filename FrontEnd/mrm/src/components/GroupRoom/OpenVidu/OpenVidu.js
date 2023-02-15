@@ -15,8 +15,11 @@ import ScreenshotMonitorIcon from '@mui/icons-material/ScreenshotMonitor';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 
-import OpenViduChat from "./OpenViduChat";
-import OpenViduQnA from "./OpenViduQnA";
+// import OpenViduChat from "./OpenViduChat";
+
+import { Fab, Tooltip } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import './OpenViduChat.css';
 
 import "./OpenVidu.css";
 import { connect } from "react-redux";
@@ -65,6 +68,17 @@ const Icon = styled.div`
 
 class OpenChat extends Component {
   render() {
+    function noEvent(event) { // 새로 고침 방지
+      if (event.keyCode === 116) {
+          // event.keyCode = 2;
+          return false;
+      } else if (event.ctrlKey
+              && (event.keyCode === 78 || event.keyCode === 82)) {
+          return false;
+      }
+    }
+    document.onkeydown = noEvent;
+
     return (
       <div className="container">
         {this.state.session === undefined ? (
@@ -252,7 +266,7 @@ class OpenChat extends Component {
                         videoSource: "screen", // 웹캠 기본 값으로
                         publishAudio: true,
                         publishVideo: true,
-                        resolution: "640x480",
+                        resolution: "1280x720",
                         frameRate: 30,
                         insertMode: "APPEND",
                         mirror: "false",
@@ -290,17 +304,46 @@ class OpenChat extends Component {
 
 
             <div className="openvidu-chat">
-              {/* <ChatBox /> */}
-              <div className="toggle-btn">
-                <button className="openvidu-toggle1" onClick={() => this.setState({ isChat: !this.state.isChat, isQnA: false })}>채팅</button>
-                <button className="openvidu-toggle2" onClick={() => this.setState({ isQnA: !this.state.isQnA, isChat: false })}>Q&A</button>
+              <div className="openvidu-chat-name"><h2>채팅</h2></div>
+            
+              <div id="chatContainer">
+                <div id="chatComponent">
+                  <div className="message-wrap" ref={this.chatScroll}>
+                    {this.state.messageList.map((data, i) => (
+                      <div
+                        key={i}
+                        id="remoteUsers"
+                      >
+                        <div className="msg-detail">
+                          <div className="msg-info">
+                            <p> {data.nickname}</p>
+                          </div>
+                          <div className="msg-content">
+                            <span className="triangle" />
+                            <p className="text">{data.message}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div id="messageInput">
+                    <textarea
+                      placeholder="Send a message"
+                      id="chatInput"
+                      value={this.state.message}
+                      onChange={this.handleChange}
+                      onKeyPress={this.handlePressKey}
+                    />
+                    <Tooltip title="Send message">
+                      <Fab size="small" id="sendButton" onClick={this.sendMessage}>
+                        <SendIcon />
+                      </Fab>
+                    </Tooltip>
+                  </div>
+                </div>
               </div>
-              {this.state.isChat === true ? (
-                <OpenViduChat />
-              ) : null}
-              {this.state.isQnA === true ? (
-                <OpenViduQnA />
-              ) : null}
+
             </div>
           </div>
         ) : null}
@@ -325,8 +368,9 @@ class OpenChat extends Component {
       isCamera: true,
       isSpeaker: true,
       isChat: false,
-      isQnA: false,
-      isShare: false
+      isShare: false,
+      messageList: [],
+      message: '',
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -334,12 +378,52 @@ class OpenChat extends Component {
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+
+    this.chatScroll = React.createRef();
+    this.handleChange = this.handleChange.bind(this);
+    this.handlePressKey = this.handlePressKey.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
-  componentDidMount() {
+  handleChange(event) {
+    this.setState({ message: event.target.value });
+  }
+
+  handlePressKey(event) {
+    if (event.key === 'Enter') {
+      this.sendMessage();
+    }
+  }
+
+  sendMessage() {
+    console.log(this.state.message);
+    if (this.state.message) {
+      let message = this.state.message.replace(/ +(?= )/g, '');
+      if (message !== '' && message !== ' ') {
+        const data = { message: message, nickname: this.state.myUserName, streamId: this.state.mainStreamManager.stream.streamId };
+        this.state.mainStreamManager.stream.session.signal({
+          data: JSON.stringify(data),
+          type: 'chat',
+        });
+      }
+    }
+    this.setState({ message: '' });
+  }
+
+  scrollToBottom() {
+    setTimeout(() => {
+      try {
+        this.chatScroll.current.scrollTop = this.chatScroll.current.scrollHeight;
+      } catch (err) {}
+    }, 20);
+  }
+
+  componentDidMount(e) {
     // this.leaveSession();
-    window.addEventListener("beforeunload", this.onbeforeunload);
-    // 스터디방에서 화상회의 입장 -> props로 roomId로 받으면 세션id 업뎃 user 정보 전역변수 가져옴 -> 상태값 업뎃
+    // window.addEventListener("beforeunload", this.onbeforeunload);
+    // if (this.session === undefined) {
+      this.joinSession();
+    // }
   }
 
   componentWillUnmount() {
@@ -422,6 +506,15 @@ class OpenChat extends Component {
       },
       () => {
         let mySession = this.state.session;
+        
+        // 채팅
+        mySession.on('signal:chat', (event) => {
+          const data = JSON.parse(event.data);
+          let messageList = this.state.messageList;
+          messageList.push({ connectionId: event.from.connectionId, nickname: data.nickname, message: data.message });
+          this.setState({ messageList: messageList });
+          this.scrollToBottom();
+        });
 
         // Session 객체가 각각 새로운 stream에 대해 구독 후, subscribers 상태값 업뎃
         mySession.on("streamCreated", (e) => {
@@ -485,7 +578,7 @@ class OpenChat extends Component {
                 videoSource: undefined, // 웹캠 기본 값으로
                 publishAudio: true,
                 publishVideo: true,
-                resolution: "640x480",
+                resolution: "1280x720",
                 frameRate: 30,
                 insertMode: "APPEND",
                 mirror: "false",
@@ -592,4 +685,3 @@ const getStoreData = (state) => ({
 })
 
 export default connect(getStoreData)(OpenChat);
-// export default OpenChat;
