@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 function CreateRoomModal({ onClose }) {
@@ -6,19 +6,39 @@ function CreateRoomModal({ onClose }) {
     onClose?.();
   };
 
+
+  const [ groupName, setGroupName ] = useState('')
+
+  const onChangegroupName= e => {
+    setGroupName(e.target.value)
+  }
+
+  const [ groupIntro, setGroupIntro ] = useState('')
+
+  const onChangeGroupIntro= e => {
+    setGroupIntro(e.target.value)
+  }
+
+  const onSubmitJoinRoom = (event) => {
+    console.log("groupName ===", groupName)
+    console.log("groupIntro ===", groupIntro)
+  }
+
   return (
     <Overlay>
       <ModalWrap>
         <Contents>
           <h1>마룸모 생성하기</h1>
 
-          <InputWithLabel label="| 그룹명" name="roomname" placeholder="React 기초반" type="roomname"/>
-          <InputWithLabel label="| 비밀번호" name="password" placeholder="***********" type="password"/>
-          <InputWithLabel label="| 한줄소개" name="introduction" placeholder="React를 시작하는 사람들의 모임입니다. " type="introduction"/>
+          <InputWithLabel onChange={onChangegroupName} label="| 그룹명" name="roomname" placeholder="React 기초반" type="roomname"/>
+          <InputWithLabel onChange={onChangeGroupIntro} label="| 한줄소개" name="introduction" placeholder="React를 시작하는 사람들의 모임입니다. " type="introduction"/>
 
           <div>
             <CButton onClick={handleClose}>뒤로</CButton>
-            <CButton onClick={handleClose}>생성하기</CButton>
+            <CButton onClick={() => {
+              onSubmitJoinRoom();
+              handleClose();}}
+              >참가하기</CButton>
           </div>
         </Contents>
       </ModalWrap>
