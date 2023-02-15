@@ -16,7 +16,7 @@ import BoardList from './Board/ArticlePage/Sections/BoardList';
 
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
-
+import Pagination from "./Pagination";
 
 import api from "../../utils/axiosInstance";
 
@@ -54,6 +54,10 @@ const GroupBoard = () => {
     isLoading: state.boardReducers.isLoading,
     isSuccess: state.boardReducers.isSuccess,
     error: state.boardReducers.error}));
+
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
+  const offset = (page - 1) * limit;
     
   return (
     <Grid container>
@@ -188,7 +192,7 @@ const GroupBoard = () => {
               <tbody>
                 {
                 board.content 
-                  ? board.content.map((article, index) => {
+                  ? board.content.slice(offset, offset + limit).map((article, index) => {
                     return (
                       <tr>
                         <td>{article.id}</td>
@@ -203,7 +207,7 @@ const GroupBoard = () => {
                 }
               </tbody>
             </table>
-
+            <Pagination limit={limit} page={page} setPage={setPage} total={board.content.length}/>
 
             {/* 룸아이디 넣는 식으로 수정해야함 */}
             <Link to={`/group/${groupId}/board/register?isForEdit=false`}>

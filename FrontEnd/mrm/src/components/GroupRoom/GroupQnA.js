@@ -17,7 +17,7 @@ import { questionActions } from '../../slice/questionSlice';
 
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
-
+import Pagination from "./Pagination";
 
 const GroupQnA = () => {
   const handleOpenNewTab = (url) => {
@@ -42,6 +42,10 @@ const GroupQnA = () => {
     error: state.questionReducers.error
   })
   );
+
+  const [limit, setLimit] = useState(10)
+  const [page, setPage] = useState(1)
+  const offset = (page - 1) * limit;
 
   return (
     <Grid container>
@@ -174,7 +178,7 @@ const GroupQnA = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {question.content.map((questionArticle, index) => {
+                {question.content.slice(offset, offset + limit).map((questionArticle, index) => {
                   return (
                     <tr>
                       <td>{questionArticle.id}</td>
@@ -190,6 +194,7 @@ const GroupQnA = () => {
                 })}
                 </tbody>
               </table>
+              <Pagination limit={limit} page={page} setPage={setPage} total={question.content.length}/>
             </div>
 
 
