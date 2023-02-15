@@ -122,35 +122,40 @@ class OpenChat extends Component {
               <div className="left">
                 <div className="video-container">
 
-                  {/* 인원수별 grid */}
-                  {/* 총 1명일 때 */}
-                  {this.state.subscribers.length < 1 ? (
-                    <StreamContainerWrapper
-                      className="width1"
-                      ref={this.userRef}
-                    >
-                      {this.state.publisher !== undefined ? (
-                        <div className="stream-container under-one">
-                          <UserVideoComponent
-                            streamManager={this.state.publisher}
-                            key={this.state.publisher.stream.streamId}
-                          />
-                          {this.state.subscribers.map((sub, i) => (
-                            <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                          ))}
-                        </div>
-                      ) : null}
-                    </StreamContainerWrapper>
-                  ) : (
-
-                    // 총 2명일 때
-                    this.state.subscribers.length < 2 ? (
+                  {this.state.isShare === true ? (
+                    // <div>
                       <StreamContainerWrapper
-                        className="width2"
+                        className="width1"
                         ref={this.userRef}
                       >
                         {this.state.publisher !== undefined ? (
-                          <div className="stream-container under-two">
+                          <div className="share-screen">
+                            <div className="share-sub">
+                              {this.state.subscribers.map((sub, i) => (
+                                <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                              ))}
+                            </div>
+                            <div className="share-pub">
+                              <UserVideoComponent
+                                streamManager={this.state.publisher}
+                                key={this.state.publisher.stream.streamId}
+                              />
+                            </div>
+                          </div>
+                        ) : null}
+                      </StreamContainerWrapper>
+                    // </div>
+                  ) : (
+                    
+                    // 공유하지 않았을 때
+                    // 총 1명일 때
+                    this.state.subscribers.length < 1 ? (
+                      <StreamContainerWrapper
+                        className="width1"
+                        ref={this.userRef}
+                      >
+                        {this.state.publisher !== undefined ? (
+                          <div className="stream-container under-one">
                             <UserVideoComponent
                               streamManager={this.state.publisher}
                               key={this.state.publisher.stream.streamId}
@@ -162,15 +167,15 @@ class OpenChat extends Component {
                         ) : null}
                       </StreamContainerWrapper>
                     ) : (
-                      
-                      // 총 3-4명일 때
-                      this.state.subscribers.length < 4 ? (
+  
+                      // 총 2명일 때
+                      this.state.subscribers.length < 2 ? (
                         <StreamContainerWrapper
-                        className="width3"
+                          className="width1"
                           ref={this.userRef}
                         >
                           {this.state.publisher !== undefined ? (
-                            <div className="stream-container under-four">
+                            <div className="stream-container under-two">
                               <UserVideoComponent
                                 streamManager={this.state.publisher}
                                 key={this.state.publisher.stream.streamId}
@@ -182,15 +187,15 @@ class OpenChat extends Component {
                           ) : null}
                         </StreamContainerWrapper>
                       ) : (
-
-                        // 총 5-6명일 때
-                        this.state.subscribers.length < 6 ? (
+                        
+                        // 총 3-4명일 때
+                        this.state.subscribers.length < 4 ? (
                           <StreamContainerWrapper
-                          className="width4"
+                          className="width2"
                             ref={this.userRef}
                           >
                             {this.state.publisher !== undefined ? (
-                              <div className="stream-container under-six">
+                              <div className="stream-container under-four">
                                 <UserVideoComponent
                                   streamManager={this.state.publisher}
                                   key={this.state.publisher.stream.streamId}
@@ -202,29 +207,51 @@ class OpenChat extends Component {
                             ) : null}
                           </StreamContainerWrapper>
                         ) : (
-
-                          // 총 7-9명일 때
-                          <StreamContainerWrapper
-                          className="width5"
-                            ref={this.userRef}
-                          >
-                            {this.state.publisher !== undefined ? (
-                              <div className="stream-container under-nine">
-                                <UserVideoComponent
-                                  streamManager={this.state.publisher}
-                                  key={this.state.publisher.stream.streamId}
-                                />
-                                {this.state.subscribers.map((sub, i) => (
-                                  <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                ))}
-                              </div>
-                            ) : null}
-                          </StreamContainerWrapper>
+  
+                          // 총 5-6명일 때
+                          this.state.subscribers.length < 6 ? (
+                            <StreamContainerWrapper
+                            className="width1"
+                              ref={this.userRef}
+                            >
+                              {this.state.publisher !== undefined ? (
+                                <div className="stream-container under-six">
+                                  <UserVideoComponent
+                                    streamManager={this.state.publisher}
+                                    key={this.state.publisher.stream.streamId}
+                                  />
+                                  {this.state.subscribers.map((sub, i) => (
+                                    <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                  ))}
+                                </div>
+                              ) : null}
+                            </StreamContainerWrapper>
+                          ) : (
+  
+                            // 총 7-9명일 때
+                            <StreamContainerWrapper
+                            className="width2"
+                              ref={this.userRef}
+                            >
+                              {this.state.publisher !== undefined ? (
+                                <div className="stream-container under-nine">
+                                  <UserVideoComponent
+                                    streamManager={this.state.publisher}
+                                    key={this.state.publisher.stream.streamId}
+                                  />
+                                  {this.state.subscribers.map((sub, i) => (
+                                    <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                  ))}
+                                </div>
+                              ) : null}
+                            </StreamContainerWrapper>
+                          )
                         )
                       )
                     )
                   )}
-                {/* 인원수별 grid */}
+
+
                 </div>
               </div>
 
@@ -276,7 +303,7 @@ class OpenChat extends Component {
                         videoSource: "screen", // 웹캠 기본 값으로
                         publishAudio: true,
                         publishVideo: true,
-                        resolution: "640x360",
+                        resolution: "1280x720",
                         frameRate: 30,
                         insertMode: "APPEND",
                         mirror: "false",
@@ -287,6 +314,7 @@ class OpenChat extends Component {
                           console.log('User pressed the "Stop sharing" button');
                           this.state.session.unpublish(newPublisher);
                           this.state.session.publish(this.state.publisher);
+                          this.setState({ isShare: !this.state.isShare })
                         });
                         this.state.session.publish(newPublisher);
                         this.setState({ mainStreamManager: newPublisher, newPublisher });
@@ -295,6 +323,8 @@ class OpenChat extends Component {
               
                       newPublisher.once('accessDenied', (event) => {
                         console.warn('ScreenShare: Access Denied');
+                        this.state.session.publish(this.state.publisher);
+                        this.setState({ isShare: !this.state.isShare });
                       });
                     }}
                   >
@@ -583,7 +613,7 @@ class OpenChat extends Component {
                 videoSource: undefined, // 웹캠 기본 값으로
                 publishAudio: true,
                 publishVideo: true,
-                resolution: "640x360",
+                resolution: "1280x720",
                 frameRate: 30,
                 insertMode: "APPEND",
                 mirror: "false",
