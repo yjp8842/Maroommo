@@ -7,8 +7,9 @@ import PictureUploader from "../../ImageUpload/PictureUploader";
 function GroupProfileModal({ onClose }) {
   const dispatch = useDispatch();
 
-  const {group} = useSelector((state) => ({
-    group: state.groupInfoReducers.group
+  const {user, group} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group,
   }))
 
   const handleClose = () => {
@@ -99,7 +100,9 @@ function GroupProfileModal({ onClose }) {
               <InputWithLabel onChange={onChangeName}  label="| 그룹명" id="groupname" placeholder={group.name} name='groupname'/>
               <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="groupintro" placeholder={group.intro} name='groupintro' />
 
-              <Label>| 초대링크 : {}</Label>
+              
+              <InputWithLabel label="| 초대링크" id="groupcode" value={`https://i8a406.p.ssafy.io/api/room/enter/${group.id}/${user.id}?roomCode=${group.code}`} name='groupcode' />
+              {/* <Label> : {}</Label> */}
               <CButton onClick={handleClose}>취소</CButton>
               <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
             </form>
