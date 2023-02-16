@@ -38,10 +38,10 @@ function RegisterQuestionPage (props) {
     status: state.questionArticleReducers.status
   }), shallowEqual)
 
-  const formData = new FormData()
+  // const formData = new FormData()
 
-  const [TitleValue, setTitleValue] = useState(title)
-  const [ContentValue, setContentValue] = useState(content)
+  const [TitleValue, setTitleValue] = useState('')
+  const [ContentValue, setContentValue] = useState('')
 
   // 새 글인지 수정인지
   const [IsForUpdate, setIsForUpdate] = useState(false);
@@ -78,6 +78,8 @@ function RegisterQuestionPage (props) {
     console.log("image", image)
   }
 
+  const formdata = new FormData()
+
   const onSubmitQuestionArticle = (event) => {
     event.preventDefault();
 
@@ -94,7 +96,7 @@ function RegisterQuestionPage (props) {
       return false;
     }
 
-    const formdata = new FormData();
+    // const formdata = new FormData();
     formdata.append('picture', image)
     const questionArticleForRegister = {
       title: title, content: content, room_id: groupId, user_id: user.id, picture: formdata
@@ -212,7 +214,7 @@ function RegisterQuestionPage (props) {
               onImageHandler={onImageChange}
               handleSubmit={onSubmitQuestionArticle}
               updateRequest={IsForUpdate}
-              formData = {formData}
+              formData = {formdata}
               picture={image.name}
               status={status}/>
           </Box>
