@@ -114,12 +114,12 @@ function QuestionArticlePage() {
       //   console.log('ㅎ')
       // } 
       if (finished === 0) {
-        setFinished(finished + 1)
+        setFinished(1)
         console.log('미해결>해결')
         console.log(finished)
       }
       if (finished === 1) {
-        setFinished(finished - 1)
+        setFinished(0)
         console.log('해결>미해결')
       }
     } else {
