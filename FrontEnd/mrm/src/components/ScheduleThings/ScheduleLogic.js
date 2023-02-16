@@ -1,7 +1,7 @@
 import api from "../../utils/axiosInstance";
 import { scheduleActions } from "../../slice/scheduleSlice";
 
-export function postScheduleData({ user, group, content, selectedDate, dispatch }) {
+export function postScheduleData({ user, group, content, selectedDate, dispatch, navigate }) {
 
     const year = selectedDate.$y;
     const month = selectedDate.$M + 1;
@@ -22,10 +22,12 @@ export function postScheduleData({ user, group, content, selectedDate, dispatch 
             console.log(response);
             dispatch(scheduleActions.saveSchedule(response.data.newSchedule))
             alert("일정 생성을 완료하였습니다")
+            navigate(`/group/${group.id}`);
         })
         .catch((err) => {
             console.log(err);
             alert("일정 생성 중 오류가 발생했습니다")
+            navigate(`/group/${group.id}`);
     })
     
 }

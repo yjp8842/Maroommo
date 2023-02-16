@@ -10,8 +10,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postScheduleData } from "./ScheduleLogic";
+import { useNavigate } from 'react-router-dom';
 
 const CreateScheduleModal = ({ onClose }) => {
+  const navigate = useNavigate();
     const handleClose = () => {
       onClose?.();
     }; 
@@ -68,7 +70,7 @@ const CreateScheduleModal = ({ onClose }) => {
           </LocalizationProvider>
 
         <CloseButton onClick={() => {
-          postScheduleData({ user, group, content, selectedDate,dispatch });
+          postScheduleData({ user, group, content, selectedDate,dispatch, navigate });
           handleClose();}}
           >등록</CloseButton>
         <CloseButton onClick={handleClose}>뒤로</CloseButton>
