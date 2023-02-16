@@ -29,7 +29,7 @@ export function requestLogin(dispatch, navigate) {
       dispatch(scheduleActions.saveSchedule(res.data.user.schedules))
 
       console.log('로그인시 받은 정보로 updateUserInfo 호출')
-      alert('로그인 되었습니다.')
+      alert(`${res.data.user.nickname}님 어서오세요!`);
       // -> myRoom으로 이동시키는 로직 추가
       navigate(`/myroom`);
     })

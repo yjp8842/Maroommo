@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import "react-datepicker/dist/react-datepicker.css"
+import { useSelector, useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -9,17 +10,25 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postScheduleData } from "./ScheduleLogic";
+import { useNavigate } from 'react-router-dom';
 
 const CreateScheduleModal = ({ onClose }) => {
-     const handleClose = () => {
+  const navigate = useNavigate();
+    const handleClose = () => {
       onClose?.();
     }; 
+    const dispatch = useDispatch()
+    
+    const {user, group} = useSelector((state) => ({
+      user: state.userInfoReducers.user,
+      group: state.groupInfoReducers.group
+    }))
   
     const [ roomId, setroomId ] = useState('');
     const [ content, setcontent ] = useState('');
     const [ selectedDate, setSelectedDate ] = useState('');
 
-    const onChange1 = e => {setroomId(e.target.value)}
+    // const onChange1 = e => {setroomId(e.target.value)}
     const onChange2 = e => {setcontent(e.target.value)}
 
     return (
@@ -28,8 +37,9 @@ const CreateScheduleModal = ({ onClose }) => {
         <InputWithLabel 
           id="roomId"
           label="| 그룹명" 
-          placeholder="React 기초반"
-          onChange={onChange1}
+          // placeholder={group.name}
+          value={group.name}
+          // onChange={onChange1}
         />
         <InputWithLabel 
           id="content"
@@ -60,7 +70,7 @@ const CreateScheduleModal = ({ onClose }) => {
           </LocalizationProvider>
 
         <CloseButton onClick={() => {
-          postScheduleData({ roomId, content, selectedDate });
+          postScheduleData({ user, group, content, selectedDate,dispatch, navigate });
           handleClose();}}
           >등록</CloseButton>
         <CloseButton onClick={handleClose}>뒤로</CloseButton>

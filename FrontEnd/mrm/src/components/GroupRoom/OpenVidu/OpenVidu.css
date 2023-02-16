@@ -4,6 +4,21 @@
   background-color: #ebe5d1;
 }
 
+.alert {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert div {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+}
+
 .stream-container {
 	padding: 0;
 }
@@ -50,24 +65,47 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 87vh;
 }
 
 .share-sub {
   width: 100%;
-  height: 20%;
+  height: 18vh;
   display: flex;
+  flex-wrap: nowrap;
   overflow-x: scroll;
+  overflow-y: hidden;
+  margin-top: 1vh;
+}
+
+.share-sub::-webkit-scrollbar {
+  height: 8px;  /* 스크롤바의 너비 */
+}
+
+.share-sub::-webkit-scrollbar-thumb {
+  width: 20%; /* 스크롤바의 길이 */
+  background: rgba(165, 165, 165, 0.2); /* 스크롤바의 색상 */
+  border-radius: 10px;
+}
+
+.share-sub::-webkit-scrollbar-track {
+  background: rgb(161, 161, 161, 0.1);  /*스크롤바 뒷 배경 색상*/
+  border-radius: 10px;
 }
 
 .share-subs {
-  width: 40%;
+  width: 240px;
+  height: fit-content;
+  padding: 0;
+  flex: 0 0 auto;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 .share-pub {
-  width: 70%;
-  height: 75%;
-  margin-top: 3%;
+  width: 60%;
+  height: 60vh;
+  margin-top: 6%;
 }
 
 .width1 {
@@ -76,6 +114,10 @@
 
 .width2 {
   width: 70%;
+}
+
+.width3 {
+  width: 80%;
 }
 
 .under-one {
@@ -116,6 +158,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  /* z-index: 5; */
 }
 
 .openvidu-chat-name {

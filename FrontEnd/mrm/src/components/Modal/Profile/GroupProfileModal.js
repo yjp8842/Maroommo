@@ -7,8 +7,9 @@ import PictureUploader from "../../ImageUpload/PictureUploader";
 function GroupProfileModal({ onClose }) {
   const dispatch = useDispatch();
 
-  const {group} = useSelector((state) => ({
-    group: state.groupInfoReducers.group
+  const {user, group} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group,
   }))
 
   const handleClose = () => {
@@ -69,18 +70,6 @@ function GroupProfileModal({ onClose }) {
     const formdata = new FormData();
     formdata.append('profileImage', image)
     console.log(formdata)
-
-    // api.post(
-    //   `/room/user?userId=${group.id}&intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
-    //   formdata).
-    // then((res)=>{
-    //   console.log(res);
-    //   userInfoActions.modifyUserInfo(res.data.user);
-    //   alert('수정되었습니다');
-    // })
-    // .catch((err) => {
-    //   alert('수정 중 오류가 발생했습니다.');
-    // })
   }
 
 
@@ -99,6 +88,9 @@ function GroupProfileModal({ onClose }) {
               <InputWithLabel onChange={onChangeName}  label="| 그룹명" id="groupname" placeholder={group.name} name='groupname'/>
               <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="groupintro" placeholder={group.intro} name='groupintro' />
 
+              
+              <InputWithLabel label="| 초대링크" id="groupcode" value={`https://i8a406.p.ssafy.io/api/room/enter/${group.id}?roomCode=${group.code}`} name='groupcode' />
+              {/* <Label> : {}</Label> */}
               <CButton onClick={handleClose}>취소</CButton>
               <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
             </form>

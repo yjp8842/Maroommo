@@ -16,6 +16,8 @@ import { answerActions } from '../../../../slice/answerSlice'
 
 import QuestionArticleDetail from "./Sections/QuestionArticleDetail";
 import Answer from "./Sections/Answer";
+import styled from "styled-components";
+import RoomModal from "../../../Modal/Group/RoomModal";
 
 function QuestionArticlePage() {
 
@@ -87,6 +89,12 @@ function QuestionArticlePage() {
   const onDeleteAnswer = (answerId) => {
     dispatch(answerActions.deleteAnswer(answerId))
   };
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
+
 
   return (
     <Grid container>
@@ -123,22 +131,15 @@ function QuestionArticlePage() {
             })}
           </Box>
           <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -263,124 +264,21 @@ export default QuestionArticlePage;
 
 
 
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
 
-
-// import React, {useEffect, useState} from "react";
-// import { useDispatch, useSelector, shallowEqual } from "react-redux";
-// // import { articleActions } from "../../../../slice/articleSlice";
-// import { questionArticleActions } from "../../../../slice/questionArticleSlice";
-// import { useParams } from "react-router-dom";
-// // import ArticleDetail from "./Sections/ArticleDetail";
-// import QuestionArticleDetail from "./Sections/QuestionArticleDetail";
-
-// // import Comment from "./Sections/Comment";
-// import QuestionComment from "./Sections/QuestionComment";
-// // import { commentActions } from "../../../../slice/commentSlice";
-// import { questionCommentActions } from "../../../../slice/questionCommentSlice";
-
-
-// function QuestionArticlePage() {
-
-//   const params = useParams();
-//   console.log(params)
-//   console.log(params.questionArticleId)
-//   const dispatch = useDispatch();
-
-//   useEffect(() => {
-//     dispatch(questionArticleActions.getQuestionArticle(params.questionArticleId));
-//     dispatch(questionCommentActions.getQuestionComments(params.questionArticleId));
-//   }, [params.questionArticleId]);
-
-//   // , [{articleId}]);_
-// // categorysub_id, content, createtime, hit, picture, title, user_id
-//   const { id, title, content, date, user_id, status, answers  } = useSelector((state) => ({
-//     id: state.questionArticleReducers.id,
-//     title: state.questionArticleReducers.title,
-//     content: state.questionArticleReducers.content,
-//     date: state.questionArticleReducers.date,
-//     user_id: state.questionArticleReducers.user_id,
-//     status: state.questionArticleReducers.status,
-//     answers: state.questionArticleReducers.answers,
-//   }),
-//   shallowEqual);
-//   // const date = useSelector((state) => state.articleReducers.date);
-  
-//   const views = useSelector((state) => state.questionArticleReducers.views);
-//   // console.log(title)
-
-//   // const stateForProps = useSelector((state) =>
-//   // state.articleReducers)
-
-//   const onDeleteClick = () => {
-//     if (!window.confirm('삭제하시겠습니까?')) return false;
-//     dispatch(questionArticleActions.deleteQuestionArticle(id))
-//   } 
-
-//   //댓글
-//   const [QuestionCommentValue, setQuestionCommentValue] = useState("");
-
-//   const questionComments = useSelector((state) =>
-//   state.questionCommentReducers.questionComments);
-//   console.log(questionComments)
-
-//   const onQuestionCommentChange = (e) => {
-//     setQuestionCommentValue(e.currentTarget.value);
-//   };
-
-//   const onQuestionCommentSubmit = () => {
-//     if (
-//       QuestionCommentValue === '' ||
-//       QuestionCommentValue === null ||
-//       QuestionCommentValue === undefined
-//     ) {
-//       alert('댓글을 입력하세요.');
-//       return false;
-//     }
-//     const questionComment = {
-//       id: 0,
-//       content: QuestionCommentValue,
-//       date: Date.now(),
-//       questionArticleId: id,
-//     };
-//     dispatch(questionCommentActions.registerQuestionComment(questionComment))
-//   };
-
-//   const onDeleteQuestionComment = (questionCommentId) => {
-//     dispatch(questionCommentActions.deleteQuestionComment(questionCommentId))
-//   };
-
-//   return (
-//     <div>
-//       <div>
-//         <QuestionArticleDetail
-//           id={id}
-//           title={title}
-//           content={content}
-//           views={views}
-//           date={date}
-//           user_id={user_id}
-//           status={status}
-//           answers={answers}
-//           handleDeleteClick={onDeleteClick}
-//           handleQuestionComment={<QuestionComment
-//             questionComment={QuestionCommentValue}
-//             handleQuestionCommentChange={onQuestionCommentChange}
-//             handleQuestionCommentSubmit={onQuestionCommentSubmit}/>}
-//           loadQuestionComments={questionComments}
-//           deleteQuestionComment={onDeleteQuestionComment}
-//           />
-//       </div>
-//       {/* <div>
-//         <Link to={`/group/board/register?isForEdit=true`}>
-//           <button>수정</button>
-//         </Link>
-//         <Link>
-//           <button>삭제</button>
-//         </Link>
-//       </div> */}
-//     </div>
-//       )
-//     }
-// // {match.params.articleId}
-
-// export default QuestionArticlePage;
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;

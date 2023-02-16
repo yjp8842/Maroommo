@@ -13,6 +13,8 @@ import { Link, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { boardActions } from '../../slice/boardSlice';
 import BoardList from './Board/ArticlePage/Sections/BoardList';
+import styled from "styled-components";
+import RoomModal from "../Modal/Group/RoomModal";
 
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
@@ -58,6 +60,12 @@ const GroupBoard = () => {
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
   const offset = (page - 1) * limit;
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
+  
     
   return (
     <Grid container>
@@ -94,22 +102,15 @@ const GroupBoard = () => {
             })}
           </Box>
           <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -273,3 +274,23 @@ const GroupBoard = () => {
 };
 
 export default GroupBoard;
+
+
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;

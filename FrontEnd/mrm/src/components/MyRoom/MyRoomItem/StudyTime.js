@@ -23,7 +23,7 @@ function StudyTime (props) {
   var totalTime = 0;
   props.todoList.map((todo) => {
     return (todo.todoTimes.map((time) => {
-      return (time.totalMinute ? totalTime += time.totalMinute : totalTime += 0)
+      return (time.totalSec ? totalTime += time.totalSec : totalTime += 0)
     }))
   })
 
@@ -32,10 +32,10 @@ function StudyTime (props) {
     console.log(todo);
     var tot = 0;
     todo.todoTimes.map((time) => (
-      time.totalMinute ? tot += time.totalMinute : tot += 0
+      time.totalSec ? tot += time.totalSec : tot += 0
     ));
     todos.push({
-      id:todo.id,
+      id: todo.id,
       content:todo.content,
       totalTime:tot
     })
@@ -77,7 +77,7 @@ function StudyTime (props) {
         paddingY: "40px"
       }}>
       
-      <h3>총 공부 시간 : {totalTime > 60 ? (totalTime / 60) + "시간 " + (totalTime % 60) + "분": totalTime + "분"}</h3>
+      <h3>총 공부 시간 : {totalTime > 3600 ? (totalTime / 3600).toFixed() + "시간 " + ((totalTime % 3600) / 60).toFixed() + "분": (totalTime/60).toFixed() + "분"}</h3>
         {/* // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정 */}
         
         <div style={{ width: '800px', height: '170px', margin: '0 auto' }}>

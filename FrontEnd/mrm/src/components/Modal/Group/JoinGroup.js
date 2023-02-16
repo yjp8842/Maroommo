@@ -1,23 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 // import Box from '@mui/material/Box';
+import api from "../../../utils/axiosInstance";
+import { useSelector, useDispatch } from "react-redux";
+import { userInfoActions } from "../../../slice/userInfoSlice";
+import { groupInfoActions} from "../../../slice/groupInfoSlice";
+import { scheduleActions } from "../../../slice/scheduleSlice";
+
 
 function JoinRoomModal({ onClose }) {
   const handleClose = () => {
     onClose?.();
   };
 
+  const dispatch = useDispatch();
+
+  const [ inviteURL, setInviteURL ] = useState('')
+  
+  const onChangeInviteURL= e => {
+    setInviteURL(e.target.value)
+  }
+
+  const onSubmitJoinRoom = (event) => {
+    console.log(inviteURL)
+    
+    const joinLink = (inviteURL.length > 29 && inviteURL.includes("https://i8a406.p.ssafy.io/api/room/enter/")) ? inviteURL.substring(29) : "";
+
+    if(joinLink === ""){
+      alert("잘못된 초대 링크를 입력하셨습니다.")
+      return;
+    }
+    console.log(joinLink)
+
+    api.post(joinLink)
+    .then((res) => {
+      console.log("입장 완료!");
+      console.log(res);
+      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
+      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
+      alert("마룸모에 참가하였습니다!");
+      onClose?.();
+    })
+    .catch((err) => {
+      console.log(err)
+      alert("잘못된 초대 링크를 입력하셨습니다.")
+      return;
+    })
+  }
+
+
+
   return (
     <Overlay>
       <ModalWrap>
         <Contents>
           <h1>마룸모 참가하기</h1>
-          <InputWithLabel label="| 초대링크" name="URL" placeholder="maroommo.com/ssafyA406" type="URL"/>
-          <InputWithLabel label="| 비밀번호" name="password" placeholder="비밀번호" type="password"/>
+          <InputWithLabel id="inviteURL" onChange={onChangeInviteURL} label="| 초대링크" name="URL" placeholder="maroommo.com/ssafyA406"/>
 
           <BtnDiv>
             <CButton onClick={handleClose}>뒤로</CButton>
-            <CButton onClick={handleClose}>참가하기</CButton>
+            <CButton onClick={onSubmitJoinRoom}>참가하기</CButton>
           </BtnDiv>
         </Contents>
       </ModalWrap>

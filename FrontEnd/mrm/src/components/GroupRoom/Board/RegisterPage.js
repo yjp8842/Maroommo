@@ -11,12 +11,15 @@ import GroupMemberList from '../GroupRoomItem/GroupMemberList';
 
 import RegisterOrEdit from "./RegisterOrEdit";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link, useParams,useLocation } from 'react-router-dom';
+import { Link, useParams,useLocation,useNavigate } from 'react-router-dom';
 
 import { articleActions } from "../../../slice/articleSlice";
+import styled from "styled-components";
+import RoomModal from "../../Modal/Group/RoomModal";
 
 function RegisterPage (props) {
   console.log(props);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 	const params = useParams();
@@ -39,6 +42,11 @@ function RegisterPage (props) {
 
   const [TitleValue, setTitleValue] = useState(title)
   const [ContentValue, setContentValue] = useState(content)
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
 
   // 새 글인지 수정인지
   const [IsForUpdate, setIsForUpdate] = useState(false);
@@ -103,9 +111,11 @@ function RegisterPage (props) {
     if (IsForUpdate) {
       console.log('업데이트 ㄱㄱ')
       dispatch(articleActions.updateArticle(articleForUpdate)); // 추가
+      navigate(`/group/${groupId}/board`);
     } else {
       console.log('작성 ㄱㄱ')
       dispatch(articleActions.registerArticle(articleForRegister));
+      navigate(`/group/${groupId}/board`);
     } 
 
   }
@@ -147,22 +157,15 @@ function RegisterPage (props) {
             })}
           </Box>
           <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -278,3 +281,21 @@ function RegisterPage (props) {
 }
 
 export default RegisterPage;
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;

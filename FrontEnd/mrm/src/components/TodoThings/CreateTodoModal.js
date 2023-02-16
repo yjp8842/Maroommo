@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css"
+import { useSelector, useDispatch } from 'react-redux';
+
 
 import Box from '@mui/material/Box';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,7 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postTodoData } from "./TodoLogic";
-import { useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 // import moment from "moment/moment";
 
 // export function changeFormat(date, format) {
@@ -21,18 +23,24 @@ import { useDispatch } from "react-redux";
 
 
 const CreateTodoModal = ({ onClose }) => {
+  const navigate = useNavigate();
     // onchange
-     const handleClose = () => {
+    const handleClose = () => {
       onClose?.();
     };
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
+  
+  const {user, group} = useSelector((state) => ({
+    user: state.userInfoReducers.user,
+    group: state.groupInfoReducers.group
+  }))
     
-    const [ roomId, setroomId ] = useState('');
+    // const [ roomId, setroomId ] = useState('');
     const [ tags, settags ] = useState('');
     const [ content, setcontent ] = useState('');
     const [ selectedDate, setSelectedDate ] = useState('');
 
-    const onChange1 = e => {setroomId(e.target.value)}
+    // const onChange1 = e => {setroomId(e.target.value)}
     const onChange2 = e => {settags(e.target.value)}
     const onChange3 = e => {setcontent(e.target.value)}
     // const onChange4 = e => {setSelectedDate(e.target.value)}
@@ -53,9 +61,9 @@ const CreateTodoModal = ({ onClose }) => {
           id="roomId"
           label="| 그룹명" 
           // name="roomId" 
-          placeholder="React 기초반"
-          onChange={onChange1}
-          // value={roomId}
+          // placeholder={group.name}
+          // onChange={onChange1}
+          value={group.name}
         />
         <InputWithLabel 
           id="tags"
@@ -74,7 +82,7 @@ const CreateTodoModal = ({ onClose }) => {
           // value={content}
         />
 
-         <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             id="date"
             label="Custom input"
@@ -99,7 +107,7 @@ const CreateTodoModal = ({ onClose }) => {
         </LocalizationProvider>
 
         <CloseButton onClick={() => {
-          postTodoData({ roomId, tags, content, selectedDate, dispatch });
+          postTodoData({ user, group, tags, content, selectedDate, dispatch,navigate });
           handleClose();}}
         >등록</CloseButton>
         <CloseButton onClick={handleClose}>뒤로</CloseButton>
