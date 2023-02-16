@@ -19,6 +19,13 @@ import RoomModal from "../Modal/Group/RoomModal";
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
 import Pagination from "./Pagination";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 import api from "../../utils/axiosInstance";
 
@@ -156,65 +163,66 @@ const GroupBoard = () => {
           <Box sx={{mt:5}}>
             <h1>게시판</h1>
             <br></br>
-
-            {/* <div style={{ width: "80%", margin: "3rem auto" }}>
-              {error
-                ? (<h2>에러 발생: {error}</h2>)
-                : isSuccess && board.content.length <= 0
-                  ? (<p> 조회할 내용이 없습니다.</p>)
-                  : isSuccess && board.content.length > 0
-                    ? (<BoardList
-                      board={board}
-                      groupId={group.id}
-                        // handleDeleteClick={onDeleteClick}
-                        handleArticleTitleClick={onArticleTitleClick}
-                      />)
-                    : (<p> 목록을 불러오는 중입니다. </p>)
-              }
-            </div> */}
-
-            <table>
-              <colgroup>
-                <col width="10%" />
-                <col width="35%" />
-                <col width="15%" />
-                <col width="10%" />
-                <col width="15%" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>번호</th>
-                  <th>제목</th>
-                  <th>작성자</th>
-                  <th>조회수</th>
-                  <th>작성일</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                board.content 
-                  ? board.content.slice(offset, offset + limit).map((article, index) => {
-                    return (
-                      <tr>
-                        <td>{article.id}</td>
-                          <Link to={`/group/${groupId}/board/article/${article.id}`}>{article.title}</Link>
-                        <td>{article.user}</td>
-                        <td>{article.views}</td>
-                        <td>{new Date(article.createTime).toLocaleString()}</td>
-                      </tr>
-                      )
-                    }) 
-                  : <tr></tr>
-                }
-              </tbody>
-            </table>
+            <TableContainer component={Paper} sx={{ border:'2px solid black', borderRadius:'25px', tableLayout:'auto'}}>
+              <Table sx={{ height:'65vh', width:"60vw", minWidth: 650  }} aria-label="simple table">
+                <TableHead 
+                  >
+                  <TableRow >
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderLeft:'0px'}} align='center'>번호</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>제목</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>작성자</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>조회수</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderRight:'0px'}} align='center'>작성일</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                      board.content
+                        ? board.content.slice(offset, offset + limit).map((article, index) => {
+                          return (
+                            <TableRow
+                              key={article.id}
+                            >
+                              <TableCell sx={{ fontSize: '1.2rem', borderTop: '1px solid black', borderBottom: '1px solid black', borderRight: '1px solid black' }} align='center' component="th" scope="row">
+                                {article.id}
+                              </TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>
+                                <Link to={`/group/${groupId}/board/article/${article.id}`}>
+                                  {article.title}
+                                </Link>
+                              </TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{article.user}</TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{article.views}</TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black', borderRight: '0px' }} align='center'>{new Date(article.createTime).toLocaleString()}</TableCell>
+                            </TableRow>
+                          )
+                        })
+                        : <TableRow></TableRow>
+                    }
+                </TableBody>
+              </Table>
+            </TableContainer>
             <Pagination limit={limit} page={page} setPage={setPage} total={board.content.length}/>
 
             {/* 룸아이디 넣는 식으로 수정해야함 */}
-            <Link to={`/group/${groupId}/board/register?isForEdit=false`}>
-              <button>글쓰기</button>
-            </Link>
-
+            <Box
+              sx={{
+                width: "80px",
+                height: "30px",
+                // marginTop: "20px",
+                // paddingY: '20px',
+                borderRadius: "30px",
+                backgroundColor: "#FFFFFF",
+                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+                }}>
+                <Link to={`/group/${groupId}/board/register?isForEdit=false`}>
+                  글쓰기
+                </Link>
+            </Box>
           </Box>
         </Box>
 

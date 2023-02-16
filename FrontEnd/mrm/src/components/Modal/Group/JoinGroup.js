@@ -28,7 +28,7 @@ function JoinRoomModal({ onClose }) {
     console.log("그룹 입장 코드")
     console.log(inviteURL)
     
-    const joinLink = (inviteURL.length > 29 && inviteURL.includes("https://i8a406.p.ssafy.io/api/room/enter/")) ? inviteURL.substring(29) : "";
+    const joinLink = (inviteURL.length > 29 && inviteURL.includes("https://i8a406.p.ssafy.io/room/enter/")) ? inviteURL.substring(25) : "";
 
     if(joinLink === ""){
       alert("잘못된 초대 링크를 입력하셨습니다.")
@@ -36,7 +36,7 @@ function JoinRoomModal({ onClose }) {
     }
     console.log(joinLink)
 
-    api.post(joinLink)
+    api.get(joinLink)
     .then((res) => {
       console.log("입장 완료!");
       console.log(res);

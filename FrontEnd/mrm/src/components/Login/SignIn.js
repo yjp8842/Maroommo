@@ -14,6 +14,7 @@ const theme = createTheme();
 
 export default function SignInSide() {
   const navigate = useNavigate();
+  localStorage.clear();
 
   const handleSubmit = (event) => {
     event.preventDefault();

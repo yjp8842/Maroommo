@@ -20,6 +20,14 @@ import './Group.css';
 import Pagination from "./Pagination";
 import styled from "styled-components";
 import RoomModal from "../Modal/Group/RoomModal";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 
 const GroupQnA = () => {
   const handleOpenNewTab = (url) => {
@@ -151,72 +159,71 @@ const GroupQnA = () => {
 
           <Box sx={{mt:5}}>
             <h1>Q&A</h1>
-            <br></br>
-            {/* 완료여부 포함된 board..어떻게 넣지? */}
-            {/* <div style={{ width: "80%", margin: "3rem auto" }}>
-              {error
-                ? (<h2>에러 발생: {error}</h2>)
-                : isSuccess && question.content.length <= 0
-                  ? (<p> 조회할 내용이 없습니다. </p>)
-                  : isSuccess && question.content.length > 0
-                    ? (<QuestionList
-                      question={question}
-                      // handleDeleteClick={onDeleteClick}
-                      // handleQuestionArticleTitleClick={onQuestionArticleTitleClick}
-                      />)
-                    : (<p> 목록을 불러오는 중입니다. </p>)}
-            </div> */}
-
-            <div>
-              <table>
-                <colgroup>
-                  <col width="10%" />
-                  <col width="15%" />
-                  <col width="35%" />
-                  <col width="15%" />
-                  <col width="10%" />
-                  <col width="15%" />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>번호</th>
-                    <th>해결/미해결</th>
-                    <th>제목</th>
-                    <th>작성자</th>
-                    <th>조회수</th>
-                    <th>작성일</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <br></br>            
+            <TableContainer component={Paper} sx={{ border:'2px solid black', borderRadius:'25px', tableLayout:'auto'}}>
+              <Table sx={{ height:'65vh', width:"60vw", minWidth: 650  }} aria-label="simple table">
+                <TableHead 
+                  >
+                  <TableRow >
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderLeft:'0px'}} align='center'>번호</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>해결/미해결</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>제목</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>작성자</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>조회수</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderRight:'0px'}} align='center'>작성일</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                 {question.content
                 ?
                   question.content.slice(offset, offset + limit).map((questionArticle, index) => {
                     return (
-                      <tr>
-                        <td>{questionArticle.id}</td>
+                      <TableRow
+                        key={questionArticle.id}
+                      >
+                        <TableCell sx={{ fontSize: '1.2rem', borderTop: '1px solid black', borderBottom: '1px solid black', borderRight: '1px solid black' }} align='center' component="th" scope="row">
+                          {questionArticle.id}
+                        </TableCell>
                         {questionArticle.status === 0
-                        ?<td>미해결</td>
-                        :<td>해결</td>}
-                        <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
-                          <td>{questionArticle.title}</td>
-                        </Link>
-                        <td>{questionArticle.user_id}</td>
-                        <td>{questionArticle.views}</td>
-                        <td>{new Date(questionArticle.createTime).toLocaleString()}</td>
-                        </tr>
+                        ?<TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>미해결</TableCell>
+                        :<TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>해결</TableCell>}
+                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>
+                          <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
+                            {questionArticle.title}
+                          </Link>
+                        </TableCell>
+                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{questionArticle.user_id}</TableCell>
+                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{questionArticle.views}</TableCell>
+                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black', borderRight: '0px' }} align='center'>{new Date(questionArticle.createTime).toLocaleString()}</TableCell>
+                      </TableRow>
                     )
                   })
-                : <div></div>
-                }
-                </tbody>
-              </table>
-              <Pagination limit={limit} page={page} setPage={setPage} total={question.content.length}/>
-            </div>
+                : <TableRow></TableRow>
+                }                    
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Pagination limit={limit} page={page} setPage={setPage} total={question.content.length}/>
 
-
-            <Link to={`/group/${groupId}/question/register?isForEdit=false`}>
-              <button>글쓰기</button>
-            </Link>
+            {/* 룸아이디 넣는 식으로 수정해야함 */}
+            <Box
+              sx={{
+                width: "80px",
+                height: "30px",
+                // marginTop: "20px",
+                // paddingY: '20px',
+                borderRadius: "30px",
+                backgroundColor: "#FFFFFF",
+                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+                }}>
+                <Link to={`/group/${groupId}/question/register?isForEdit=false`}>
+                  글쓰기
+                </Link>
+            </Box>
           </Box>
         </Box>   
 
