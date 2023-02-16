@@ -119,18 +119,17 @@ function QuestionArticlePage() {
         setFinished(0)
         console.log('해결>미해결')
       }
+      console.log('상태 수정해줘')
+      // console.log(statusForUpdate)
+      const statusForUpdate = {
+        id: id, status: finished, user_id: user_id
+      };
+      dispatch(questionArticleActions.updateStatus(statusForUpdate))
     } else {
       console.log(user.id,'###', user_id)
       console.log()
       alert('작성자만 변경할 수 있습니다.')
     }
-    console.log('상태 수정해줘')
-    // console.log(statusForUpdate)
-    const statusForUpdate = {
-      id: id, status: finished, user_id: user_id
-    };
-    dispatch(questionArticleActions.updateStatus(statusForUpdate))
-
   }
 
   return (
