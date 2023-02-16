@@ -33,13 +33,13 @@ export function postTodoData({ user, group, tags, content, selectedDate, dispatc
             console.log(response);
             dispatch(userInfoActions.createMytodo(response.data))
             alert("할일 생성을 완료하였습니다")
-            navigate(`/group/${group.id}`);
+            window.location.reload();
             // history.push('/group/1')
         })
         .catch((err) => {
             console.log(err);
             alert("할일 생성 중 오류가 발생했습니다")
-            navigate(`/group/${group.id}`);
+            window.location.reload();
         })
     
 }

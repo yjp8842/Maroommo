@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import api from "../../../utils/axiosInstance";
+import { useNavigate } from 'react-router-dom';
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { userInfoActions } from "../../../slice/userInfoSlice";
 import { groupInfoActions} from "../../../slice/groupInfoSlice";
@@ -8,6 +9,7 @@ import { scheduleActions } from "../../../slice/scheduleSlice";
 
 
 function CreateRoomModal({ onClose }) {
+  const navigate = useNavigate();
   const handleClose = () => {
     onClose?.();
   };
@@ -48,7 +50,7 @@ function CreateRoomModal({ onClose }) {
       dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
       dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules));
       alert("그룹 생성을 완료하였습니다.");
-      onClose?.();
+      navigate(`/group/${res.data.moveRoomInfo.id}`);
     })
     .catch((err) => {
       console.log(err);
@@ -67,10 +69,10 @@ function CreateRoomModal({ onClose }) {
           <InputWithLabel onChange={onChangeGroupIntro} label="| 한줄소개" name="introduction" placeholder="예시) React를 시작하는 사람들의 모임입니다. " type="introduction"/>
 
           <div>
-            <CButton onClick={handleClose}>뒤로</CButton>
             <CButton onClick={() => {
               onSubmitJoinRoom()}}
               >생성하기</CButton>
+              <CButton onClick={handleClose}>뒤로</CButton>
           </div>
         </Contents>
       </ModalWrap>

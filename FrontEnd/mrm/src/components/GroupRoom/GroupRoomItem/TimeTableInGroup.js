@@ -21,17 +21,17 @@ function TimeTableBox (props) {
   if(props.group.todayTodoTimes){
     const size = props.group.todayTodoTimes.length;
     props.group.todayTodoTimes.map((todo, index) => {
-      if(todo.totalMinute > 60 && todo.startTime < todo.endTime){
+      if(todo.totalSec > 60 && todo.startTime < todo.endTime){
         data1.push([todo.userId,
-          `${todo.todoId}`,
+          todo.content,
           new Date(todo.startTime),
           new Date(todo.endTime) 
         ]);
       }
-      if(index === size-1 && !todo.endTime) {
+      if(index === size-1 && todo.totalSec === 0) {
         // console.log("마지막 투두")
-        data1.push([todo.userId,
-          `${todo.todoId}`,
+        data1.push([todo.userNickname,
+          todo.content,
           new Date(todo.startTime),
           new Date() 
         ]);

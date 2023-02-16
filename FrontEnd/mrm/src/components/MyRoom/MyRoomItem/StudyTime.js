@@ -37,7 +37,7 @@ function StudyTime (props) {
     todos.push({
       id: todo.id,
       content:todo.content,
-      totalTime:tot
+      totalTime:tot > 60 ? tot : 0
     })
     return (true)
   })
@@ -46,18 +46,23 @@ function StudyTime (props) {
   console.log(totalTime);
   console.log(todos);
 
-  // const todos = [];
-
-// content
-// : 
-// "발표"
-// id
-// : 
-// 14
-// totalTime
-// : 
-// 1080
-  const data = { 시간 : '시간'};
+  if(totalTime > 3600) {
+    todos.forEach((todo) => {
+      todo.totalTime = (todo.totalTime / 3600).toFixed(2)
+    })  
+  }
+  else if(totalTime > 60){
+    todos.forEach((todo) => {
+      todo.totalTime = (todo.totalTime / 60).toFixed(2)
+    })  
+  }
+  else{
+    todos.forEach((todo) => {
+      todo.totalTime = 0
+    })  
+  }
+  
+  const data = totalTime > 3600 ? {시간 : "시간 "} : { 분 : '분'};
   todos.forEach((todo) => {
     data[todo.content] = todo.totalTime
   })
