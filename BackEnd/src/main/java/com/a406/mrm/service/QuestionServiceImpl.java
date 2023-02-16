@@ -112,7 +112,7 @@ public class QuestionServiceImpl implements QuestionService{
 
     @Override
     public Page<QuestionResponseDto> listQuestion_Pageable(int room_id, Pageable pageable) {
-        return questionRepository.findByroom_Id(room_id, pageable);
+        return questionRepository.findByRoomIdOrderByIdDesc(room_id, pageable);
     }
 
     @Override
