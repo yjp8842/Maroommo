@@ -46,7 +46,7 @@ const GroupRoom = () => {
   */
   useEffect(() => {
     console.log("그룹 페이지 이동!")
-    api.get(`/room/${groupId}/${user.id}`)
+    api.get(`/room/${groupId}`)
     .then((res) => {    
       console.log("그룹 페이지 이동!")
 

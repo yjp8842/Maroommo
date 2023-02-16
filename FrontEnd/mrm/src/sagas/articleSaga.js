@@ -12,7 +12,7 @@ export function* registerArticleAsync(action) {
   console.log('articleSage data 출력 : ',data)
   console.log('----------');
   const response = yield api.post(
-    `/board?room_id=${data.room_id}&content=${data.content}&title=${data.title}&user_id=${data.user_id}`,
+    `/board?room_id=${data.room_id}&content=${data.content}&title=${data.title}`,
     data.picture
   )
 
@@ -21,9 +21,9 @@ export function* registerArticleAsync(action) {
   console.log('response 출력 : ',response)
   console.log('----------');
 
-  history.push(`/group/1/board/article/${response.data.newBoard.id}`, response.data.newBoard.id);
-  // eslint-disable-next-line no-restricted-globals
-  location.reload();
+  // history.push(`/group/${data.room_id}/board/article/${response.data.newBoard.id}`, response.data.newBoard.id);
+  // // eslint-disable-next-line no-restricted-globals
+  // location.reload();
 }
 
 
@@ -48,16 +48,16 @@ export function* updateArticleAsync(action) {
   const article = action.payload;
   console.log('updateArticleAsync article 호출 : ', article)
   const response = yield api.post(
-    `/board/update?id=${article.id}&content=${article.content}&title=${article.title}&user_id=${article.user_id}`,
+    `/board/update?id=${article.id}&content=${article.content}&title=${article.title}`,
     article.picture
   )
   
   alert("저장되었습니다.");
   console.log(response.data.board);
 
-  history.push(`/group/1/board/article/${response.data.board.id}`, response.data.board.id);
-  // eslint-disable-next-line no-restricted-globals
-  location.reload();
+  // history.push(`/group/1/board/article/${response.data.board.id}`, response.data.board.id);
+  // // eslint-disable-next-line no-restricted-globals
+  // location.reload();
 }
 
 export function* deleteArticleAsync(action) {
@@ -78,10 +78,10 @@ export function* deleteArticleAsync(action) {
   // yield Axios.delete(BASE_URL + `/api/board/${id}/hd`);
 
   // 아이디 값 불러오게 바꿔!!!
-  yield api.delete(`/board/${id}/hd`)
+  yield api.delete(`/board/${id}`)
   alert("삭제되었습니다.");
 
-  history.push(`/group/1/board`);
-  // eslint-disable-next-line no-restricted-globals
-  location.reload();
+  // history.push(`/group/1/board`);
+  // // eslint-disable-next-line no-restricted-globals
+  // location.reload();
 }

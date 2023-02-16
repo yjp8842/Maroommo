@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -20,6 +20,7 @@ function RegisterQuestionPage (props) {
   const dispatch = useDispatch();
 	const params = useParams();
   const groupId = params.groupId;
+  const navigate = useNavigate();
 
   const {user, id, group, views, date, editDate, title, content, picture, status} = useSelector((state) =>
   ({
@@ -104,9 +105,11 @@ function RegisterQuestionPage (props) {
     if (IsForUpdate) {
       console.log('업데이트 ㄱㄱ')
       dispatch(questionArticleActions.updateQuestionArticle(questionArticleForUpdate)); // 추가
+      navigate(`/group/${groupId}/question`);
     } else {
       console.log('작성 ㄱㄱ')
       dispatch(questionArticleActions.registerQuestionArticle(questionArticleForRegister));
+      navigate(`/group/${groupId}/question`);
     } 
   }
 

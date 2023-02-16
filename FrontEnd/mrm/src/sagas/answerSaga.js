@@ -28,6 +28,6 @@ export function* registerAnswerAsync(action) {
 
 export function* deleteAnswerAsync(action) {
   const answerId = action.payload;
-  yield api.delete(`/answer/${answerId}/hd`)
+  yield api.delete(`/answer/${answerId}`)
   history.go(0);
 }

@@ -25,11 +25,9 @@ export function postTodoData({ user, group, tags, content, selectedDate, dispatc
     console.log("todo")
     console.log(todo)
 
-    // const BASE_URL = 'https://i8a406.p.ssafy.io';   
-    // const url = BASE_URL + '/api/todo/hd';
 
     
-    api.post(`/todo/${user.id}`, todo)
+    api.post(`/todo`, todo)
         .then((response)=> {
             console.log(response);
             dispatch(userInfoActions.createMytodo(response.data))

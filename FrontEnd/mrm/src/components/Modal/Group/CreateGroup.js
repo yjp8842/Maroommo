@@ -41,7 +41,7 @@ function CreateRoomModal({ onClose }) {
 
     console.log(data);
 
-    api.post(`/room/${user.id}`, data)
+    api.post(`/room`, data)
     .then((res) => {
       console.log("그룹 생성 완료!");
       console.log(res);

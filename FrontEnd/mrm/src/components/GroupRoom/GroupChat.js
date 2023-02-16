@@ -28,7 +28,7 @@ const GroupChat = () => {
 
   useEffect(() => {
 
-    api.get(`/room/${groupId}/${user.id}`)
+    api.get(`/room/${groupId}`)
     .then((res) => {    
       console.log("이동!")
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))

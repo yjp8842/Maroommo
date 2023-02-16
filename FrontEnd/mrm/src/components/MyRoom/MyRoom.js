@@ -25,7 +25,7 @@ const MyRoom = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    api.get(`/room/my/${user.id}`)
+    api.get(`/room/my`)
     .then((res) => {   
       console.log("마이 페이지 이동!");  
       console.log(res);

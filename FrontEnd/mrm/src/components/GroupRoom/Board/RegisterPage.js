@@ -11,12 +11,13 @@ import GroupMemberList from '../GroupRoomItem/GroupMemberList';
 
 import RegisterOrEdit from "./RegisterOrEdit";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link, useParams,useLocation } from 'react-router-dom';
+import { Link, useParams,useLocation,useNavigate } from 'react-router-dom';
 
 import { articleActions } from "../../../slice/articleSlice";
 
 function RegisterPage (props) {
   console.log(props);
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 	const params = useParams();
@@ -103,9 +104,11 @@ function RegisterPage (props) {
     if (IsForUpdate) {
       console.log('업데이트 ㄱㄱ')
       dispatch(articleActions.updateArticle(articleForUpdate)); // 추가
+      navigate(`/group/${groupId}/board`);
     } else {
       console.log('작성 ㄱㄱ')
       dispatch(articleActions.registerArticle(articleForRegister));
+      navigate(`/group/${groupId}/board`);
     } 
 
   }
