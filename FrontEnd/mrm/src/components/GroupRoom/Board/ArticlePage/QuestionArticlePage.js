@@ -104,9 +104,7 @@ function QuestionArticlePage() {
 
   const [finished, setFinished] = useState(status)
   
-  const statusForUpdate = {
-    id: id, status: finished, user_id: user_id
-  };
+
   const onChangeStatus = () => {
     if (user.id === user_id) {
       // if (finished === 1) {
@@ -117,8 +115,7 @@ function QuestionArticlePage() {
         setFinished(1)
         console.log('미해결>해결')
         console.log(finished)
-      }
-      if (finished === 1) {
+      } else if (finished === 1) {
         setFinished(0)
         console.log('해결>미해결')
       }
@@ -128,7 +125,10 @@ function QuestionArticlePage() {
       alert('작성자만 변경할 수 있습니다.')
     }
     console.log('상태 수정해줘')
-    console.log(statusForUpdate)
+    // console.log(statusForUpdate)
+    const statusForUpdate = {
+      id: id, status: finished, user_id: user_id
+    };
     dispatch(questionArticleActions.updateStatus(statusForUpdate))
 
   }
