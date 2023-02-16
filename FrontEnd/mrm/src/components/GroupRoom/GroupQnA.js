@@ -35,6 +35,14 @@ const GroupQnA = () => {
     dispatch(questionActions.getQuestion(groupId));
   }, [dispatch]);
 
+  // const [isSolved, setIsSolved] = useState(false)
+
+  // const onChangeStatus = (event) => {
+  //   setIsSolved(()=>)
+  // }
+
+
+
   const { user, question, group, isLoading, isSuccess, error } = useSelector((state) => ({
     user: state.userInfoReducers.user,
     group: state.groupInfoReducers.group,
@@ -54,6 +62,8 @@ const GroupQnA = () => {
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
   const offset = (page - 1) * limit;
+
+  console.log('닉네임?',)
 
   return (
     <Grid container>
@@ -185,7 +195,9 @@ const GroupQnA = () => {
                     return (
                       <tr>
                         <td>{questionArticle.id}</td>
-                        <td>{questionArticle.status}</td>
+                        {questionArticle.status === 0
+                        ?<td>미해결</td>
+                        :<td>해결</td>}
                         <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
                           <td>{questionArticle.title}</td>
                         </Link>

@@ -33,8 +33,11 @@ function QuestionArticleDetail(props) {
               <td>{props.views}</td>
             </tr>
             <tr>
-              <th>해결/미해결</th>
-              <td colSpan="3">{props.status}</td>
+              {/* <th>해결/미해결</th> */}
+              {/* <td colSpan="3">{props.status}</td> */}
+              {props.finished === 0
+                ?<button onClick={props.onChangeStatus} colSpan="3">미해결</button>
+                :<button onClick={props.onChangeStatus} colSpan="3">해결</button>}
             </tr>
             <tr>
               <th>제목</th>
@@ -47,7 +50,7 @@ function QuestionArticleDetail(props) {
             </tr>
             <tr>
               <th>작성자</th>
-              <td colSpan="3">{props.user_id}</td>
+              <td colSpan="3">{props.nickname}</td>
             </tr>
             <tr>
               <th>작성일</th>

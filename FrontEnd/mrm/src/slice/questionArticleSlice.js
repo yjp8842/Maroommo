@@ -48,6 +48,10 @@ export const questionArticleSlice = createSlice({
     updateQuestionArticle: (state, { payload: questionArticle }) => {
       console.log("게시글 수정 액션 호출 -- updateQuestionArticle"); // saga에서 감시용
     },
+    updateStatus: (state, { payload: questionArticle }) => {
+      console.log("상태 수정 액션 호출 -- updateStatus"); // saga에서 감시용
+    },
+
     deleteQuestionArticle: (state, { payload: id }) => {
       console.log("게시글 삭제 액션 호출 -- deleteQuestionArticle"); // saga 에서 감시용
     },

@@ -24,6 +24,16 @@ export default function SignInSide() {
     });
   };
 
+  const activeButton = () => {
+    requestLogin(dispatch, navigate);
+    loginCheck();
+  }
+
+  const activeEnter = (e) => {
+    if(e.key === "Enter") {
+      activeButton();
+    }
+  }
   // id와 password가 빈칸인지 체크하는 함수
   const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -112,6 +122,7 @@ export default function SignInSide() {
                       sx={{
                         bgcolor: '#FFFFFF',
                       }}
+                      onKeyDown={(e) => activeEnter(e)}
                     />
                     <FormHelperText>{idError}</FormHelperText>
                     <TextField
@@ -125,8 +136,8 @@ export default function SignInSide() {
                       autoComplete="current-password"
                       sx={{
                         bgcolor: '#FFFFFF',
-
                       }} 
+                      onKeyDown={(e) => activeEnter(e)}
                     />
                     <FormHelperText>{passwordError}</FormHelperText>
 
@@ -144,8 +155,7 @@ export default function SignInSide() {
                       boxShadow: "5px 5px 4px rgba(0, 0, 0, 0.15)"
                     }}
                     onClick={() => {
-                      requestLogin(dispatch, navigate);
-                      loginCheck();
+                      activeButton();
                     }}
                     >
                     로그인
