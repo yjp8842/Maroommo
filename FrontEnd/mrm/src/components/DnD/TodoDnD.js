@@ -24,26 +24,52 @@ function TodoDnD() {
   const doinglist = [];
   const donelist = [];
 
-  todo_doing_list.map((todo => {
+  // todo는 startTime이 오늘 이하일 경우만 띄워준다
+  // done은 endTime이 오늘인 것만
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const date = now.getDate();
+  
+  const nowYmd = `${year}-${month >= 10 ? month : '0' + month}-${date >= 10 ? date : '0' + date}`
+
+  todo_doing_list.map((todo, index) => {    
+    const startDate = todo.startTime.split('-');
+    // console.log(index+"번 todo");
+    // console.log(todo);
     return todo.state === 0
-    ? todolist.push({ 
-      id: todo.id,
-      text: todo.content,
-      doingTimeId: todo.doingTimeId
-    })
-    : doinglist.push({ 
-      id: todo.id,
-      text: todo.content,
-      doingTimeId: todo.doingTimeId
-    })
-  }))
+    ? (parseInt(startDate[0]) < year || parseInt(startDate[1]) < month || parseInt(startDate[2]) <= date
+      ? todolist.push({ 
+          id: todo.id,
+          text: todo.content,
+          doingTimeId: todo.doingTimeId
+        })
+      : '')     
+    : 
+      (parseInt(startDate[0]) < year || parseInt(startDate[1]) < month || parseInt(startDate[2]) <= date
+        ? doinglist.push({ 
+            id: todo.id,
+            text: todo.content,
+            doingTimeId: todo.doingTimeId
+          })
+        : '')
+  })
 
   done_list.map((todo) => {
-    return donelist.push({
-      id: todo.id,
-      text: todo.content
-    })
+    return todo.endTime === nowYmd
+    ? donelist.push({
+        id: todo.id,
+        text: todo.content
+      })
+    : ''
   })
+
+  console.log("투두 초기화 작업");
+  // console.log(nowYmd);
+  console.log(todolist);
+  console.log(doinglist);
+  console.log(donelist);
 
   // console.log("todolist === ", todolist);
 
@@ -144,7 +170,7 @@ function TodoDnD() {
     
     const data = {
       "doingId": -1,
-      "doingTimeId": -1,
+      "doingTimeId": item.doingTimeId,
       "doneId": item.id,
       "todoId": -1
     }
