@@ -48,9 +48,9 @@ function QuestionArticlePage() {
   }),
   shallowEqual);
   //여기 보고 있어씀
-  let status = useSelector((state) => ({
-    status: state.questionArticleReducers.status,
-  }))
+  let status = useSelector((state) => (
+    state.questionArticleReducers.status
+  ))
   console.log('questionarticle page 출력 ')
   // console.log(id, title, content)
   console.log(user_id)
@@ -128,6 +128,7 @@ function QuestionArticlePage() {
       alert('작성자만 변경할 수 있습니다.')
     }
     console.log('상태 수정해줘')
+    console.log(statusForUpdate)
     dispatch(questionArticleActions.updateStatus(statusForUpdate))
 
   }
