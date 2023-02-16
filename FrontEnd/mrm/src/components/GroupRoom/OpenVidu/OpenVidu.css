@@ -73,9 +73,10 @@
   height: 18vh;
   display: flex;
   flex-wrap: nowrap;
+  justify-content: center;
   overflow-x: scroll;
   overflow-y: hidden;
-  margin-top: 1vh;
+  margin-top: 0.5vh;
 }
 
 .share-sub::-webkit-scrollbar {
@@ -103,9 +104,9 @@
 }
 
 .share-pub {
-  width: 60%;
-  height: 60vh;
-  margin-top: 6%;
+  width: 70%;
+  height: 65vh;
+  margin-top: 3%;
 }
 
 .width1 {
