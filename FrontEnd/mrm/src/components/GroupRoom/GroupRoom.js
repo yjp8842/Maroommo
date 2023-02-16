@@ -207,22 +207,6 @@ const GroupRoom = () => {
             })}
           </Box>
           <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
             <AppWrap>
               <Button onClick={onClickButton}>+</Button>
               {isOpen && (<RoomModal
@@ -416,4 +400,5 @@ const Button = styled.button`
 const AppWrap = styled.div`
   text-align: center;
   margin: 50px auto;
+  padding: 5px 0px 0px 0px;
 `;
