@@ -112,12 +112,12 @@ function QuestionArticlePage() {
       //   console.log('ㅎ')
       // } 
       if (finished === 0) {
+        setFinished(0)
+        console.log('해결>미해결')
+      } else if (finished === 1) {
         setFinished(1)
         console.log('미해결>해결')
         console.log(finished)
-      } else if (finished === 1) {
-        setFinished(0)
-        console.log('해결>미해결')
       }
     } else {
       console.log(user.id,'###', user_id)
