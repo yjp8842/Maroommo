@@ -39,10 +39,9 @@ function RegisterPage (props) {
     picture: state.articleReducers.picture,
   }), shallowEqual)
   
-  const formData = new FormData();
 
-  const [TitleValue, setTitleValue] = useState(title)
-  const [ContentValue, setContentValue] = useState(content)
+  const [TitleValue, setTitleValue] = useState('')
+  const [ContentValue, setContentValue] = useState('')
   const [isOpen, setIsOpen] = useState(false);
   
   const onClickButton = () => {
@@ -60,13 +59,17 @@ function RegisterPage (props) {
 
     if (isRegisterForEdit === 'true') {
       console.log('true')
+      setTitleValue(title);
+      setContentValue(content);
       dispatch(articleActions.fetchArticle(id))
       setIsForUpdate(true);
     } else {
+      setTitleValue('');
+      setContentValue('');
       console.log('false')
     }
-    setTitleValue(title);
-    setContentValue(content);
+    // setTitleValue(title);
+    // setContentValue(content);
   }, []);
 
   const onRegisterChange = (event) => {
@@ -82,6 +85,7 @@ function RegisterPage (props) {
     console.log("image", image)
   }
 
+  const formdata = new FormData();
   const onSubmitArticle = (event) => {
     event.preventDefault();
 
@@ -98,11 +102,11 @@ function RegisterPage (props) {
       return false;
     }
 
-    const formdata = new FormData();
+    // const formdata = new FormData();
     formdata.append('picture', image)
     console.log(formdata, '이건 폼데이터')
     const articleForRegister = {
-      title: title, content: content, room_id: groupId, user_id: user.id, picture: formdata
+      title: '', content: '', room_id: groupId, user_id: user.id, picture: formdata
     };
 
     const articleForUpdate = {
@@ -216,7 +220,7 @@ function RegisterPage (props) {
               onImageHandler={onImageChange}
               handleSubmit={onSubmitArticle}
               updateRequest={IsForUpdate}
-              formData = {formData}
+              formData = {formdata}
               picture={image.name}
             />
         </Box> 
