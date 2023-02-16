@@ -24,6 +24,7 @@ import './OpenViduChat.css';
 
 import "./OpenVidu.css";
 import { connect } from "react-redux";
+import html2canvas from 'html2canvas';
 
 // server url
 const APPLICATION_SERVER_URL = "https://i8a406.p.ssafy.io:8085/";
@@ -112,7 +113,7 @@ class OpenChat extends Component {
                                 <div className="share-subs"><UserVideoComponent streamManager={sub} key={sub.stream.streamId} /></div>
                               ))}
                             </div>
-                            <div className="share-pub">
+                            <div className="share-pub" id="chart_box">
                               {/* <UserVideoComponent
                                 streamManager={this.state.publisher}
                                 key={this.state.publisher.stream.streamId}
@@ -320,7 +321,7 @@ class OpenChat extends Component {
                     >
                       <ScreenShareIcon />
                     </Icon>
-                    <Icon>
+                    <Icon onClick={this.sreenShot}>
                       <ScreenshotMonitorIcon />
                     </Icon>
                     <Icon>
@@ -412,6 +413,39 @@ class OpenChat extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+  }
+
+  sreenShot(target) {
+    target = document.getElementById('chart_box')
+    if (target != null) {
+      var t = target;
+      html2canvas(t).then(function(canvas) {
+        var myImg = canvas.toDataURL("image/png");
+        var blobBin = atob(myImg.split(',')[1]);	// base64 데이터 디코딩
+        var array = [];
+        for (var i = 0; i < blobBin.length; i++) {
+          array.push(blobBin.charCodeAt(i));
+        }
+        var file = new Blob([new Uint8Array(array)], {type: 'image/png'});
+
+
+        var formdata = new FormData();
+        formdata.append("file", file);
+        console.log('여기까지 옴')
+        
+        axios({
+          method : 'post',
+          url : 'https://i8a406.p.ssafy.io/ocr/',
+          data : formdata,
+          processData : false,	// data 파라미터 강제 string 변환 방지!!
+          contentType : false,	// application/x-www-form-urlencoded; 방지!!
+        }).then((res) => {
+          console.log(res.data)
+        }).catch((err) =>
+          console.log(err))
+
+      });
+    }
   }
 
   componentDidMount(e) {

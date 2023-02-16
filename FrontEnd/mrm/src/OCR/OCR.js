@@ -21,6 +21,7 @@ export const OCR = () =>{
         var formdata = new FormData();
         formdata.append("file", file);
         console.log('여기까지 옴')
+        
         axios({
           method : 'post',
           url : 'https://i8a406.p.ssafy.io/ocr/',
