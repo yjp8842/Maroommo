@@ -5,7 +5,7 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { articleActions } from "../../../../slice/articleSlice";
 
 import PageIcon from '../../../MyRoom/MyRoomItem/PageIcon';
@@ -26,6 +26,7 @@ function ArticlePage() {
 	const params = useParams();
   const groupId = params.groupId;
   const articleId = params.articleId;
+  const navigate = useNavigate();
 
   useEffect(() => {
     // dispatch(articleActions.getArticle(articleId));
@@ -101,7 +102,11 @@ function ArticlePage() {
   };
 
   const onDeleteComment = (commentId) => {
-    dispatch(commentActions.deleteComment(commentId))
+    dispatch(commentActions.deleteComment({
+      commentId: commentId,
+      groupId: groupId,
+      navigate: navigate,
+    }))
   };
 
   const [isOpen, setIsOpen] = useState(false);

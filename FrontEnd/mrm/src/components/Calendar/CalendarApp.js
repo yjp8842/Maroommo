@@ -12,23 +12,6 @@ export default function CalendarApp() {
   const [value, onChange] = useState(new Date());
   const moment = require('moment');
 
-  // 일정 날짜 받아서 하이라이트..
-  // https://velog.io/@khy226/%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%95%B1%EC%97%90-%EB%8B%AC%EB%A0%A5react-calendar-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
-  // const [mark, setMark] = useState([]);
-  // const {data} = useQuery()
-
-  // const marks_red = [
-  //   '2023-02-20',
-  //   '2023-02-21',
-  //   '2023-02-22',
-  //   '2023-02-23',
-  // ];
-
-  // const marks_blue = [
-  //   '2023-02-26',
-  //   '2023-02-27',
-  // ];
-
   const {todolist, schedulelist} = useSelector((state) =>
   ({
     todolist: state.userInfoReducers.user.doing,
@@ -102,10 +85,10 @@ export default function CalendarApp() {
         // }
       }}
     />
-    <Plusbox>
+    {/* <Plusbox>
       <TodoButton />
       <ScheduleButton />
-    </Plusbox>
+    </Plusbox> */}
     </div>
   );
 }

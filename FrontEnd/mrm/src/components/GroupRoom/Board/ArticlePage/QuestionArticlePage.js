@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams,useNavigate  } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -26,6 +26,8 @@ function QuestionArticlePage() {
   const params = useParams();
   const groupId = params.groupId;
   const questionArticleId = params.questionArticleId;
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(questionArticleActions.getQuestionArticle(questionArticleId));
@@ -62,7 +64,11 @@ function QuestionArticlePage() {
 
   const onDeleteClick = () => {
     if (!window.confirm('삭제하시겠습니까?')) return false;
-    dispatch(questionArticleActions.deleteQuestionArticle(id))
+    dispatch(questionArticleActions.deleteQuestionArticle({
+      id:id,
+      groupId:groupId,
+      navigate: navigate,
+    }))
   } 
 
   //답변
@@ -88,12 +94,19 @@ function QuestionArticlePage() {
       content: AnswerValue,
       date: Date.now(),
       question_id: id,
+      groupId:groupId,
+      navigate:navigate,
     };
     dispatch(answerActions.registerAnswer(answer))
   };
 
   const onDeleteAnswer = (answerId) => {
-    dispatch(answerActions.deleteAnswer(answerId))
+    dispatch(answerActions.deleteAnswer({
+      answerId:answerId,
+      groupId:groupId,
+      question_id: id,
+      navigate:navigate,
+    }))
   };
   const [isOpen, setIsOpen] = useState(false);
   
@@ -115,14 +128,22 @@ function QuestionArticlePage() {
         setFinished(1)
         console.log('미해결>해결')
         const statusForUpdate = {
-          id: id, status: 1, user_id: user_id
+          id: id, 
+          status: 1, 
+          user_id: user_id,
+          groupId:groupId,
+          navigate:navigate,
         };
         dispatch(questionArticleActions.updateStatus(statusForUpdate))
       } else if (finished === 1) {
         console.log('해결>미해결')
         setFinished(0)
         const statusForUpdate = {
-          id: id, status: 0, user_id: user_id
+          id: id, 
+          status: 0, 
+          user_id: user_id,
+          groupId:groupId,
+          navigate:navigate,
         };
         dispatch(questionArticleActions.updateStatus(statusForUpdate))
       }

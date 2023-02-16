@@ -106,21 +106,22 @@ function RegisterPage (props) {
     formdata.append('picture', image)
     console.log(formdata, '이건 폼데이터')
     const articleForRegister = {
-      title: '', content: '', room_id: groupId, user_id: user.id, picture: formdata
+      content: content, picture: formdata, title: title, user_id: user.id, groupId:groupId, navigate:navigate
     };
 
     const articleForUpdate = {
-      content: content, id: id, picture: formdata, title: title, user_id: user.id
+      content: content, id: id, picture: formdata, title: title, user_id: user.id, groupId:groupId, navigate:navigate
     };
 
     if (IsForUpdate) {
-      console.log('업데이트 ㄱㄱ')
+      console.log('업데이트 ㄱㄱ');
+      console.log(articleForUpdate);
       dispatch(articleActions.updateArticle(articleForUpdate)); // 추가
-      navigate(`/group/${groupId}/board`);
+      // navigate(`/group/${groupId}/board`);
     } else {
       console.log('작성 ㄱㄱ')
       dispatch(articleActions.registerArticle(articleForRegister));
-      navigate(`/group/${groupId}/board`);
+      // navigate(`/group/${groupId}/board`);
     } 
 
   }

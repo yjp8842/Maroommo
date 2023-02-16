@@ -12,7 +12,7 @@ export function* registerQuestionArticleAsync(action) {
   console.log('questionarticleSage data 출력 : ',data)
   console.log('----------');
   const response = yield api.post(
-    `/question?room_id=${data.room_id}&content=${data.content}&title=${data.title}`,
+    `/question?room_id=${data.groupId}&content=${data.content}&title=${data.title}`,
     data.picture
   )
 
@@ -23,7 +23,10 @@ export function* registerQuestionArticleAsync(action) {
   console.log('response 출력 : ',response.data.newQuestion.id)
   console.log('----------');
 
-  history.push(`/group/${data.room_id}/question/questionArticle/${response.data.newQuestion.id}`, response.data.newQuestion.id);
+  
+  data.navigate(`/group/${data.groupId}/question`);
+
+  // history.push(`/group/${data.room_id}/question/questionArticle/${response.data.newQuestion.id}`, response.data.newQuestion.id);
   // eslint-disable-next-line no-restricted-globals
   location.reload();
 }
@@ -54,10 +57,12 @@ export function* updateQuestionArticleAsync(action) {
 
   alert("저장되었습니다.");
   console.log(response.data);
+  
+  questionArticle.navigate(`/group/${questionArticle.groupId}/question/questionArticle/${response.data.newQuestion.id}`);
 
-  history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
-  // eslint-disable-next-line no-restricted-globals
-  location.reload();
+  // history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
+  // // eslint-disable-next-line no-restricted-globals
+  // location.reload();
 }
 
 export function* updateStatusAsync(action) {
@@ -73,20 +78,24 @@ export function* updateStatusAsync(action) {
   alert("저장되었습니다.");
   console.log('res.data=====',response.data);
 
-  history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
+  // questionArticle.navigate(`/group/${questionArticle.groupId}/question/questionArticle/${response.data.question.id}`)
+  
+  // history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
   // eslint-disable-next-line no-restricted-globals
   // location.reload();
 }
 
 export function* deleteQuestionArticleAsync(action) {
-  const id = action.payload;
+  const data = action.payload;
   console.log('삭제해!!!')
   
-  yield api.delete(`/question/${id}`);
+  yield api.delete(`/question/${data.id}`);
 
   alert("삭제되었습니다.");
 
-  history.push(`/group/1/question`);
+
+  data.navigate(`/group/${data.groupId}/question`)
+  // history.push(`/group/1/question`);
     // eslint-disable-next-line no-restricted-globals
-    location.reload();
+    // location.reload();
 }
