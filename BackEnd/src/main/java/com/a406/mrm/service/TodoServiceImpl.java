@@ -99,9 +99,10 @@ public class TodoServiceImpl implements TodoService {
         if (doingId != -1){
             Todo doing = todoRepository.findById(doingId).get();
             doing.setState(1);
-            TodoTime todoTime = new TodoTime(doing.getUser(),doing);
-            ret = todoTimeRepository.save(todoTime).getId();
+            TodoTime todoTime  = todoTimeRepository.save(new TodoTime(doing.getUser(),doing));
+            ret = todoTime.getId();
             doing.setDoingTimeId(ret);
+            todoTimeRepository.updateStartTime(ret);
             todoRepository.save(doing);
         }
 
