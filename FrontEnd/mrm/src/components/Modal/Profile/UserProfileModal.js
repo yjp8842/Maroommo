@@ -24,7 +24,7 @@ function UserProfileModal({ onClose }) {
 
   const [image, setImage] = useState({
     image_file: user.profile,
-    preview_URL: 'images/user.jpg',
+    preview_URL: user.profile ? 'images/'+user.profile : 'images/user.jpg',
   });
 
 
