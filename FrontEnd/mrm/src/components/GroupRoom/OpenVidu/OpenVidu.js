@@ -80,9 +80,7 @@ class OpenChat extends Component {
       }
     }
     document.onkeydown = noEvent;
-
-    const subShare = document.getElementById("subShare").value;
-
+    
     return (
       <div className="container">
 
