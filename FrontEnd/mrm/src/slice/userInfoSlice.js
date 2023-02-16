@@ -36,6 +36,11 @@ export const userInfoSlice = createSlice({
       state.user.schedules = payload.schedules;
       console.log(state.user);
     },
+    createMytodo: (state, {payload}) => {
+      console.log('createMytodo 저장 액션 호출');
+      state.user.doing.push(payload.newTodo);
+      console.log(state.user);
+    },
   }
 })
 
