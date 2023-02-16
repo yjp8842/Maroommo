@@ -77,7 +77,7 @@ public class RoomController {
      * @return myRoomInfo: 방 목록과 스케쥴 정보를 반환한다
      */
     @ApiOperation("enter the room(=group)")
-    @PostMapping("enter/{roomId}")
+    @GetMapping("enter/{roomId}")
     public ResponseEntity<?> enterRoom(@AuthenticationPrincipal User user,
                                         @RequestParam @ApiParam("room entry code") String roomCode,
                                         @PathVariable @ApiParam("room id") int roomId) {
