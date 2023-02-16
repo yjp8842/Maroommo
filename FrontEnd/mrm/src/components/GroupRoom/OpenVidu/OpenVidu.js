@@ -80,8 +80,6 @@ class OpenChat extends Component {
       }
     }
     document.onkeydown = noEvent;
-
-    // const subShareScreen = document.getElementById('subshare');
     
     return (
       <div className="container">
@@ -126,60 +124,101 @@ class OpenChat extends Component {
 
                       // 내가 화면 공유 하지 않았을 때
                       <>
-                        {this.state.subscribers.map((sub, i) => (
-                          <>
-                            {/* sub 중에 화면 공유한 사람이 있을 때 */}
-                            {this.state.subscribers[i].stream.typeOfVideo === 'SCREEN' ? (
-                              <div className="width1" ref={this.userRef} id="subshare">
-                                <div className="share-screen">
-                                  <div className="share-sub">
+                        
+                        
+                        {this.state.isSubShare === false ? (
+
+                          this.state.subscribers.length < 1 ? (
+                            <StreamContainerWrapper
+                              className="width1"
+                              ref={this.userRef}
+                            >
+                              {this.state.publisher !== undefined ? (
+                                <div className="stream-container under-one">
+                                  <UserVideoComponent
+                                    streamManager={this.state.publisher}
+                                    key={this.state.publisher.stream.streamId}
+                                  />
+                                  {this.state.subscribers.map((sub, i) => (
+                                    <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                  ))}
+                                </div>
+                              ) : null}
+                            </StreamContainerWrapper>
+                          ) : (
+
+                            // 총 2명일 때
+                            
+                            this.state.subscribers.length < 2 ? (
+                              <StreamContainerWrapper
+                                className="width1"
+                                ref={this.userRef}
+                              >
+                                {this.state.publisher !== undefined ? (
+                                  <div className="stream-container under-two">
+                                    <UserVideoComponent
+                                      streamManager={this.state.publisher}
+                                      key={this.state.publisher.stream.streamId}
+                                    />
                                     {this.state.subscribers.map((sub, i) => (
-                                      <div className="share-subs">
-                                        <UserVideoComponent streamManager={this.state.publisher} key={this.state.publisher.stream.streamId} />
-                                        <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                      </div>
+                                      <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
                                     ))}
                                   </div>
-                                  <div className="share-pub" id="chart_box">
-                                    <UserVideoComponent
-                                      streamManager={this.state.subscribers[i]}
-                                      key={this.state.subscribers[i].stream.streamId}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            ) : 
-                              // null
-                              (
-                                // subShareScreen === null && 
-                                this.state.subscribers.length < 1 ? (
+                                ) : null}
+                              </StreamContainerWrapper>
+                            ) : (
+                              
+                              // 총 3-4명일 때
+                              
+                              this.state.subscribers.length < 4 ? (
+                                <StreamContainerWrapper
+                                className="width2"
+                                  ref={this.userRef}
+                                >
+                                  {this.state.publisher !== undefined ? (
+                                    <div className="stream-container under-four">
+                                      <UserVideoComponent
+                                        streamManager={this.state.publisher}
+                                        key={this.state.publisher.stream.streamId}
+                                      />
+                                      {this.state.subscribers.map((sub, i) => (
+                                        <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                      ))}
+                                    </div>
+                                  ) : null}
+                                </StreamContainerWrapper>
+                              ) : (
+
+                                // 총 5-6명일 때
+                                
+                                this.state.subscribers.length < 6 ? (
                                   <StreamContainerWrapper
-                                    className="width1"
+                                  className="width1"
                                     ref={this.userRef}
                                   >
                                     {this.state.publisher !== undefined ? (
-                                      <div className="stream-container under-one">
+                                      <div className="stream-container under-six">
                                         <UserVideoComponent
                                           streamManager={this.state.publisher}
                                           key={this.state.publisher.stream.streamId}
                                         />
-                                        {/* {this.state.subscribers.map((sub, i) => (
+                                        {this.state.subscribers.map((sub, i) => (
                                           <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                        ))} */}
+                                        ))}
                                       </div>
                                     ) : null}
                                   </StreamContainerWrapper>
                                 ) : (
-        
-                                  // 총 2명일 때
-                                  // subShareScreen === null && 
-                                  this.state.subscribers.length < 2 ? (
+
+                                  // 총 7-9명일 때
+                                  
+                                  this.state.subscribers.length < 9 ? (
                                     <StreamContainerWrapper
-                                      className="width1"
-                                      ref={this.userRef}
-                                    >
+                                      className="width2"
+                                        ref={this.userRef}
+                                      >
                                       {this.state.publisher !== undefined ? (
-                                        <div className="stream-container under-two">
+                                        <div className="stream-container under-nine">
                                           <UserVideoComponent
                                             streamManager={this.state.publisher}
                                             key={this.state.publisher.stream.streamId}
@@ -191,84 +230,47 @@ class OpenChat extends Component {
                                       ) : null}
                                     </StreamContainerWrapper>
                                   ) : (
-                                    
-                                    // 총 3-4명일 때
-                                    // subShareScreen === null && 
-                                    this.state.subscribers.length < 4 ? (
-                                      <StreamContainerWrapper
-                                      className="width2"
-                                        ref={this.userRef}
-                                      >
-                                        {this.state.publisher !== undefined ? (
-                                          <div className="stream-container under-four">
-                                            <UserVideoComponent
-                                              streamManager={this.state.publisher}
-                                              key={this.state.publisher.stream.streamId}
-                                            />
-                                            {this.state.subscribers.map((sub, i) => (
-                                              <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                            ))}
-                                          </div>
-                                        ) : null}
-                                      </StreamContainerWrapper>
-                                    ) : (
-        
-                                      // 총 5-6명일 때
-                                      // subShareScreen === null && 
-                                      this.state.subscribers.length < 6 ? (
-                                        <StreamContainerWrapper
-                                        className="width1"
-                                          ref={this.userRef}
-                                        >
-                                          {this.state.publisher !== undefined ? (
-                                            <div className="stream-container under-six">
-                                              <UserVideoComponent
-                                                streamManager={this.state.publisher}
-                                                key={this.state.publisher.stream.streamId}
-                                              />
-                                              {this.state.subscribers.map((sub, i) => (
-                                                <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                              ))}
-                                            </div>
-                                          ) : null}
-                                        </StreamContainerWrapper>
-                                      ) : (
-        
-                                        // 총 7-9명일 때
-                                        // subShareScreen === null && 
-                                        this.state.subscribers.length < 9 ? (
-                                          <StreamContainerWrapper
-                                            className="width2"
-                                              ref={this.userRef}
-                                            >
-                                            {this.state.publisher !== undefined ? (
-                                              <div className="stream-container under-nine">
-                                                <UserVideoComponent
-                                                  streamManager={this.state.publisher}
-                                                  key={this.state.publisher.stream.streamId}
-                                                />
-                                                {this.state.subscribers.map((sub, i) => (
-                                                  <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
-                                                ))}
-                                              </div>
-                                            ) : null}
-                                          </StreamContainerWrapper>
-                                        ) : (
-        
-                                          null
-        
-                                        )
-                                      )
-                                    )
+
+                                    null
+
                                   )
                                 )
                               )
-                            }
-                          </>
-                        ))}
-                        
+                            )
+                          )
 
-                        
+                        ) : (
+
+                          this.state.subscribers.map((sub, i) => (
+                            <>
+                              {/* sub 중에 화면 공유한 사람이 있을 때 */}
+                              {this.state.subscribers[i].stream.typeOfVideo === 'SCREEN' ? (
+                                <div className="width1" ref={this.userRef} id="subshare">
+                                  <div className="share-screen">
+                                    <div className="share-sub">
+                                      {this.state.subscribers.map((sub, i) => (
+                                        <div className="share-subs">
+                                          <UserVideoComponent streamManager={this.state.publisher} key={this.state.publisher.stream.streamId} />
+                                          <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
+                                        </div>
+                                      ))}
+                                    </div>
+                                    <div className="share-pub" id="chart_box">
+                                      <UserVideoComponent
+                                        streamManager={this.state.subscribers[i]}
+                                        key={this.state.subscribers[i].stream.streamId}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              ) : 
+                                null
+                              }
+                            </>
+                          ))
+
+                        )}
+      
                       </>
                       
 
@@ -675,6 +677,17 @@ class OpenChat extends Component {
               this.userRef.current.children[i].innerText
             ) {
               this.userRef.current.children[i].style.borderStyle = "none";
+            }
+          }
+        });
+
+        mySession.on("videoElementCreated", (event) => {
+          for (let i = 0; i < this.userRef.current.children.length ; i++) {
+            if (this.state.subscribers[i].stream.typeOfVideo === 'SCREEN') {
+              this.setState({ isSubShare : true })
+              return;
+            } else {
+              this.setState({ isSubShare : false })
             }
           }
         });
