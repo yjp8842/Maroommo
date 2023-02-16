@@ -113,9 +113,13 @@ class OpenChat extends Component {
                               ))}
                             </div>
                             <div className="share-pub">
+                              {/* <UserVideoComponent
+                                streamManager={this.state.publisher}
+                                key={this.state.publisher.stream.streamId}
+                              /> */}
                               <UserVideoComponent
                                 streamManager={this.state.mainStreamManager}
-                                key={this.state.publisher.stream.streamId}
+                                key={this.state.mainStreamManager.stream.streamId}
                               />
                             </div>
                           </div>
@@ -274,6 +278,9 @@ class OpenChat extends Component {
                       {
                         // 공유하는 버튼 눌렀을 때 이전에 publish 하던거 unpublish하고
                         // 새로운 publisher 만들어서 publish 하도록.
+                        console.log("----------------------------------------")
+                        console.log(this.state.publisher.properties)
+                        console.log("----------------------------------------")
                         this.state.session.unpublish(this.state.publisher);
                         let newPublisher = this.OV.initPublisher("html-element-id", {
                           audioSource: undefined,
@@ -300,7 +307,7 @@ class OpenChat extends Component {
                           this.setState({ isShare: true });
                           this.state.session.publish(newPublisher);
                           this.setState({ mainStreamManager: newPublisher, newPublisher });
-  
+                        
                         });
                         
                         // 공유하지 못했을 때
