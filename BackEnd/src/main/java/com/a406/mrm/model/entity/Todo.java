@@ -27,6 +27,7 @@ public class Todo {
         this.state = 0;
         this.user = user;
         this.room = room;
+        this.doingTimeId=-1;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +46,9 @@ public class Todo {
 
     @Column(nullable = false)// sql default 0 필요, 일단 여기서 0으로 초기화
     private int state;
+
+    @Column(nullable=false)
+    private int doingTimeId;
 
 
     @OneToMany(mappedBy="todo", cascade = CascadeType.REMOVE)

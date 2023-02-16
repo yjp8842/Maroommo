@@ -16,7 +16,7 @@ public interface TodoRepository extends JpaRepository<Todo, Integer> {
 
     @Modifying
     @Query(value = "UPDATE todo " +
-            "SET end_time = now() , state = 2 " +
+            "SET end_time = now() , state = 2, doing_time_id = -1 " +
             "WHERE id = :todoId ",nativeQuery = true)
     void updateEndTimeAndState(@Param("todoId") int todoId);
 //    @Modifying(clearAutomatically = true)

@@ -99,7 +99,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Page<BoardResponseDto> listBoard_Pageable(int room_id, Pageable pageable){
-        return boardRepository.findByroom_Id(room_id, pageable);
+        return boardRepository.findByRoomIdOrderByIdDesc(room_id, pageable);
     }
 
     @Override
