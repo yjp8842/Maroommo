@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import PictureUploader from "../../ImageUpload/PictureUploader";
-// import { groupInfoActions} from "../../slice/groupInfoSlice";
+import { groupInfoActions } from "../../../slice/groupInfoSlice";
 import api from "../../../utils/axiosInstance";
 
 function GroupProfileModal({ onClose }) {
@@ -70,7 +70,7 @@ function GroupProfileModal({ onClose }) {
     // console.log('이건 프로필 이미지',image)
 
     const formdata = new FormData();
-    formdata.append('profileImage', image)
+    formdata.append('profile', image)
     // console.log(formdata)
 
     
@@ -78,15 +78,18 @@ function GroupProfileModal({ onClose }) {
       api.post(
         `/room/modify?intro=${introValue}&name=${nameValue}&roomId=${group.id}`,
         formdata, {
-          headers : {
-            "Content-Type": 'multipart/form-data'
-          }
+          // headers : {
+          //   "Content-Type": 'multipart/form-data'
+          // }
         })
         .then((res)=>{
-        // console.log(res);
+        console.log('이거 res!!',res);
         // console.log(formdata)
+        dispatch(groupInfoActions.modifyGroupInfo(res.data.group));
+
         alert('그룹 정보가 수정되었습니다'); 
-        window.location.reload();
+        // window.location.reload();
+
       })
       .catch((err) => {
         alert('수정 중 오류가 발생했습니다.');
