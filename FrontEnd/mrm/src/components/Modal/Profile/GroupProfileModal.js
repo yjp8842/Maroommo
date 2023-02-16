@@ -85,7 +85,7 @@ function GroupProfileModal({ onClose }) {
         .then((res)=>{
         console.log('이거 res!!',res);
         // console.log(formdata)
-        dispatch(groupInfoActions.modifyGroupInfo(res.data.group));
+        dispatch(groupInfoActions.modifyGroupInfo(res.data.room));
 
         alert('그룹 정보가 수정되었습니다'); 
         window.location.reload();
@@ -99,6 +99,7 @@ function GroupProfileModal({ onClose }) {
       api.post(
         `/room/modify?intro=${introValue}&name=${nameValue}&roomId=${group.id}`)
         .then((res)=>{
+          console.log('없는 res!!',res);
         // console.log(res);
         // console.log(formdata)
         alert('그룹 정보가 수정되었습니다');
@@ -109,7 +110,7 @@ function GroupProfileModal({ onClose }) {
       })
     }
 
-    window.location.reload();
+    // window.location.reload();
   }
 
 
