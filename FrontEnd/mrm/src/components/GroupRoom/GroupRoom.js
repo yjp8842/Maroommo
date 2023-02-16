@@ -258,66 +258,69 @@ const GroupRoom = () => {
 
           <TodoBox />
           <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-evenly',
-          width: '1000px'
-        }}>
-        <Box
-          sx={{
-            width: "475px",
-            height: "250px",
-            marginTop: "20px",
-            paddingY: '20px',
-            borderRadius: "30px",
-            backgroundColor: "#FFFFFF",
-            boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <h3>My MEMO</h3>
-            <hr align="center" width="80%"/>   
-            <textarea 
-              className="memoArea"
-              id="myMemo" 
-              name="myMemo"
-              value={myMemoContent}
-              onChange={(e) => handleSetMyMemo(e)}
-              rows={20} 
-              cols={50}   
-            >
-            </textarea>
-        </Box>
-        <Box
-          sx={{
-            width: "475px",
-            height: "250px",
-            marginTop: "20px",
-            paddingY: '20px',
-            borderRadius: "30px",
-            backgroundColor: "#FFFFFF",
-            boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <h3>Group MEMO</h3>
-            <hr align="center" width="80%"/>   
-            <textarea 
-              className="memoArea"
-              id="roomMemo" 
-              name="roomMemo"
-              value={groupMemoContent}
-              onChange={(e) => handleSetGroupMemo(e)}
-              rows={20} 
-              cols={50}   
-            >
-            </textarea>
-        </Box> 
-      </Box>
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-evenly',
+              width: '1000px',
+              // width: '1000px',
+            }}>
+            <Box
+              sx={{
+                width: "475px",
+                // height: "250px",
+                height: "250px",
+                marginTop: "20px",
+                paddingY: '20px',
+                borderRadius: "30px",
+                backgroundColor: "#FFFFFF",
+                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <h3>My MEMO</h3>
+              <hr align="center" width="80%"/>   
+              <textarea 
+                className="memoArea"
+                id="myMemo" 
+                name="myMemo"
+                value={myMemoContent}
+                onChange={(e) => handleSetMyMemo(e)}
+                rows={20} 
+                cols={50}   
+              >
+              </textarea>
+            </Box>
+            <Box
+              sx={{
+                width: "475px",
+                // height: "250px",
+                height: "250px",
+                marginTop: "20px",
+                paddingY: '20px',
+                borderRadius: "30px",
+                backgroundColor: "#FFFFFF",
+                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <h3>Group MEMO</h3>
+                <hr align="center" width="80%"/>   
+                <textarea 
+                  className="memoArea"
+                  id="roomMemo" 
+                  name="roomMemo"
+                  value={groupMemoContent}
+                  onChange={(e) => handleSetGroupMemo(e)}
+                  rows={20} 
+                  cols={50}   
+                >
+                </textarea>
+            </Box> 
+          </Box>
         <TimeTableBox group={group} />
           
         </Box>

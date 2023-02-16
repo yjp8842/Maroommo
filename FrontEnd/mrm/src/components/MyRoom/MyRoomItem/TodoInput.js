@@ -32,7 +32,7 @@ export default function TodoInput() {
           <h3>할일</h3>
         </div>
 
-        <div className="diagonal"></div>
+        {/* <div className="diagonal"></div> */}
 
         <div className="inbox-2">
           <div className="inbox-3">

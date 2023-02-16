@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import PictureUploader from "../../ImageUpload/PictureUploader";
-// import { groupInfoActions} from "../../slice/groupInfoSlice";
+import { groupInfoActions } from "../../../slice/groupInfoSlice";
 import api from "../../../utils/axiosInstance";
 
 function GroupProfileModal({ onClose }) {
@@ -21,8 +21,8 @@ function GroupProfileModal({ onClose }) {
   const [introValue, setIntroValue] = useState(group.intro)
 
   const [image, setImage] = useState({
-    image_file: "",
-    preview_URL: 'images/user.jpg',
+    image_file: group.profile,
+    preview_URL: group.profile ? 'images/'+group.profile : 'images/user.jpg',
   });
 
   const saveImage = (e) => {
@@ -37,6 +37,8 @@ function GroupProfileModal({ onClose }) {
           preview_URL: preview_URL
         }
       ))
+      console.log('saveImage작동')
+      console.log(image)
     }
   }
 
@@ -70,7 +72,7 @@ function GroupProfileModal({ onClose }) {
     // console.log('이건 프로필 이미지',image)
 
     const formdata = new FormData();
-    formdata.append('profileImage', image)
+    formdata.append('profile', image.image_file)
     // console.log(formdata)
 
     
@@ -78,15 +80,18 @@ function GroupProfileModal({ onClose }) {
       api.post(
         `/room/modify?intro=${introValue}&name=${nameValue}&roomId=${group.id}`,
         formdata, {
-          headers : {
-            "Content-Type": 'multipart/form-data'
-          }
+          // headers : {
+          //   "Content-Type": 'multipart/form-data'
+          // }
         })
         .then((res)=>{
-        // console.log(res);
+        console.log('이거 res!!',res);
         // console.log(formdata)
+        dispatch(groupInfoActions.modifyGroupInfo(res.data.room));
+
         alert('그룹 정보가 수정되었습니다'); 
         window.location.reload();
+
       })
       .catch((err) => {
         alert('수정 중 오류가 발생했습니다.');
@@ -96,6 +101,7 @@ function GroupProfileModal({ onClose }) {
       api.post(
         `/room/modify?intro=${introValue}&name=${nameValue}&roomId=${group.id}`)
         .then((res)=>{
+          console.log('없는 res!!',res);
         // console.log(res);
         // console.log(formdata)
         alert('그룹 정보가 수정되었습니다');
@@ -106,7 +112,7 @@ function GroupProfileModal({ onClose }) {
       })
     }
 
-    window.location.reload();
+    // window.location.reload();
   }
 
 

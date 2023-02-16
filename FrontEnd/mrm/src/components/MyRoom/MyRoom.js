@@ -110,6 +110,7 @@ const MyRoom = () => {
       <Box
         sx={{
           width: "5vw",
+          // minWidth: "100px",
           height: "100vh",
           display: "flex",
           flexDirection: "column",
@@ -122,7 +123,10 @@ const MyRoom = () => {
         <Box
           sx={{
             width: "4vw",
-            height: "5px",
+            height: "1vh",
+            // minWidth: "80px",
+            maxHeight: "5px",
+            minHeight: "3px",
             backgroundColor: "#FFFFFF",
             borderRadius: "10px"
           }}>
@@ -161,18 +165,25 @@ const MyRoom = () => {
         <Box
           sx={{
             width: "95vw",
-            height: "24vh",
-            paddingY: "1vh",
+            height: "28vh",
+            paddingTop: "2vh",
             display: "flex",
             justifyContent: "space-evenly",
             backgroundColor: "#ebe5d1",
           }}>
-          <Profile 
-            user={user}  
-            />
-          <StudyTime doingList={doingList} doneList={doneList} />
-          <Todo doing={Object.keys(doingList).length} done={Object.keys(doneList).length} />
-          <CalendarBox />
+          <Box
+            sx={{
+              width: "90vw",
+              height: "28vh",
+              display: "flex",
+            }}>
+            <Profile 
+              user={user}  
+              />
+            <StudyTime doingList={doingList} doneList={doneList} />
+            <Todo doing={Object.keys(doingList).length} done={Object.keys(doneList).length} />
+            <CalendarBox />            
+          </Box>
         </Box>
         <Box
           sx={{
@@ -189,13 +200,6 @@ const MyRoom = () => {
               alignItems: "center",
               justifyContent: "space-evenly",
             }}>
-            {/* <Box
-              sx={{
-                width: "50vw",
-                height: "10vh",
-                display: "flex",
-              }}>
-            </Box> */}
             <Box
               sx={{
                 width: "60vw",
@@ -212,7 +216,7 @@ const MyRoom = () => {
           </Box>
           <Box
             sx={{
-              width: "25vw",
+              width: "26vw",
               height: "70vh",
               display: "flex",
               flexDirection: "column",
@@ -221,9 +225,11 @@ const MyRoom = () => {
             }}>
             <Box
               sx={{
-                width: "450px",
-                height: "250px",
-                marginTop: "20px",
+                // width: "450px",
+                // height: "250px",
+                width: "26vw",
+                height: "20vh",
+                // marginTop: "20px",
                 paddingY: '20px',
                 borderRadius: "30px",
                 backgroundColor: "#FFFFFF",
@@ -247,7 +253,8 @@ const MyRoom = () => {
                 </textarea>
             </Box>
             {/* <h2>TIME TABLE</h2> */}
-            <TimeTable  doingList={doingList} doneList={doneList} />
+            <TimeTable
+              doingList={doingList} doneList={doneList}/>
           </Box>
         </Box>
       </Box>

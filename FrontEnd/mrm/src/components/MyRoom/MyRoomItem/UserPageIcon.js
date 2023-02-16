@@ -7,6 +7,7 @@ function UserPageIcon(props) {
   console.log(props)
 
   const getProfile = props.user.profile;
+  console.log("유저 프로필 사진")
   console.log(getProfile)
   return (
     <Box

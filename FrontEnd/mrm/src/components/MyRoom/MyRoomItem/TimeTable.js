@@ -44,14 +44,19 @@ function TimeTable (props) {
   console.log(todos);
 
   return (
-    <Box
+    <Box      
       sx={{
-        width: "300px",
-        height: "300px",
-        // marginTop: "25px",
-        borderRadius: "150px",
-        backgroundColor: "#FFFFFF",
-        boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)"
+        width: "30vw",
+        height: "30vh",
+        // marginTop: "20px",
+        // paddingY: '20px',
+        // borderRadius: "30px",
+        // backgroundColor: "#FFFFFF",
+        // boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
+        // display: 'flex',
+        // flexDirection: 'column',
+        justifyContent: 'center',
+        // alignItems: 'center'
       }}>
       <ResponsivePie
       data={todos}

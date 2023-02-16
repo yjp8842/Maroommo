@@ -21,7 +21,14 @@ export const groupInfoSlice = createSlice({
     saveGroupInfo: (state, {payload}) => {
       console.log('saveGroupInfo 저장 액션 호출')
       state.group = payload
-    }
+    },
+    modifyGroupInfo: (state, {payload}) => {
+      console.log('modifyUserInfo 저장 액션 호출');
+      console.log(payload)
+      state.group.name = payload.name;
+      state.group.intro = payload.intro;
+      state.group.profile = payload.profile;
+    },   
   }
 })
 
