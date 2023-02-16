@@ -23,7 +23,7 @@ function UserProfileModal({ onClose }) {
   const [introValue, setIntroValue] = useState(user.intro)
 
   const [image, setImage] = useState({
-    image_file: "",
+    image_file: user.profile,
     preview_URL: 'images/user.jpg',
   });
 
@@ -114,6 +114,23 @@ function UserProfileModal({ onClose }) {
       })
     }
 
+
+    api.post(
+      `/room/user?userId=${user.id}&intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
+      formdata, {
+        headers : {
+          "Content-Type": 'multipart/form-data'
+        }
+      }).
+    then((res)=>{
+      console.log(res);
+      console.log(formdata)
+      userInfoActions.modifyUserInfo(res.data.user);
+      alert('수정되었습니다');
+    })
+    .catch((err) => {
+      alert('수정 중 오류가 발생했습니다.');
+    })
 
   }
 
