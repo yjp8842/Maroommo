@@ -114,17 +114,18 @@ function QuestionArticlePage() {
       if (finished === 0) {
         setFinished(1)
         console.log('미해결>해결')
-        console.log(finished)
+        const statusForUpdate = {
+          id: id, status: 1, user_id: user_id
+        };
+        dispatch(questionArticleActions.updateStatus(statusForUpdate))
       } else if (finished === 1) {
-        setFinished(0)
         console.log('해결>미해결')
+        setFinished(0)
+        const statusForUpdate = {
+          id: id, status: 0, user_id: user_id
+        };
+        dispatch(questionArticleActions.updateStatus(statusForUpdate))
       }
-      console.log('상태 수정해줘')
-      // console.log(statusForUpdate)
-      const statusForUpdate = {
-        id: id, status: finished, user_id: user_id
-      };
-      dispatch(questionArticleActions.updateStatus(statusForUpdate))
     } else {
       console.log(user.id,'###', user_id)
       console.log()
