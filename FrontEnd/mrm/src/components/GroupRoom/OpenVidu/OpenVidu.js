@@ -628,18 +628,20 @@ class OpenChat extends Component {
 
         // 발언자 감지했을 때
         mySession.on("publisherStartSpeaking", (event) => {
-          for (let i = 0; i < this.userRef.current.children.length; i++) {
-            if (
-              JSON.parse(event.connection.data).clientData ===
-              this.userRef.current.children[i].innerText
-            ) {
-              this.userRef.current.children[i].style.borderStyle = "solid";
-              this.userRef.current.children[i].style.borderColor = "#1773EA";
+          if (this.userRef.current.children.length !== null) {
+            for (let i = 0; i < this.userRef.current.children.length; i++) {
+              if (
+                JSON.parse(event.connection.data).clientData ===
+                this.userRef.current.children[i].innerText
+              ) {
+                this.userRef.current.children[i].style.borderStyle = "solid";
+                this.userRef.current.children[i].style.borderColor = "#1773EA";
+              }
             }
+            console.log(
+              "User " + event.connection.connectionId + " start speaking"
+            );
           }
-          console.log(
-            "User " + event.connection.connectionId + " start speaking"
-          );
         });
 
         // 발언을 멈췄을 때
