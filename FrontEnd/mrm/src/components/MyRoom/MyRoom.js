@@ -189,8 +189,8 @@ const MyRoom = () => {
             </Box> */}
             <Box
               sx={{
-                width: "50vw",
-                height: "50vh",
+                width: "60vw",
+                height: "60vh",
                 borderRadius: "30px",
                 backgroundColor: "#FFFFFF",
                 boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)"

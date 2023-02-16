@@ -37,7 +37,6 @@ function TimeTable (props) {
         boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)"
       }}>
       <ResponsivePie
-      sx={{width:'300px', height:'300px'}}
       data={todos}
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       cornerRadius={3}
@@ -68,6 +67,18 @@ function TimeTable (props) {
               ]
           ]
       }}
+      theme={{
+        /**
+         * label style (bar에 표현되는 글씨)
+         */
+        labels: {
+            text: {
+                fontSize: 20,
+                fill: '#000000',
+            },
+        },
+    }}
+      
     />
 
     </Box>

@@ -74,7 +74,7 @@ export default function TodoTable() {
 
   return (
     <TableContainer component={Paper} sx={{ border:'2px solid black', borderRadius:'25px', tableLayout:'auto'}}>
-      <Table sx={{ height:'50vh', minWidth: 650  }} aria-label="simple table">
+      <Table sx={{ height:'60vh', minWidth: 650  }} aria-label="simple table">
         <TableHead 
           >
           <TableRow >
