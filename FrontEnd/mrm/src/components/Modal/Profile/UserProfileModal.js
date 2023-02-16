@@ -21,7 +21,7 @@ function UserProfileModal({ onClose }) {
   const [introValue, setIntroValue] = useState(user.intro)
 
   const [image, setImage] = useState({
-    image_file: "",
+    image_file: user.profile,
     preview_URL: 'images/user.jpg',
   });
 
@@ -81,7 +81,7 @@ function UserProfileModal({ onClose }) {
 
 
     api.post(
-      `/room/user?intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
+      `/room/user?userId=${user.id}&intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
       formdata, {
         headers : {
           "Content-Type": 'multipart/form-data'
