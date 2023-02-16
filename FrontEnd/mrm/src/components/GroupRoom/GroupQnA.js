@@ -18,6 +18,8 @@ import { questionActions } from '../../slice/questionSlice';
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
 import Pagination from "./Pagination";
+import styled from "styled-components";
+import RoomModal from "../Modal/Group/RoomModal";
 
 const GroupQnA = () => {
   const handleOpenNewTab = (url) => {
@@ -42,6 +44,12 @@ const GroupQnA = () => {
     error: state.questionReducers.error
   })
   );
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
+
   console.log(question.content, question.content.length)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
@@ -81,23 +89,16 @@ const GroupQnA = () => {
               return (<Link to={`/group/`+room.id}><PageIcon room={room}/></Link>)
             })}
           </Box>
-          <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+          <Box>            
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -267,3 +268,22 @@ const GroupQnA = () => {
 };
 
 export default GroupQnA;
+
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;

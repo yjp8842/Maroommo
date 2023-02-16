@@ -29,7 +29,7 @@ export function* deleteCommentAsync(action) {
   const commentId = action.payload;
   // const BASE_URL = "https://i8a406.p.ssafy.io";
 
-  yield api.delete(`/comment/${commentId}/hd`);
+  yield api.delete(`/comment/${commentId}`);
 
   history.go(0);
 }
