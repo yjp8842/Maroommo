@@ -87,17 +87,20 @@ public class TodoServiceImpl implements TodoService {
             Todo done = todoRepository.findById(doneId).get();
             todoRepository.updateEndTimeAndState(doneId);
             done.setState(2);
+            done.setDoingTimeId(-1);
             todoRepository.save(done);
         }
         if (todoId != -1){
             Todo todo = todoRepository.findById(todoId).get();
             todo.setState(0);
+            todo.setDoingTimeId(-1);
             todoRepository.save(todo);
         }
         if (doingId != -1){
             Todo doing = todoRepository.findById(doingId).get();
             doing.setState(1);
             TodoTime todoTime = new TodoTime(doing.getUser(),doing);
+            doing.setDoingTimeId(todoTime.getId());
             ret = todoTimeRepository.save(todoTime).getId();
             todoRepository.save(doing);
         }
