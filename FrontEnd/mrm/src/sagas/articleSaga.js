@@ -12,7 +12,7 @@ export function* registerArticleAsync(action) {
   console.log('articleSage data 출력 : ',data)
   console.log('----------');
   const response = yield api.post(
-    `/board?room_id=${data.room_id}&content=${data.content}&title=${data.title}`,
+    `/board?room_id=${data.groupId}&content=${data.content}&title=${data.title}`,
     data.picture
   )
 
@@ -20,6 +20,9 @@ export function* registerArticleAsync(action) {
   console.log('----------');
   console.log('response 출력 : ',response)
   console.log('----------');
+
+
+  data.navigate(`/group/${data.groupId}/board`);
 
   // history.push(`/group/${data.room_id}/board/article/${response.data.newBoard.id}`, response.data.newBoard.id);
   // // eslint-disable-next-line no-restricted-globals
@@ -53,15 +56,17 @@ export function* updateArticleAsync(action) {
   )
   
   alert("저장되었습니다.");
-  console.log(response.data.board);
+  console.log(response);
+  console.log(action);
 
+  article.navigate(`/group/${article.groupId}/board/article/${article.id}`);
   // history.push(`/group/1/board/article/${response.data.board.id}`, response.data.board.id);
   // // eslint-disable-next-line no-restricted-globals
   // location.reload();
 }
 
 export function* deleteArticleAsync(action) {
-  const id = action.payload;
+  const data = action.payload;
   // const BASE_URL = "https://i8a406.p.ssafy.io";
   // 현재 접속 아이디, 글의 아이디를 받아서
   console.log('삭제해!!!')
@@ -78,9 +83,10 @@ export function* deleteArticleAsync(action) {
   // yield Axios.delete(BASE_URL + `/api/board/${id}/hd`);
 
   // 아이디 값 불러오게 바꿔!!!
-  yield api.delete(`/board/${id}`)
+  yield api.delete(`/board/${data.id}`)
   alert("삭제되었습니다.");
 
+  data.navigate(`/group/${data.groupId}/board`)
   // history.push(`/group/1/board`);
   // // eslint-disable-next-line no-restricted-globals
   // location.reload();

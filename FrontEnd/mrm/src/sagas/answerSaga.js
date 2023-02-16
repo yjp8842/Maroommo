@@ -7,12 +7,13 @@ import api from "../utils/axiosInstance";
 
 export function* registerAnswerAsync(action) {
   const data = action.payload;
-  console.log('답변 등록')
-  console.log(data)
+  console.log('답변 등록');
+  console.log(data);
 
-  const response = yield api.post('/answer', data)
-  console.log(response)
+  const response = yield api.post('/answer', data);
+  console.log(response);
 
+  // location.reload();
   history.go(0); // refresh
 }
 

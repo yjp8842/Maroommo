@@ -59,7 +59,7 @@ function TimeTableBox (props) {
     return (
       <Box
         sx={{
-          width: "950px",
+          width: "970px",
           height: "250px",
           marginTop: "20px",
           paddingY: '20px',

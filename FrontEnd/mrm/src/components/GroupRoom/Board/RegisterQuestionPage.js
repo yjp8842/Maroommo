@@ -99,21 +99,31 @@ function RegisterQuestionPage (props) {
     // const formdata = new FormData();
     formdata.append('picture', image)
     const questionArticleForRegister = {
-      title: title, content: content, room_id: groupId, user_id: user.id, picture: formdata
+      title: title, 
+      content: content, 
+      groupId: groupId, 
+      user_id: user.id, 
+      picture: formdata,
+      navigate: navigate,
     };
 
     const questionArticleForUpdate = {
-      content: content, id: id, status: status, picture: formdata, title: title, user_id: user.id
+      id: id, 
+      title: title, 
+      content: content, 
+      groupId: groupId, 
+      status: status, 
+      user_id: user.id,
+      picture: formdata, 
+      navigate: navigate,
     };
 
     if (IsForUpdate) {
       console.log('업데이트 ㄱㄱ')
       dispatch(questionArticleActions.updateQuestionArticle(questionArticleForUpdate)); // 추가
-      navigate(`/group/${groupId}/question`);
     } else {
       console.log('작성 ㄱㄱ')
       dispatch(questionArticleActions.registerQuestionArticle(questionArticleForRegister));
-      navigate(`/group/${groupId}/question`);
     } 
   }
 

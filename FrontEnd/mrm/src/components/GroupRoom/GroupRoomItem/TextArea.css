@@ -1,4 +1,4 @@
-textarea {
+.memoArea {
     /* width: 100%;
     height: 200px; */
     padding: 10px;
@@ -7,6 +7,10 @@ textarea {
     resize: none;
 }
 
-textarea:focus {
+.memoArea:focus {
     outline: none;
+}
+
+.memoArea::-webkit-scrollbar {
+    display: none;
 }

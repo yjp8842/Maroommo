@@ -264,7 +264,7 @@ const GroupRoom = () => {
         }}>
         <Box
           sx={{
-            width: "450px",
+            width: "475px",
             height: "250px",
             marginTop: "20px",
             paddingY: '20px',
@@ -279,6 +279,7 @@ const GroupRoom = () => {
             <h3>My MEMO</h3>
             <hr align="center" width="80%"/>   
             <textarea 
+              className="memoArea"
               id="myMemo" 
               name="myMemo"
               value={myMemoContent}
@@ -290,7 +291,7 @@ const GroupRoom = () => {
         </Box>
         <Box
           sx={{
-            width: "450px",
+            width: "475px",
             height: "250px",
             marginTop: "20px",
             paddingY: '20px',
@@ -305,6 +306,7 @@ const GroupRoom = () => {
             <h3>Group MEMO</h3>
             <hr align="center" width="80%"/>   
             <textarea 
+              className="memoArea"
               id="roomMemo" 
               name="roomMemo"
               value={groupMemoContent}
