@@ -105,7 +105,7 @@ function QuestionArticlePage() {
   const [finished, setFinished] = useState(status)
   
   const statusForUpdate = {
-    id: id, status: status, user_id: user_id
+    id: id, status: finished, user_id: user_id
   };
   const onChangeStatus = () => {
     if (user.id === user_id) {
