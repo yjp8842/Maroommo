@@ -18,6 +18,7 @@ import FindIdPage from './components/Login/FindId';
 import FindPwdPage from './components/Login/FindPwd';
 import ModifyPwdPage from './components/Login/ModifyPwd'
 import SuccessPage from './components/Login/SuccessPage';
+import GroupJoinPage from './components/GroupRoom/GroupJoinPage';
 import { OCR } from './OCR/OCR';
 // import { Fragment } from 'react';
 
@@ -40,6 +41,7 @@ function App() {
         <Route path='/findPwd' element={<FindPwdPage/>}/>
         <Route path='/modifyPwd' element={<ModifyPwdPage/>}/>
         <Route path="/oauth2/social/success" element={<SuccessPage/>}/>
+        <Route path="/room/enter/:groupId/:roomCode" element={<GroupJoinPage/>}/>
         <Route path="/group/:groupId/openvidu" element={<OpenChat/>}/>
         <Route path="/OCR" element={<OCR/>}/>
       </Routes>

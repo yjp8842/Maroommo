@@ -132,7 +132,8 @@ function GroupProfileModal({ onClose }) {
               <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="groupintro" placeholder={group.intro} name='groupintro' />
 
               
-              <InputWithLabel label="| 초대링크" id="groupcode" value={`https://i8a406.p.ssafy.io/api/room/enter/${group.id}?roomCode=${group.code}`} name='groupcode' />
+              <InputWithLabel label="| 초대링크" id="groupcode"
+                value={`https://i8a406.p.ssafy.io/room/enter/${group.id}/${group.code}`} name='groupcode' />
               {/* <Label> : {}</Label> */}
               <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
               <CButton onClick={handleClose}>취소</CButton>
