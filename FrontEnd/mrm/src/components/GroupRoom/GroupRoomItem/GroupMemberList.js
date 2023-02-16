@@ -15,7 +15,7 @@ function GroupMemberList(props) {
           backgroundColor: "#FFFFFF",
         //   boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
         }}>
-        <h2>- {props.user.name}</h2>
+        <h2>{props.user.nickname}</h2>
       </Box>
     )
 }

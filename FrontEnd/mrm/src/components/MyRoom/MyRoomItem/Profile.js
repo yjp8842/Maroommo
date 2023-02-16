@@ -14,7 +14,7 @@ const Profile = (props) => {
     setIsOpen(true);
   };
 
-  const getUserName = props.user.name;
+  const getUserName = props.user.nickname;
   const getUserIntro = props.user.intro;
   const getUserProfile = props.user.profile;
 
