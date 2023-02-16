@@ -22,7 +22,7 @@ function TimeTableBox (props) {
     const size = props.group.todayTodoTimes.length;
     props.group.todayTodoTimes.map((todo, index) => {
       if(todo.totalSec > 60 && todo.startTime < todo.endTime){
-        data1.push([todo.userId,
+        data1.push([todo.userNickname,
           todo.content,
           new Date(todo.startTime),
           new Date(todo.endTime) 
@@ -54,16 +54,25 @@ function TimeTableBox (props) {
           backgroundColor: "#FFFFFF",
           boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
           display: 'flex',
-          justifyContent: 'center'
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
         }}>
-        <h3>Time List</h3>
+        <h3>Time Table</h3>
+        <hr align="center" width="85%"/>   
+        <br></br>
         {/* <TimeList /> */}
         <Chart
+          sx={{
+            marginTop: "5px",
+            // paddingX: '10px',
+            display: 'flex'
+          }}
           chartType="Timeline"
           data={data1}
           
-          width="98%"
-          height="400px"
+          width="850px"
+          height="230px"
           options={{
             timeline: {
               // colorByRowLabel: true,
@@ -76,7 +85,6 @@ function TimeTableBox (props) {
             },
           }}
         /> 
-
       </Box>
     )
     
