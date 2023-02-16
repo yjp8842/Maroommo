@@ -177,6 +177,6 @@ span.triangle {
   box-shadow: none !important;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   display: none;
-}
+} */
