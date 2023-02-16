@@ -23,7 +23,8 @@ function PageIcon(props) {
           transition: "0.8s",
         },
       }}>
-      <Avatar 
+        <img src={`/images/${props.picture}`} alt='logo' className='imgbox'></img>
+      {/* <Avatar 
         sx={{ 
           transform: "rotate(-45deg)",
           ":hover": {
@@ -34,7 +35,7 @@ function PageIcon(props) {
         src= {props.room.profile} 
         // src= {props.room.profile ? props.room.profile : "/images/user.jpg"} 
       >
-      </Avatar>
+      </Avatar> */}
     </Box>
   );
 }
