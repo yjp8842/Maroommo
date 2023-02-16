@@ -203,7 +203,7 @@ const MyRoom = () => {
                 backgroundColor: "#FFFFFF",
                 boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)"
               }}>
-              <TodoTable 
+              <TodoTable doingList={doingList} doneList={doneList}
               sx={{
                 fontSize:"55"
               }}/>
