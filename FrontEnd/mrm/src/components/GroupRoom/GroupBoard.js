@@ -202,7 +202,7 @@ const GroupBoard = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Pagination limit={limit} page={page} setPage={setPage} total={board.content.length}/>
+            <Pagination limit={limit} page={page} setPage={setPage} total={board.content ? board.content.length : 1}/>
 
             {/* 룸아이디 넣는 식으로 수정해야함 */}
             <Box

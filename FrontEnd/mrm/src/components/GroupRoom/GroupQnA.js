@@ -66,7 +66,6 @@ const GroupQnA = () => {
     setIsOpen(true);
   };
 
-  console.log(question.content, question.content.length)
   const [limit, setLimit] = useState(10)
   const [page, setPage] = useState(1)
   const offset = (page - 1) * limit;
@@ -203,7 +202,7 @@ const GroupQnA = () => {
                 </TableBody>
               </Table>
             </TableContainer>
-            <Pagination limit={limit} page={page} setPage={setPage} total={question.content.length}/>
+            <Pagination limit={limit} page={page} setPage={setPage} total={question.content ? question.content.length : 1}/>
 
             {/* 룸아이디 넣는 식으로 수정해야함 */}
             <Box
