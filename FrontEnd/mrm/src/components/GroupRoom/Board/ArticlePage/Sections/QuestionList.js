@@ -40,7 +40,7 @@ function QuestionList(props) {
                   {props.commentLength[question.id] > 0 &&
                     `[${props.commentLength[question.id]}]`} */}
                 </QuestionArticle>
-              <td>{questionArticle.user_id}</td>
+              <td>{questionArticle.nickname}</td>
               <td>{questionArticle.views}</td>
               <td>{new Date(questionArticle.createTime).toLocaleString()}</td>
             </tr>

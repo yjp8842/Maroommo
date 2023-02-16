@@ -60,6 +60,24 @@ export function* updateQuestionArticleAsync(action) {
   location.reload();
 }
 
+export function* updateStatusAsync(action) {
+  const questionArticle = action.payload;
+  console.log('updateArticleAsync article 호출 : ', questionArticle)
+  // const data : {id: questionArticle.id, }
+  const response = yield api.patch(
+    `/question/status`,
+    questionArticle
+    // questionArticle.picture
+  );
+
+  alert("저장되었습니다.");
+  console.log(response.data);
+
+  history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
+  // eslint-disable-next-line no-restricted-globals
+  location.reload();
+}
+
 export function* deleteQuestionArticleAsync(action) {
   const id = action.payload;
   console.log('삭제해!!!')

@@ -18,6 +18,7 @@ import QuestionArticleDetail from "./Sections/QuestionArticleDetail";
 import Answer from "./Sections/Answer";
 import styled from "styled-components";
 import RoomModal from "../../../Modal/Group/RoomModal";
+import { questionActions } from "../../../../slice/questionSlice";
 
 function QuestionArticlePage() {
 
@@ -33,7 +34,7 @@ function QuestionArticlePage() {
 
   // , [{articleId}]);_
 // categorysub_id, content, createtime, hit, picture, title, user_id
-  const { user, group, id, title, content, createTime, user_id, status, answers, picture  } = useSelector((state) => ({
+  const { user, group, id, title, content, createTime, user_id, answers, picture  } = useSelector((state) => ({
     user: state.userInfoReducers.user,
     group: state.groupInfoReducers.group,
     id: state.questionArticleReducers.id,
@@ -41,13 +42,18 @@ function QuestionArticlePage() {
     content: state.questionArticleReducers.content,
     createTime: state.questionArticleReducers.createTime,
     user_id: state.questionArticleReducers.user_id,
-    status: state.questionArticleReducers.status,
+    
     answers: state.questionArticleReducers.answers,
     picture: state.questionArticleReducers.picture
   }),
   shallowEqual);
+  //여기 보고 있어씀
+  let status = useSelector((state) => ({
+    status: state.questionArticleReducers.status,
+  }))
   console.log('questionarticle page 출력 ')
-  console.log(id, title, content)
+  // console.log(id, title, content)
+  console.log(user_id)
   const views = useSelector((state) => state.questionArticleReducers.views);
   // console.log(title)
 
@@ -78,7 +84,7 @@ function QuestionArticlePage() {
     }
     const answer = {
       // id: 0,
-      user_id: 'hd',
+      user_id: user,
       content: AnswerValue,
       date: Date.now(),
       question_id: id,
@@ -95,6 +101,36 @@ function QuestionArticlePage() {
     setIsOpen(true);
   };
 
+
+  const [finished, setFinished] = useState(status)
+  
+  const statusForUpdate = {
+    id: id, status: status, user_id: user_id
+  };
+  const onChangeStatus = () => {
+    if (user.id === user_id) {
+      // if (finished === 1) {
+      //   setFinished(()=>0)
+      //   console.log('ㅎ')
+      // } 
+      if (finished === 0) {
+        setFinished(finished + 1)
+        console.log('미해결>해결')
+        console.log(finished)
+      }
+      if (finished === 1) {
+        setFinished(finished - 1)
+        console.log('해결>미해결')
+      }
+    } else {
+      console.log(user.id,'###', user_id)
+      console.log()
+      alert('작성자만 변경할 수 있습니다.')
+    }
+    console.log('상태 수정해줘')
+    dispatch(questionArticleActions.updateStatus(statusForUpdate))
+
+  }
 
   return (
     <Grid container>
@@ -186,6 +222,8 @@ function QuestionArticlePage() {
               createTime={createTime}
               user_id={user_id}
               status={status}
+              finished={finished}
+              nickname={user.nickname}
               answers={answers}
               picture={picture}
               handleDeleteClick={onDeleteClick}
@@ -195,6 +233,7 @@ function QuestionArticlePage() {
               handleAnswerSubmit={onAnswerSubmit}/>}
               loadAnswers={answers}
               deleteAnswer={onDeleteAnswer}
+              onChangeStatus={onChangeStatus}
               />
           </Box>
         </Box>   

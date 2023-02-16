@@ -10,7 +10,7 @@ import { registerCommentAsync, getCommentsAsync, deleteCommentAsync } from "./co
 
 import { questionArticleActions } from "../slice/questionArticleSlice";
 import { questionActions } from "../slice/questionSlice";
-import { deleteQuestionArticleAsync, fetchQuestionArticleAsync, getQuestionArticleAsync, registerQuestionArticleAsync, updateQuestionArticleAsync } from "./questionArticleSaga";
+import { deleteQuestionArticleAsync, fetchQuestionArticleAsync, getQuestionArticleAsync, registerQuestionArticleAsync, updateQuestionArticleAsync, updateStatusAsync } from "./questionArticleSaga";
 import { getQuestionAsync } from "./questionSaga";
 // import { fetchQuestionArticleAsync, updateQuestionArticleAsync, deleteQuestionArticleAsync } from "./questionArticleSaga";
 import { answerActions } from "../slice/answerSlice";
@@ -19,7 +19,7 @@ import { updateUserInfoAsync } from "./userInfoSaga";
 import { userInfoActions } from "../slice/userInfoSlice";
 
 const { registerArticle, getArticle, fetchArticle, updateArticle, deleteArticle } = articleActions;
-const { registerQuestionArticle, getQuestionArticle, fetchQuestionArticle, updateQuestionArticle, deleteQuestionArticle } = questionArticleActions
+const { registerQuestionArticle, getQuestionArticle, fetchQuestionArticle, updateQuestionArticle, deleteQuestionArticle, updateStatus } = questionArticleActions
 const {getBoard} = boardActions;
 const {getQuestion} = questionActions;
 // const {fetchArticle} = articleActions;
@@ -48,7 +48,7 @@ export default function* rootWatcher() {
   yield takeEvery(fetchQuestionArticle.type, fetchQuestionArticleAsync);
   yield takeLatest(updateQuestionArticle.type, updateQuestionArticleAsync);
   yield takeLatest(deleteQuestionArticle.type, deleteQuestionArticleAsync);
-
+  yield takeLatest(updateStatus.type, updateStatusAsync)
 
   yield takeLatest(registerAnswer.type, registerAnswerAsync);
   // yield takeEvery(getQuestionComments.type, getQuestionCommentsAsync);
