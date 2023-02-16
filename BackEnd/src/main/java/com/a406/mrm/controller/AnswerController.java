@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -53,15 +55,16 @@ public class AnswerController {
      *          를 가지고 답변을 삭제한다
      * @return isDelete : 삭제 성공 여부를 반환한다
      */
-    @DeleteMapping("{id}/{user_id}")
+    @DeleteMapping("{id}")
     @ApiOperation("답변 삭제 : 답변 아이디(id), 작성자 아이디(user_id)")
-    public ResponseEntity<?> delete(@PathVariable("id") int aid, @PathVariable("user_id") String user_id) {
+    public ResponseEntity<?> delete(@PathVariable("id") int aid,
+                                    @AuthenticationPrincipal User user) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
         try {
-            boolean isDelete = answerService.delete(aid, user_id);
+            boolean isDelete = answerService.delete(aid, user.getUsername());
 
             resultMap.put("isDelete",isDelete);
         } catch (Exception e) {

@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,15 +35,15 @@ public class ScheduleController {
      *            를 통해 회원이 속한 모든 그룹들의 스케쥴들을 가져온다
      * @return schedules : 회원이 속한 모든 그룹들의 스케쥴들을 반환한다
      */
-    @GetMapping("{userId}")
-    public ResponseEntity<?> getSchedule(@PathVariable("userId") String userId){
+    @GetMapping()
+    public ResponseEntity<?> getSchedule(@AuthenticationPrincipal User user){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         List<ScheduleResponseDto> scheduleResponseDtoList = null;
 
         try {
-            scheduleResponseDtoList = scheduleService.getSchedule(userId);
+            scheduleResponseDtoList = scheduleService.getSchedule(user.getUsername());
             resultMap.put("schedules",scheduleResponseDtoList);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

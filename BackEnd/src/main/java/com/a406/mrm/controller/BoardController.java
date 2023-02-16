@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,14 +41,17 @@ public class BoardController {
      */
     @PostMapping
     @ApiOperation("게시판 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
-    public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
-                                    @RequestParam int room_id, @RequestPart(value="picture", required = false) MultipartFile picture) {
+    public ResponseEntity<?> create(@RequestParam String title,
+                                    @RequestParam String content,
+                                    @RequestParam int room_id,
+                                    @RequestPart(value="picture", required = false) MultipartFile picture,
+                                    @AuthenticationPrincipal User user) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardResponseCommentDto = null;
 
         try {
-            boardResponseCommentDto = boardService.join(title, content, user_id, room_id, picture);
+            boardResponseCommentDto = boardService.join(title, content, user.getUsername(), room_id, picture);
             resultMap.put("newBoard", boardResponseCommentDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -63,15 +68,15 @@ public class BoardController {
      *              를 가지고 게시글을 삭제한다
      * @return isDelete : 삭제 성공 여부를 반환한다
      */
-    @DeleteMapping("{id}/{user_id}")
+    @DeleteMapping("{id}")
     @ApiOperation("게시판 삭제 : 게시판 아이디(id), 작성자 아이디(user_id)")
-    public ResponseEntity<?> delete(@PathVariable("id") int bid,@PathVariable("user_id") String user_id) {
+    public ResponseEntity<?> delete(@PathVariable("id") int bid, @AuthenticationPrincipal User user) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
         try {
-            boolean isDelete = boardService.delete(bid,user_id);
+            boolean isDelete = boardService.delete(bid,user.getUsername());
             resultMap.put("isDelete", isDelete);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -88,14 +93,17 @@ public class BoardController {
      */
     @PostMapping("update")
     @ApiOperation("게시판 수정 : 게시판 아이디(id),, 수정내용(content), title(제목), 사진(picture), 작성자 아이디(user_id))")
-    public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestPart(value="picture", required = false) MultipartFile picture,
-                                    @RequestParam String title, @RequestParam String user_id) {
+    public ResponseEntity<?> update(@RequestParam int id,
+                                    @RequestParam String content,
+                                    @RequestPart(value="picture", required = false) MultipartFile picture,
+                                    @RequestParam String title,
+                                    @AuthenticationPrincipal User user) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         BoardResponseCommentDto boardModifyDto = null;
 
         try {
-            boardModifyDto = boardService.update(id, content, picture, title, user_id);
+            boardModifyDto = boardService.update(id, content, picture, title, user.getUsername());
             resultMap.put("board", boardModifyDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
