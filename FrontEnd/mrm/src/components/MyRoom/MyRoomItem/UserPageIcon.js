@@ -3,10 +3,10 @@ import { Box } from '@mui/system';
 import { Avatar } from '@mui/material';
 // import { green } from '@mui/material/colors';
 
-function PageIcon(props) {
+function UserPageIcon(props) {
   console.log(props)
 
-  const getProfile = props.room.profile;
+  const getProfile = props.user.profile;
   console.log(getProfile)
   return (
     <Box
@@ -48,4 +48,5 @@ function PageIcon(props) {
   );
 }
 
-export default PageIcon;
+
+export default UserPageIcon;
