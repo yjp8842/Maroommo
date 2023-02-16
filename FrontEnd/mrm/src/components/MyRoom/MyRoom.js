@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
 import PageIcon from './MyRoomItem/PageIcon';
+import UserPageIcon from './MyRoomItem/UserPageIcon';
 import Profile from './MyRoomItem/Profile';
 import StudyTime from './MyRoomItem/StudyTime';
 import Todo from './MyRoomItem/Todo';
@@ -116,7 +117,7 @@ const MyRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
+          <Link to={`/myroom`}><UserPageIcon user={user}/></Link>
         </Box>
         <Box
           sx={{
