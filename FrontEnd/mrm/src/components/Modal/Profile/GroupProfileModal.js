@@ -88,7 +88,7 @@ function GroupProfileModal({ onClose }) {
         dispatch(groupInfoActions.modifyGroupInfo(res.data.group));
 
         alert('그룹 정보가 수정되었습니다'); 
-        // window.location.reload();
+        window.location.reload();
 
       })
       .catch((err) => {
