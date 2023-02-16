@@ -21,7 +21,7 @@ const GroupProfile = () => {
   const onClickButton = () => {
     setIsOpen(true);
   };
-
+  console.log('이건 group',group)
   let getGroupName = group.name;
   let getGroupIntro = group.intro;
 
@@ -61,7 +61,11 @@ const GroupProfile = () => {
         />)}
       </div>
       <div className='inbox1'>
-        <img src={group.profile ? group.profile : '/images/user.png'} alt="user" className='user-image' />
+        { group.profile
+        ? <img src={`images/${group.profile}`} alt="user" className='user-image' />
+        : <img src='images/user.png' alt="user" className='user-image' />
+        }
+        {/* <img src={group.profile ? group.profile : '/images/user.png'} alt="user" className='user-image' /> */}
         <h2>{getGroupName}</h2>
         <h4>{getGroupIntro}</h4>
       </div>
