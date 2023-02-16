@@ -20,6 +20,8 @@ import GroupMemberList from './GroupRoomItem/GroupMemberList';
 import MenuBtn from './GroupRoomItem/MenuBtn';
 import { userInfoActions} from "../../slice/userInfoSlice";
 import { groupInfoActions} from "../../slice/groupInfoSlice";
+import styled from "styled-components";
+import RoomModal from "../Modal/Group/RoomModal";
 
 const GroupChat = () => {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const GroupChat = () => {
 
   useEffect(() => {
 
-    api.get(`/room/${groupId}/${user.id}`)
+    api.get(`/room/${groupId}`)
     .then((res) => {    
       console.log("이동!")
       dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo))
@@ -42,6 +44,11 @@ const GroupChat = () => {
     user: state.userInfoReducers.user,
     group: state.groupInfoReducers.group
   }))
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
 
   return (
     <Grid container>
@@ -79,22 +86,15 @@ const GroupChat = () => {
             })}
           </Box>
           <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -195,3 +195,22 @@ const GroupChat = () => {
 };
 
 export default GroupChat;
+
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;

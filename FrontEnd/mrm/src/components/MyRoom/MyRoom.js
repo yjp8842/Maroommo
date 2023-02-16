@@ -25,7 +25,7 @@ const MyRoom = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    api.get(`/room/my/${user.id}`)
+    api.get(`/room/my`)
     .then((res) => {   
       console.log("마이 페이지 이동!");  
       console.log(res);
@@ -45,14 +45,28 @@ const MyRoom = () => {
     done_list: state.userInfoReducers.user.done
   }), shallowEqual)
 
-  var todoList = []
+  var todoList = [];
+  const now = new Date();
+  const nowYmd = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate();
+  const yesterdayYmd = now.getFullYear() + '-' + now.getMonth() + '-' + (now.getDate()-1);
+  console.log(nowYmd, yesterdayYmd);
 
   doing_list.map((todo, index) => {
-    return (todoList.push(todo))
+    const startTodo = new Date(todo.startTime);
+    const ymd = startTodo.getFullYear() + '-' + startTodo.getMonth() + '-' + startTodo.getDate();
+    console.log(ymd);
+
+    if (ymd === nowYmd || ymd === yesterdayYmd)
+      todoList.push(todo)
   })
 
   done_list.map((todo, index) => {
-    return (todoList.push(todo))
+    const startTodo = new Date(todo.startTime);
+    const ymd = startTodo.getFullYear() + '-' + startTodo.getMonth() + '-' + startTodo.getDate();
+    console.log(ymd);
+
+    if (ymd === nowYmd || ymd === yesterdayYmd)
+      todoList.push(todo)
   })
 
 

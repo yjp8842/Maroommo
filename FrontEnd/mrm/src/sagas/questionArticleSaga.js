@@ -12,7 +12,7 @@ export function* registerQuestionArticleAsync(action) {
   console.log('questionarticleSage data 출력 : ',data)
   console.log('----------');
   const response = yield api.post(
-    `/question?room_id=${data.room_id}&content=${data.content}&title=${data.title}&user_id=${data.user_id}`,
+    `/question?room_id=${data.room_id}&content=${data.content}&title=${data.title}`,
     data.picture
   )
 
@@ -48,7 +48,7 @@ export function* updateQuestionArticleAsync(action) {
   const questionArticle = action.payload;
   console.log('updateArticleAsync article 호출 : ', questionArticle)
   const response = yield api.post(
-    `/question/update?id=${questionArticle.id}&content=${questionArticle.content}&title=${questionArticle.title}&user_id=${questionArticle.user_id}&status=${questionArticle.status}`,
+    `/question/update?id=${questionArticle.id}&content=${questionArticle.content}&title=${questionArticle.title}&status=${questionArticle.status}`,
     questionArticle.picture
   );
 
@@ -64,7 +64,7 @@ export function* deleteQuestionArticleAsync(action) {
   const id = action.payload;
   console.log('삭제해!!!')
   
-  yield api.delete(`/question/${id}/hd`);
+  yield api.delete(`/question/${id}`);
 
   alert("삭제되었습니다.");
 

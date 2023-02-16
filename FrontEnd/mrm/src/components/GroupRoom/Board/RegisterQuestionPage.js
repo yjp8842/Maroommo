@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector, shallowEqual } from "react-redux";
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
@@ -13,6 +13,8 @@ import GroupMemberList from '../GroupRoomItem/GroupMemberList';
 
 import RegisterOrEditQuestion from "./RegisterOrEditQuestion";
 import { questionArticleActions } from "../../../slice/questionArticleSlice";
+import styled from "styled-components";
+import RoomModal from "../../Modal/Group/RoomModal";
 
 
 function RegisterQuestionPage (props) {
@@ -20,6 +22,7 @@ function RegisterQuestionPage (props) {
   const dispatch = useDispatch();
 	const params = useParams();
   const groupId = params.groupId;
+  const navigate = useNavigate();
 
   const {user, id, group, views, date, editDate, title, content, picture, status} = useSelector((state) =>
   ({
@@ -104,12 +107,19 @@ function RegisterQuestionPage (props) {
     if (IsForUpdate) {
       console.log('업데이트 ㄱㄱ')
       dispatch(questionArticleActions.updateQuestionArticle(questionArticleForUpdate)); // 추가
+      navigate(`/group/${groupId}/question`);
     } else {
       console.log('작성 ㄱㄱ')
       dispatch(questionArticleActions.registerQuestionArticle(questionArticleForRegister));
+      navigate(`/group/${groupId}/question`);
     } 
   }
 
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const onClickButton = () => {
+    setIsOpen(true);
+  };
 
   return (
     <Grid container>
@@ -146,22 +156,15 @@ function RegisterQuestionPage (props) {
             })}
           </Box>
           <Box>
-            <Box
-              sx={{
-                width: "4rem",
-                height: "4rem",
-                marginTop: "25px",
-                marginBottom: "25px",
-                backgroundColor: "#FFFFFF",
-                borderRadius: "15px",
-                transform: "rotate(45deg)",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                ":hover": {
-                  transform: "rotate(0)",
-                  transition: "0.8s",
-                }
-              }}>
-            </Box>
+            <AppWrap>
+              <Button onClick={onClickButton}>+</Button>
+              {isOpen && (<RoomModal
+                open={isOpen}
+                onClose={() => {
+                  setIsOpen(false);
+                }}
+              />)}
+            </AppWrap>
           </Box>
         </Box>
       </Box>
@@ -281,3 +284,21 @@ function RegisterQuestionPage (props) {
 }
 
 export default RegisterQuestionPage;
+const Button = styled.button`
+  font-size: 40px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  color: black;
+  font-weight: 200;
+  cursor: pointer;
+  &:hover {
+    background-color: #fac2be;
+  }
+`;
+
+const AppWrap = styled.div`
+  text-align: center;
+  margin: 50px auto;
+`;

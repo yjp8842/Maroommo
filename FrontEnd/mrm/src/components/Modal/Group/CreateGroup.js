@@ -1,10 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import api from "../../../utils/axiosInstance";
+import { useSelector, shallowEqual, useDispatch } from "react-redux";
+import { userInfoActions } from "../../../slice/userInfoSlice";
+import { groupInfoActions} from "../../../slice/groupInfoSlice";
+import { scheduleActions } from "../../../slice/scheduleSlice";
+
 
 function CreateRoomModal({ onClose }) {
   const handleClose = () => {
     onClose?.();
   };
+
+  const {user} = useSelector((state) => 
+  ({
+    user: state.userInfoReducers.user,
+  }), shallowEqual)
+
+  const dispatch = useDispatch();
+
+  const [ groupName, setGroupName ] = useState('')
+
+  const onChangegroupName= e => {
+    setGroupName(e.target.value)
+  }
+
+  const [ groupIntro, setGroupIntro ] = useState('')
+
+  const onChangeGroupIntro= e => {
+    setGroupIntro(e.target.value)
+  }
+
+  const onSubmitJoinRoom = (event) => {
+    console.log("groupName ===", groupName)
+    console.log("groupIntro ===", groupIntro)
+    const data = {
+      name: groupName,
+      intro: groupIntro
+    };
+
+    console.log(data);
+
+    api.post(`/room`, data)
+    .then((res) => {
+      console.log("그룹 생성 완료!");
+      console.log(res);
+      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
+      dispatch(scheduleActions.saveSchedule(res.data.myRoomInfo.schedules));
+      alert("그룹 생성을 완료하였습니다.");
+      onClose?.();
+    })
+    .catch((err) => {
+      console.log(err);
+      alert("그룹 생성 중 오류가 발생했습니다.");
+    });
+
+  }
 
   return (
     <Overlay>
@@ -12,13 +63,14 @@ function CreateRoomModal({ onClose }) {
         <Contents>
           <h1>마룸모 생성하기</h1>
 
-          <InputWithLabel label="| 그룹명" name="roomname" placeholder="React 기초반" type="roomname"/>
-          <InputWithLabel label="| 비밀번호" name="password" placeholder="***********" type="password"/>
-          <InputWithLabel label="| 한줄소개" name="introduction" placeholder="React를 시작하는 사람들의 모임입니다. " type="introduction"/>
+          <InputWithLabel onChange={onChangegroupName} label="| 그룹명" name="roomname" placeholder="예시) React 기초반" type="roomname"/>
+          <InputWithLabel onChange={onChangeGroupIntro} label="| 한줄소개" name="introduction" placeholder="예시) React를 시작하는 사람들의 모임입니다. " type="introduction"/>
 
           <div>
             <CButton onClick={handleClose}>뒤로</CButton>
-            <CButton onClick={handleClose}>생성하기</CButton>
+            <CButton onClick={() => {
+              onSubmitJoinRoom()}}
+              >생성하기</CButton>
           </div>
         </Contents>
       </ModalWrap>

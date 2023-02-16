@@ -1,16 +1,17 @@
 import axios from "axios";
 import { userInfoActions } from "../../slice/userInfoSlice"
+import api from "../../utils/axiosInstance";
 
 // import history from "../../utils/history";
 
-export function postTodoData({ roomId, tags, content, selectedDate, dispatch }) {
+export function postTodoData({ user, group, tags, content, selectedDate, dispatch }) {
 
     const year = selectedDate.$y;
     const month = selectedDate.$M + 1;
     const day = selectedDate.$D;
     const reqTags = [];
     reqTags.push(tags);
-    const numRoomId = Number(roomId);
+    const numRoomId = group.id;
 
     const todo = {
         roomId: numRoomId,
@@ -24,22 +25,18 @@ export function postTodoData({ roomId, tags, content, selectedDate, dispatch }) 
     console.log("todo")
     console.log(todo)
 
-    const BASE_URL = 'https://i8a406.p.ssafy.io';   
-    const url = BASE_URL + '/api/todo/hd';
 
     
-    axios
-        .post(url, todo)
+    api.post(`/todo`, todo)
         .then((response)=> {
             console.log(response);
-            // console.log(response.data.newTodo.id);
-            // console.log(response.data.newTodo.tags);
-            // console.log(response.data.newTodo.content);
-            // console.log(response.data.newTodo.startTime);
-
-            dispatch(userInfoActions.saveTodoInfo(response.data.newTodo))
-            
+            dispatch(userInfoActions.createMytodo(response.data))
+            alert("할일 생성을 완료하였습니다")
             // history.push('/group/1')
         })
+        .catch((err) => {
+            console.log(err);
+            alert("할일 생성 중 오류가 발생했습니다")
+    })
     
 }
