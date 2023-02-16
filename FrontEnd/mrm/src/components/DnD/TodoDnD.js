@@ -64,6 +64,8 @@ function TodoDnD() {
     api.patch(`/todo/state`, data)
     .then((res) => {
       console.log("todo로 이동!");
+      console.log(data);
+      console.log(item);
       // remove from box2
       setBox2((prev) => {
         const index = prev.findIndex((each) => each.id === item.id);
@@ -96,9 +98,14 @@ function TodoDnD() {
     api.patch(`/todo/state`, data)
     .then((res) => {
       console.log("doing으로 이동!");
+      console.log(data);
+      console.log(item);
+      console.log(res);
       item.doingTimeId = res.data.doingTimeId;
+      console.log(item);
 
-      if(temp !== null){    
+      if(temp !== null){   
+        console.log("doing에 todo있어요!"); 
         // remove from box2
         setBox2((prev) => {
           const index = prev.findIndex((each) => each.id === temp.id);
@@ -145,6 +152,8 @@ function TodoDnD() {
     api.patch(`/todo/state`, data)
     .then((res) => {
       console.log("done으로 이동!");
+      console.log(data);
+      console.log(item);
       // remove from box2
       setBox2((prev) => {
         const index = prev.findIndex((each) => each.id === item.id);

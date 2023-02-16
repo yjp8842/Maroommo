@@ -42,15 +42,17 @@ export const data = [
       "Willow",
       "Advanced Google Charts",
       new Date(0, 0, 0, 16, 30, 0),
-      new Date(0, 0, 0, 18, 0, 0),
+      new Date(0, 0, 0, 20, 0, 0),
     ],
   ];
   
   export function TimeList() {
+
+    
     return (
       <>
         {/* <h2>Color By Row Label</h2> */}
-        <Chart
+        {/* <Chart
           chartType="Timeline"
           data={data}
           width="95%"
@@ -60,7 +62,7 @@ export const data = [
               colorByRowLabel: true,
             },
           }}
-        />
+        /> */}
         {/* <h2>Same Colors for all bars</h2>
         <Chart
           chartType="Timeline"
@@ -94,24 +96,25 @@ export const data = [
             colors: ["#cbb69d", "#603913", "#c69c6e"],
           }}
         />
-        <h2>Changing the fonts</h2>
+        <h2>Changing the fonts</h2>*/}
         <Chart
           chartType="Timeline"
           data={data}
-          width="100%"
+          
+          width="98%"
           height="400px"
           options={{
-            colors: ["#cbb69d", "#603913", "#c69c6e"],
             timeline: {
+              colorByRowLabel: true,
               rowLabelStyle: {
                 fontName: "Helvetica",
-                fontSize: 24,
+                fontSize: 20,
                 color: "#603913",
               },
               barLabelStyle: { fontName: "Garamond", fontSize: 14 },
             },
           }}
-        /> */}
+        /> 
       </>
     );
   }
