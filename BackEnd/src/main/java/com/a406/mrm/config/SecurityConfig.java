@@ -66,7 +66,7 @@ public class SecurityConfig{
         .and()
             .authorizeRequests()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-            .antMatchers("/user/**", "/ws/**", "/room/enter/**").permitAll()
+            .antMatchers("/user/**", "/ws/**").permitAll()
             .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
 //            .anyRequest().permitAll()
 
