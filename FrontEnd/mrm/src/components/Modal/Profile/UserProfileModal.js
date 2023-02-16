@@ -93,7 +93,7 @@ function UserProfileModal({ onClose }) {
         // console.log(formdata)
         dispatch(userInfoActions.modifyUserInfo(res.data.user));
         alert('회원 정보가 수정되었습니다'); 
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((err) => {
         alert('수정 중 오류가 발생했습니다.');
