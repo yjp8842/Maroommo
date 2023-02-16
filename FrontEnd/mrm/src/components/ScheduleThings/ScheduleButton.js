@@ -101,7 +101,7 @@ function ScheduleButton() {
   }, [roomId,  content, year, month, day, onReset]);
 
   return (
-    <div className={styles.content}>
+    <div>
       <ScheduleDispatch.Provider value={dispatch}>
         <Button onClick={onClickButton}>+ 일정</Button>
           {isOpen && (<CreateScheduleModal
@@ -129,6 +129,7 @@ export default ScheduleButton;
 const Button = styled.button`
 font-size: 20px;
 padding: 10px 20px;
+margin: 0px 10px 0px 10px;
 border: 0.5px solid gray;
 background-color: #ffffff;
 border-radius: 10px;

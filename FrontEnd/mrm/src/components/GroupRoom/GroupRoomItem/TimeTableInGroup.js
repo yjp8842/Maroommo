@@ -12,7 +12,6 @@ function TimeTableBox (props) {
 
   const offset = 1000 * 60 * 60 * 9;
   const now = new Date();
-  console.log(now)
   
   const data = [[
     { type: "string", id: "user" },
@@ -28,34 +27,34 @@ function TimeTableBox (props) {
     ]  
   ];
   
-  console.log("time table");
-  console.log(props);
+  // console.log("time table");
+  // console.log(props);
 
   if(props.group.todayTodoTimes){
     const size = props.group.todayTodoTimes.length;
     props.group.todayTodoTimes.map((todo, index) => {
-      console.log(index, todo)
+      // console.log(index,todo)
       if(todo.totalSec > 60 && todo.startTime < todo.endTime){
         data.push([todo.userNickname,
           todo.content,
-          new Date(todo.startTime),
-          new Date(todo.endTime) 
+          new Date((new Date(todo.startTime)).getTime() - offset),
+          new Date((new Date(todo.endTime)).getTime() - offset) 
         ]);
       }
       if(index === size-1 && todo.totalSec === 0) {
         // console.log("마지막 투두")
         data.push([todo.userNickname,
           todo.content,
-          new Date(todo.startTime),
-          new Date((new Date()).getTime() + offset)
+          new Date((new Date(todo.startTime)).getTime() - offset),
+          new Date()
         ]);
       }
       return true;
     })
   }
 
-  console.log("필터링!");
-  console.log(data);
+  // console.log("필터링!");
+  // console.log(data);
   
     return (
       <Box

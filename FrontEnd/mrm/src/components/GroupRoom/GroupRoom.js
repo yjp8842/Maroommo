@@ -249,6 +249,7 @@ const GroupRoom = () => {
         
         <Box
           sx={{
+            padding: "20px 0px 0px 0px",
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

@@ -263,7 +263,7 @@ function TodoDnD() {
 const TodoDiv = styled.div`
   display: flex;
   width: 100%;
-  height: 200px;
+  height: 180px;
   `
 
 export default TodoDnD;
