@@ -146,9 +146,7 @@ class OpenChat extends Component {
                                   </div>
                                 </div>
                               </div>
-                            ) : (
-                              null
-                            )}
+                            ) : null }
                           </>
                         ))}
 
