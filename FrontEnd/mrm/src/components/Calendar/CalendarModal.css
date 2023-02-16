@@ -1,5 +1,7 @@
 .click-div {
   position: absolute;
+  /* width: "16vw";
+  height: "26vh"; */
   width: 250px;
   height: 210px;
   background-color: black;

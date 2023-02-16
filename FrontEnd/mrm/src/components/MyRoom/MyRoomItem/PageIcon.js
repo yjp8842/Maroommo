@@ -24,11 +24,6 @@ function PageIcon(props) {
           transition: "0.8s",
         },
       }}>
-        {/* {props.picture
-        ? <img src={`/images/${props.picture}`} alt='logo' className='imgbox'></img>
-        : 
-
-} */}
       <Avatar 
         sx={{ 
           transform: "rotate(-45deg)",
