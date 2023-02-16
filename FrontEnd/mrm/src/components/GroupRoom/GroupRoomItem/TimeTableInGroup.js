@@ -34,7 +34,7 @@ function TimeTableBox (props) {
     const size = props.group.todayTodoTimes.length;
     props.group.todayTodoTimes.map((todo, index) => {
       // console.log(index,todo)
-      if(todo.totalSec > 60 && todo.startTime < todo.endTime){
+      if(todo.totalSec && todo.totalSec > 60 && todo.startTime < todo.endTime){
         data.push([todo.userNickname,
           todo.content,
           new Date((new Date(todo.startTime)).getTime() - offset),
