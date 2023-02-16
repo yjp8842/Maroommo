@@ -106,7 +106,7 @@ export default function SignInSide() {
           >
             
             <h1>로그인</h1>
-            <Link to='/myroom'>마이룸</Link>
+            {/* <Link to='/myroom'>마이룸</Link> */}
             <Box noValidate onSubmit={handleSubmit} sx={{ mt: 3, width: "30vw" }}>
               <FormControl component="fieldset" variant='standard' sx={{width: "30vw"}}>
                 <Box spacing={2} sx={{display: "flex", justifyContent: "center"}}>

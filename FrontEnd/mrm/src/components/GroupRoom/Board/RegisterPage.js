@@ -114,11 +114,11 @@ function RegisterPage (props) {
     };
 
     if (IsForUpdate) {
-      console.log('업데이트 ㄱㄱ')
+      
       dispatch(articleActions.updateArticle(articleForUpdate)); // 추가
       navigate(`/group/${groupId}/board`);
     } else {
-      console.log('작성 ㄱㄱ')
+      
       dispatch(articleActions.registerArticle(articleForRegister));
       navigate(`/group/${groupId}/board`);
     } 
