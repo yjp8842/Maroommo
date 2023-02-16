@@ -14,7 +14,7 @@ const Profile = (props) => {
     setIsOpen(true);
   };
 
-  const getUserName = props.user.name;
+  const getUserName = props.user.nickname;
   const getUserIntro = props.user.intro;
   const getUserProfile = props.user.profile;
 
@@ -51,7 +51,7 @@ const Profile = (props) => {
       <div className='inbox1'>
         {/* img를 userId에 맞는 이미지 src로 변경해야함 */}
         { getUserProfile
-        ? <img src={`${getUserProfile}`} alt="user" className='user-image' />
+        ? <img src={`images/${getUserProfile}`} alt="user" className='user-image' />
         : <img src='images/user.png' alt="user" className='user-image' />
         }
         <h2>{getUserName}</h2>

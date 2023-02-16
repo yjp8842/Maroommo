@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 // import { Form } from "react-router-dom";
 import styled from "styled-components";
 import PictureUploader from "../../ImageUpload/PictureUploader";
@@ -7,6 +8,7 @@ import { userInfoActions } from "../../../slice/userInfoSlice";
 import api from "../../../utils/axiosInstance";
 
 function UserProfileModal({ onClose }) {
+  const navigate = useNavigate();
 
   const handleClose = () => {
     onClose?.();
@@ -68,34 +70,51 @@ function UserProfileModal({ onClose }) {
 
   const onSubmitProfile = (event) => {
     event.preventDefault();
-    console.log(introValue, nicknameValue)
-    console.log('이건 프로필 이미지',image.image_file)
+    // console.log(introValue, nicknameValue)
+    // console.log('이건 프로필 이미지',image.image_file)
 
     const formdata = new FormData();
     formdata.append('profileImage', image.image_file)
     // console.log(formdata)
-    for (let key of formdata.entries()) {
-        console.log("이것은 폼 데이터",key[0], key[1])
+    // for (let key of formdata.entries()) {
+    //     console.log("이것은 폼 데이터",key[0], key[1])
+    // }
 
+    if(image.image_file){
+      api.post(
+        `/room/user?intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
+        formdata, {
+          headers : {
+            "Content-Type": 'multipart/form-data'
+          }
+        })
+        .then((res)=>{
+        // console.log(res);
+        // console.log(formdata)
+        userInfoActions.modifyUserInfo(res.data.user);
+        alert('회원 정보가 수정되었습니다'); 
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert('수정 중 오류가 발생했습니다.');
+      })
+    }
+    else{      
+      api.post(
+        `/room/user?intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`)
+        .then((res)=>{
+        // console.log(res);
+        // console.log(formdata)
+        userInfoActions.modifyUserInfo(res.data.user);
+        alert('회원 정보가 수정되었습니다');
+        window.location.reload();
+      })
+      .catch((err) => {
+        alert('수정 중 오류가 발생했습니다.');
+      })
     }
 
 
-    api.post(
-      `/room/user?intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
-      formdata, {
-        headers : {
-          "Content-Type": 'multipart/form-data'
-        }
-      }).
-    then((res)=>{
-      console.log(res);
-      console.log(formdata)
-      userInfoActions.modifyUserInfo(res.data.user);
-      alert('수정되었습니다');
-    })
-    .catch((err) => {
-      alert('수정 중 오류가 발생했습니다.');
-    })
   }
 
   return (
@@ -110,11 +129,11 @@ function UserProfileModal({ onClose }) {
             </ProfilePicture>
             <form>
             
-              <InputWithLabel onChange={onChangeNickname}  label="| 사용자명" id="username" placeholder={user.name} name='nickname'/>
+              <InputWithLabel onChange={onChangeNickname} label="| 사용자명" id="username" placeholder={user.nickname} name='nickname'/>
               <InputWithLabel onChange={onChangeIntro} label="| 한줄소개" id="userintro" placeholder={user.intro} name='intro' />
             
-              <CButton onClick={handleClose}>취소</CButton>
               <CButton type="submit" onClick={onSubmitProfile}>수정</CButton>
+              <CButton onClick={handleClose}>취소</CButton>
             </form>
           </Contents>
         </ModalWrap>

@@ -3,12 +3,15 @@ import styled from "styled-components";
 // import Box from '@mui/material/Box';
 import api from "../../../utils/axiosInstance";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { userInfoActions } from "../../../slice/userInfoSlice";
 import { groupInfoActions} from "../../../slice/groupInfoSlice";
 import { scheduleActions } from "../../../slice/scheduleSlice";
 
 
 function JoinRoomModal({ onClose }) {
+  const navigate = useNavigate();
+
   const handleClose = () => {
     onClose?.();
   };
@@ -36,11 +39,17 @@ function JoinRoomModal({ onClose }) {
     .then((res) => {
       console.log("입장 완료!");
       console.log(res);
-      dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
-      dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
-      dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
-      alert("마룸모에 참가하였습니다!");
-      onClose?.();
+      if(res.data.fail){
+        alert(res.data.fail)
+      }
+      else{
+        dispatch(userInfoActions.saveMyRoomInfo(res.data.myRoomInfo));
+        dispatch(groupInfoActions.saveGroupInfo(res.data.moveRoomInfo));
+        dispatch(scheduleActions.saveSchedule(res.data.moveRoomInfo.schedules));
+        alert("마룸모에 참가하였습니다!");
+        // onClose?.();
+        navigate(`/group/${res.data.moveRoomInfo.id}`);
+      }
     })
     .catch((err) => {
       console.log(err)
@@ -59,8 +68,8 @@ function JoinRoomModal({ onClose }) {
           <InputWithLabel id="inviteURL" onChange={onChangeInviteURL} label="| 초대링크" name="URL" placeholder="maroommo.com/ssafyA406"/>
 
           <BtnDiv>
-            <CButton onClick={handleClose}>뒤로</CButton>
             <CButton onClick={onSubmitJoinRoom}>참가하기</CButton>
+            <CButton onClick={handleClose}>뒤로</CButton>
           </BtnDiv>
         </Contents>
       </ModalWrap>
