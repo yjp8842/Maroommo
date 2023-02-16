@@ -74,7 +74,7 @@ function UserProfileModal({ onClose }) {
     // console.log('이건 프로필 이미지',image.image_file)
 
     const formdata = new FormData();
-    formdata.append('profileImage', image.image_file)
+    formdata.append('profile', image.image_file)
     // console.log(formdata)
     // for (let key of formdata.entries()) {
     //     console.log("이것은 폼 데이터",key[0], key[1])
@@ -84,14 +84,14 @@ function UserProfileModal({ onClose }) {
       api.post(
         `/room/user?intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
         formdata, {
-          headers : {
-            "Content-Type": 'multipart/form-data'
-          }
+          // headers : {
+          //   "Content-Type": 'multipart/form-data'
+          // }
         })
         .then((res)=>{
-        // console.log(res);
+        console.log(res);
         // console.log(formdata)
-        userInfoActions.modifyUserInfo(res.data.user);
+        dispatch(userInfoActions.modifyUserInfo(res.data.user));
         alert('회원 정보가 수정되었습니다'); 
         window.location.reload();
       })

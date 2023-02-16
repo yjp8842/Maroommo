@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
 import PageIcon from '../MyRoom/MyRoomItem/PageIcon';
+import UserPageIcon from "../MyRoom/MyRoomItem/UserPageIcon";
 import { Link, useParams } from 'react-router-dom';
 import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
@@ -181,7 +182,7 @@ const GroupRoom = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
+          <Link to={`/myroom`}><UserPageIcon user={user}/></Link>
         </Box>
         <Box
           sx={{
