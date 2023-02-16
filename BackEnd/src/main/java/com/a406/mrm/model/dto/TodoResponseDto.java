@@ -21,6 +21,7 @@ public class TodoResponseDto {
         this.startTime = startTime;
         this.roomName = todo.getRoom() == null ? "" : todo.getRoom().getName();
         this.todoTimes = todo.getTodoTimes().stream().map(x->new TodoTimeDto(x)).collect(Collectors.toList());
+        this.doingTimeId = todo.getDoingTimeId();
     }
     public TodoResponseDto(Todo todo) {
         this.id = todo.getId();
@@ -36,5 +37,6 @@ public class TodoResponseDto {
     private int state;
     private String startTime;
     private String roomName;
+    private int doingTimeId;
     private List<TodoTimeDto> todoTimes = new ArrayList<>();
 }
