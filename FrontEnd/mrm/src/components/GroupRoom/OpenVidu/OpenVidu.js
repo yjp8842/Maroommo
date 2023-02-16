@@ -114,10 +114,6 @@ class OpenChat extends Component {
                               ))}
                             </div>
                             <div className="share-pub" id="chart_box">
-                              {/* <UserVideoComponent
-                                streamManager={this.state.publisher}
-                                key={this.state.publisher.stream.streamId}
-                              /> */}
                               <UserVideoComponent
                                 streamManager={this.state.mainStreamManager}
                                 key={this.state.mainStreamManager.stream.streamId}
