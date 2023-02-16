@@ -27,6 +27,6 @@ public interface TodoTimeRepository extends JpaRepository<TodoTime, Integer> {
     @Modifying
     @Query(value= "UPDATE todo_time " +
             "SET start_time = now() " +
-            "WHERE id = todoTimeId ", nativeQuery = true)
+            "WHERE id = :todoTimeId ", nativeQuery = true)
     void updateStartTime(@Param("todoTimeId") int todoTimeId);
 }
