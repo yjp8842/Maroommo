@@ -18,28 +18,35 @@ function StudyTime (props) {
   };
 
   console.log("StudyTime");
-  console.log(props.todoList);
+  console.log(props);
+  const propsList = [...props.doingList, ...props.doneList];
 
-  var totalTime = 0;
-  props.todoList.map((todo) => {
-    return (todo.todoTimes.map((time) => {
-      return (time.totalSec ? totalTime += time.totalSec : totalTime += 0)
-    }))
-  })
+  const offset = 1000 * 60 * 60 * 9;
+  const now = new Date();
 
   const todos = [];
-  props.todoList.map((todo) => {
-    // console.log(todo);
+  let totalTime = 0;
+  propsList.forEach((todo, todo_index) => {
     var tot = 0;
-    todo.todoTimes.map((time) => (
-      time.totalSec ? tot += time.totalSec : tot += 0
-    ));
+    const size = todo.todoTimes.length;
+    todo.todoTimes.forEach((time, time_index) => {
+      if (time.totalSec && time.totalSec > 60 && time.startTime < time.endTime) {
+        tot += time.totalSec;
+      }
+      else if (time_index === size - 1 && time.totalSec === 0) {
+        const sTime = new Date((new Date(time.startTime)).getTime() - offset);
+
+        console.log("마지막 인자");
+        console.log(time, sTime, now, now-sTime);
+      }
+    });
+    totalTime += tot;
+    console.log(todo_index, todo, tot);
     todos.push({
-      id: todo.id,
+      id:todo.id,
       content:todo.content,
-      totalTime:tot > 60 ? tot : 0
+      totalTime:tot
     })
-    return (true)
   })
 
   console.log("totalTime");
@@ -68,7 +75,6 @@ function StudyTime (props) {
   })
   console.log("순수 공부 시간 data")
   console.log(data)
-  
 
   return (
     <Box
@@ -83,7 +89,7 @@ function StudyTime (props) {
         paddingY: "40px"
       }}>
       
-      <h3>총 공부 시간 : {totalTime > 3600 ? (totalTime / 3600).toFixed() + "시간 " + ((totalTime % 3600) / 60).toFixed() + "분": (totalTime/60).toFixed() + "분"}</h3>
+      <h3>총 공부 시간 : {totalTime > 3600 ? parseInt(totalTime / 3600) + "시간 " + parseInt((totalTime % 3600) / 60) + "분": parseInt(totalTime/60) + "분"}</h3>
         {/* // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정 */}
         
         <div style={{ width: '800px', height: '170px', margin: '0 auto' }}>

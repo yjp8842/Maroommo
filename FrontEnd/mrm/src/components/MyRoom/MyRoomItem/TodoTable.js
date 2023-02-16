@@ -16,51 +16,17 @@ import { useSelector } from 'react-redux';
 
 // 카테고리 내용 완료 날짜
 // 체크박스 조건문으로 바꾸기
-export default function TodoTable() {
+export default function TodoTable(props) {
   
-
-  const {tododata} = useSelector((state) => 
-  ({
-    tododata: state.userInfoReducers.user.doing
-  }))
-
-  const {donedata} = useSelector((state) =>({
-    donedata: state.userInfoReducers.user.done
-  }))
-
-  const todoList = [];
-  tododata.map((list) => {
-    return todoList.push(list)
-  })
-  donedata.map((list) => {
-    return todoList.push(list)
-  })
-
-  // console.log(todoList);
-
-  // console.log(todoList[0].roomName, todoList[0].content, todoList[0].state, todoList[0].startTime)
-
-  // const rows = [
-
-    // todoList.map((todo) => {
-    //   return createData( todo.roomName, todo.content, todo.state, todo.startTime)
-    // })
-    // createData(todoList.roomName, todoList.content, todoList.state, todoList.startTime)
-    // createData('리액트', '리액트 강의 3강 듣기', <BiCheckboxChecked/>, '2023-01-20'),
-    // createData('알고리즘', '백준 1234번 풀기', <BiCheckboxChecked/>, '2023-01-21'),
-    // createData('프론트엔드', '프론트 짱', <BiCheckboxMinus/>, '2023-01-22'),
-    // createData('백엔드', '백엔드 바보', <BiCheckboxChecked/>, '2023-01-23'),
-    // createData('테트리스', '조현동 이기기', <BiCheckboxMinus/>, '2023-01-24'),
-  // ];
-
-  // console.log("rows ===", rows);
+  const todoList = [...props.doingList, ...props.doneList];
 
   const text = (data) => {
     var resText  = "";
-    data.tags.map((tag) =>{
-      resText += "["+tag+"]";
+    data.tags.map((tag) => {
+      if (tag !== "")
+        resText += "[" + tag + "]";
     })
-    console.log(resText);
+    // console.log(resText);
     resText += data.content;
     return resText;
   }

@@ -20,6 +20,7 @@ import { useSelector, shallowEqual, useDispatch } from 'react-redux';
 import api from "../../utils/axiosInstance"
 import { userInfoActions } from "../../slice/userInfoSlice";
 import { scheduleActions } from "../../slice/scheduleSlice";
+import "../GroupRoom/GroupRoomItem/TextArea.css";
 
 const MyRoom = () => {
   const dispatch = useDispatch()
@@ -45,32 +46,36 @@ const MyRoom = () => {
     done_list: state.userInfoReducers.user.done
   }), shallowEqual)
 
-  var todoList = [];
+  var doingList = [];
+  var doneList = [];
   const now = new Date();
-  const nowYmd = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate();
-  const yesterdayYmd = now.getFullYear() + '-' + now.getMonth() + '-' + (now.getDate()-1);
+  const nowY = now.getFullYear();
+  const nowM = now.getMonth();
+  const nowD = now.getDate();
+
+  // const nowYmd = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate();
+  // const yesterdayYmd = now.getFullYear() + '-' + now.getMonth() + '-' + (now.getDate()-1);
   console.log("마이 룸")
-  console.log(nowYmd, yesterdayYmd);
+  // console.log(nowYmd, yesterdayYmd);
 
   doing_list.map((todo, index) => {
     const startTodo = new Date(todo.startTime);
-    const ymd = startTodo.getFullYear() + '-' + startTodo.getMonth() + '-' + startTodo.getDate();
-    console.log(ymd);
+    // const ymd = startTodo.getFullYear() + '-' + startTodo.getMonth() + '-' + startTodo.getDate();
+    // console.log(ymd);
 
-    if (ymd === nowYmd || ymd === yesterdayYmd)
-      todoList.push(todo)
+    // if (ymd === nowYmd || ymd === yesterdayYmd)
+    if (startTodo.getFullYear() < nowY || startTodo.getMonth() < nowM || startTodo.getDate() <= nowD)
+      doingList.push(todo)
   })
 
   done_list.map((todo, index) => {
-    const startTodo = new Date(todo.startTime);
-    const ymd = startTodo.getFullYear() + '-' + startTodo.getMonth() + '-' + startTodo.getDate();
-    console.log(ymd);
+    const endTodo = new Date(todo.endTime);
 
-    if (ymd === nowYmd || ymd === yesterdayYmd)
-      todoList.push(todo)
+    if (endTodo.getFullYear() === nowY && endTodo.getMonth() === nowM && endTodo.getDate() === nowD)
+    doneList.push(todo)
   })
   console.log("todo list");
-  console.log(todoList);
+  console.log(doingList, doneList);
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -164,8 +169,8 @@ const MyRoom = () => {
           <Profile 
             user={user}  
             />
-          <StudyTime todoList={todoList} />
-          <Todo />
+          <StudyTime doingList={doingList} doneList={doneList} />
+          <Todo doing={Object.keys(doingList).length} done={Object.keys(doneList).length} />
           <CalendarBox />
         </Box>
         <Box
@@ -198,7 +203,7 @@ const MyRoom = () => {
                 backgroundColor: "#FFFFFF",
                 boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)"
               }}>
-              <TodoTable 
+              <TodoTable doingList={doingList} doneList={doneList}
               sx={{
                 fontSize:"55"
               }}/>
@@ -229,7 +234,8 @@ const MyRoom = () => {
               }}>
                 <h3>My MEMO</h3>
                 <hr align="center" width="80%"/>   
-                <textarea 
+              <textarea 
+                  className='memoArea'
                   id="myMemo" 
                   name="myMemo"
                   value={myMemoContent}
@@ -240,7 +246,7 @@ const MyRoom = () => {
                 </textarea>
             </Box>
             {/* <h2>TIME TABLE</h2> */}
-            <TimeTable todoList={todoList}/>
+            <TimeTable  doingList={doingList} doneList={doneList} />
           </Box>
         </Box>
       </Box>

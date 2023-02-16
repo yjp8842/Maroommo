@@ -4,27 +4,44 @@ import { ResponsivePie } from '@nivo/pie';
 
 
 function TimeTable (props) {
-  console.log("타임테이블");
+  const propsList = [...props.doingList, ...props.doneList];
+
+  console.log("todo 타임 테이블");
+  console.log(props, propsList);
+
+  const offset = 1000 * 60 * 60 * 9;
+  const now = new Date();
 
   const todos = [];
   let totalTime = 0;
-  props.todoList.map((todo) => {
+  propsList.forEach((todo, todo_index) => {
     var tot = 0;
-    todo.todoTimes.map((time) => (
-      time.totalSec ? tot += time.totalSec : tot += 0
-    ));
+    const size = todo.todoTimes.length;
+    todo.todoTimes.forEach((time, time_index) => {
+      if (time.totalSec && time.totalSec > 60 && time.startTime < time.endTime) {
+        tot += time.totalSec;
+      }
+      else if (time_index === size - 1 && time.totalSec === 0) {
+        const sTime = new Date((new Date(time.startTime)).getTime() - offset);
+
+        console.log("마지막 인자");
+        console.log(time, sTime, now, now-sTime);
+      }
+    });
     totalTime += tot;
+    console.log(todo_index, todo, tot);
     todos.push({
       "id":todo.content,
       "label":todo.content,
       "value":tot
     })
-    return (true)
   })
 
   todos.forEach((todo)=>{
     todo.value = ((todo.value / totalTime) * 100).toFixed(2);
   })
+  console.log("todos");
+  console.log(todos);
 
   return (
     <Box

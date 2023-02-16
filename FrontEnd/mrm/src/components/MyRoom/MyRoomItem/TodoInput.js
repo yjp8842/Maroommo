@@ -4,16 +4,20 @@ import './TodoInput.css';
 
 export default function TodoInput() {
 
-  const {todolist} = useSelector((state) =>
+  const {todolist, donelist} = useSelector((state) =>
   ({
-    todolist: state.userInfoReducers.user.doing
-  }))
-
-  const {donelist} = useSelector((state) => 
-  ({
+    todolist: state.userInfoReducers.user.doing,
     donelist: state.userInfoReducers.user.done
   }))
-  
+
+  console.log("todo input");
+  console.log(todolist, donelist);
+
+  // todolist.forEach((todo) => {
+  //   if(todo.startTime)
+  // })
+
+
   const countTodo = Object.keys(todolist).length;
 
   const countDone = Object.keys(donelist).length;
