@@ -28,9 +28,9 @@ function TimeTableBox (props) {
           new Date(todo.endTime) 
         ]);
       }
-      if(index === size-1 && !todo.endTime) {
+      if(index === size-1 && todo.totalSec === 0) {
         // console.log("마지막 투두")
-        data1.push([todo.userId,
+        data1.push([todo.userNickname,
           todo.content,
           new Date(todo.startTime),
           new Date() 
