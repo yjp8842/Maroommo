@@ -26,6 +26,7 @@ export const userInfoSlice = createSlice({
     },
     modifyUserInfo: (state, {payload}) => {
       console.log('modifyUserInfo 저장 액션 호출');
+      console.log(payload)
       state.user.nickname = payload.nickname;
       state.user.intro = payload.intro;
       state.user.profile = payload.profile;
