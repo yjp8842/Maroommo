@@ -84,9 +84,9 @@ function UserProfileModal({ onClose }) {
       api.post(
         `/room/user?intro=${introValue}&nickname=${nicknameValue}&name=${user.name}`,
         formdata, {
-          headers : {
-            "Content-Type": 'multipart/form-data'
-          }
+          // headers : {
+          //   "Content-Type": 'multipart/form-data'
+          // }
         })
         .then((res)=>{
         console.log(res);
