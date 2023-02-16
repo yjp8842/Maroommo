@@ -71,11 +71,11 @@ export function* updateStatusAsync(action) {
   );
 
   alert("저장되었습니다.");
-  console.log(response.data);
+  console.log('res.data=====',response.data);
 
   history.push(`/group/1/question/questionArticle/${response.data.question.id}`);
   // eslint-disable-next-line no-restricted-globals
-  location.reload();
+  // location.reload();
 }
 
 export function* deleteQuestionArticleAsync(action) {
