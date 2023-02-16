@@ -84,7 +84,7 @@ public class TodoServiceImpl implements TodoService {
             todoTimeRepository.updateEndTimeAndTotalTime(doingTimeId);
         }
         if (doneId != -1) {
-            Todo done = todoRepository.updateEndTimeAndState(doneId);
+            todoRepository.updateEndTimeAndState(doneId);
 //            Todo done = todoRepository.findById(doneId).get();
 //            done.setState(2);
 //            done.setDoingTimeId(-1);
