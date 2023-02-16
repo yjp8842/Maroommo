@@ -21,8 +21,8 @@ function GroupProfileModal({ onClose }) {
   const [introValue, setIntroValue] = useState(group.intro)
 
   const [image, setImage] = useState({
-    image_file: "",
-    preview_URL: 'images/user.jpg',
+    image_file: group.profile,
+    preview_URL: group.profile ? 'images/'+group.profile : 'images/user.jpg',
   });
 
   const saveImage = (e) => {
@@ -37,6 +37,8 @@ function GroupProfileModal({ onClose }) {
           preview_URL: preview_URL
         }
       ))
+      console.log('saveImage작동')
+      console.log(image)
     }
   }
 
@@ -70,7 +72,7 @@ function GroupProfileModal({ onClose }) {
     // console.log('이건 프로필 이미지',image)
 
     const formdata = new FormData();
-    formdata.append('profile', image)
+    formdata.append('profile', image.image_file)
     // console.log(formdata)
 
     
@@ -88,7 +90,7 @@ function GroupProfileModal({ onClose }) {
         dispatch(groupInfoActions.modifyGroupInfo(res.data.room));
 
         alert('그룹 정보가 수정되었습니다'); 
-        window.location.reload();
+        // window.location.reload();
 
       })
       .catch((err) => {
@@ -103,7 +105,7 @@ function GroupProfileModal({ onClose }) {
         // console.log(res);
         // console.log(formdata)
         alert('그룹 정보가 수정되었습니다');
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((err) => {
         alert('수정 중 오류가 발생했습니다.');
