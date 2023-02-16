@@ -7,11 +7,13 @@ function TimeTable (props) {
   console.log("타임테이블");
 
   const todos = [];
+  let totalTime = 0;
   props.todoList.map((todo) => {
     var tot = 0;
     todo.todoTimes.map((time) => (
-      time.totalMinute ? tot += time.totalMinute : tot += 0
+      time.totalSec ? tot += time.totalSec : tot += 0
     ));
+    totalTime += tot;
     todos.push({
       "id":todo.content,
       "label":todo.content,
@@ -20,6 +22,9 @@ function TimeTable (props) {
     return (true)
   })
 
+  todos.forEach((todo)=>{
+    todo.value = ((todo.value / totalTime) * 100).toFixed(2);
+  })
 
   return (
     <Box

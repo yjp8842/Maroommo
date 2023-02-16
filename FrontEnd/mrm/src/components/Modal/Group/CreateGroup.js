@@ -67,10 +67,10 @@ function CreateRoomModal({ onClose }) {
           <InputWithLabel onChange={onChangeGroupIntro} label="| 한줄소개" name="introduction" placeholder="예시) React를 시작하는 사람들의 모임입니다. " type="introduction"/>
 
           <div>
-            <CButton onClick={handleClose}>뒤로</CButton>
             <CButton onClick={() => {
               onSubmitJoinRoom()}}
               >생성하기</CButton>
+              <CButton onClick={handleClose}>뒤로</CButton>
           </div>
         </Contents>
       </ModalWrap>

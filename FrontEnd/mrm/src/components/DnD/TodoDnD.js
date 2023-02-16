@@ -29,12 +29,12 @@ function TodoDnD() {
     ? todolist.push({ 
       id: todo.id,
       text: todo.content,
-      doingTimeId: -1
+      doingTimeId: todo.doingTimeId
     })
     : doinglist.push({ 
       id: todo.id,
       text: todo.content,
-      doingTimeId: -1
+      doingTimeId: todo.doingTimeId
     })
   }))
 
