@@ -63,7 +63,6 @@ const GroupQnA = () => {
   const [page, setPage] = useState(1)
   const offset = (page - 1) * limit;
 
-  console.log('닉네임?',)
 
   return (
     <Grid container>
