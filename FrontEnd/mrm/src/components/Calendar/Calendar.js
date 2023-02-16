@@ -12,8 +12,7 @@ const CalendarBox = () => {
   //   setIsOpen(true);
   // };
   return (
-    <Box
-      >
+    <Box>
       <CalendarModal/>
     </Box>
   );
