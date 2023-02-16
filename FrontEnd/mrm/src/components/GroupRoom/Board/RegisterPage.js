@@ -18,6 +18,7 @@ import styled from "styled-components";
 import RoomModal from "../../Modal/Group/RoomModal";
 
 function RegisterPage (props) {
+  console.log("RegisterPage");
   console.log(props);
   const navigate = useNavigate();
 

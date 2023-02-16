@@ -1,0 +1,14 @@
+
+.jb-text {
+    padding: 15px 20px;
+    margin: 5px 0px 0px 40px;
+    background-color: #3d3737a7;
+    border-radius: 5px;
+    color: #ffffff;
+    position: absolute;
+    display: none;
+  }
+  
+  .jb-title:hover + .jb-text {
+    display: block;
+  }

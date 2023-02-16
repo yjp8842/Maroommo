@@ -131,7 +131,7 @@ function TodoDnD() {
       console.log(item);
 
       if(temp !== null){   
-        console.log("doing에 todo있어요!"); 
+        // console.log("doing에 todo있어요!"); 
         // remove from box2
         setBox2((prev) => {
           const index = prev.findIndex((each) => each.id === temp.id);
@@ -263,7 +263,7 @@ function TodoDnD() {
 const TodoDiv = styled.div`
   display: flex;
   width: 100%;
-  height: 200px;
+  height: 180px;
   `
 
 export default TodoDnD;

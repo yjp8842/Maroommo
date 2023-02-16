@@ -21,10 +21,13 @@ function Content() {
 
   return (
     <div className={styles.content}>
-      <AllBox title='ToDoList'>
-        <TodoButton />
-        <ScheduleButton />
-        <TodoDnD />
+      <AllBox 
+        title='ToDoList'>
+          <div style={{display: 'flex'}}>
+            <TodoButton/>            
+            <ScheduleButton/>
+          </div>
+        <TodoDnD/>
       </AllBox>
     </div>
   );
