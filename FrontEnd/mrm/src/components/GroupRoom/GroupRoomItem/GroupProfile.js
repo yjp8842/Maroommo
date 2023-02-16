@@ -62,8 +62,8 @@ const GroupProfile = () => {
       </div>
       <div className='inbox1'>
         { group.profile
-        ? <img src={`images/${group.profile}`} alt="user" className='user-image' />
-        : <img src='images/user.png' alt="user" className='user-image' />
+        ? <img src={`/images/${group.profile}`} alt="user" className='user-image' />
+        : <img src='/images/user.png' alt="user" className='user-image' />
         }
         {/* <img src={group.profile ? group.profile : '/images/user.png'} alt="user" className='user-image' /> */}
         <h2>{getGroupName}</h2>
