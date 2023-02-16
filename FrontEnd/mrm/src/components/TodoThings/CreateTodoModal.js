@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { postTodoData } from "./TodoLogic";
+import { useNavigate } from 'react-router-dom';
 // import moment from "moment/moment";
 
 // export function changeFormat(date, format) {
@@ -22,6 +23,7 @@ import { postTodoData } from "./TodoLogic";
 
 
 const CreateTodoModal = ({ onClose }) => {
+  const navigate = useNavigate();
     // onchange
     const handleClose = () => {
       onClose?.();
@@ -105,7 +107,7 @@ const CreateTodoModal = ({ onClose }) => {
         </LocalizationProvider>
 
         <CloseButton onClick={() => {
-          postTodoData({ user, group, tags, content, selectedDate, dispatch });
+          postTodoData({ user, group, tags, content, selectedDate, dispatch,navigate });
           handleClose();}}
         >등록</CloseButton>
         <CloseButton onClick={handleClose}>뒤로</CloseButton>
