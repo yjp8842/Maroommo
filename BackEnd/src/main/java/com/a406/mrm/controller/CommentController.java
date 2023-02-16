@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,15 +58,15 @@ public class CommentController {
      *              를 통해 댓글을 삭제한다
      * @return isDelete : 삭제 성공 여부를 반환한다
      */
-    @DeleteMapping("{id}/{user_id}")
+    @DeleteMapping("{id}")
     @ApiOperation("댓글 삭제 : 댓글 아이디(id), 작성자 아이디(user_id)")
-    public ResponseEntity<?> delete(@PathVariable("id") int cid, @PathVariable("user_id") String user_id) {
+    public ResponseEntity<?> delete(@PathVariable("id") int cid, @AuthenticationPrincipal User user) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
         try {
-            boolean isDelete = commentService.delete(cid,user_id);
+            boolean isDelete = commentService.delete(cid,user.getUsername());
             resultMap.put("isDelete", isDelete);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

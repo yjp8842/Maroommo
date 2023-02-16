@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,15 +37,18 @@ public class QuestionController {
      */
     @PostMapping
     @ApiOperation("질문 생성 : RequestParam으로 (title, content, user_id, room_id, picture = 파일)")
-    public ResponseEntity<?> create(@RequestParam String title, @RequestParam String content, @RequestParam String user_id,
-                                    @RequestParam int room_id, @RequestPart(value="picture", required = false) MultipartFile picture) {
+    public ResponseEntity<?> create(@RequestParam String title,
+                                    @RequestParam String content,
+                                    @RequestParam int room_id,
+                                    @RequestPart(value="picture", required = false) MultipartFile picture,
+                                    @AuthenticationPrincipal User user) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
         QuestionResponseAnswerDto questionResponseAnswerDto = null;
 
         try {
-            questionResponseAnswerDto = questionService.join(title, content, user_id, room_id, picture);
+            questionResponseAnswerDto = questionService.join(title, content, user.getUsername(), room_id, picture);
             resultMap.put("newQuestion", questionResponseAnswerDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -58,15 +63,15 @@ public class QuestionController {
      *              를 통해 질문을 삭제한다
      * @return isDelete : 삭제 성공 여부를 반환한다
      */
-    @DeleteMapping("{id}/{user_id}")
+    @DeleteMapping("{id}")
     @ApiOperation("질문 삭제 : 질문 아이디(id), 작성자 아이디(user_id)")
-    public ResponseEntity<?> delete(@PathVariable("id") int qid,@PathVariable("user_id") String user_id) {
+    public ResponseEntity<?> delete(@PathVariable("id") int qid,@AuthenticationPrincipal User user) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
         try {
-            boolean isDelete = questionService.delete(qid,user_id);
+            boolean isDelete = questionService.delete(qid, user.getPassword());
             resultMap.put("isDelete", isDelete);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -82,15 +87,19 @@ public class QuestionController {
      */
     @PostMapping("update")
     @ApiOperation("게시판 수정 : 질문 아이디(id), 수정내용(content), 사진(picture), status(상태), 제목(title), 작성자 아이디(user_id))")
-    public ResponseEntity<?> update(@RequestParam int id, @RequestParam String content, @RequestPart(value="picture", required = false) MultipartFile picture,
-                                    @RequestParam int status, @RequestParam String title, @RequestParam String user_id) {
+    public ResponseEntity<?> update(@RequestParam int id,
+                                    @RequestParam String content,
+                                    @RequestPart(value="picture", required = false) MultipartFile picture,
+                                    @RequestParam int status,
+                                    @RequestParam String title,
+                                    @AuthenticationPrincipal User user) {
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus Hstatus = HttpStatus.OK;
         QuestionResponseAnswerDto questionModifyDto = null;
 
         try {
-            questionModifyDto = questionService.update(id, content, picture, status, title, user_id);
+            questionModifyDto = questionService.update(id, content, picture, status, title, user.getUsername());
             resultMap.put("question", questionModifyDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());

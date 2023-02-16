@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -35,17 +37,14 @@ public class MemoController {
      * @return userMemo : 회원의 메모를 반환한다
      */
     @ApiOperation("get user memo info")
-    @GetMapping("user/{userId}")
-    private ResponseEntity<?> getUserMemo(@PathVariable @ApiParam("userId") String userId
-                                      //            ,@AuthenticationPrincipal PrincipalDetails principalDetails
-    ){
-        logger.info("[getUserMemo] userId:{}", userId);
+    @GetMapping("user")
+    private ResponseEntity<?> getUserMemo(@AuthenticationPrincipal User user){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
 
         try {
-            UserMemoDto userMemoDto = memoService.findUserMemoByUserId(userId);
+            UserMemoDto userMemoDto = memoService.findUserMemoByUserId(user.getPassword());
             resultMap.put("userMemo",userMemoDto.getContent());
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {
@@ -76,49 +75,6 @@ public class MemoController {
             resultMap.put("error", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<?> deleteAllMemo(){
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-
-        try {
-            roomMemoRepository.deleteAll();
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-
-    /** 테스트용
-     *  모든 메모 가져오기 메서드
-     */
-    @ApiOperation("get all memo info")
-    @GetMapping
-    private ResponseEntity<?> getMemo(){
-        logger.info("[getMemo]");
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-
-        try {
-            List<UserMemoDto> userMemoList = memoService.findAllUserMemo();
-            List<RoomMemoDto> roomMemoDtos = memoService.findAllRoomMemo();
-            resultMap.put("userMemoList",userMemoList);
-            resultMap.put("roomMemoDtos",roomMemoDtos);
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 

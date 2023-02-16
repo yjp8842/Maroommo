@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,10 +42,8 @@ public class RoomController {
      * @return myRoomInfo: 방 목록과 스케쥴 정보를 반환한다
      */
     @ApiOperation("make a room(=group)")
-    @PostMapping("/{userId}")
-    public ResponseEntity<?> addRoom(//@RequestHeader(value="Authorization") String token,
-                                       @PathVariable("userId") String userId,
-//                                       @RequestBody @ApiParam("room register information") RoomRequestDto roomRequestDto,
+    @PostMapping()
+    public ResponseEntity<?> addRoom(@AuthenticationPrincipal User user,
                                      @RequestBody RoomRequestDto roomRequestDto
                                      ) {
 //        logger.debug("new Room information : {}", roomRequestDto.toString());
@@ -54,8 +54,8 @@ public class RoomController {
         MyRoomResponseDto myRoomInfo = null;
 
         try {
-            moveRoomInfo = roomService.makeRoom(roomRequestDto,userId);
-            myRoomInfo = roomService.getMyRoomDto(userId);
+            moveRoomInfo = roomService.makeRoom(roomRequestDto,user.getUsername());
+            myRoomInfo = roomService.getMyRoomDto(user.getUsername());
             resultMap.put("moveRoomInfo",moveRoomInfo);
             resultMap.put("myRoomInfo",myRoomInfo);
             status = HttpStatus.CREATED;
@@ -77,8 +77,8 @@ public class RoomController {
      * @return myRoomInfo: 방 목록과 스케쥴 정보를 반환한다
      */
     @ApiOperation("enter the room(=group)")
-    @PostMapping("enter/{roomId}/{userId}")
-    public ResponseEntity<?> enterRoom(@PathVariable("userId") String userId,
+    @PostMapping("enter/{roomId}")
+    public ResponseEntity<?> enterRoom(@AuthenticationPrincipal User user,
                                         @RequestParam @ApiParam("room entry code") String roomCode,
                                         @PathVariable @ApiParam("room id") int roomId) {
         // front에서 전해준 entry code는 (code+id) 처리가 되어 있다
@@ -98,13 +98,13 @@ public class RoomController {
             }
 
             // 이미 방에 입장되어 있다면 return
-            if(roomService.existsUserHasRoomByRoomIdAndUserId(roomId, userId)){
+            if(roomService.existsUserHasRoomByRoomIdAndUserId(roomId, user.getUsername())){
                 resultMap.put("fail", "이미 room에 입장하였습니다");
                 return new ResponseEntity<Map<String, Object>>(resultMap, status);
             }
 
-            moveRoomInfo = roomService.enterRoom(roomId, userId);
-            myRoomInfo = roomService.getMyRoomDto(userId);
+            moveRoomInfo = roomService.enterRoom(roomId, user.getUsername());
+            myRoomInfo = roomService.getMyRoomDto(user.getUsername());
             resultMap.put("moveRoomInfo",moveRoomInfo);
             resultMap.put("myRoomInfo",myRoomInfo);
             status = HttpStatus.OK;
@@ -201,9 +201,8 @@ public class RoomController {
      * @return myRoomInfo : 마이페이지의 정보를 반환한다
      */
     @ApiOperation("my room - without room information")
-    @GetMapping("/my/{userId}")
-    public ResponseEntity<?> getMyRoom(@PathVariable("userId") String userId){
-        logger.debug("[getMyRoom] User Id : {}", userId);
+    @GetMapping("/my")
+    public ResponseEntity<?> getMyRoom(@AuthenticationPrincipal User user){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
@@ -211,8 +210,8 @@ public class RoomController {
         UserLoginResponseDto userLoginResponseDto = null;
 
         try {
-            myRoomInfo = roomService.getMyRoomDto(userId);
-            userLoginResponseDto = userService.getLoginUser(userId);
+            myRoomInfo = roomService.getMyRoomDto(user.getUsername());
+            userLoginResponseDto = userService.getLoginUser(user.getUsername());
             resultMap.put("myRoomInfo",myRoomInfo);
             resultMap.put("user",userLoginResponseDto);
             status = HttpStatus.ACCEPTED;
@@ -231,8 +230,8 @@ public class RoomController {
      * @return moveRoomInfo : 해당 방의 정보를 반환한다
      */
     @ApiOperation("select room and get room info")
-    @GetMapping("/{roomId}/{userId}")
-    public ResponseEntity<?> getRoomDetail(@PathVariable("roomId") int roomId, @PathVariable("userId") String userId){
+    @GetMapping("/{roomId}")
+    public ResponseEntity<?> getRoomDetail(@PathVariable("roomId") int roomId,@AuthenticationPrincipal User user){
 
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.OK;
@@ -240,8 +239,8 @@ public class RoomController {
         UserLoginResponseDto userLoginResponseDto = null;
 
         try {
-            moveRoomInfo = roomService.getMoveRoomDto(roomId, userId);
-            userLoginResponseDto = userService.getLoginUser(userId);
+            moveRoomInfo = roomService.getMoveRoomDto(roomId, user.getUsername());
+            userLoginResponseDto = userService.getLoginUser(user.getUsername());
             resultMap.put("user",userLoginResponseDto);
             resultMap.put("moveRoomInfo",moveRoomInfo);
         } catch (Exception e) {
@@ -264,13 +263,13 @@ public class RoomController {
     @ApiOperation("Modify user infomation")
     @PostMapping("user")
     private ResponseEntity<Map<String, Object>> modifyUserInfo(
-            @RequestParam String userId,
+            @AuthenticationPrincipal User user,
             @RequestParam String intro,
             @RequestParam String nickname,
             @RequestParam String name,
             @RequestPart(value="profile", required = false) MultipartFile profile
     ) {
-        UserModifyRequestDto user = new UserModifyRequestDto(userId, intro,  nickname, name);
+        UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto(user.getUsername(), intro,  nickname, name);
         logger.info("[modifyUserInfo] user:{}", user);
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -278,7 +277,7 @@ public class RoomController {
         UserModifyResponseDto userModifyResponseDto = null;
 
         try {
-            userModifyResponseDto = userService.modify(user,profile);
+            userModifyResponseDto = userService.modify(userModifyRequestDto,profile);
             resultMap.put("user", userModifyResponseDto);
         } catch (Exception e) {
             resultMap.put("error", e.getMessage());
@@ -286,27 +285,4 @@ public class RoomController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
-
-    /**
-     *  테스트 용 코드로 모든 방의 정보를 가져온다
-     */
-    @ApiOperation("get all room")
-    @GetMapping
-    public ResponseEntity<?> RoomListAll(){
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        List<RoomMoveResponseDto> result = null;
-
-        try {
-            result = roomService.RoomListAll();
-            resultMap.put("roomList",result);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
 }

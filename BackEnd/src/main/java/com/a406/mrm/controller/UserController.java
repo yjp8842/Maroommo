@@ -209,32 +209,4 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-
-
-    //////////////////////////////
-    //////// 테스트 용 코드 ////////
-    //////////////////////////////
-
-    /**
-     *  유저들 정보 가져오기 메서드
-     */
-    @ApiOperation("get users info")
-    @GetMapping("/all")
-    private ResponseEntity<?> getUsers(){
-        logger.info("[getUsers]");
-
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = HttpStatus.OK;
-        List<UserLoginResponseDto> users = null;
-
-        try {
-            users = userService.getUserList();
-            resultMap.put("usesr",users);
-        } catch (Exception e) {
-            resultMap.put("error", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
 }
