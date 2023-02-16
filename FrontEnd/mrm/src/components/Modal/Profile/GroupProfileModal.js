@@ -90,7 +90,7 @@ function GroupProfileModal({ onClose }) {
         dispatch(groupInfoActions.modifyGroupInfo(res.data.room));
 
         alert('그룹 정보가 수정되었습니다'); 
-        // window.location.reload();
+        window.location.reload();
 
       })
       .catch((err) => {
@@ -105,7 +105,7 @@ function GroupProfileModal({ onClose }) {
         // console.log(res);
         // console.log(formdata)
         alert('그룹 정보가 수정되었습니다');
-        // window.location.reload();
+        window.location.reload();
       })
       .catch((err) => {
         alert('수정 중 오류가 발생했습니다.');
