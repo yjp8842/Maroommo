@@ -80,7 +80,7 @@ class OpenChat extends Component {
       }
     }
     document.onkeydown = noEvent;
-
+    
     return (
       <div className="container">
 
@@ -127,16 +127,16 @@ class OpenChat extends Component {
                         {this.state.subscribers.map((sub, i) => (
                           <>
                             {/* sub 중에 화면 공유한 사람이 있을 때 */}
-                            {this.state.subscribers[i].stream.typeOfVideo === 'SCREEN' ? (
+                            {this.state.subscribers[i].stream.typeOfVideo === 'SCREEN' ? this.state.isSubShare === true (
                               <div className="width1" ref={this.userRef}>
                                 <div className="share-screen">
                                   <div className="share-sub">
-                                    {/* {this.state.subscribers.map((sub, i) => ( */}
+                                    {this.state.subscribers.map((sub, i) => (
                                       <div className="share-subs">
                                         <UserVideoComponent streamManager={this.state.publisher} key={this.state.publisher.stream.streamId} />
                                         <UserVideoComponent streamManager={sub} key={sub.stream.streamId} />
                                       </div>
-                                    {/* ))} */}
+                                    ))}
                                   </div>
                                   <div className="share-pub" id="chart_box">
                                     <UserVideoComponent
@@ -146,14 +146,14 @@ class OpenChat extends Component {
                                   </div>
                                 </div>
                               </div>
-                            ) : (
-                              null
-                            )}
+                            ) : 
+                              this.state.isSubShare === false
+                            }
                           </>
                         ))}
                         
 
-                        {this.state.subscribers.length < 1 ? (
+                        {this.state.isSubShare === false && this.state.subscribers.length < 1 ? (
                           <StreamContainerWrapper
                             className="width1"
                             ref={this.userRef}
@@ -173,6 +173,7 @@ class OpenChat extends Component {
                         ) : (
 
                           // 총 2명일 때
+                          this.state.isSubShare === false &&
                           this.state.subscribers.length < 2 ? (
                             <StreamContainerWrapper
                               className="width1"
@@ -193,6 +194,7 @@ class OpenChat extends Component {
                           ) : (
                             
                             // 총 3-4명일 때
+                            this.state.isSubShare === false &&
                             this.state.subscribers.length < 4 ? (
                               <StreamContainerWrapper
                               className="width2"
@@ -213,6 +215,7 @@ class OpenChat extends Component {
                             ) : (
 
                               // 총 5-6명일 때
+                              this.state.isSubShare === false &&
                               this.state.subscribers.length < 6 ? (
                                 <StreamContainerWrapper
                                 className="width1"
@@ -233,6 +236,7 @@ class OpenChat extends Component {
                               ) : (
 
                                 // 총 7-9명일 때
+                                this.state.isSubShare === false &&
                                 this.state.subscribers.length < 9 ? (
                                   <StreamContainerWrapper
                                     className="width2"
@@ -435,6 +439,7 @@ class OpenChat extends Component {
       isShare: false,
       messageList: [],
       message: '',
+      isSubShare: false,
     };
 
     this.joinSession = this.joinSession.bind(this);

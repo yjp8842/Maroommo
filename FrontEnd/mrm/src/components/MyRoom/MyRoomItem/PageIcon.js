@@ -4,6 +4,7 @@ import { Avatar } from '@mui/material';
 // import { green } from '@mui/material/colors';
 
 function PageIcon(props) {
+  console.log(props)
   return (
     <Box
       sx={{
@@ -23,6 +24,11 @@ function PageIcon(props) {
           transition: "0.8s",
         },
       }}>
+        {/* {props.picture
+        ? <img src={`/images/${props.picture}`} alt='logo' className='imgbox'></img>
+        : 
+
+} */}
       <Avatar 
         sx={{ 
           transform: "rotate(-45deg)",
@@ -31,8 +37,8 @@ function PageIcon(props) {
             transition: "0.8s",
           }
         }}
-        src= {props.room.profile} 
-        // src= {props.room.profile ? props.room.profile : "/images/user.jpg"} 
+        // src= {props.room.profile} 
+        src= {props.room.profile ? props.room.profile : "/images/user.jpg"} 
       >
       </Avatar>
     </Box>
