@@ -25,6 +25,7 @@ function JoinRoomModal({ onClose }) {
   }
 
   const onSubmitJoinRoom = (event) => {
+    console.log("그룹 입장 코드")
     console.log(inviteURL)
     
     const joinLink = (inviteURL.length > 29 && inviteURL.includes("https://i8a406.p.ssafy.io/api/room/enter/")) ? inviteURL.substring(29) : "";

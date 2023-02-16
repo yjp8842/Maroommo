@@ -37,12 +37,9 @@ const GroupRoom = () => {
 	const params = useParams();
   const groupId = params.groupId;
 
-
   /*
   처음에 로그인하면 user가 store에 저장이 되고 myPage로 이동한다
   이후 groupPage로 이동을 하면 useEffect 시 
-
-
   */
   useEffect(() => {
     console.log("그룹 페이지 이동!")
@@ -59,7 +56,7 @@ const GroupRoom = () => {
     .catch((err) => {
       console.log(err);
     });        
-  }, [groupId])
+  }, [groupId])  
 
   const {user, group} = useSelector((state) => ({
     user: state.userInfoReducers.user,

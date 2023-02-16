@@ -49,6 +49,7 @@ const MyRoom = () => {
   const now = new Date();
   const nowYmd = now.getFullYear() + '-' + now.getMonth() + '-' + now.getDate();
   const yesterdayYmd = now.getFullYear() + '-' + now.getMonth() + '-' + (now.getDate()-1);
+  console.log("마이 룸")
   console.log(nowYmd, yesterdayYmd);
 
   doing_list.map((todo, index) => {
@@ -68,6 +69,8 @@ const MyRoom = () => {
     if (ymd === nowYmd || ymd === yesterdayYmd)
       todoList.push(todo)
   })
+  console.log("todo list");
+  console.log(todoList);
 
 
   const [isOpen, setIsOpen] = useState(false);

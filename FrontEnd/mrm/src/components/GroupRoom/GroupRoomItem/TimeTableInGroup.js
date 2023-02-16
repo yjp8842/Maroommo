@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 import { Box } from "@mui/system";
 import Moment from 'moment';
 
@@ -9,20 +10,33 @@ import { id } from "date-fns/locale";
 
 function TimeTableBox (props) {
 
-  const data1 = [
+  const offset = 1000 * 60 * 60 * 9;
+  const now = new Date();
+  console.log(now)
+  
+  const data = [[
+    { type: "string", id: "user" },
+    { type: "string", id: "text" },
+    { type: "date", id: "Start" },
+    { type: "date", id: "End" },
+  ],
     [
-      { type: "string", id: "user" },
-      { type: "string", id: "text" },
-      { type: "date", id: "Start" },
-      { type: "date", id: "End" },
-    ],
+      "[이름]",
+      "[할일]",
+      new Date(now.getFullYear(),now.getMonth(), now.getDate()), 
+      new Date(now.getFullYear(),now.getMonth(), now.getDate(), 23,59,59)
+    ]  
   ];
   
+  console.log("time table");
+  console.log(props);
+
   if(props.group.todayTodoTimes){
     const size = props.group.todayTodoTimes.length;
     props.group.todayTodoTimes.map((todo, index) => {
+      console.log(index, todo)
       if(todo.totalSec > 60 && todo.startTime < todo.endTime){
-        data1.push([todo.userNickname,
+        data.push([todo.userNickname,
           todo.content,
           new Date(todo.startTime),
           new Date(todo.endTime) 
@@ -30,18 +44,18 @@ function TimeTableBox (props) {
       }
       if(index === size-1 && todo.totalSec === 0) {
         // console.log("마지막 투두")
-        data1.push([todo.userNickname,
+        data.push([todo.userNickname,
           todo.content,
           new Date(todo.startTime),
-          new Date() 
+          new Date((new Date()).getTime() + offset)
         ]);
       }
       return true;
     })
   }
 
-  // console.log("필터링!");
-  // console.log(data1);
+  console.log("필터링!");
+  console.log(data);
   
     return (
       <Box
@@ -69,7 +83,7 @@ function TimeTableBox (props) {
             display: 'flex'
           }}
           chartType="Timeline"
-          data={data1}
+          data={data}
           
           width="850px"
           height="230px"

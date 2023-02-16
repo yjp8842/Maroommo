@@ -29,7 +29,7 @@ function StudyTime (props) {
 
   const todos = [];
   props.todoList.map((todo) => {
-    console.log(todo);
+    // console.log(todo);
     var tot = 0;
     todo.todoTimes.map((time) => (
       time.totalSec ? tot += time.totalSec : tot += 0
@@ -66,6 +66,7 @@ function StudyTime (props) {
   todos.forEach((todo) => {
     data[todo.content] = todo.totalTime
   })
+  console.log("순수 공부 시간 data")
   console.log(data)
   
 
