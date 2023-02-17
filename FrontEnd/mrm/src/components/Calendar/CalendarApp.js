@@ -12,9 +12,10 @@ export default function CalendarApp() {
   const [value, onChange] = useState(new Date());
   const moment = require('moment');
 
-  const {todolist, schedulelist} = useSelector((state) =>
+  const {todolist, doneList, schedulelist} = useSelector((state) =>
   ({
     todolist: state.userInfoReducers.user.doing,
+    doneList: state.userInfoReducers.user.done,
     schedulelist: state.userInfoReducers.user.schedules,
   }))
 
@@ -23,8 +24,16 @@ export default function CalendarApp() {
   todolist.map((todo,index) => {
     return todo_schedule_list.push({
       content:todo.content,
-      startTime:todo.startTime,
+      startTime:todo.endTime,
       state:todo.state
+    })    
+  })
+  
+  doneList.map((todo,index) => {
+    return todo_schedule_list.push({
+      content:todo.content,
+      startTime:todo.startTime,
+      state:2
     })    
   })
   
