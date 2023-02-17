@@ -134,7 +134,10 @@ const GroupChat = () => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            width: "60vw",
+            height: "95vh",
+            marginTop: "2vh"
           }}>
 
           <Chat />
