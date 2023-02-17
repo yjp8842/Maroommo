@@ -34,6 +34,8 @@ const CreateScheduleModal = ({ onClose }) => {
     return (
       <Overlay>
         <ModalWrap>
+          <Contents>
+            <h1>일정 생성하기</h1>
         <InputWithLabel 
           id="roomId"
           label="| 그룹명" 
@@ -75,6 +77,7 @@ const CreateScheduleModal = ({ onClose }) => {
           >등록</CloseButton>
         <CloseButton onClick={handleClose}>뒤로</CloseButton>
 
+        </Contents>
         </ModalWrap>
       </Overlay>
       );
@@ -82,95 +85,95 @@ const CreateScheduleModal = ({ onClose }) => {
   
   export default React.memo(CreateScheduleModal);
 
-const Overlay = styled.div`
+  const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.2);
-  z-index: 100;
-`;
-
-const ModalWrap = styled.div`
-  position: absolute;
-  width: 650px;
-  height: 550px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 30px;
-  background-color: #4A4A4A;
-  top: 50%;
-  left: 50%;
-  box-Shadow: 5px 5px 8px;
-  transform: translate(-50%, -50%);
-`;
-
-const Label = styled.div` 
-  // float: left;
-  text-align: left;
-  font-size: 20px;
-  color: white;
-  margin-bottom: 0.5rem;
-`;
-
-const Input = styled.input`
-  width: 350px;
-  height: 60px;
+  z-index: 9999;
+  `;
+  
+  const ModalWrap = styled.div`
+    position: absolute;
+    width: 680px;
+    height: 750px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    background-color: #4A4A4A;
+    top: 50%;
+    left: 50%;
+    box-Shadow: 5px 5px 8px;
+    transform: translate(-50%, -50%);
+  `;
+  
+  const Label = styled.div` 
+    // float: left;
+    text-align: left;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 0.5rem;
+  `;
+  
+  const Input = styled.input`
+  width: 450px;
+  height: 50px;
+  // width: 100%;
   outline: none;
+  margin: 10px;
   border-radius: 15px;
-  // line-height: 2.5rem;
+  line-height: 2.5rem;
   font-size: 20px;
   padding-left: 1rem;
   padding-right: 0.5rem;
-`;
-
-const Wrapper = styled.div`
-    & + & {
-        margin-top: 1rem;
+  `;
+  
+  const Wrapper = styled.div`
+      & + & {
+          margin-top: 1rem;
+      }
+  `;
+  
+  const InputWithLabel = ({label, ...rest}) => (
+    <Wrapper>
+      <Label>{label}</Label>
+      <Input {...rest}/>
+    </Wrapper>
+  );
+  
+  const Contents = styled.div`
+    // position: absolute;
+    // margin-top: 20px;
+    // vertical-align: middle;
+    text-align: center;
+    h1 {
+      color: white;
+      font-size: 40px;
+      font-weight: 600;
+      // text-align: center;
     }
-`;
-
-const InputWithLabel = ({label, ...rest}) => (
-  <Wrapper>
-    <Label>{label}</Label>
-    <Input {...rest}/>
-  </Wrapper>
-);
-
-const CloseButton = styled.button`
+  `;
+  
+  
+  const CloseButton = styled.button`
+  // float : right;
   width: 110px;
   height: 60px;
+  margin-top: 20px;
+  margin-left: 10px;
+  // margin: 30px;
   font-size: 20px;
-  margin-top: 10px;
-  // margin-left: 20px;
+  // border: none;
   background-color: #ffffff;
-  border-radius: 15px;
+  border-radius: 20px;
   box-Shadow: 5px 5px 8px;
   cursor: pointer;
   &:hover {
     background-color: #898989;
   }
-`;
-
- 
-// <input
-// name="roomId"
-// placeholder="그룹명"
-// onChange={onChange}
-// value={roomId}
-// />
-// <input
-// name="Schedule_tag"
-// placeholder="태그"
-// onChange={onChange}
-// value={Schedule_tag}
-// />
-// <input
-// name="content"
-// placeholder="내용"
-// onChange={onChange}
-// value={content}
-// />
+  `;
+  
