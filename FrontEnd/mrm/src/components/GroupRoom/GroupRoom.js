@@ -211,7 +211,7 @@ const GroupRoom = () => {
             })}
           </Box>
           <Box>
-            <AppWrap>
+            <AppWrap style={{ margin: '20px 0' }}>
               <Button onClick={onClickButton}>+</Button>
               {isOpen && (<RoomModal
                 open={isOpen}
@@ -346,7 +346,7 @@ const GroupRoom = () => {
             sx={{
               width: "250px",
               // height: "550px",
-              height: "55vh",
+              height: "57vh",
               marginTop: "20px",
               paddingY: '20px',
               borderRadius: "30px",
@@ -391,11 +391,11 @@ const GroupRoom = () => {
           </Box>
           <Box
             sx={{
-              width: "250px",
+              width: "240px",
               // height: "80px",
               height: "6vh",
               marginTop: "20px",
-              borderRadius: "30px",
+              borderRadius: "25px",
               backgroundColor: "#FFFFFF",
               border: '5px solid #c45c5c',
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",

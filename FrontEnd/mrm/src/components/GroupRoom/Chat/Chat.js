@@ -207,7 +207,7 @@ const Chat = () => {
               }
             }
           } else {
-            return 0;
+            return;
           }
         })}
       </div>

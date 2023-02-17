@@ -488,10 +488,17 @@ class OpenChat extends Component {
           contentType : false,	// application/x-www-form-urlencoded; 방지!!
         }).then((res) => {
           console.log(res.data)
-          let messageList = this.state.messageList;
-          messageList.push({ message: res.data });
-          this.setState({ messageList: messageList });
-          this.scrollToBottom();
+          if (this.state.message) {
+            let message = this.state.message.replace(/ +(?= )/g, '');
+            if (message !== '' && message !== ' ') {
+              const data = { message: res.data };
+              this.state.mainStreamManager.stream.session.signal({
+                data: JSON.stringify(data),
+                type: 'chat',
+              });
+            }
+          }
+          this.setState({ message: '' });
         }).catch((err) =>
           console.log(err))
 

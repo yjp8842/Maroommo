@@ -107,7 +107,7 @@ const GroupQnA = () => {
             })}
           </Box>
           <Box>            
-            <AppWrap>
+            <AppWrap style={{ margin: '20px 0' }}>
               <Button onClick={onClickButton}>+</Button>
               {isOpen && (<RoomModal
                 open={isOpen}
@@ -157,20 +157,34 @@ const GroupQnA = () => {
             alignItems: 'center',
           }}>
 
-          <Box sx={{mt:5}}>
+          <Box sx={{ marginTop: '8vh' }}>
             <h1>Q&A</h1>
-            <br></br>            
-            <TableContainer component={Paper} sx={{ border:'2px solid black', borderRadius:'25px', tableLayout:'auto'}}>
-              <Table sx={{ height:'65vh', width:"60vw", minWidth: 650  }} aria-label="simple table">
+            <br></br>    
+
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Link to={`/group/${groupId}/question/register?isForEdit=false`} style={{width: "80px", height: "26px", borderRadius: "30px", backgroundColor: "#FFFFFF", boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)", textAlign: 'center', paddingTop: '1vh'}}>
+                      글쓰기
+                    </Link>
+                  </div>
+            </Box>
+
+            <TableContainer component={Paper} sx={{borderRadius:'10px', tableLayout:'auto', height:'64vh', width:"55vw", marginTop: '3vh'}}>
+              <Table sx={{ height:'60vh', width:"55vw", minWidth: 650  }} aria-label="simple table">
                 <TableHead 
                   >
                   <TableRow >
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderLeft:'0px'}} align='center'>번호</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>해결/미해결</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>제목</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>작성자</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>조회수</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderRight:'0px'}} align='center'>작성일</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>번호</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>해결/미해결</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>제목</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>작성자</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>조회수</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>작성일</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -181,20 +195,20 @@ const GroupQnA = () => {
                       <TableRow
                         key={questionArticle.id}
                       >
-                        <TableCell sx={{ fontSize: '1.2rem', borderTop: '1px solid black', borderBottom: '1px solid black', borderRight: '1px solid black' }} align='center' component="th" scope="row">
+                        <TableCell sx={{ fontSize: '1rem'}} align='center' component="th" scope="row">
                           {questionArticle.id}
                         </TableCell>
                         {questionArticle.status === 0
-                        ?<TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>미해결</TableCell>
-                        :<TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>해결</TableCell>}
-                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>
+                        ?<TableCell sx={{ fontSize: '1rem', color: 'red'}} align='center'>미해결</TableCell>
+                        :<TableCell sx={{ fontSize: '1rem', color: 'green'}} align='center'>해결</TableCell>}
+                        <TableCell sx={{ fontSize: '1rem'}} align='center'>
                           <Link to={`/group/${groupId}/question/questionArticle/${questionArticle.id}`}>
                             {questionArticle.title}
                           </Link>
                         </TableCell>
-                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{questionArticle.user_id}</TableCell>
-                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{questionArticle.views}</TableCell>
-                        <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black', borderRight: '0px' }} align='center'>{new Date(questionArticle.createTime).toLocaleString()}</TableCell>
+                        <TableCell sx={{ fontSize: '1rem'}} align='center'>{questionArticle.user_id}</TableCell>
+                        <TableCell sx={{ fontSize: '1rem'}} align='center'>{questionArticle.views}</TableCell>
+                        <TableCell sx={{ fontSize: '1rem'}} align='center'>{new Date(questionArticle.createTime).toLocaleString()}</TableCell>
                       </TableRow>
                     )
                   })
@@ -206,24 +220,7 @@ const GroupQnA = () => {
             <Pagination limit={limit} page={page} setPage={setPage} total={question.content ? question.content.length : 1}/>
 
             {/* 룸아이디 넣는 식으로 수정해야함 */}
-            <Box
-              sx={{
-                width: "80px",
-                height: "30px",
-                // marginTop: "20px",
-                // paddingY: '20px',
-                borderRadius: "30px",
-                backgroundColor: "#FFFFFF",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center'
-                }}>
-                <Link to={`/group/${groupId}/question/register?isForEdit=false`}>
-                  글쓰기
-                </Link>
-            </Box>
+            
           </Box>
         </Box>   
 
@@ -242,7 +239,7 @@ const GroupQnA = () => {
             sx={{
               width: "250px",
               // height: "550px",
-              height: "55vh",
+              height: "57vh",
               marginTop: "20px",
               paddingY: '20px',
               borderRadius: "30px",
@@ -287,11 +284,11 @@ const GroupQnA = () => {
           </Box>
           <Box
             sx={{
-              width: "250px",
+              width: "240px",
               // height: "80px",
               height: "6vh",
               marginTop: "20px",
-              borderRadius: "30px",
+              borderRadius: "25px",
               backgroundColor: "#FFFFFF",
               border: '5px solid #c45c5c',
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
