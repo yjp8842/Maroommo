@@ -173,8 +173,9 @@ const MyRoom = () => {
           }}>
           <Box
             sx={{
-              width: "90vw",
+              width: "95vw",
               height: "28vh",
+              marginLeft: "2vw",
               display: "flex",
             }}>
             <Profile 

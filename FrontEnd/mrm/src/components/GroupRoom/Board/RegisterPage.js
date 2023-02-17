@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import { Box } from '@mui/system';
 
 import PageIcon from '../../MyRoom/MyRoomItem/PageIcon';
+import UserPageIcon from "../../MyRoom/MyRoomItem/UserPageIcon";
 import GroupProfile from '../GroupRoomItem/GroupProfile';
 import CalendarBox from '../../Calendar/Calendar';
 import MenuBtn from '../GroupRoomItem/MenuBtn';
@@ -141,7 +142,7 @@ function RegisterPage (props) {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
+          <Link to={`/myroom`}>< UserPageIcon user={user}/></Link>
         </Box>
         <Box
           sx={{
