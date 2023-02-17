@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
+@font-face {
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+/* * {
+  box-sizing: border-box;
+} */
+
+html {
+  font-family: 'GangwonEdu_OTFBoldA';
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  background-color: #FAF6E9;
+  font-family: 'GangwonEdu_OTFBoldA';
+}
+
+* {
+  margin: 0; 
+  padding: 0;
+  font-family: 'GangwonEdu_OTFBoldA' !important;
+}
+
+a {
+  color: rgb(90, 90, 90);
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+div {
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}

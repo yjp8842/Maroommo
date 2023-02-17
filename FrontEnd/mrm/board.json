@@ -1,0 +1,86 @@
+{
+  "board": [
+    {
+      "title": "우에엥",
+      "content": "호애앵",
+      "views": 39,
+      "date": 1675311613205,
+      "editDate": "",
+      "id": 1
+    },
+    {
+      "title": "ㅇㄹㅇㄹㅇ",
+      "content": "ㄹㅇㄹㅇㄹ",
+      "views": 24,
+      "date": 1675314271802,
+      "editDate": "",
+      "id": 2
+    },
+    {
+      "title": "왜",
+      "content": "안돼",
+      "views": 6,
+      "date": 1675318672648,
+      "editDate": "",
+      "id": 4
+    },
+    {
+      "title": "전",
+      "content": "태영인데용",
+      "views": 28,
+      "date": 1675314271802,
+      "editDate": "",
+      "id": 5
+    },
+    {
+      "title": "",
+      "content": "",
+      "views": 2,
+      "date": 1675403871748,
+      "editDate": "",
+      "id": 6
+    },
+    {
+      "title": "",
+      "content": "",
+      "views": 2,
+      "date": 1675403928559,
+      "editDate": "",
+      "id": 7
+    },
+    {
+      "title": "글이야",
+      "content": "글글\n",
+      "views": 1,
+      "date": 1675410695190,
+      "editDate": "",
+      "id": 8
+    }
+  ],
+  "comment": [
+    {
+      "id": 1,
+      "content": "왜안돼ㅐㅐㅐㅐㅐㅐ",
+      "date": 1675319157535,
+      "articleId": 4
+    },
+    {
+      "id": 2,
+      "content": "ㅡㅡㅡㅡㅡㅡ",
+      "date": 1675319183062,
+      "articleId": 4
+    },
+    {
+      "id": 4,
+      "content": "ㅊㅇㄹㅇㄹㅊ",
+      "date": 1675322707725,
+      "articleId": 5
+    },
+    {
+      "id": 5,
+      "content": "ㅇㅅㅇ",
+      "date": 1675323726103,
+      "articleId": 1
+    }
+  ]
+}

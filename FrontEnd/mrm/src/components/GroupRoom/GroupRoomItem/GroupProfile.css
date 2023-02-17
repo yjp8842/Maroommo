@@ -1,0 +1,30 @@
+.pencil {
+  display: flex;
+  width: 90%;
+  justify-content: flex-end;
+}
+
+.inbox1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.update {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.display {
+  display: none;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}

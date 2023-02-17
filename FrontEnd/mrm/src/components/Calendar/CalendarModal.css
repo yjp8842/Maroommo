@@ -1,0 +1,15 @@
+.click-div {
+  position: absolute;
+  /* width: "16vw";
+  height: "26vh"; */
+  width: 250px;
+  height: 210px;
+  background-color: black;
+  margin-top: -210px;
+  opacity: 0;
+  border-radius: 8px;
+}
+
+.click-div:hover {
+  cursor: pointer;
+}

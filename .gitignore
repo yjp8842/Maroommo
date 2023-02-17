@@ -1,0 +1,45 @@
+
+.idea
+/BackEnd/src/main/resources/application.properties
+/BackEnd/src/main/resources/email.properties
+/BackEnd/HELP.md
+/BackEnd/.gradle
+/BackEnd/build/
+/BackEnd/gradle/**/
+/BackEnd/!gradle/wrapper/gradle-wrapper.jar
+/BackEnd/!**/src/main/**/build/
+/BackEnd/!**/src/test/**/build/
+
+### STS ###
+/BackEnd/.apt_generated
+/BackEnd/.classpath
+/BackEnd/.factorypath
+/BackEnd/.project
+/BackEnd/.settings
+/BackEnd/.springBeans
+/BackEnd/.sts4-cache
+/BackEnd/bin/
+/BackEnd/!**/src/main/**/bin/
+/BackEnd/!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+/BackEnd/.idea
+/BackEnd/*.iws
+/BackEnd/*.iml
+/BackEnd/*.ipr
+/BackEnd/out/
+/BackEnd/!**/src/main/**/out/
+/BackEnd/!**/src/test/**/out/
+
+### NetBeans ###
+/BackEnd/nbproject/private/
+/BackEnd/nbbuild/
+/BackEnd/dist/
+/BackEnd/nbdist/
+/BackEnd/.nb-gradle/
+
+### VS Code ###
+/BackEnd/.vscode/
+
+### Node_modules ###
+/FrontEnd/mrm/node_modules/
