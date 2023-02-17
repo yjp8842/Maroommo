@@ -496,7 +496,7 @@ class OpenChat extends Component {
         }).then((res) => {
           // console.log(res.data);
           // this.state.ocrMgs = res.data
-          self.setState({messageList: res.data})
+          self.setState({ocrMsg: res.data})
   
         }).catch((err) => 
           console.log(err))
