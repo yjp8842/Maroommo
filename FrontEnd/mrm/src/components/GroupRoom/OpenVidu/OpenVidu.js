@@ -401,6 +401,10 @@ class OpenChat extends Component {
                         </div>
                       ))}
                     </div>
+
+                    <div className="ocrScreen">
+                      {this.state.ocrMsg}
+                    </div>
   
                     <div id="messageInput">
                       <textarea
@@ -448,6 +452,7 @@ class OpenChat extends Component {
       messageList: [],
       message: '',
       isSubShare: false,
+      ocrMsg: []
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -478,7 +483,7 @@ class OpenChat extends Component {
 
         var formdata = new FormData();
         formdata.append("file", file);
-        console.log('여기까지 옴')
+        console.log('여기까지 옴');
         
         axios({
           method : 'post',
@@ -487,19 +492,11 @@ class OpenChat extends Component {
           processData : false,	// data 파라미터 강제 string 변환 방지!!
           contentType : false,	// application/x-www-form-urlencoded; 방지!!
         }).then((res) => {
-          console.log(res.data)
-          if (this.state.message) {
-            let message = this.state.message.replace(/ +(?= )/g, '');
-            if (message !== '' && message !== ' ') {
-              const data = { message: res.data };
-              this.state.mainStreamManager.stream.session.signal({
-                data: JSON.stringify(data),
-                type: 'chat',
-              });
-            }
-          }
-          this.setState({ message: '' });
-        }).catch((err) =>
+          // console.log(res.data);
+          // this.state.ocrMgs = res.data
+          this.setState({ocrMsg: res.data})
+  
+        }).catch((err) => 
           console.log(err))
 
       });
