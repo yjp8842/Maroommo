@@ -37,20 +37,8 @@
 
 .message-wrap {
   width: 300px;
-  height: 70vh;
+  height: 77vh;
   overflow: auto;
-}
-
-.ocrScreen {
-  width: 300px;
-  height: 7vh;
-  overflow: auto;
-  background-color: #ebe5d1;
-  border-radius: 8px;
-}
-
-.ocrScreen p {
-  font-size: 15px;
 }
 
 .message {
