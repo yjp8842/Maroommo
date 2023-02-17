@@ -167,6 +167,8 @@ span.triangle {
   font-size: 14px !important;
   color: #000000 !important;
   padding: 20px 10px !important;
+  border: none !important;
+  resize: none;
 }
 
 #sendButton {

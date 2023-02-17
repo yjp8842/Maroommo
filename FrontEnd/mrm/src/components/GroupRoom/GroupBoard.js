@@ -110,7 +110,7 @@ const GroupBoard = () => {
             })}
           </Box>
           <Box>
-            <AppWrap>
+            <AppWrap style={{ margin: '20px 0' }}>
               <Button onClick={onClickButton}>+</Button>
               {isOpen && (<RoomModal
                 open={isOpen}
@@ -172,14 +172,14 @@ const GroupBoard = () => {
                 justifyContent: 'flex-end',
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Link to={`/group/${groupId}/board/register?isForEdit=false`} style={{width: "80px", height: "26px", borderRadius: "30px", backgroundColor: "#FFFFFF", boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)", textAlign: 'center', paddingTop: '1vh'}}>
-                    글쓰기
-                  </Link>
+                    <Link to={`/group/${groupId}/board/register?isForEdit=false`} style={{width: "80px", height: "26px", borderRadius: "30px", backgroundColor: "#FFFFFF", boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)", textAlign: 'center', paddingTop: '1vh'}}>
+                      글쓰기
+                    </Link>
                   </div>
             </Box>
 
-            <TableContainer component={Paper} sx={{  borderRadius:'10px', tableLayout:'auto', height:'65vh', width:"50vw", marginTop: '3vh'}}>
-              <Table sx={{ height:'65vh', width:"50vw", minWidth: 650  }} aria-label="simple table">
+            <TableContainer component={Paper} sx={{  borderRadius:'10px', tableLayout:'auto', height:'64vh', width:"55vw", marginTop: '3vh'}}>
+              <Table sx={{ height:'60vh', width:"55vw", minWidth: 650  }} aria-label="simple table">
                 <TableHead 
                   >
                   <TableRow >
@@ -198,17 +198,17 @@ const GroupBoard = () => {
                             <TableRow
                               key={article.id}
                             >
-                              <TableCell sx={{ fontSize: '1.2rem'}} align='center' component="th" scope="row">
+                              <TableCell sx={{ fontSize: '1rem'}} align='center' component="th" scope="row">
                                 {article.id}
                               </TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>
+                              <TableCell sx={{ fontSize: '1rem'}} align='center'>
                                 <Link to={`/group/${groupId}/board/article/${article.id}`}>
                                   {article.title}
                                 </Link>
                               </TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>{article.user}</TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>{article.views}</TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>{new Date(article.createTime).toLocaleString()}</TableCell>
+                              <TableCell sx={{ fontSize: '1rem'}} align='center'>{article.user}</TableCell>
+                              <TableCell sx={{ fontSize: '1rem'}} align='center'>{article.views}</TableCell>
+                              <TableCell sx={{ fontSize: '1rem'}} align='center'>{new Date(article.createTime).toLocaleString()}</TableCell>
                             </TableRow>
                           )
                         })
@@ -239,7 +239,7 @@ const GroupBoard = () => {
             sx={{
               width: "250px",
               // height: "550px",
-              height: "55vh",
+              height: "57vh",
               marginTop: "20px",
               paddingY: '20px',
               borderRadius: "30px",
@@ -284,11 +284,11 @@ const GroupBoard = () => {
           </Box>
           <Box
             sx={{
-              width: "250px",
+              width: "240px",
               // height: "80px",
               height: "6vh",
               marginTop: "20px",
-              borderRadius: "30px",
+              borderRadius: "25px",
               backgroundColor: "#FFFFFF",
               border: '5px solid #c45c5c',
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
