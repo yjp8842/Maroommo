@@ -15,6 +15,7 @@ import { boardActions } from '../../slice/boardSlice';
 import BoardList from './Board/ArticlePage/Sections/BoardList';
 import styled from "styled-components";
 import RoomModal from "../Modal/Group/RoomModal";
+import UserPageIcon from "../MyRoom/MyRoomItem/UserPageIcon";
 
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
@@ -86,7 +87,7 @@ const GroupBoard = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
+          <Link to={`/myroom`}><UserPageIcon user={user}/></Link>
         </Box>
         <Box
           sx={{

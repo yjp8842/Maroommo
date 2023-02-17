@@ -21,9 +21,9 @@ const Profile = (props) => {
   return (
     <Box
       sx={{
-        width: "12vw",
+        width: "14vw",
         height: "26vh",
-        marginRight: "1vw",
+        marginRight: "2vw",
         // width: "250px",
         // height: "220px",
         // marginLeft: "15px",

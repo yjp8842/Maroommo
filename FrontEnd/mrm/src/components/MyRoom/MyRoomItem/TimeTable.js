@@ -30,11 +30,12 @@ function TimeTable (props) {
     });
     totalTime += tot;
     console.log(todo_index, todo, tot);
-    todos.push({
-      "id":todo.content,
-      "label":todo.content,
-      "value":tot
-    })
+    if(tot>60)
+        todos.push({
+          "id":todo.content,
+          "label":todo.content,
+          "value":tot
+        })
   })
 
   todos.forEach((todo)=>{

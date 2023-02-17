@@ -15,6 +15,7 @@ import GroupMemberList from './GroupRoomItem/GroupMemberList';
 import QuestionList from './Board/ArticlePage/Sections/QuestionList';
 import { questionActions } from '../../slice/questionSlice';
 
+import UserPageIcon from "../MyRoom/MyRoomItem/UserPageIcon";
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
 import './Group.css';
 import Pagination from "./Pagination";
@@ -83,7 +84,7 @@ const GroupQnA = () => {
           backgroundColor: "#4A4A4A",
         }}>
         <Box>
-          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
+          <Link to={`/myroom`}>< UserPageIcon user={user}/></Link>
         </Box>
         <Box
           sx={{

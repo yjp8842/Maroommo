@@ -9,6 +9,6 @@
     display: none;
   }
   
-  .jb-title:hover + .jb-text {
-    display: block;
-  }
+.jb-title:hover + .jb-text {
+  display: block;
+}

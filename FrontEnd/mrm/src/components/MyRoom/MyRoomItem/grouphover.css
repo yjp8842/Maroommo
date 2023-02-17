@@ -1,0 +1,14 @@
+
+.group-text {
+    padding: 15px 20px;
+    margin: -40px 0px 0px 40px;
+    background-color: #ea9f59;
+    border-radius: 5px;
+    color: #363535;
+    position: absolute;
+    display: none;
+  }
+  
+.group-title:hover + .group-text {
+  display: block;
+}

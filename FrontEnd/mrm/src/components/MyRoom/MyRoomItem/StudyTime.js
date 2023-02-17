@@ -42,11 +42,12 @@ function StudyTime (props) {
     });
     totalTime += tot;
     console.log(todo_index, todo, tot);
-    todos.push({
-      id:todo.id,
-      content:todo.content,
-      totalTime:tot
-    })
+    if(tot > 60)
+        todos.push({
+          id:todo.id,
+          content:todo.content,
+          totalTime:tot
+        })
   })
 
   console.log("totalTime");
@@ -79,7 +80,7 @@ function StudyTime (props) {
   return (
     <Box
       sx={{
-        width: "47vw",
+        width: "44vw",
         height: "26vh",
         marginRight: "1vw",
         // width: "860px",

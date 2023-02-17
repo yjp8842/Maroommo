@@ -10,6 +10,7 @@ import GroupProfile from './GroupRoomItem/GroupProfile';
 import CalendarBox from '../Calendar/Calendar';
 import Chat from './Chat/Chat';
 import OpenChatRoom from './OpenVidu/OpenChatRoom';
+import UserPageIcon from "../MyRoom/MyRoomItem/UserPageIcon";
 
 import './GroupRoomItem/Category.css';
 import './Group.css';
@@ -63,7 +64,7 @@ const GroupChat = () => {
         }}>
         <Box>
           {/* 해당 userId의 경로로 이동할 수 있도록 변경해야함 */}
-          <Link to={`/myroom`}><PageIcon room={{}}/></Link>
+          <Link to={`/myroom`}><UserPageIcon user={user}/></Link>
         </Box>
         <Box
           sx={{
