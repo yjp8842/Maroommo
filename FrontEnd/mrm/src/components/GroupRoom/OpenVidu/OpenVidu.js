@@ -367,7 +367,7 @@ class OpenChat extends Component {
                     >
                       <ScreenShareIcon />
                     </Icon>
-                    <Icon onClick={this.sreenShot}>
+                    <Icon onClick={this.screenShot}>
                       <ScreenshotMonitorIcon />
                     </Icon>
                     <Icon>
@@ -452,7 +452,7 @@ class OpenChat extends Component {
       messageList: [],
       message: '',
       isSubShare: false,
-      ocrMsg: []
+      ocrMsg: ""
     };
 
     this.joinSession = this.joinSession.bind(this);
@@ -465,12 +465,15 @@ class OpenChat extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePressKey = this.handlePressKey.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+
+    this.screenShot = this.screenShot.bind(this);
   }
 
-  sreenShot(target) {
+  screenShot(target) {
     target = document.getElementById('chart_box')
     if (target != null) {
       var t = target;
+      var self = this;
       html2canvas(t).then(function(canvas) {
         var myImg = canvas.toDataURL("image/png");
         var blobBin = atob(myImg.split(',')[1]);	// base64 데이터 디코딩
@@ -494,7 +497,7 @@ class OpenChat extends Component {
         }).then((res) => {
           // console.log(res.data);
           // this.state.ocrMgs = res.data
-          this.setState({ocrMsg: res.data})
+          self.setState({ocrMsg: res.data})
   
         }).catch((err) => 
           console.log(err))
