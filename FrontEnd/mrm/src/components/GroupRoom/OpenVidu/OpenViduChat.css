@@ -49,6 +49,10 @@
   border-radius: 8px;
 }
 
+.ocrScreen p {
+  font-size: 15px;
+}
+
 .message {
   position: relative;
   padding: 7px 0;

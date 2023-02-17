@@ -400,10 +400,9 @@ class OpenChat extends Component {
                           </div>
                         </div>
                       ))}
-                    </div>
-
-                    <div className="ocrScreen">
-                      {this.state.ocrMsg}
+                      <div className="msg-content">
+                        <p>{this.state.ocrMsg}</p>
+                      </div>
                     </div>
   
                     <div id="messageInput">
@@ -497,7 +496,7 @@ class OpenChat extends Component {
         }).then((res) => {
           // console.log(res.data);
           // this.state.ocrMgs = res.data
-          self.setState({ocrMsg: res.data})
+          self.setState({messageList: res.data})
   
         }).catch((err) => 
           console.log(err))
