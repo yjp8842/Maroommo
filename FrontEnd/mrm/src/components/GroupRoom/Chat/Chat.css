@@ -1,6 +1,9 @@
 .chatbox {
-  width: 1150px;
-  height: 960px;
+  width: 100%;
+  height: 100%;
+  /* margin-top: 20px; */
+  /* width: 1150px;
+  height: 960px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,8 +11,8 @@
 }
 
 .chatinbox {
-  width: 1150px; 
-  height: 740px;
+  /* width: 1150px; 
+  height: 740px; */
   padding: 30px;
   overflow-y: scroll;
 }
