@@ -161,19 +161,33 @@ const GroupBoard = () => {
             flexDirection: 'column'
           }}>
 
-          <Box sx={{mt:5}}>
+          <Box sx={{ marginTop: '8vh' }}>
             <h1>게시판</h1>
             <br></br>
-            <TableContainer component={Paper} sx={{ border:'2px solid black', borderRadius:'25px', tableLayout:'auto'}}>
-              <Table sx={{ height:'65vh', width:"60vw", minWidth: 650  }} aria-label="simple table">
+
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Link to={`/group/${groupId}/board/register?isForEdit=false`} style={{width: "80px", height: "26px", borderRadius: "30px", backgroundColor: "#FFFFFF", boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)", textAlign: 'center', paddingTop: '1vh'}}>
+                    글쓰기
+                  </Link>
+                  </div>
+            </Box>
+
+            <TableContainer component={Paper} sx={{  borderRadius:'10px', tableLayout:'auto', height:'65vh', width:"50vw", marginTop: '3vh'}}>
+              <Table sx={{ height:'65vh', width:"50vw", minWidth: 650  }} aria-label="simple table">
                 <TableHead 
                   >
                   <TableRow >
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderLeft:'0px'}} align='center'>번호</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>제목</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>작성자</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px',}} align='center'>조회수</TableCell>
-                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.5rem', border:'2px solid black', borderTop:'0px', borderRight:'0px'}} align='center'>작성일</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>번호</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>제목</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>작성자</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>조회수</TableCell>
+                    <TableCell sx={{backgroundColor:'#ebe5d1',fontSize:'1.2rem', borderTop:'0px'}} align='center'>작성일</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -184,17 +198,17 @@ const GroupBoard = () => {
                             <TableRow
                               key={article.id}
                             >
-                              <TableCell sx={{ fontSize: '1.2rem', borderTop: '1px solid black', borderBottom: '1px solid black', borderRight: '1px solid black' }} align='center' component="th" scope="row">
+                              <TableCell sx={{ fontSize: '1.2rem'}} align='center' component="th" scope="row">
                                 {article.id}
                               </TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>
+                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>
                                 <Link to={`/group/${groupId}/board/article/${article.id}`}>
                                   {article.title}
                                 </Link>
                               </TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{article.user}</TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black' }} align='center'>{article.views}</TableCell>
-                              <TableCell sx={{ fontSize: '1.2rem', border: '1px solid black', borderRight: '0px' }} align='center'>{new Date(article.createTime).toLocaleString()}</TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>{article.user}</TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>{article.views}</TableCell>
+                              <TableCell sx={{ fontSize: '1.2rem'}} align='center'>{new Date(article.createTime).toLocaleString()}</TableCell>
                             </TableRow>
                           )
                         })
@@ -206,24 +220,7 @@ const GroupBoard = () => {
             <Pagination limit={limit} page={page} setPage={setPage} total={board.content ? board.content.length : 1}/>
 
             {/* 룸아이디 넣는 식으로 수정해야함 */}
-            <Box
-              sx={{
-                width: "80px",
-                height: "30px",
-                // marginTop: "20px",
-                // paddingY: '20px',
-                borderRadius: "30px",
-                backgroundColor: "#FFFFFF",
-                boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center'
-                }}>
-                <Link to={`/group/${groupId}/board/register?isForEdit=false`}>
-                  글쓰기
-                </Link>
-            </Box>
+            
           </Box>
         </Box>
 
