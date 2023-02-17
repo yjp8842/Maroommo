@@ -80,9 +80,9 @@ function StudyTime (props) {
   return (
     <Box
       sx={{
-        width: "44vw",
-        height: "26vh",
-        marginRight: "1vw",
+        width: "47vw",
+        height: "25vh",
+        // marginRight: "1vw",
         // width: "860px",
         // height: "140px",
         // marginLeft: "15px",
