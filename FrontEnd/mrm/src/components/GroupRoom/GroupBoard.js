@@ -241,7 +241,8 @@ const GroupBoard = () => {
           <Box
             sx={{
               width: "250px",
-              height: "550px",
+              // height: "550px",
+              height: "55vh",
               marginTop: "20px",
               paddingY: '20px',
               borderRadius: "30px",
@@ -252,19 +253,43 @@ const GroupBoard = () => {
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-            <h3>그룹 인원</h3>
-            <hr align="center" width="80%"/>   
-            {group.users 
-            ? group.users.map((user, index) => {
-              return (<GroupMemberList user={user}/>)
-            })
-            : <div></div>
-            }
+              <Box
+                sx={{
+                  width: "250px",
+                  // height: "550px",
+                  height: "5vh",
+                  margin: "0px auto",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                <h3>그룹 인원</h3>
+                <hr align="center" width="80%"/>   
+              </Box>
+              <Box
+                sx={{
+                  width: "250px",
+                  // height: "550px",
+                  height: "50vh",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  // justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                {group.users 
+                ? group.users.map((user, index) => {
+                  return (<GroupMemberList user={user}/>)
+                })
+                : <div></div>
+                }
+              </Box>
           </Box>
           <Box
             sx={{
               width: "250px",
-              height: "80px",
+              // height: "80px",
+              height: "6vh",
               marginTop: "20px",
               borderRadius: "30px",
               backgroundColor: "#FFFFFF",
@@ -272,9 +297,12 @@ const GroupBoard = () => {
               boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.35)",
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              ':hover': {
+                cursor: 'pointer'
+              }
             }}>
-              <h2>탈퇴하기</h2>
+            <h2>로그아웃</h2>
           </Box>
         </Box>
       </Box>
