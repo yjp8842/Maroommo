@@ -157,6 +157,8 @@ const MyRoom = () => {
           </Box>
         </Box>
       </Box>
+
+
       <Box
         sx={{
           display: "flex",
@@ -165,18 +167,18 @@ const MyRoom = () => {
         <Box
           sx={{
             width: "95vw",
-            height: "28vh",
-            paddingTop: "2vh",
+            height: "27vh",
+            paddingTop: "1vh",
             display: "flex",
             justifyContent: "space-evenly",
             backgroundColor: "#ebe5d1",
           }}>
           <Box
             sx={{
-              width: "95vw",
-              height: "28vh",
-              marginLeft: "2vw",
+              width: "94vw",
+              height: "27vh",
               display: "flex",
+              justifyContent: 'space-evenly'
             }}>
             <Profile 
               user={user}  
@@ -186,11 +188,13 @@ const MyRoom = () => {
             <CalendarBox />            
           </Box>
         </Box>
+
         <Box
           sx={{
-            width: "90vw",
+            width: "94vw",
             height: "70vh",
             display: "flex",
+            justifyContent: 'space-evenly'
           }}>
           <Box
             sx={{

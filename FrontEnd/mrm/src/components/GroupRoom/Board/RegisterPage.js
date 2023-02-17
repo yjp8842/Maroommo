@@ -209,10 +209,17 @@ function RegisterPage (props) {
             flexDirection: 'column',
             alignItems: 'center',
           }}>
+
         <Box
           sx={{
-            mt: 5
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
+            <h1>글쓰기</h1>
             <RegisterOrEdit
               id={id}
               titleValue={title}
