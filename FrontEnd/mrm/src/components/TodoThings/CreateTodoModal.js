@@ -57,61 +57,65 @@ const CreateTodoModal = ({ onClose }) => {
     return (
       <Overlay>
         <ModalWrap>
-        <InputWithLabel 
-          id="roomId"
-          label="| 그룹명" 
-          // name="roomId" 
-          // placeholder={group.name}
-          // onChange={onChange1}
-          value={group.name}
-        />
-        <InputWithLabel 
-          id="tags"
-          label="| 태그" 
-          // name="tags" 
-          placeholder="React 강의"
-          onChange={onChange2}
-          // value={tags}
-        />
-        <InputWithLabel 
-          id="content"
-          label="| 내용" 
-          // name="content" 
-          placeholder="Chapter1 수강"
-          onChange={onChange3}
-          // value={content}
-        />
+          <Contents>
+            <h1>할일 생성하기</h1>
+            <InputWithLabel 
+              id="roomId"
+              label="| 그룹명" 
+              // name="roomId" 
+              // placeholder={group.name}
+              // onChange={onChange1}
+              value={group.name}
+            />
+            <InputWithLabel 
+              id="tags"
+              label="| 태그" 
+              // name="tags" 
+              placeholder="React 강의"
+              onChange={onChange2}
+              // value={tags}
+            />
+            <InputWithLabel 
+              id="content"
+              label="| 내용" 
+              // name="content" 
+              placeholder="Chapter1 수강"
+              onChange={onChange3}
+              // value={content}
+            />
 
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            id="date"
-            label="Custom input"
-            value={selectedDate}
-            // onChange={onChange4}
-            onChange={(newValue) => {
-              setSelectedDate(newValue);
-            }}
-            renderInput={({ inputRef, inputProps, InputProps }) => (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <InputWithLabel 
-                  id="date"
-                  label="| 날짜" 
-                  // placeholder="React 강의"
-                  ref={inputRef} {...inputProps} 
-                />
-              {/* <input ref={inputRef} {...inputProps} /> */}
-              {InputProps?.endAdornment}
-            </Box>
-              )}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                id="date"
+                label="Custom input"
+                value={selectedDate}
+                // onChange={onChange4}
+                onChange={(newValue) => {
+                  setSelectedDate(newValue);
+                }}
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <InputWithLabel 
+                      id="date"
+                      label="| 날짜" 
+                      // placeholder="React 강의"
+                      ref={inputRef} {...inputProps} 
+                      sx={{ width: "60%" }}
+                    />
+                  {/* <input ref={inputRef} {...inputProps} /> */}
+                  {InputProps?.endAdornment}
+                </Box>
+                  )}
               />
-        </LocalizationProvider>
+            </LocalizationProvider>
 
-        <CloseButton onClick={() => {
-          postTodoData({ user, group, tags, content, selectedDate, dispatch,navigate });
-          handleClose();}}
-        >등록</CloseButton>
-        <CloseButton onClick={handleClose}>뒤로</CloseButton>
+            <CloseButton onClick={() => {
+              postTodoData({ user, group, tags, content, selectedDate, dispatch,navigate });
+              handleClose();}}
+            >등록</CloseButton>
+            <CloseButton onClick={handleClose}>뒤로</CloseButton>
 
+          </Contents>
         </ModalWrap>
       </Overlay>
       );
@@ -120,19 +124,19 @@ const CreateTodoModal = ({ onClose }) => {
   export default React.memo(CreateTodoModal);
 
 const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: rgba(0, 0, 0, 0.2);
-  z-index: 100;
+position: fixed;
+top: 0;
+left: 0;
+height: 100%;
+width: 100%;
+background: rgba(0, 0, 0, 0.2);
+z-index: 9999;
 `;
 
 const ModalWrap = styled.div`
   position: absolute;
-  width: 650px;
-  height: 550px;
+  width: 680px;
+  height: 750px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -154,14 +158,16 @@ const Label = styled.div`
 `;
 
 const Input = styled.input`
-  width: 350px;
-  height: 60px;
-  outline: none;
-  border-radius: 15px;
-  // line-height: 2.5rem;
-  font-size: 20px;
-  padding-left: 1rem;
-  padding-right: 0.5rem;
+width: 450px;
+height: 50px;
+// width: 100%;
+margin: 10px;
+outline: none;
+border-radius: 15px;
+line-height: 2.5rem;
+font-size: 20px;
+padding-left: 1rem;
+padding-right: 0.5rem;
 `;
 
 const Wrapper = styled.div`
@@ -177,37 +183,34 @@ const InputWithLabel = ({label, ...rest}) => (
   </Wrapper>
 );
 
-const CloseButton = styled.button`
-  width: 110px;
-  height: 60px;
-  font-size: 20px;
-  margin-top: 10px;
-  // margin-left: 20px;
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-Shadow: 5px 5px 8px;
-  cursor: pointer;
-  &:hover {
-    background-color: #898989;
+const Contents = styled.div`
+  // position: absolute;
+  // margin-top: 20px;
+  // vertical-align: middle;
+  text-align: center;
+  h1 {
+    color: white;
+    font-size: 40px;
+    font-weight: 600;
+    // text-align: center;
   }
 `;
 
- 
-// <input
-// name="roomId"
-// placeholder="그룹명"
-// onChange={onChange}
-// value={roomId}
-// />
-// <input
-// name="tags"
-// placeholder="태그"
-// onChange={onChange}
-// value={tags}
-// />
-// <input
-// name="content"
-// placeholder="내용"
-// onChange={onChange}
-// value={content}
-// />
+
+const CloseButton = styled.button`
+// float : right;
+width: 110px;
+height: 60px;
+margin-top: 20px;
+margin-left: 10px;
+// margin: 30px;
+font-size: 20px;
+// border: none;
+background-color: #ffffff;
+border-radius: 20px;
+box-Shadow: 5px 5px 8px;
+cursor: pointer;
+&:hover {
+  background-color: #898989;
+}
+`;
