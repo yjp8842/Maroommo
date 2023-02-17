@@ -1,0 +1,31 @@
+.uploader-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploader-wrapper .img-wrapper img {
+  width: 180px;
+  height: 200px;
+  border-radius: 15px;
+}
+
+.uploader-wrapper .upload-button button {
+  width: 100px;
+  height: 40px;
+  margin-top: 20px;
+  margin-left: 8px;
+  font-size: 16px;
+  color: Black;
+  border: none;
+  background-color: #fff;
+  border-radius: 10px;
+  font-family: 'GangwonEdu_OTFBoldA';
+  box-Shadow: 5px 5px 8px;
+  cursor: pointer;
+}
+
+.uploader-wrapper .upload-button button:hover {
+  background-color: #898989;
+}

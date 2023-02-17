@@ -1,0 +1,11 @@
+.memo-box {
+  width: 280px;
+  height: 160px;
+  text-align: left;
+  padding: 20px 30px;
+}
+
+.memo-list {
+  display: flex;
+  justify-content: space-between;
+}

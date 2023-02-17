@@ -1,0 +1,17 @@
+
+.draggable {
+  display: inline-block;
+  /* border: 2px solid skyblue; */
+  background-color: #FAF6E9;
+  box-Shadow: 3px 3px 5px rgba(0, 0, 0, 0.35);
+  border-radius: 20px;
+  padding: 10px 20px;
+  /* flex: 1 0; */
+  cursor: grab;
+  margin: 3px;
+}
+
+.dragging {
+  background-color: #f3fafd;
+  cursor: grabbing;
+}

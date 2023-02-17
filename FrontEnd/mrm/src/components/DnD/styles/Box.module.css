@@ -1,0 +1,17 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 950px;
+  height: 250px;
+  background-color: white;
+  padding: 10px;
+  box-Shadow: 5px 5px 8px rgba(0, 0, 0, 0.35);
+  border-radius: 20px;
+}
+
+.title {
+  text-align: center;
+  font-weight: 400;
+}

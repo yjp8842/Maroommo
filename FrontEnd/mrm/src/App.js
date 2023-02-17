@@ -1,24 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import MyRoom from './components/MyRoom/MyRoom';
+import GroupRoom from './components/GroupRoom/GroupRoom';
+import SignInSide from './components/Login/SignIn';
+import SignUp from './components/Login/SignUp';
+import GroupChat from './components/GroupRoom/GroupChat';
+import GroupBoard from './components/GroupRoom/GroupBoard';
+import GroupQnA from './components/GroupRoom/GroupQnA';
+import ArticlePage from './components/GroupRoom/Board/ArticlePage/ArticlePage';
+import RegisterPage from './components/GroupRoom/Board/RegisterPage';
+import QuestionArticlePage from './components/GroupRoom/Board/ArticlePage/QuestionArticlePage';
+import RegisterQuestionPage from './components/GroupRoom/Board/RegisterQuestionPage';
+import history from './utils/history';
+
+import OpenChat from './components/GroupRoom/OpenVidu/OpenVidu';
+import FindIdPage from './components/Login/FindId';
+import FindPwdPage from './components/Login/FindPwd';
+import ModifyPwdPage from './components/Login/ModifyPwd'
+import SuccessPage from './components/Login/SuccessPage';
+import GroupJoinPage from './components/GroupRoom/GroupJoinPage';
+import { OCR } from './OCR/OCR';
+// import { Fragment } from 'react';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter history={history}>
+      <Routes>
+        <Route path='/' element={<SignInSide/>}/>
+        <Route path='/signup' element={<SignUp/>}/>
+        <Route path="/myroom" element={<MyRoom />} />
+        <Route path="/group/:groupId" element={<GroupRoom />} />
+        <Route path="/group/:groupId/chat" element={<GroupChat />} />
+        <Route path="/group/:groupId/board" element={<GroupBoard />} />
+        <Route path="/group/:groupId/question" element={<GroupQnA />} />
+        <Route path="/group/:groupId/board/article/:articleId" element={<ArticlePage/>}/>
+        <Route path="/group/:groupId/question/questionArticle/:questionArticleId" element={<QuestionArticlePage/>}/>
+        <Route path="/group/:groupId/board/register" element={<RegisterPage/>}/>
+        <Route path="/group/:groupId/question/register" element={<RegisterQuestionPage/>}/>
+        <Route path='/findId' element={<FindIdPage/>}/>
+        <Route path='/findPwd' element={<FindPwdPage/>}/>
+        <Route path='/modifyPwd' element={<ModifyPwdPage/>}/>
+        <Route path="/oauth2/social/success" element={<SuccessPage/>}/>
+        <Route path="/room/enter/:groupId/:roomCode" element={<GroupJoinPage/>}/>
+        <Route path="/group/:groupId/openvidu" element={<OpenChat/>}/>
+        <Route path="/OCR" element={<OCR/>}/>
+      </Routes>
+    </BrowserRouter>
+
   );
 }
 
